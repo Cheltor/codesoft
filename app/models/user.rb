@@ -7,4 +7,7 @@ class User < ApplicationRecord
   validates :email, format: { with: /\A[^@\s]+@riverdaleparkmd\.gov\z/i,
     message: "Must be a riverdaleparkmd.gov email address" }
         
-end
+    has_many :comments
+    has_many :addresses, through: :comments
+
+  end
