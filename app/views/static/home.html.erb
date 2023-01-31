@@ -1,0 +1,13 @@
+<h1>Static#home</h1>
+<p>Find me in app/views/static/home.html.erb</p>
+
+<table>
+  <tr>
+    <th>Address</th>
+  </tr>
+  <% @addresses.each do |address| %>
+    <tr>
+      <td><%= link_to address.prettyadd, address_path(address) %></td>
+    </tr>
+  <% end %>
+</table>
