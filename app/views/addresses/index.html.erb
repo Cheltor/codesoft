@@ -1,0 +1,26 @@
+<br>
+<div class="container">
+  <div class="row">
+    <div class="col-3"></div>
+    <div class="col-5">
+      <%= search_form_for @q, url: root_path, method: :get do |f| %>
+        <%= f.search_field :combadd_cont, class:"form-control" %>
+
+    </div>
+    <div class="col-4">
+    <%= f.submit "Search", class:"btn btn-success" %>
+    <% end %>
+    </div>
+  </div>
+</div>
+
+<table>
+  <tr>
+    <th>Address</th>
+  </tr>
+  <% @addresses.first(10).each do |address| %>
+    <tr>
+      <td><%= link_to address.combadd, address_path(address), class:"btn" %></td>
+    </tr>
+  <% end %>
+</table>

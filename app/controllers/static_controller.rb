@@ -1,5 +1,5 @@
 class StaticController < ApplicationController
   def home
-    @addresses = Address.all
+    @addresses = @q.result
   end
 end

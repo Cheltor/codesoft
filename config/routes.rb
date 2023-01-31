@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
-  root 'static#home'
-  resources :address
+  root to: "addresses#index"
+  resources :addresses, only: [:index, :show]
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path route ("/")
