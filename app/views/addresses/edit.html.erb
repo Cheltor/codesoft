@@ -1,0 +1,85 @@
+<h1>Edit Address</h1>
+
+<%= form_for @address do |f| %>
+  <div class="form-group">
+    <%= f.label :pid %>
+    <%= f.text_field :pid, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :ownername %>
+    <%= f.text_field :ownername, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :owneraddress %>
+    <%= f.text_field :owneraddress, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :ownercity %>
+    <%= f.text_field :ownercity, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :ownerstate %>
+    <%= f.text_field :ownerstate, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :ownerzip %>
+    <%= f.text_field :ownerzip, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :streetnumb %>
+    <%= f.text_field :streetnumb, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :streetname %>
+    <%= f.text_field :streetname, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :streettype %>
+    <%= f.text_field :streettype, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :landusecode %>
+    <%= f.text_field :landusecode, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :zoning %>
+    <%= f.text_field :zoning, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :owneroccupiedin %>
+    <%= f.text_field :owneroccupiedin, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :vacant %>
+    <%= f.text_field :vacant, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :absent %>
+    <%= f.text_field :absent, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :premisezip %>
+    <%= f.text_field :premisezip, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :outstanding, "Outstanding Violation" %>
+    <%= f.check_box :outstanding %>
+  </div>
+
+    <%= f.submit "Update Address" %>
+<% end %>

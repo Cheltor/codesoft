@@ -1,3 +1,7 @@
+<%= link_to "Edit", edit_address_path(@address) %>
+
+
+
 <p>pid: <%= @address.pid %></p>
 <p>ownername: <%= @address.ownername %></p>
 <p>owneraddress: <%= @address.owneraddress %></p>
@@ -14,5 +18,6 @@
 <p>vacant: <%= @address.vacant %></p>
 <p>absent: <%= @address.absent %></p>
 <p>premisezip: <%= @address.premisezip %></p>
+<p>outstanding: <%= @address.outstanding %></p>
 
   <%= render 'comments/form' %>
