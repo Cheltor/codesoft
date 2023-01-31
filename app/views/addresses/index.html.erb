@@ -1,26 +1,32 @@
 <br>
 <div class="container">
   <div class="row">
-    <div class="col-3"></div>
+    <div class="col-3">
+    </div>
     <div class="col-5">
-      <%= search_form_for @q, url: root_path, method: :get do |f| %>
-        <%= f.search_field :combadd_cont, class:"form-control" %>
-
+      <div class="card" style="background-color: #e3f2fd;">
+        <div class="card-body">
+          <%= search_form_for @q, url: root_path, method: :get do |f| %>
+          <%= f.search_field :combadd_cont, class:"form-control", placeholder: "Type in the address here" %>
+          <br><div style="text-align:center"><%= f.submit "Search", class:"btn btn-primary" %></div>
+          <% end %>
+        </div>
+      </div>
     </div>
     <div class="col-4">
-    <%= f.submit "Search", class:"btn btn-success" %>
-    <% end %>
     </div>
   </div>
+<br>
+  <div class="row">
+      <% @addresses.first(50).each do |address| %>
+      <%= link_to address_path(address) do %>
+        <div class="card"  style="background-color: #e3f2fd;">
+          <div class="card-body">
+           <%= address.combadd %>
+          </div>
+        </div>
+        <br>
+        <% end %>
+      <% end %>
+  </div>
 </div>
-
-<table>
-  <tr>
-    <th>Address</th>
-  </tr>
-  <% @addresses.first(10).each do |address| %>
-    <tr>
-      <td><%= link_to address.combadd, address_path(address), class:"btn" %></td>
-    </tr>
-  <% end %>
-</table>
