@@ -20,8 +20,20 @@
               <li><a class="dropdown-item" href="#">Doorhanger</a></li>
             </ul>
           </li>
-        </ul>
+          <% if user_signed_in? %>
+          <li>
+            <!-- <%= link_to "Logout", destroy_user_session_path, method: :delete, class:"nav-link", data: { turbo: false } %>-->
+          </li>
+          <% else %>
+          <li>
+            <%= link_to "Sign In", new_user_session_path, class:"nav-link", data: { turbo: false } %>
+          </li>
+          <li>
+            <%= link_to "Sign Up", new_user_registration_path, class:"nav-link", data: { turbo: false } %>
+          </li>
+          <% end %>
 
+        </ul>
       </div>
     </div>
   </nav>
