@@ -6,6 +6,7 @@
 <% if user_signed_in? %>
   <%= form_for([@address, @address.comments.build]) do |f| %>
     <%= f.text_area :content %>
+    <%= f.file_field :photo %>
     <%= f.submit %>
   <% end %>
 <% end %>
