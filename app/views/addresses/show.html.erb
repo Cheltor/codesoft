@@ -1,23 +1,65 @@
-<%= link_to "Edit", edit_address_path(@address) %>
+<div class="container">
+  <div class="row">
+  <div class="col">
+  
+  <div class="card"><div class="card-body">
+    <h2><%= @address.combadd %></h2>
+    <!-- Button trigger modal -->
+    <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
+      Update
+    </button>
 
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Are you sure?</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            Be very careful when updating the address information.
+            
+          </div>
+          <div class="modal-footer">
+            <%= link_to "Update", edit_address_path(@address), class: "btn btn-primary" %>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <h4>Owner:</h4>
+    <p><%= @address.ownername %></p>
+    <p><%= @address.owneraddress %></p>
+    <p><%= @address.ownercity %></p>
+    <p><%= @address.ownerstate %></p>
+    <p><%= @address.ownerzip %></p>
+    <br>
+    <h4>Outstanding violations?</h4>
+    <% if @address.outstanding == false %>
+      <%= button_to "No outstanding violations", toggle_outstanding_violation_address_path(@address), method: :patch, class: "btn btn-success" %>
+    <% else %>
+      <%= button_to "Outstanding violation", toggle_outstanding_violation_address_path(@address), method: :patch, class: "btn btn-danger" %>
+    <% end %>
+    <br>
+    <h4>Zoning and land use</h4>
+      <p>landusecode: <%= @address.landusecode %></p>
+      <p>zoning: <%= @address.zoning %></p>
 
+  </div></div>
+  <br>
 
-<p>pid: <%= @address.pid %></p>
-<p>ownername: <%= @address.ownername %></p>
-<p>owneraddress: <%= @address.owneraddress %></p>
-<p>ownercity: <%= @address.ownercity %></p>
-<p>ownerstate: <%= @address.ownerstate %></p>
-<p>ownerzip: <%= @address.ownerzip %></p>
-<p>streetnumb: <%= @address.streetnumb %></p>
-<p>Address: <%= @address.combadd %></p>
-<p>streetname: <%= @address.streetname %></p>
-<p>streettype: <%= @address.streettype %></p>
-<p>landusecode: <%= @address.landusecode %></p>
-<p>zoning: <%= @address.zoning %></p>
-<p>owneroccupiedin: <%= @address.owneroccupiedin %></p>
-<p>vacant: <%= @address.vacant %></p>
-<p>absent: <%= @address.absent %></p>
-<p>premisezip: <%= @address.premisezip %></p>
-<p>outstanding: <%= @address.outstanding %></p>
-
-  <%= render 'comments/form' %>
+  </div>
+    <br>
+    <div class="col">
+    <div class="card"><div class="card-body">
+      <%= render 'comments/form' %>
+    </div></div>
+    <br>
+    <div class="card"><div class="card-body">
+      <%= render 'comments/comments' %>
+    </div></div>
+    </div>
+    </div>
+  </div>
+</div>

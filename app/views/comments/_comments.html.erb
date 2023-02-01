@@ -1,0 +1,15 @@
+<h3>Comments</h3>
+<% @address.comments.order("created_at DESC").each do |comment| %>
+<div class="card"><div class="card-body">
+  <p><strong><%= comment.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y at %I:%M%p") %> 
+  <br>
+  <%= comment.user.email %></strong> says: 
+  <br>
+  <%= comment.content %></p>
+  <% if comment.photo.nil? %>
+  <% else %>
+
+  <% end %>
+
+</div></div><br>
+<% end %>

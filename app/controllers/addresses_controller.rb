@@ -3,6 +3,7 @@ class AddressesController < ApplicationController
 
     def index
         @addresses = @q.result
+        @comments = Comment.recent
     end
     
     def show
@@ -24,6 +25,12 @@ class AddressesController < ApplicationController
     else
         render :edit
     end
+    end
+
+    def toggle_outstanding_violation
+        @address = Address.find(params[:id])
+        @address.update(outstanding: !@address.outstanding?)
+        redirect_to @address
     end
 
     private
