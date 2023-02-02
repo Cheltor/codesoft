@@ -1,7 +1,5 @@
-<br>
 <div class="container">
   <div class="row">
-
     <div class="col-6">
       <div class="card" style="background-color: #e3f2fd;">
         <div class="card-body">
@@ -32,18 +30,6 @@
         <% end %>
       <% end %>
     </div>
-    <div class="col-6">
-      <h1>Recent comments</h1>
-      <% @comments.first(50).each do |comment| %>
-        <div class="card"><div class="card-body">
-          <p><strong><%= comment.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y at %I:%M%p") %> for <%= comment.address.combadd %>
-          <br>
-          <%= comment.user.email %></strong> says: 
-          <br>
-          <%= comment.content %></p>
-        </div></div><br>
-      <% end %>
-    </div>
+    <div class="col-6"></div>
   </div>
-<br>
 </div>

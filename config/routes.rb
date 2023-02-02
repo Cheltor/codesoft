@@ -6,6 +6,8 @@ Rails.application.routes.draw do
     patch :toggle_outstanding_violation, on: :member
   end
   get "static/home"
+  get 'violations' => 'addresses#violist'
+
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path route ("/")

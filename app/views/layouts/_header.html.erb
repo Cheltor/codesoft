@@ -9,6 +9,7 @@
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="/">Search</a>
           </li>
+          <li><%= link_to "Active Violations", violations_path, class:"nav-link" %></li>
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               New
@@ -16,8 +17,6 @@
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
               <li><a class="dropdown-item" href="#">Violation Notice</a></li>
               <li><a class="dropdown-item" href="#">Citation</a></li>
-              <li><hr class="dropdown-divider"></li>
-              <li><a class="dropdown-item" href="#">Doorhanger</a></li>
             </ul>
           </li>
           <% if user_signed_in? %>

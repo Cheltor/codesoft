@@ -5,6 +5,10 @@ class AddressesController < ApplicationController
         @addresses = @q.result
         @comments = Comment.recent
     end
+
+    def violist
+        @addresses = Address.where(outstanding: true).order("updated_at DESC")
+    end
     
     def show
         @address = Address.find(params[:id])
