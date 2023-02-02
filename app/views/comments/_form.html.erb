@@ -4,10 +4,7 @@
   <%= form_for([@address, @address.comments.build]) do |f| %>
     <%= f.text_area :content, class: "form-control" %>
     <br>
-
-      <%= f.fields_for :photos do |photo_fields| %>
-        <%= photo_fields.file_field :image, class: "form-control"  %>
-      <% end %>
+    <%= f.file_field :photo, class: "form-control" %>
     <br>
     <%= f.submit class: "btn btn-primary" %>
   <% end %>
