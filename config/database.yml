@@ -84,6 +84,9 @@ test:
 #
 production:
   <<: *default
-  database: d9rj9mhc6modfe
-  username: qhgbawvrbvmxod
-  password: 4dd97efcb4d149b80da8ef961fb17180b623530018da2bae3f28875b2a81ddd3
+  host     : app-80c1823a-cf75-4a30-af6c-bc8691918f10-do-user-13512282-0.b.db.ondigitalocean.com
+  port     : 25060
+  username : db
+  password : AVNS_FgqBvXZQI3jwYmCW6CK
+  database : db
+  sslmode  : require
