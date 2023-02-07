@@ -84,6 +84,6 @@ test:
 #
 production:
   <<: *default
-  database: codeenforcement_production
-  username: codeenforcement
-  password: <%= ENV["CODEENFORCEMENT_DATABASE_PASSWORD"] %>
+  database: d9rj9mhc6modfe
+  username: qhgbawvrbvmxod
+  password: 4dd97efcb4d149b80da8ef961fb17180b623530018da2bae3f28875b2a81ddd3
