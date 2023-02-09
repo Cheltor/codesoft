@@ -50,13 +50,19 @@
         <tr>
           <th>Description</th>
           <th>Status</th>
+          <th>Update</th>
         </tr>
       </thead>
       <tbody>
-        <% @address.violations.each do |violation| %>
+        <% @address.violations.order("created_at DESC").each do |violation| %>
           <tr>
             <td><%= violation.description %></td>
             <td><%= violation.status %></td>
+            <td>
+              <% if violation.current? %>
+                <%= button_to "Mark as Resolved", resolve_address_violation_path(@address, violation), method: :patch, class: "btn btn-success" %>
+              <% end %>
+            </td>
           </tr>
         <% end %>
       </tbody>

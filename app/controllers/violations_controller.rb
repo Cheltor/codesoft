@@ -1,5 +1,7 @@
 class ViolationsController < ApplicationController
   before_action :set_address
+  before_action :set_violation, only: [:resolve]
+
 
   def new
     @violation = @address.violations.new
@@ -15,6 +17,14 @@ class ViolationsController < ApplicationController
     end
   end
 
+  def resolve
+    if @violation.update(status: :resolved)
+      redirect_to @address, notice: "Violation resolved successfully."
+    else
+      redirect_to @address, alert: "Failed to resolve violation."
+    end
+  end
+
   private
 
   def set_address
@@ -23,5 +33,9 @@ class ViolationsController < ApplicationController
 
   def violation_params
     params.require(:violation).permit(:description, :status)
+  end
+
+  def set_violation
+    @violation = @address.violations.find(params[:id])
   end
 end
