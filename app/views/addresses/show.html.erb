@@ -35,16 +35,32 @@
     <p><%= @address.ownerstate %></p>
     <p><%= @address.ownerzip %></p>
     <br>
-    <h4>Outstanding violations?</h4>
-    <% if @address.outstanding == false %>
-      <%= button_to "No outstanding violations", toggle_outstanding_violation_address_path(@address), method: :patch, class: "btn btn-success" %>
-    <% else %>
-      <%= button_to "Outstanding violation", toggle_outstanding_violation_address_path(@address), method: :patch, class: "btn btn-danger" %>
-    <% end %>
-    <br>
     <h4>Zoning and land use</h4>
       <p>landusecode: <%= @address.landusecode %></p>
       <p>zoning: <%= @address.zoning %></p>
+
+  </div></div>
+  <br>
+  <div class="card"><div class="card-body">
+  <h2>Violations</h2>
+    <%= link_to "Create a Violation", new_address_violation_path(@address), class: "btn btn-primary" %>
+    <br>
+    <table>
+      <thead>
+        <tr>
+          <th>Description</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @address.violations.each do |violation| %>
+          <tr>
+            <td><%= violation.description %></td>
+            <td><%= violation.status %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
 
   </div></div>
   <br>

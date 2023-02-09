@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   root to: "addresses#index"
   resources :addresses do
     resources :comments
+    resources :violations
     patch :toggle_outstanding_violation, on: :member
   end
   get "static/home"
