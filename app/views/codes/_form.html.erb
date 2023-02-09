@@ -1,0 +1,37 @@
+<%= form_with(model: code) do |form| %>
+  <% if code.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(code.errors.count, "error") %> prohibited this code from being saved:</h2>
+
+      <ul>
+        <% code.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :chapter, style: "display: block" %>
+    <%= form.text_field :chapter %>
+  </div>
+
+  <div>
+    <%= form.label :section, style: "display: block" %>
+    <%= form.text_field :section %>
+  </div>
+
+  <div>
+    <%= form.label :name, style: "display: block" %>
+    <%= form.text_field :name %>
+  </div>
+
+  <div>
+    <%= form.label :description, style: "display: block" %>
+    <%= form.text_field :description %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>
