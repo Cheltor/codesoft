@@ -32,7 +32,7 @@ class ViolationsController < ApplicationController
   end
 
   def violation_params
-    params.require(:violation).permit(:description, :status)
+    params.require(:violation).permit(:description, :status, code_ids: [])
   end
 
   def set_violation

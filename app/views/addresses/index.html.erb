@@ -14,7 +14,7 @@
       <br>
       <% @addresses.order("updated_at DESC").first(50).each do |address| %>
       <%= link_to address_path(address) do %>
-      <% if address.outstanding == true %>
+      <% if address.violations.current.exists? == true %>
         <div class="card"  style="background-color: #B98282;">
           <div class="card-body">
            <h3><%= address.combadd %></h3>

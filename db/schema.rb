@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_09_214025) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_09_224009) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -74,6 +74,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_09_214025) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  create_table "violation_codes", force: :cascade do |t|
+    t.bigint "violation_id", null: false
+    t.bigint "code_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["code_id"], name: "index_violation_codes_on_code_id"
+    t.index ["violation_id"], name: "index_violation_codes_on_violation_id"
+  end
+
   create_table "violations", force: :cascade do |t|
     t.string "description"
     t.integer "status"
@@ -85,5 +94,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_09_214025) do
 
   add_foreign_key "comments", "addresses"
   add_foreign_key "comments", "users"
+  add_foreign_key "violation_codes", "codes"
+  add_foreign_key "violation_codes", "violations"
   add_foreign_key "violations", "addresses"
 end
