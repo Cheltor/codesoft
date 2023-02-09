@@ -50,6 +50,7 @@
         <tr>
           <th>Description</th>
           <th>Status</th>
+          <th>Email</th>
           <th>Update</th>
         </tr>
       </thead>
@@ -58,6 +59,7 @@
           <tr>
             <td><%= violation.description %></td>
             <td><%= violation.status %></td>
+            <td><%= violation.user.email %></td>
             <td>
               <% if violation.current? %>
                 <%= button_to "Mark as Resolved", resolve_address_violation_path(@address, violation), method: :patch, class: "btn btn-success" %>

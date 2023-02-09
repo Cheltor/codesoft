@@ -10,4 +10,6 @@ class User < ApplicationRecord
     has_many :comments
     has_many :addresses, through: :comments
 
+    has_many :violations
+
   end

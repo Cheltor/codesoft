@@ -9,6 +9,7 @@ class ViolationsController < ApplicationController
 
   def create
     @violation = @address.violations.new(violation_params)
+    @violation.user = current_user
 
     if @violation.save
       redirect_to @address, notice: "Violation reported successfully."

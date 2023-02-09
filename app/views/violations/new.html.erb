@@ -1,6 +1,7 @@
 <h1>Create a Violation</h1>
 
 <%= form_with(model: [@address, @violation], local: true) do |form| %>
+
   <div class="form-group">
     <%= form.label :description %>
     <%= form.text_area :description, class: "form-control" %>

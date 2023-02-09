@@ -2,6 +2,7 @@ class Violation < ApplicationRecord
   belongs_to :address
   has_many :violation_codes
   has_many :codes, through: :violation_codes
+  belongs_to :user
 
   enum status: [:current, :resolved]
 
