@@ -1,6 +1,6 @@
 <div class="container">
   <div class="row">
-  <div class="col">
+  <div class="col-xl-9">
   
   <div class="card"><div class="card-body">
     <h2><%= @address.combadd %></h2>
@@ -30,39 +30,41 @@
     
     <h4>Owner:</h4>
     <p><%= @address.ownername %></p>
-    <p><%= @address.owneraddress %></p>
-    <p><%= @address.ownercity %></p>
-    <p><%= @address.ownerstate %></p>
-    <p><%= @address.ownerzip %></p>
-    <br>
-    <h4>Zoning and land use</h4>
-      <p>landusecode: <%= @address.landusecode %></p>
-      <p>zoning: <%= @address.zoning %></p>
-
+    <h4>Owner Address:</h4>
+    <p><%= @address.owneraddress %> <%= @address.ownercity %>, <%= @address.ownerstate %> <%= @address.ownerzip %></p>
   </div></div>
   <br>
   <div class="card"><div class="card-body">
-  <h2>Violations</h2>
-    <%= link_to "Create a Violation", new_address_violation_path(@address), class: "btn btn-primary" %>
+  <h2 style="text-align: center">Violations</h2>
+    <%= link_to "Create a Violation", new_address_violation_path(@address), class: "btn btn-danger btn-lg" %>
     <br>
-    <table>
+    <br>
+    <table class="table table-striped">
       <thead>
         <tr>
-          <th>Description</th>
-          <th>Status</th>
-          <th>Email</th>
+          <th>Created</th>
+          <th>ONS</th>
+          <th>Code</th>
+          <th>Deadline</th>
           <th>Update</th>
         </tr>
       </thead>
       <tbody>
         <% @address.violations.order("created_at DESC").each do |violation| %>
           <tr>
-            <td><%= violation.description %></td>
-            <td><%= violation.status %></td>
-            <td><%= violation.user.email %></td>
+            <td><%= violation.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y at %I:%M%p") %></td>
+            <td><%= violation.user.email.split("@").first %></td>
+            <td>
+              <% violation.codes.each do |code| %>
+                <%= code.name %>;
+              <% end %>
+            </td>
+            <td>Deadline</td>
             <td>
               <% if violation.current? %>
                 <%= button_to "Mark as Resolved", resolve_address_violation_path(@address, violation), method: :patch, class: "btn btn-success" %>
+              <% else %>
+              <p>Resolved</p>
               <% end %>
             </td>
           </tr>
@@ -75,7 +77,7 @@
 
   </div>
     <br>
-    <div class="col">
+    <div class="col-xl-3">
     <div class="card" style="background-color: #e3f2fd;"><div class="card-body">
       <%= render 'comments/form' %>
     </div></div>

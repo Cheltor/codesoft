@@ -1,8 +1,7 @@
-<br>
 <div class="container">
   <div class="row">
 
-    <div class="col-6">
+    <div class="col-lg-6">
       <div class="card" style="background-color: #e3f2fd;">
         <div class="card-body">
           <%= search_form_for @q, url: root_path, method: :get do |f| %>
@@ -12,36 +11,63 @@
         </div>
       </div>
       <br>
-      <% @addresses.order("updated_at DESC").first(50).each do |address| %>
-      <%= link_to address_path(address) do %>
-      <% if address.violations.current.exists? == true %>
-        <div class="card"  style="background-color: #B98282;">
-          <div class="card-body">
-           <h3><%= address.combadd %></h3>
-          </div>
+      <table class="table table-striped">
+        <thead class="thead-light">
+          <tr>
+            <th scope="col">Address</th>
+            <th scope="col">Comments</th>
+            <th scope="col">Violations</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @addresses.order("updated_at DESC").first(50).each do |address| %>
+          <tr>
+          <% if address.violations.current.exists? == true %>
+            <td><%= link_to address.combadd, address_path(address), class:"btn btn-outline-danger" %></td>
+          <% else %>
+            <td><%= link_to address.combadd, address_path(address), class:"btn btn-outline-primary" %></td>
+          <% end %>
+            <td><%= address.comments.all.count %></td>
+            <td><%= address.violations.all.count %></td>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+
+    </div>
+    <div class="col-lg-6">
+    <h1>Recent Violations</h1>
+      <% @violations.first(50).each do |violation| %>
+      <% if violation.status == "current" %>
+        <div class="card border-danger mb-3">
+        <div class="card-header"><%= link_to violation.address.combadd, address_path(violation.address), class: "btn" %> by <%= violation.user.email %></div>
+        <div class="card-body">
+        <strong>
+          <% violation.codes.each do |code| %>
+            <%= code.name %>;
+          <% end %>
+        </strong>
         </div>
+        <div class="card-footer">
+        <%= violation.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y at %I:%M%p") %>
+        </div>
+        </div><br>
       <% else %>
-        <div class="card"  style="background-color: #71DE68;">
-          <div class="card-body">
-           <h3><%= address.combadd %></h3>
-          </div>
+        <div class="card border-success mb-3">
+        <div class="card-header"><%= link_to violation.address.combadd, address_path(violation.address), class: "btn" %> by <%= violation.user.email %></div>
+        <div class="card-body">
+        <strong>
+          <% violation.codes.each do |code| %>
+            <%= code.name %>;
+          <% end %>
+        </strong>
         </div>
+        <div class="card-footer">
+        <%= violation.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y at %I:%M%p") %>
+        </div>
+        </div><br>
       <% end %>
 
-        <br>
-        <% end %>
-      <% end %>
-    </div>
-    <div class="col-6">
-      <h1>Recent comments</h1>
-      <% @comments.first(50).each do |comment| %>
-        <div class="card"><div class="card-body">
-          <p><strong><%= comment.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y at %I:%M%p") %> for <%= comment.address.combadd %>
-          <br>
-          <%= comment.user.email %></strong> says: 
-          <br>
-          <%= comment.content %></p>
-        </div></div><br>
       <% end %>
     </div>
   </div>

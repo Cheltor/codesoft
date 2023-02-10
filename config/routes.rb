@@ -7,7 +7,6 @@ Rails.application.routes.draw do
       patch :resolve, on: :member
     end
     resources :comments
-    patch :toggle_outstanding_violation, on: :member
   end
   get "static/home"
   get 'violations' => 'addresses#violist'

@@ -1,34 +1,36 @@
+
 <div class="container">
   <div class="row">
-    <div class="col-6">
-      <div class="card" style="background-color: #e3f2fd;">
-        <div class="card-body">
-          <%= search_form_for @q, url: root_path, method: :get do |f| %>
-          <%= f.search_field :combadd_cont, class:"form-control form-control-lg", placeholder: "Type in the address here" %>
-          <br><div style="text-align:center"><%= f.submit "Search", class:"btn btn-primary" %></div>
-          <% end %>
-        </div>
-      </div>
+    <div class="col-12">
+      <h1>Active Violations</h1>
       <br>
-      <% @addresses.order("updated_at DESC").first(50).each do |address| %>
-      <%= link_to address_path(address) do %>
-      <% if address.outstanding == true %>
-        <div class="card"  style="background-color: #B98282;">
-          <div class="card-body">
-           <h3><%= address.combadd %></h3>
-          </div>
-        </div>
-      <% else %>
-        <div class="card"  style="background-color: #71DE68;">
-          <div class="card-body">
-           <h3><%= address.combadd %></h3>
-          </div>
-        </div>
-      <% end %>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Address</th>
+            <th>Created</th>
+            <th>ONS</th>
+            <th>Code</th>
+            <th>Deadline</th>
+          </tr>
+        </thead>
+      <tbody>
+        <% @violations.order("created_at DESC").each do |violation| %>
+          <tr>
+          <td><%= link_to violation.address.combadd, address_path(violation.address), class: "btn" %></td>
+            <td><%= violation.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y at %I:%M%p") %></td>
+            <td><%= violation.user.email.split("@").first %></td>
+            <td>
+              <% violation.codes.each do |code| %>
+                <%= code.name %>;
+              <% end %>
+            </td>
+            <td>Deadline</td>
 
-        <br>
+          </tr>
         <% end %>
-      <% end %>
+      </tbody>
+      </table>
     </div>
     <div class="col-6"></div>
   </div>

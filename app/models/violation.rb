@@ -8,6 +8,8 @@ class Violation < ApplicationRecord
 
   after_initialize :set_default_status, if: :new_record?
 
+  scope :recent, -> { order(created_at: :desc) }
+
   private
 
   def set_default_status
