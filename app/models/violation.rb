@@ -9,7 +9,17 @@ class Violation < ApplicationRecord
   after_initialize :set_default_status, if: :new_record?
 
   scope :recent, -> { order(created_at: :desc) }
+  
+  DEADLINE_OPTIONS = [
+    "Immediate",
+    "1 day",
+    "3 days",
+    "7 days",
+    "30 days"
+  ]
 
+  validates :deadline, presence: true, inclusion: { in: DEADLINE_OPTIONS }
+  
   private
 
   def set_default_status

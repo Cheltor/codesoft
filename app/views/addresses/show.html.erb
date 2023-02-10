@@ -59,7 +59,7 @@
                 <%= code.name %>;
               <% end %>
             </td>
-            <td>Deadline</td>
+            <td><%= violation.deadline %></td>
             <td>
               <% if violation.current? %>
                 <%= button_to "Mark as Resolved", resolve_address_violation_path(@address, violation), method: :patch, class: "btn btn-success" %>

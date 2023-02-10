@@ -10,7 +10,7 @@
             <th>Address</th>
             <th>Created</th>
             <th>ONS</th>
-            <th>Code</th>
+            <th>Code(s)</th>
             <th>Deadline</th>
           </tr>
         </thead>
@@ -25,7 +25,7 @@
                 <%= code.name %>;
               <% end %>
             </td>
-            <td>Deadline</td>
+            <td><%= violation.deadline %></td>
 
           </tr>
         <% end %>
