@@ -1,10 +1,13 @@
-<p style="color: green"><%= notice %></p>
+<div class="container">
+  <p style="color: green"><%= notice %></p>
 
-<%= render @code %>
+  <%= render @code %>
 
-<div>
-  <%= link_to "Edit this code", edit_code_path(@code) %> |
-  <%= link_to "Back to codes", codes_path %>
-
-  <%= button_to "Destroy this code", @code, method: :delete %>
+  <div>
+    <%= link_to "Edit this code", edit_code_path(@code), class:"btn btn-outline-primary" %> |
+    <%= link_to "Back to codes", codes_path, class:"btn btn-outline-primary" %>
+<br>
+<br>
+    <%= button_to "Destroy this code", @code, method: :delete, class:"btn btn-outline-danger" %>
+  </div>
 </div>

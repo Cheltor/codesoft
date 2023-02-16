@@ -1,9 +1,12 @@
-<h1>New code</h1>
+<div class="container">
 
-<%= render "form", code: @code %>
+  <h1>New code</h1>
 
-<br>
+  <%= render "form", code: @code %>
 
-<div>
-  <%= link_to "Back to codes", codes_path %>
+  <br>
+
+  <div>
+    <%= link_to "Back to codes", codes_path, class:"btn btn-outline-primary" %>
+  </div>
 </div>

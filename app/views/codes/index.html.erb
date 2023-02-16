@@ -1,14 +1,34 @@
-<p style="color: green"><%= notice %></p>
+<div class="container"> 
 
-<h1>Codes</h1>
+  <p style="color: green"><%= notice %></p>
 
-<div id="codes">
-  <% @codes.each do |code| %>
-    <%= render code %>
-    <p>
-      <%= link_to "Show this code", code %>
-    </p>
-  <% end %>
+  <h1>Codes</h1>
+  
+  <%= link_to "New code", new_code_path, class:"btn btn-outline-primary" %>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Chapter</th>
+        <th scope="col">Section</th>
+        <th scope="col">Name</th>
+        <th scope="col">Description</th>
+        <th scope="col">Change the code</th>
+      </tr>
+    </thead>
+    <tbody>
+    <% @codes.each do |code| %>
+      <tr>
+        <th><%= code.chapter %></th>
+        <td><%= code.section %></td>
+        <td><%= code.name %></td>
+        <td><%= code.description %></td>
+        <td><%= link_to "Edit", edit_code_path(code), class:"btn btn-warning" %>
+      </tr>
+    <% end %>
+
+    </tbody>
+  </table>
+
+
 </div>
-
-<%= link_to "New code", new_code_path %>

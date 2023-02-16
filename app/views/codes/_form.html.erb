@@ -13,25 +13,25 @@
 
   <div>
     <%= form.label :chapter, style: "display: block" %>
-    <%= form.text_field :chapter %>
+    <%= form.text_field :chapter, class:"form-control" %>
   </div>
-
+<br>
   <div>
     <%= form.label :section, style: "display: block" %>
-    <%= form.text_field :section %>
+    <%= form.text_field :section, class:"form-control" %>
   </div>
-
+<br>
   <div>
     <%= form.label :name, style: "display: block" %>
-    <%= form.text_field :name %>
+    <%= form.text_field :name, class:"form-control" %>
   </div>
-
+<br>
   <div>
     <%= form.label :description, style: "display: block" %>
-    <%= form.text_field :description %>
+    <%= form.text_area :description, class:"form-control" %>
   </div>
-
+<br>
   <div>
-    <%= form.submit %>
+    <%= form.submit class:"btn btn-success" %>
   </div>
 <% end %>

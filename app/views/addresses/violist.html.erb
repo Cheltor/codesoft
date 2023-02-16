@@ -16,8 +16,9 @@
         </thead>
       <tbody>
         <% @violations.order("created_at DESC").each do |violation| %>
-          <tr>
-          <td><%= link_to violation.address.combadd, address_path(violation.address), class: "btn" %></td>
+          <% if violation.deadline_passed? %>
+          <tr class="table-danger">
+          <td><%= link_to violation.address.combadd, address_path(violation.address), class: "btn btn-danger" %></td>
             <td><%= violation.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y at %I:%M%p") %></td>
             <td><%= violation.user.email.split("@").first %></td>
             <td>
@@ -26,8 +27,20 @@
               <% end %>
             </td>
             <td><%= violation.deadline %></td>
-
           </tr>
+          <% else %>
+          <tr class="table-warning">
+          <td><%= link_to violation.address.combadd, address_path(violation.address), class: "btn btn-warning" %></td>
+            <td><%= violation.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y at %I:%M%p") %></td>
+            <td><%= violation.user.email.split("@").first %></td>
+            <td>
+              <% violation.codes.each do |code| %>
+                <%= code.name %>;
+              <% end %>
+            </td>
+            <td><%= violation.deadline %></td>
+          </tr>
+          <% end %>
         <% end %>
       </tbody>
       </table>

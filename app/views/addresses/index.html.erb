@@ -23,9 +23,9 @@
           <% @addresses.order("updated_at DESC").first(50).each do |address| %>
           <tr>
           <% if address.violations.current.exists? == true %>
-            <td><%= link_to address.combadd, address_path(address), class:"btn btn-outline-danger" %></td>
+            <td><%= link_to address.combadd, address_path(address), class:"btn btn-danger" %></td>
           <% else %>
-            <td><%= link_to address.combadd, address_path(address), class:"btn btn-outline-primary" %></td>
+            <td><%= link_to address.combadd, address_path(address), class:"btn btn-primary" %></td>
           <% end %>
             <td><%= address.comments.all.count %></td>
             <td><%= address.violations.all.count %></td>
@@ -40,13 +40,15 @@
       <% @violations.first(50).each do |violation| %>
       <% if violation.status == "current" %>
         <div class="card border-danger mb-3">
-        <div class="card-header"><%= link_to violation.address.combadd, address_path(violation.address), class: "btn" %> by <%= violation.user.email %></div>
+        <div class="card-header"><%= link_to violation.address.combadd, address_path(violation.address), class: "btn btn-danger" %> by <%= violation.user.email.split("@").first %></div>
         <div class="card-body">
+        <p>Codes referenced:</p>
         <strong>
           <% violation.codes.each do |code| %>
             <%= code.name %>;
           <% end %>
         </strong>
+        <br>
         <br>
         <p>Deadline: <strong><%= violation.deadline %></strong></p>
         </div>
@@ -56,13 +58,20 @@
         </div><br>
       <% else %>
         <div class="card border-success mb-3">
-        <div class="card-header"><%= link_to violation.address.combadd, address_path(violation.address), class: "btn" %> by <%= violation.user.email %></div>
+        <div class="card-header"><%= link_to violation.address.combadd, address_path(violation.address), class: "btn btn-success" %> by <%= violation.user.email.split("@").first %></div>
         <div class="card-body">
+                <p>Codes referenced:</p>
+
         <strong>
           <% violation.codes.each do |code| %>
             <%= code.name %>;
           <% end %>
         </strong>
+        <br>
+        <br>
+        <p>Deadline: <strong><%= violation.deadline %></strong></p>
+        <br>
+        <p>Resolved: <%= violation.updated_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y at %I:%M%p") %></p>
         </div>
         <div class="card-footer">
         <%= violation.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y at %I:%M%p") %>

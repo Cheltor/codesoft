@@ -18,6 +18,14 @@ class Violation < ApplicationRecord
     "30 days"
   ]
 
+  DEADLINE_VALUES = [0, 1, 3, 7, 30]
+
+  def deadline_passed?
+    deadline_index = DEADLINE_OPTIONS.index(deadline)
+    return false if deadline_index.nil?
+    created_at + DEADLINE_VALUES[deadline_index].days < Time.now
+  end
+
   validates :deadline, presence: true, inclusion: { in: DEADLINE_OPTIONS }
   
   private
