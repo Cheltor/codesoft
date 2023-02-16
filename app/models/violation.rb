@@ -4,6 +4,7 @@ class Violation < ApplicationRecord
   has_many :codes, through: :violation_codes
   belongs_to :user
   validate :at_least_one_code_selected
+  has_many_attached :photos
 
   def at_least_one_code_selected
     errors.add(:base, "Please select at least one code") if codes.none?

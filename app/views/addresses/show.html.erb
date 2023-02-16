@@ -43,7 +43,7 @@
     <table class="table table-striped">
       <thead>
         <tr>
-          <th>Created</th>
+          <th>Photos</th>
           <th>ONS</th>
           <th>Code</th>
           <th>Deadline</th>
@@ -57,7 +57,11 @@
         <% else %>
           <tr>
         <% end %>
-            <td><%= violation.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y at %I:%M%p") %></td>
+            <td>  
+              <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#comment-<%= violation.id %>">
+              Photos
+            </button>
+          </td>
             <td><%= violation.user.email.split("@").first %></td>
             <td>
               <% violation.codes.each do |code| %>
@@ -73,6 +77,33 @@
               <% end %>
             </td>
           </tr>
+
+
+
+          <!-- Modal -->
+          <div class="modal fade" id="comment-<%= violation.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">
+                    <% violation.codes.each do |code| %>
+                      <%= code.name %>;
+                    <% end %>
+                  </h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <% violation.photos.each do |photo| %>
+                    <%= image_tag photo %>
+                  <% end %>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+
+
         <% end %>
       </tbody>
     </table>
