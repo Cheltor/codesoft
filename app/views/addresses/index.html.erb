@@ -17,7 +17,7 @@
           <tr>
             <th scope="col">Address</th>
             <th scope="col">Comments</th>
-            <th scope="col">Violations</th>
+            <th scope="col">All Violations</th>
           </tr>
         </thead>
         <tbody>
@@ -51,7 +51,7 @@
         </strong>
         <br>
         <br>
-        <p>Deadline: <strong><%= violation.deadline %></strong></p>
+        <p>Deadline: <strong><%= violation.deadline_date.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></strong></p>
         </div>
         <div class="card-footer">
         <%= violation.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y at %I:%M%p") %>
@@ -62,7 +62,6 @@
         <div class="card-header"><%= link_to violation.address.combadd, address_path(violation.address), class: "btn btn-success" %> by <%= violation.user.email.split("@").first %></div>
         <div class="card-body">
                 <p>Codes referenced:</p>
-
         <strong>
           <% violation.codes.each do |code| %>
             <%= code.name %>;
@@ -70,7 +69,7 @@
         </strong>
         <br>
         <br>
-        <p>Deadline: <strong><%= violation.deadline %></strong></p>
+        <p>Deadline: <strong><%= violation.deadline_date.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></strong></p>
         <br>
         <p>Resolved: <%= violation.updated_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y at %I:%M%p") %></p>
         </div>

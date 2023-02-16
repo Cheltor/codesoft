@@ -3,7 +3,12 @@ class Violation < ApplicationRecord
   has_many :violation_codes
   has_many :codes, through: :violation_codes
   belongs_to :user
+  validate :at_least_one_code_selected
 
+  def at_least_one_code_selected
+    errors.add(:base, "Please select at least one code") if codes.none?
+  end
+  
   enum status: [:current, :resolved]
 
   after_initialize :set_default_status, if: :new_record?

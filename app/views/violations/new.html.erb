@@ -4,6 +4,18 @@
 
   <%= form_with(model: [@address, @violation], local: true) do |form| %>
 
+  <% if @violation.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@violation.errors.count, "error") %> prohibited this violation from being saved:</h2>
+
+      <ul>
+        <% @violation.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
     <div class="field">
       <strong><%= form.label :deadline %></strong>
       <%= form.select :deadline, Violation::DEADLINE_OPTIONS, {}, class: "form-select" %>
