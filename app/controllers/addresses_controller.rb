@@ -7,7 +7,7 @@ class AddressesController < ApplicationController
     end
 
     def violist
-        @violations =Violation.where(violations: { status: :current }).order("updated_at DESC").distinct
+        @violations =Violation.where(violations: { status: :current }).sort_by(&:deadline_date)
     end
     
     def show

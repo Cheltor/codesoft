@@ -26,6 +26,12 @@ class Violation < ApplicationRecord
     created_at + DEADLINE_VALUES[deadline_index].days < Time.now
   end
 
+  def deadline_date
+    deadline_index = DEADLINE_OPTIONS.index(deadline)
+    return false if deadline_index.nil?
+    created_at + DEADLINE_VALUES[deadline_index].days
+  end
+
   validates :deadline, presence: true, inclusion: { in: DEADLINE_OPTIONS }
   
   private

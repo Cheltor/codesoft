@@ -15,7 +15,7 @@
           </tr>
         </thead>
       <tbody>
-        <% @violations.order("created_at DESC").each do |violation| %>
+        <% @violations.each do |violation| %>
           <% if violation.deadline_passed? %>
           <tr class="table-danger">
           <td><%= link_to violation.address.combadd, address_path(violation.address), class: "btn btn-danger" %></td>
@@ -26,7 +26,7 @@
                 <%= code.name %>;
               <% end %>
             </td>
-            <td><%= violation.deadline %></td>
+            <td><%= violation.deadline_date.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></td>
           </tr>
           <% else %>
           <tr class="table-warning">
@@ -38,7 +38,7 @@
                 <%= code.name %>;
               <% end %>
             </td>
-            <td><%= violation.deadline %></td>
+            <td><%= violation.deadline_date.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></td>
           </tr>
           <% end %>
         <% end %>
