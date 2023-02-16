@@ -3,7 +3,8 @@ class CodesController < ApplicationController
 
   # GET /codes or /codes.json
   def index
-    @codes = Code.all
+    @q = Code.ransack(params[:q])
+    @codes = @q.result
   end
 
   # GET /codes/1 or /codes/1.json
@@ -25,7 +26,7 @@ class CodesController < ApplicationController
 
     respond_to do |format|
       if @code.save
-        format.html { redirect_to code_url(@code), notice: "Code was successfully created." }
+        format.html { redirect_to codes_path, notice: "Code was successfully created." }
         format.json { render :show, status: :created, location: @code }
       else
         format.html { render :new, status: :unprocessable_entity }

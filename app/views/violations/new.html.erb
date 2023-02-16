@@ -5,12 +5,12 @@
   <%= form_with(model: [@address, @violation], local: true) do |form| %>
 
     <div class="field">
-      <%= form.label :deadline %>
+      <strong><%= form.label :deadline %></strong>
       <%= form.select :deadline, Violation::DEADLINE_OPTIONS, {}, class: "form-select" %>
     </div>
     <br>
       <div class="form-group">
-      <%= form.label :codes %>
+      <strong><%= form.label :codes %></strong>
       <em><p>If you don't see the code you're looking for, add the code using this button: <%= link_to "New code", new_code_path, class:"btn btn-outline-primary" %></p></em>
       <%= form.collection_select :code_ids, Code.all, :id, :name, {}, { multiple: true, class: "form-control" } %>
     </div>

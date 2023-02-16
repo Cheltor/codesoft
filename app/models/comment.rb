@@ -6,4 +6,6 @@ class Comment < ApplicationRecord
   accepts_nested_attributes_for :photos
   
   scope :recent, -> { order(created_at: :desc) }
+
+  validates :content, presence: true
 end

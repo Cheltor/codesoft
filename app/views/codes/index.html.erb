@@ -3,7 +3,16 @@
   <p style="color: green"><%= notice %></p>
 
   <h1>Codes</h1>
-  
+
+      <div class="card" style="background-color: #e3f2fd;">
+        <div class="card-body">
+          <%= search_form_for @q, url: codes_path, method: :get do |f| %>
+          <%= f.search_field :chapter_or_section_or_name_or_description_cont, class:"form-control form-control-lg", placeholder: "Search codes" %>
+          <br><div style="text-align:center"><%= f.submit "Search", class:"btn btn-primary" %></div>
+          <% end %>
+        </div>
+      </div>
+  <br>
   <%= link_to "New code", new_code_path, class:"btn btn-outline-primary" %>
 
   <table class="table">
