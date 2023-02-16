@@ -24,14 +24,15 @@ class AddressesController < ApplicationController
 
     def update
      @address = Address.find(params[:id])
-    if @address.update(address_params)
-        redirect_to @address, notice: 'Address was successfully updated.'
-    else
-        render :edit
-    end
+        if @address.update(address_params)
+            redirect_to @address, notice: 'Address was successfully updated.'
+        else
+            render :edit
+        end
     end
 
     private
+
     def address_params
         params.require(:address).permit(:pid, :ownername, :owneraddress, :ownercity, :ownerstate, :ownerzip, :streetnumb, :streetname, :streettype, :landusecode, :zoning, :owneroccupiedin, :vacant, :absent, :premisezip, :combadd, :outstanding)
     end

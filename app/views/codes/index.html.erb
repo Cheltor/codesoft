@@ -22,7 +22,9 @@
         <th scope="col">Section</th>
         <th scope="col">Name</th>
         <th scope="col">Description</th>
+        <% if user_signed_in? %>
         <th scope="col">Change the code</th>
+        <% end %>
       </tr>
     </thead>
     <tbody>
@@ -32,7 +34,9 @@
         <td><%= code.section %></td>
         <td><%= code.name %></td>
         <td><%= code.description %></td>
-        <td><%= link_to "Edit", edit_code_path(code), class:"btn btn-warning" %>
+        <% if user_signed_in? %>
+        <td><%= link_to "Edit", edit_code_path(code), class:"btn btn-warning" %></td>
+        <% end %>
       </tr>
     <% end %>
 
