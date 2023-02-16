@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
     before_action :set_ransack
+    before_action :authenticate_user!
 
     private
 
