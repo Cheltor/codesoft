@@ -31,7 +31,7 @@
 
     <select id="code-select" multiple>
       <% Code.all.each do |code| %>
-        <option value="<%= code.id %>"><% code.chapter %>-<% code.section %> <%= code.name %></option>
+        <option value="<%= code.id %>"><%= code.chapter %>-<%= code.section %> <%= code.name %></option>
       <% end %>
     </select>
 
