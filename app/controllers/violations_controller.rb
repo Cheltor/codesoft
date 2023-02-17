@@ -1,7 +1,7 @@
 class ViolationsController < ApplicationController
   before_action :set_address
   before_action :set_violation, only: [:resolve]
-
+  layout 'new_violation', only: [:new]
 
   def new
     @violation = @address.violations.new
@@ -10,6 +10,7 @@ class ViolationsController < ApplicationController
   def create
     @violation = @address.violations.new(violation_params)
     @violation.user = current_user
+    @violation.code_ids = params[:code_ids]
 
     if @violation.save
       redirect_to @address, notice: "Violation reported successfully."
@@ -33,7 +34,7 @@ class ViolationsController < ApplicationController
   end
 
   def violation_params
-    params.require(:violation).permit(:description, :deadline, :status, photos: [], code_ids: [])
+    params.require(:violation).permit(:description, :deadline, :status, photos: [])
   end
 
   def set_violation
