@@ -1,5 +1,5 @@
 <div class="container">
-
+<br>
   <h1>Create a Violation</h1>
 
   <%= form_with(model: [@address, @violation], local: true) do |form| %>
@@ -21,18 +21,35 @@
       <%= form.select :deadline, Violation::DEADLINE_OPTIONS, {}, class: "form-select" %>
     </div>
     <br>
+    <strong>Attachments/Images</strong>
        <%= form.file_field :photos, multiple: true, class: "form-control" %>
 
     <br>
       <div class="form-group">
       <strong><%= form.label :codes %></strong>
-      <em><p>If you don't see the code you're looking for, add the code using this button: <%= link_to "New code", new_code_path, class:"btn btn-outline-primary" %></p></em>
-      <%= form.collection_select :code_ids, Code.all, :id, :name, {}, { multiple: true, class: "form-control" } %>
+      <em><p>If you don't see the code you're looking for, add the code using this button and then try to create the Violation again: <%= link_to "New code", new_code_path, class:"btn btn-outline-primary" %></p></em>
+      
+      <select name="code_ids[]" multiple id="code-select">
+        <% Code.all.each do |code| %>
+          <option value="<%= code.id %>"><%= code.name %></option>
+        <% end %>
+      </select>
+    
     </div>
     <br>
- 
+
     <div class="form-group">
       <%= form.submit "Create Violation", class: "btn btn-primary" %>
     </div>
   <% end %>
 </div>
+
+
+<script>
+  const codeSelect = new Choices('#code-select', {
+    removeItemButton: true,
+    searchEnabled: true,
+    placeholder: true,
+    placeholderValue: 'Select codes',
+  });
+</script>

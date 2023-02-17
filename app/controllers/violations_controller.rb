@@ -9,6 +9,7 @@ class ViolationsController < ApplicationController
 
   def create
     @violation = @address.violations.new(violation_params)
+    @violation.code_ids = params[:code_ids]
     @violation.user = current_user
 
     if @violation.save
@@ -33,7 +34,7 @@ class ViolationsController < ApplicationController
   end
 
   def violation_params
-    params.require(:violation).permit(:description, :deadline, :status, photos: [], code_ids: [])
+    params.require(:violation).permit(:description, :deadline, :status, photos: [])
   end
 
   def set_violation
