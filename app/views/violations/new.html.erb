@@ -1,5 +1,5 @@
 <div class="container">
-
+<br>
   <h1>Create a Violation</h1>
 
   <%= form_with(model: [@address, @violation], local: true) do |form| %>
@@ -21,6 +21,7 @@
       <%= form.select :deadline, Violation::DEADLINE_OPTIONS, {}, class: "form-select" %>
     </div>
     <br>
+    <strong>Attachments/Images</strong>
        <%= form.file_field :photos, multiple: true, class: "form-control" %>
 
     <br>
@@ -36,7 +37,7 @@
 
     </div>
     <br>
- 
+
     <div class="form-group">
       <%= form.submit "Create Violation", class: "btn btn-primary" %>
     </div>
