@@ -4,7 +4,8 @@
     <div class="col-12">
       <h1>Active Violations</h1>
       <br>
-      <table class="table table-striped">
+      <div class="table-responsive">
+      <table class="table table-sm table-striped">
         <thead>
           <tr>
             <th>Address</th>
@@ -14,6 +15,7 @@
             <th>Deadline</th>
           </tr>
         </thead>
+      </div>
       <tbody>
         <% @violations.each do |violation| %>
           <% if violation.deadline_passed? %>

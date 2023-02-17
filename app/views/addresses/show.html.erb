@@ -40,74 +40,75 @@
     <%= link_to "Create a Violation", new_address_violation_path(@address), class: "btn btn-danger btn-lg" %>
     <br>
     <br>
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>Photos</th>
-          <th>ONS</th>
-          <th>Code</th>
-          <th>Deadline</th>
-          <th>Update</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @address.violations.order("created_at DESC").each do |violation| %>
-        <% if violation.deadline_passed? and violation.current? %>
-          <tr class="table-danger">
-        <% else %>
+    <div class="table-responsive">  
+      <table class="table table-sm table-striped">
+        <thead>
           <tr>
-        <% end %>
-            <td>  
-              <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#comment-<%= violation.id %>">
-              Photos
-            </button>
-          </td>
-            <td><%= violation.user.email.split("@").first %></td>
-            <td>
-              <% violation.codes.each do |code| %>
-                <%= code.name %>;
-              <% end %>
-            </td>
-            <td><%= violation.deadline_date.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></td>
-            <td>
-              <% if violation.current? %>
-                <%= button_to "Mark as Resolved", resolve_address_violation_path(@address, violation), method: :patch, class: "btn btn-success" %>
-              <% else %>
-              <p>Resolved</p>
-              <% end %>
-            </td>
+            <th>Photos</th>
+            <th>ONS</th>
+            <th>Code</th>
+            <th>Deadline</th>
+            <th>Update</th>
           </tr>
+        </thead>
+        <tbody>
+          <% @address.violations.order("created_at DESC").each do |violation| %>
+          <% if violation.deadline_passed? and violation.current? %>
+            <tr class="table-danger">
+          <% else %>
+            <tr>
+          <% end %>
+              <td>  
+                <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#comment-<%= violation.id %>">
+                Photos
+              </button>
+            </td>
+              <td><%= violation.user.email.split("@").first %></td>
+              <td>
+                <% violation.codes.each do |code| %>
+                  <%= code.name %>;
+                <% end %>
+              </td>
+              <td><%= violation.deadline_date.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></td>
+              <td>
+                <% if violation.current? %>
+                  <%= button_to "Mark as Resolved", resolve_address_violation_path(@address, violation), method: :patch, class: "btn btn-success" %>
+                <% else %>
+                <p>Resolved</p>
+                <% end %>
+              </td>
+            </tr>
 
 
 
-          <!-- Modal -->
-          <div class="modal fade custom-modal-lg" role="dialog" id="comment-<%= violation.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel">
-                    <% violation.codes.each do |code| %>
-                      <%= code.name %>;
+            <!-- Modal -->
+            <div class="modal fade custom-modal-lg" role="dialog" id="comment-<%= violation.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">
+                      <% violation.codes.each do |code| %>
+                        <%= code.name %>;
+                      <% end %>
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <% violation.photos.each do |photo| %>
+                      <%= image_tag photo %>
                     <% end %>
-                  </h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                  <% violation.photos.each do |photo| %>
-                    <%= image_tag photo %>
-                  <% end %>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
 
 
 
-        <% end %>
-      </tbody>
-    </table>
-
+          <% end %>
+        </tbody>
+      </table>
+    </div>
   </div></div>
   <br>
 
