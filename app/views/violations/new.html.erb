@@ -29,7 +29,7 @@
       <strong><%= form.label :codes %></strong>
       <em><p>If you don't see the code you're looking for, add the code using this button: <%= link_to "New code", new_code_path, class:"btn btn-outline-primary" %></p></em>
 
-    <select id="code-select" multiple>
+    <select id="code-select" multiple name="violation[code_ids][]">
       <% Code.all.each do |code| %>
         <option value="<%= code.id %>"><%= code.chapter %>-<%= code.section %> <%= code.name %></option>
       <% end %>
