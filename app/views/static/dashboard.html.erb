@@ -1,0 +1,137 @@
+<br>
+<div class="container">
+  <div class="row">
+    <h1 style="text-align:center">Recent Activity for <%= @user.email.split("@").first %></h1>
+
+
+    <div class="col-lg-6 pt-5">
+      <h2 style="text-align:center">Recent Violations</h2>
+      <ul>
+        <% @recent_violations.each do |violation| %>
+          <% if violation.status == "current" %>
+            <div class="card border-danger mb-3">
+            <div class="card-header"><%= link_to violation.address.combadd, address_path(violation.address), class: "btn btn-danger" %> by <%= violation.user.email.split("@").first %></div>
+            <div class="card-body">
+            <p>Codes referenced:</p>
+            <strong>
+              <% violation.codes.each do |code| %>
+                <%= code.name %>;
+              <% end %>
+            </strong>
+            <% if violation.photos.attached? %>
+              <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#violation-<%= violation.id %>">
+                Photos
+              </button>
+            <% end %>
+            <br>
+            <br>
+            <p>Deadline: <strong><%= violation.deadline_date.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></strong></p>
+            </div>
+            <div class="card-footer">
+            <%= violation.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y at %I:%M%p") %>
+            </div>
+            </div><br>
+          <% else %>
+            <div class="card border-success mb-3">
+            <div class="card-header"><%= link_to violation.address.combadd, address_path(violation.address), class: "btn btn-success" %> by <%= violation.user.email.split("@").first %></div>
+            <div class="card-body">
+                    <p>Codes referenced:</p>
+            <strong>
+              <% violation.codes.each do |code| %>
+                <%= code.name %>;
+              <% end %>
+            </strong>
+            <% if violation.photos.attached? %>
+              <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#violation-<%= violation.id %>">
+                Photos
+              </button>
+            <% end %>
+            <br>
+            <br>
+            <p>Deadline: <strong><%= violation.deadline_date.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></strong></p>
+            <br>
+            <p>Resolved: <%= violation.updated_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y at %I:%M%p") %></p>
+            </div>
+            <div class="card-footer">
+            <%= violation.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y at %I:%M%p") %>
+            </div>
+            </div><br>
+          <% end %>
+
+            <!-- Violation Modal -->
+            <div class="modal fade custom-modal-lg" role="dialog" id="violation-<%= violation.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">
+                      <% violation.codes.each do |code| %>
+                        <%= code.name %>;
+                      <% end %>
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <% violation.photos.each do |photo| %>
+                      <%= image_tag photo %>
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+      <% end %>
+      </ul>
+    </div>
+    <div class="col-lg-6 pt-5">
+      <h2 style="text-align:center">Recent Comments</h2>
+        <ul>
+          <% @recent_comments.each do |comment| %>
+          <div class="card border-danger mb-3">
+            <div class="card-header"><%= link_to comment.address.combadd, address_path(comment.address), class: "btn btn-danger" %> by <%= comment.user.email.split("@").first %></div>
+            <div class="card-body">
+              <%= comment.content %>
+              <br>
+              <br>
+              <% if comment.photos.attached? %>
+              <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#comment-<%= comment.id %>">
+                Photos
+              </button>
+              <% end %>
+            <br>
+            <br>
+            </div>
+            <div class="card-footer">
+            <%= comment.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y at %I:%M%p") %>
+            </div>
+          </div>
+
+            <!-- Comment Modal -->
+            <div class="modal fade custom-modal-lg" role="dialog" id="comment-<%= comment.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">
+                      <%= comment.content %>
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <% comment.photos.each do |photo| %>
+                      <%= image_tag photo %>
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          <% end %>
+        </ul>
+    </div>
+  </div>
+</div>
+
+
+
+
+

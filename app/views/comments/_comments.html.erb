@@ -6,9 +6,11 @@
   <strong><%= comment.user.email.split("@").first %></strong> says: 
   <br>
   <%= comment.content %></p>
-  <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#comment-<%= comment.id %>">
+  <% if comment.photos.attached? %>
+    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#comment-<%= comment.id %>">
       Photos
     </button>
+    <% end %>
 </div></div><br>
 
 

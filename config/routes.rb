@@ -8,7 +8,7 @@ Rails.application.routes.draw do
     end
     resources :comments
   end
-  get "static/home"
+  get "dashboard" => 'static#dashboard'
   get 'violations' => 'addresses#violist'
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
