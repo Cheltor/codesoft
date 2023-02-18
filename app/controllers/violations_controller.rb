@@ -11,7 +11,6 @@ class ViolationsController < ApplicationController
     @violation = @address.violations.new(violation_params)
     @violation.code_ids = params[:code_ids]
     @violation.user = current_user
-    @violation.code_ids = params[:code_ids]
 
     if @violation.save
       redirect_to @address, notice: "Violation reported successfully."
