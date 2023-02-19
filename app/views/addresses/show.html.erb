@@ -45,6 +45,7 @@
         <thead>
           <tr>
             <th>Photos</th>
+            <th>Type</th>
             <th>ONS</th>
             <th>Code</th>
             <th>Deadline</th>
@@ -65,6 +66,7 @@
               </button>
               <% end %>
             </td>
+            <td><%= violation.violation_type %></td>
               <td><%= violation.user.email.split("@").first %></td>
               <td>
                 <% violation.codes.each do |code| %>
@@ -97,7 +99,7 @@
                   </div>
                   <div class="modal-body">
                     <% violation.photos.each do |photo| %>
-                      <%= image_tag photo %>
+                      <%= image_tag photo, class: "img-fluid" %>
                     <% end %>
                   </div>
                 </div>

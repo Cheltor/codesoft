@@ -16,6 +16,11 @@
     </div>
   <% end %>
 
+  <div class="form-group">
+    <strong><%= form.label :violation_type %></strong>
+    <%= form.select :violation_type, options_for_select(['Doorhanger', 'Formal Notice']), {}, class: "form-select" %>
+  </div>
+<br>
     <div class="field">
       <strong><%= form.label :deadline %></strong>
       <%= form.select :deadline, Violation::DEADLINE_OPTIONS, {}, class: "form-select" %>

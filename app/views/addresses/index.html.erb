@@ -24,7 +24,7 @@
           <% @addresses.order("updated_at DESC").first(50).each do |address| %>
           <tr>
           <% if address.violations.current.exists? == true %>
-            <td><%= link_to address.combadd, address_path(address), class:"btn btn-danger" %></td>
+            <td><%= link_to address.combadd, address_path(address), class:"btn btn-warning" %></td>
           <% else %>
             <td><%= link_to address.combadd, address_path(address), class:"btn btn-primary" %></td>
           <% end %>
@@ -40,9 +40,15 @@
     <h1>Recent Violations</h1>
       <% @violations.first(50).each do |violation| %>
       <% if violation.status == "current" %>
+        <% if violation.deadline_passed? %>
         <div class="card border-danger mb-3">
-        <div class="card-header"><%= link_to violation.address.combadd, address_path(violation.address), class: "btn btn-danger" %> by <%= violation.user.email.split("@").first %></div>
+        <div class="card-header bg-danger"><%= link_to violation.address.combadd, address_path(violation.address), class: "btn btn-danger" %> by <%= violation.user.email.split("@").first %></div>
+        <% else %>
+        <div class="card border-warning mb-3">
+        <div class="card-header bg-warning"><%= link_to violation.address.combadd, address_path(violation.address), class: "btn btn-warning" %> by <%= violation.user.email.split("@").first %></div>
+        <% end %>
         <div class="card-body">
+        <strong><%= violation.violation_type %></strong>
         <p>Codes referenced:</p>
         <strong>
           <% violation.codes.each do |code| %>
@@ -59,9 +65,10 @@
         </div><br>
       <% else %>
         <div class="card border-success mb-3">
-        <div class="card-header"><%= link_to violation.address.combadd, address_path(violation.address), class: "btn btn-success" %> by <%= violation.user.email.split("@").first %></div>
+        <div class="card-header bg-success"><%= link_to violation.address.combadd, address_path(violation.address), class: "btn btn-success" %> by <%= violation.user.email.split("@").first %></div>
         <div class="card-body">
-                <p>Codes referenced:</p>
+        <strong><%= violation.violation_type %></strong>
+        <p>Codes referenced:</p>
         <strong>
           <% violation.codes.each do |code| %>
             <%= code.name %>;

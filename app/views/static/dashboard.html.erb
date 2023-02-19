@@ -9,8 +9,13 @@
       <ul>
         <% @recent_violations.each do |violation| %>
           <% if violation.status == "current" %>
+            <% if violation.deadline_passed? %>
             <div class="card border-danger mb-3">
-            <div class="card-header"><%= link_to violation.address.combadd, address_path(violation.address), class: "btn btn-danger" %> by <%= violation.user.email.split("@").first %></div>
+            <div class="card-header bg-danger"><%= link_to violation.address.combadd, address_path(violation.address), class: "btn btn-danger" %> by <%= violation.user.email.split("@").first %></div>
+            <% else %>
+            <div class="card border-warning mb-3">
+            <div class="card-header bg-warning"><%= link_to violation.address.combadd, address_path(violation.address), class: "btn btn-warning" %> by <%= violation.user.email.split("@").first %></div>
+            <% end %>
             <div class="card-body">
             <p>Codes referenced:</p>
             <strong>
@@ -33,7 +38,7 @@
             </div><br>
           <% else %>
             <div class="card border-success mb-3">
-            <div class="card-header"><%= link_to violation.address.combadd, address_path(violation.address), class: "btn btn-success" %> by <%= violation.user.email.split("@").first %></div>
+            <div class="card-header bg-success"><%= link_to violation.address.combadd, address_path(violation.address), class: "btn btn-success" %> by <%= violation.user.email.split("@").first %></div>
             <div class="card-body">
                     <p>Codes referenced:</p>
             <strong>
@@ -72,7 +77,7 @@
                   </div>
                   <div class="modal-body">
                     <% violation.photos.each do |photo| %>
-                      <%= image_tag photo %>
+                      <%= image_tag photo, class: "img-fluid" %>
                     <% end %>
                   </div>
                 </div>
@@ -118,7 +123,7 @@
                   </div>
                   <div class="modal-body">
                     <% comment.photos.each do |photo| %>
-                      <%= image_tag photo %>
+                      <%= image_tag photo, class: "img-fluid" %>
                     <% end %>
                   </div>
                 </div>
