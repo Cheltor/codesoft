@@ -2,6 +2,7 @@ class AddressesController < ApplicationController
     def index
         @addresses = @q.result.where.not(streetnumb: nil)
         @violations = Violation.recent
+        @comments = Comment.all
     end
 
     def violist
