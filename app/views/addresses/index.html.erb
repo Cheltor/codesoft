@@ -2,7 +2,7 @@
 <br><div class="container">
   <div class="row">
 
-    <div class="col-lg-6">
+    <div class="col-lg-4">
       <div class="card" style="background-color: #e3f2fd;">
         <div class="card-body">
           <%= search_form_for @q, url: root_path, method: :get do |f| %>
@@ -36,7 +36,7 @@
       </table>
 
     </div>
-    <div class="col-lg-3">
+    <div class="col-lg-4">
     <h1 style="text-align:center">Recent Violations</h1>
       <% @violations.first(50).each do |violation| %>
       <% if violation.status == "current" %>
@@ -70,7 +70,7 @@
         <strong><%= violation.violation_type %></strong>
         <p>Codes referenced:</p>
         <strong>
-          <% violation.codes.each do |code| %>
+          <% violation.codes.first(50).each do |code| %>
             <%= code.name %>;
           <% end %>
         </strong>
@@ -88,7 +88,7 @@
 
       <% end %>
     </div>
-    <div class="col-lg-3">
+    <div class="col-lg-4">
       <h1 style="text-align:center">Recent Comments</h1>
         <ul>
           <% @comments.each do |comment| %>
