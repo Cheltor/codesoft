@@ -76,9 +76,9 @@
               <td><%= violation.deadline_date.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></td>
               <td>
                 <% if violation.current? %>
-                  <%= button_to "Mark as Resolved", resolve_address_violation_path(@address, violation), method: :patch, class: "btn btn-success" %>
+                  <%= button_to "Mark as Abated", resolve_address_violation_path(@address, violation), method: :patch, class: "btn btn-success" %>
                 <% else %>
-                <p>Resolved</p>
+                <p>Abated <%= violation.updated_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></p>
                 <% end %>
               </td>
             </tr>
