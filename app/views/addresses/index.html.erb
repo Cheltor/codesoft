@@ -52,6 +52,8 @@
               <%= code.name %>;
             <% end %>
             </strong>
+            <br>
+            <%= violation.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y at %I:%M%p") %>
         </div>
         
         <% if violation.photos.attached? %>
@@ -99,6 +101,8 @@
       <div class="fw-bold"><%= link_to comment.address.combadd, address_path(comment.address), class: "btn btn-primary" %></div>
     <% end %>
       <strong><%= truncate(comment.content, length: 200) %></strong> - <%= comment.user.email.split("@").first %>
+      <br>
+      <%= comment.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y at %I:%M%p") %>
     </div>
               <% if comment.photos.attached? %>
               <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#comment-<%= comment.id %>">
