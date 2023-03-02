@@ -36,7 +36,7 @@
 
     <select id="code-select" multiple name="violation[code_ids][]">
       <% Code.all.each do |code| %>
-        <option value="<%= code.id %>"><%= code.chapter %>-<%= code.section %> <%= code.name %></option>
+        <option value="<%= code.id %>"><%= code.chapter %>-<%= code.section.split("-").last %> <%= code.name %></option>
       <% end %>
     </select>
 

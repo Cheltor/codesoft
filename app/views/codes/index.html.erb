@@ -31,7 +31,7 @@
     <% @codes.each do |code| %>
       <tr>
         <th><%= code.chapter %></th>
-        <td><%= code.section %></td>
+        <td><%= code.section.split("-").last %></td>
         <td><%= code.name %></td>
         <td><%= code.description %></td>
         <% if user_signed_in? %>
