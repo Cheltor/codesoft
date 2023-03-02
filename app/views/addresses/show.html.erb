@@ -4,7 +4,8 @@
   <div class="col-xl-9">
   
   <div class="card"><div class="card-body">
-    <h2><%= @address.combadd %></h2>
+    <h2><%= @address.combadd %> <a href="https://www.google.com/maps/search/?api=1&query=<%= @address.combadd %>+MD+<%= @address.premisezip %>" target="_blank" class="btn btn-secondary">Search on Google Maps</a>
+    </h2>
     <!-- Button trigger modal -->
     <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
       Update
