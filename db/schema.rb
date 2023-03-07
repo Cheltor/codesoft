@@ -10,10 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_18_232803) do
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
-
+ActiveRecord::Schema[7.0].define(version: 2023_03_07_003350) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -75,8 +72,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_18_232803) do
 
   create_table "comments", force: :cascade do |t|
     t.text "content"
-    t.bigint "address_id", null: false
-    t.bigint "user_id", null: false
+    t.integer "address_id", null: false
+    t.integer "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["address_id"], name: "index_comments_on_address_id"
@@ -96,8 +93,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_18_232803) do
   end
 
   create_table "violation_codes", force: :cascade do |t|
-    t.bigint "violation_id", null: false
-    t.bigint "code_id", null: false
+    t.integer "violation_id", null: false
+    t.integer "code_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["code_id"], name: "index_violation_codes_on_code_id"
@@ -107,10 +104,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_18_232803) do
   create_table "violations", force: :cascade do |t|
     t.string "description"
     t.integer "status"
-    t.bigint "address_id", null: false
+    t.integer "address_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "user_id", null: false
+    t.integer "user_id", null: false
     t.string "deadline"
     t.string "violation_type"
     t.index ["address_id"], name: "index_violations_on_address_id"

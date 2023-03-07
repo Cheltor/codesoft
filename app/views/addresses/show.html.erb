@@ -98,7 +98,7 @@
 
 
 
-            <!-- Modal -->
+            <!-- Violation Modal -->
             <div class="modal fade custom-modal-lg" role="dialog" id="violation-<%= violation.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
               <div class="modal-dialog">
                 <div class="modal-content">
@@ -112,7 +112,15 @@
                   </div>
                   <div class="modal-body">
                     <% violation.photos.each do |photo| %>
-                      <%= image_tag photo, class: "img-fluid" %>
+
+                      <% if photo.content_type == 'application/pdf' %>
+                        <iframe src="<%= rails_blob_url(photo) %>" width="100%" height="800px"></iframe>
+                      <% elsif photo.filename.to_s.ends_with?('.doc', '.docx') %>
+                        <%= link_to photo.filename, rails_blob_url(photo, disposition: 'photo') %>
+                      <% else %>
+                        <%= image_tag photo, class: "img-fluid" %>
+                      <% end %>
+
                     <% end %>
                   </div>
                 </div>
