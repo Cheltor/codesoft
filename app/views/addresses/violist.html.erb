@@ -26,9 +26,21 @@
             <td><%= violation.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y at %I:%M%p") %></td>
             <td><%= violation.user.email.split("@").first %></td>
             <td>
-              <% violation.codes.each do |code| %>
-                <%= code.name %>;
-              <% end %>
+ <% violation.codes.each do |code| %>
+                  
+              <button class="btn " type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop<%= code.id %>" aria-controls="offcanvasTop"><%= code.name %></button>
+
+              <div class="offcanvas offcanvas-top" tabindex="-1" id="offcanvasTop<%= code.id %>" aria-labelledby="offcanvasTopLabel">
+                <div class="offcanvas-header">
+                  <h5 id="offcanvasTopLabel"><%= code.name %></h5>
+                  <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                  <%= code.description %>
+                </div>
+              </div>
+
+                <% end %>
             </td>
             <td><%= violation.deadline_date.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></td>
           </tr>
@@ -39,9 +51,21 @@
             <td><%= violation.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y at %I:%M%p") %></td>
             <td><%= violation.user.email.split("@").first %></td>
             <td>
-              <% violation.codes.each do |code| %>
-                <%= code.name %>;
-              <% end %>
+ <% violation.codes.each do |code| %>
+                  
+              <button class="btn " type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop<%= code.id %>" aria-controls="offcanvasTop"><%= code.name %></button>
+
+              <div class="offcanvas offcanvas-top" tabindex="-1" id="offcanvasTop<%= code.id %>" aria-labelledby="offcanvasTopLabel">
+                <div class="offcanvas-header">
+                  <h5 id="offcanvasTopLabel"><%= code.name %></h5>
+                  <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                  <%= code.description %>
+                </div>
+              </div>
+
+                <% end %>
             </td>
             <td><%= violation.deadline_date.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></td>
           </tr>
@@ -50,6 +74,5 @@
       </tbody>
       </table>
     </div>
-    <div class="col-6"></div>
   </div>
 </div>

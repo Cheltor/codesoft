@@ -1,6 +1,6 @@
 <% content_for :title, @address.combadd %>
 
-
+<% if notice %> <p class="alert alert-success"><%= notice %></p> <% end %> <% if alert %> <p class="alert alert-danger"><%= alert %></p> <% end %>
 <br>
 <div class="container">
   <div class="row">
@@ -41,41 +41,29 @@
   <br>
   <div class="card"><div class="card-body">
   <h2 style="text-align: center">Violations</h2>
-    <%= link_to "Create a Violation", new_address_violation_path(@address), class: "btn btn-danger btn-lg" %>
+    <%= link_to "Create a Violation", new_address_violation_path(@address), class: "btn btn-outline-danger btn-lg" %>
     <br>
     <br>
-    <div class="table-responsive">  
-      <table class="table table-sm table-striped">
-        <thead>
-          <tr>
-            <th>Photos</th>
-            <th>Type</th>
-            <th>ONS</th>
-            <th>Code</th>
-            <th>Deadline</th>
-            <th>Update</th>
-          </tr>
-        </thead>
-        <tbody>
+<div class="container">
+<div class="row">
           <% @address.violations.order("created_at DESC").each do |violation| %>
-          <% if violation.deadline_passed? and violation.current? %>
-            <tr class="table-danger">
-          <% else %>
-            <tr>
-          <% end %>
-              <td>  
-                <% if violation.photos.attached? %>
-                <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#violation-<%= violation.id %>">
-                Photos
-              </button>
-              <% end %>
-            </td>
-            <td><%= violation.violation_type %></td>
-              <td><%= violation.user.email.split("@").first %></td>
-              <td>
-                <% violation.codes.each do |code| %>
+<div class="col-4">
+
+          <div class="card text-center">
+            <% if violation.deadline_passed? and violation.current? %>
+            <div class="card-header text-white bg-danger">
+            <% elsif violation.current? %>
+            <div class="card-header bg-warning">
+            <% else %>
+            <div class="card-header">
+            <% end %>
+              <%= violation.violation_type %> - <%= violation.user.email.split("@").first %>
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">
+                              <% violation.codes.each do |code| %>
                   
-              <button class="btn btn-sm" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop<%= code.id %>" aria-controls="offcanvasTop"><%= code.name %></button>
+              <button class="btn " type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop<%= code.id %>" aria-controls="offcanvasTop"><strong><%= code.name %></strong></button>
 
               <div class="offcanvas offcanvas-top" tabindex="-1" id="offcanvasTop<%= code.id %>" aria-labelledby="offcanvasTopLabel">
                 <div class="offcanvas-header">
@@ -88,20 +76,29 @@
               </div>
 
                 <% end %>
-              </td>
-              <td><%= violation.deadline_date.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></td>
-              <td>
+              </h5>
+                <% if violation.photos.attached? %>
+                <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#violation-<%= violation.id %>">
+                Attachments
+              </button>
+              <% end %>
                 <% if violation.current? %>
-                  <%= button_to "Mark as Abated", resolve_address_violation_path(@address, violation), method: :patch, class: "btn btn-success" %>
+                  <%= button_to "Mark as Abated", resolve_address_violation_path(@address, violation), method: :patch, class: "btn btn-success mt-3" %>
                 <% else %>
+                <br>
+                <br>
                 <p>Abated <%= violation.updated_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></p>
-                <% end %>
-              </td>
-            </tr>
+                <% end %>            </div>
+            <div class="card-footer text-muted">
+              <%= violation.deadline_date.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %> 
+                <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#violation-extend-<%= violation.id %>">
+                  Extend
+                </button>
+            </div>
+          </div>
 
-
-
-            <!-- Violation Modal -->
+            <br>
+            <!-- Violation Photo Modal -->
             <div class="modal fade custom-modal-lg" role="dialog" id="violation-<%= violation.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
               <div class="modal-dialog">
                 <div class="modal-content">
@@ -130,14 +127,34 @@
               </div>
             </div>
 
+            <!-- Violation Extend Modal -->
+            <div class="modal fade custom-modal-lg" role="dialog" id="violation-extend-<%= violation.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">
+                      Extend
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <%= button_to "Extend one day", extender_address_violation_path(@address, violation, days: 1), method: :patch, class: "btn btn-success" %>
+                    <%= button_to "Extend one week", extender_address_violation_path(@address, violation, days: 7), method: :patch, class: "btn btn-success" %>
+                    <%= button_to "Extend two weeks", extender_address_violation_path(@address, violation, days: 14), method: :patch, class: "btn btn-success" %>
+                    <%= button_to "Extend one month", extender_address_violation_path(@address, violation, days: 30), method: :patch, class: "btn btn-success" %>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-
-
+</div>
           <% end %>
-        </tbody>
-      </table>
-    </div>
+</div></div>
+
+
   </div></div>
+
+
   <br>
 
   </div>

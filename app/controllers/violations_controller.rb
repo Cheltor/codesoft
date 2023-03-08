@@ -1,6 +1,6 @@
 class ViolationsController < ApplicationController
   before_action :set_address
-  before_action :set_violation, only: [:resolve]
+  before_action :set_violation, only: [:resolve, :extender]
   layout 'new_violation', only: [:new]
 
   def new
@@ -26,6 +26,17 @@ class ViolationsController < ApplicationController
     end
   end
 
+  def extender
+    days = params[:days].to_i
+    @violation.extend += days
+    if @violation.save
+      @violation.reload
+      redirect_to @address, notice: "Extended by #{days} days"
+    else
+      redirect_to @address, alert: "Failed to extend"
+    end
+  end
+
   private
 
   def set_address
@@ -33,7 +44,7 @@ class ViolationsController < ApplicationController
   end
 
   def violation_params
-    params.require(:violation).permit(:description, :deadline, :status, :violation_type, photos: [], code_ids: [])
+    params.require(:violation).permit(:description, :deadline, :status, :extend, :violation_type, photos: [], code_ids: [])
   end
 
   def set_violation
