@@ -9,9 +9,9 @@
           <li class="nav-item">
             <a class="nav-link" aria-current="page" href="/">Search</a>
           </li>
-          <li><%= link_to "Active Violations", violations_path, class:"nav-link" %></li>
           <li><%= link_to "Codes", codes_path, class:"nav-link" %></li>
-          <li><%= link_to "My Recent Activity", dashboard_path, class:"nav-link" %></li>
+          <li><%= link_to "My Violations", dashboard_path, class:"nav-link" %></li>
+          <li><%= link_to "All Violations", violations_path, class:"nav-link" %></li>
           <% if user_signed_in? %>
           <li>
             <!-- <%= link_to "Logout", destroy_user_session_path, method: :delete, class:"nav-link", data: { turbo: false } %>-->
