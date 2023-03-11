@@ -83,10 +83,13 @@
               <% end %>
                 <% if violation.current? %>
                   <%= button_to "Mark as Abated", resolve_address_violation_path(@address, violation), method: :patch, class: "btn btn-success mt-3" %>
+                  <% if violation.deadline_passed? and violation.violation_type == "Doorhanger" %>
+                    <%= link_to "Update to VN", edit_address_violation_path(@address, violation), class: "btn btn-warning mt-3" %>
+                  <% end %>
                 <% else %>
                 <br>
                 <br>
-                <p>Abated <%= violation.updated_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></p>
+                <p>Closed <%= violation.updated_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></p>
                 <% end %>
               </div>
             <div class="card-footer">

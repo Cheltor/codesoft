@@ -1,0 +1,65 @@
+<div class="container">
+<br>
+  <h1>Update to a Violation Notice</h1>
+
+  <%= form_with(model: [@address, @violation], local: true) do |form| %>
+
+  <% if @violation.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@violation.errors.count, "error") %> prohibited this violation from being saved:</h2>
+
+      <ul>
+        <% @violation.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <strong><%= form.label :violation_type %></strong>
+    <%= form.select :violation_type, options_for_select(['Formal Notice']), {}, class: "form-select" %>
+  </div>
+<br>
+    <div class="field">
+      <strong><%= form.label :deadline %></strong>
+      <%= form.select :deadline, Violation::DEADLINE_OPTIONS, {}, class: "form-select" %>
+    </div>
+    <br>
+    <strong>Attachments/Images</strong>
+       <%= form.file_field :photos, multiple: true, class: "form-control" %>
+
+    <br>
+      <div class="form-group">
+      <strong><%= form.label :codes %></strong>
+  <div class="form-group">
+    <%= form.collection_check_boxes :code_ids, @violation.codes, :id, :name, class: "form-control" do |cb| %>
+      <%= cb.label class: "form-check-label" do %>
+        <%= cb.check_box class: "form-check-input" %>
+        <%= cb.text %>
+      <% end %>
+    <% end %>
+  </div>
+
+    </div>
+    <br>
+    <select id="code-select" multiple name="violation[code_ids][]">
+      <% Code.not_associated_with_violation(@violation).each do |code| %>
+        <option value="<%= code.id %>"><%= code.chapter %>-<%= code.section.split("-").last %> <%= code.name %></option>
+      <% end %>
+    </select>
+    <div class="form-group">
+      <%= form.submit "Update Violation", class: "btn btn-primary" %>
+    </div>
+  <% end %>
+</div>
+
+
+<script>
+  const codeSelect = new Choices('#code-select', {
+    removeItemButton: true,
+    searchEnabled: true,
+    placeholder: true,
+    placeholderValue: 'Select codes',
+  });
+</script>

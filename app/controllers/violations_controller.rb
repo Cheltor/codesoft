@@ -1,10 +1,25 @@
 class ViolationsController < ApplicationController
   before_action :set_address
-  before_action :set_violation, only: [:resolve, :extender]
-  layout 'new_violation', only: [:new]
+  before_action :set_violation, only: [:resolve, :extender, :update, :edit]
+  layout 'new_violation', only: [:new, :edit]
 
   def new
     @violation = @address.violations.new
+  end
+
+  def update
+    @new_violation = @address.violations.new(violation_params)
+    @new_violation.user = current_user
+
+    if @new_violation.save
+      @violation.update(status: :resolved)
+      redirect_to address_path(@address), notice: "Violation created successfully"
+    else
+      render :edit
+    end
+  end
+
+  def edit
   end
 
   def create

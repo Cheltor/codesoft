@@ -17,6 +17,7 @@ class AddressesController < ApplicationController
         @search = Address.ransack(params[:q])
         @addresses = @search.result
     end
+    
     def edit
      @address = Address.find(params[:id])
     end

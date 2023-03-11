@@ -6,6 +6,7 @@ Rails.application.routes.draw do
     resources :violations do
       patch :resolve, on: :member
       patch :extender, on: :member
+      patch :update, on: :member
     end
     resources :comments
   end
