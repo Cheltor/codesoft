@@ -52,6 +52,20 @@ class ViolationsController < ApplicationController
     end
   end
 
+  def generate_report
+    @violation = Violation.find(params[:id])
+    template_path = "#{Rails.root}/lib/templates/violation_report.docx"
+    template = Sablon.template(File.expand_path(template_path))
+
+    # Replace placeholders in the template with the violation attributes
+    template.render_to_file("#{Rails.root}/tmp/violation_report.docx", {
+      'title' => @violation.id,
+    })
+
+    # Send the generated file as a download
+    send_file("#{Rails.root}/tmp/violation_report.docx", filename: "violation_report.docx", type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
+  end
+
   private
 
   def set_address

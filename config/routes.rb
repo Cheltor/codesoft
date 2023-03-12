@@ -7,6 +7,7 @@ Rails.application.routes.draw do
       patch :resolve, on: :member
       patch :extender, on: :member
       patch :update, on: :member
+      get :generate_report, on: :member
     end
     resources :comments
   end

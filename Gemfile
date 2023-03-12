@@ -65,7 +65,8 @@ gem "azure-storage-blob", require: false
 # Security 
 gem "rack", ">= 2.2.6.3"
 
-
+# VN Generation
+gem 'sablon'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
