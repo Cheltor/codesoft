@@ -62,7 +62,7 @@ class ViolationsController < ApplicationController
 
 
     # Replace the placeholders in the document with the data
-    template.render_to_string(
+    rendered_template = template.render_to_string(
       {
         created_at: formatted_date,
         address: @violation.address.combadd,
@@ -70,6 +70,11 @@ class ViolationsController < ApplicationController
         # Add more data here as needed
       }
     )
+
+    # Write the generated file to disk
+    File.open("#{Rails.root}/tmp/violation_report.docx", "w") do |f|
+      f.write(rendered_template)
+    end
 
     # Send the generated file as a download
     send_file("#{Rails.root}/tmp/violation_report.docx", filename: "violation_report.docx", type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
