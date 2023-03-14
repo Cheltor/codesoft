@@ -57,10 +57,19 @@ class ViolationsController < ApplicationController
     template_path = "#{Rails.root}/lib/templates/violation_report.docx"
     template = Sablon.template(File.expand_path(template_path))
 
-    # Replace placeholders in the template with the violation attributes
-    template.render_to_file("#{Rails.root}/tmp/violation_report.docx", {
-      'title' => @violation.id,
-    })
+    # Format the date string
+    formatted_date = @violation.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y")
+
+
+    # Replace the placeholders in the document with the data
+    template.render_to_string(
+      {
+        created_at: formatted_date,
+        address: @violation.address.combadd,
+        id: @violation.id
+        # Add more data here as needed
+      }
+    )
 
     # Send the generated file as a download
     send_file("#{Rails.root}/tmp/violation_report.docx", filename: "violation_report.docx", type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
