@@ -56,28 +56,48 @@ class ViolationsController < ApplicationController
     @violation = Violation.find(params[:id])
     template_path = "#{Rails.root}/lib/templates/violation_report.docx"
     template = Sablon.template(File.expand_path(template_path))
+  
+    today = Time.zone.now.strftime("%B %d, %Y")
 
     # Format the date string
     formatted_date = @violation.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y")
-
-
+  
     # Replace the placeholders in the document with the data
     rendered_template = template.render_to_string(
       {
-        created_at: formatted_date,
-        address: @violation.address.combadd,
-        id: @violation.id
+        violation: {
+          created_at: formatted_date,
+          today: today,
+          deadline_date: @violation.deadline_date.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y"),
+          user: @violation.user.id,
+          violation_codes: @violation.violation_codes
+        },
+        address: {
+          combadd: @violation.address.combadd.titleize,
+          premisezip: @violation.address.premisezip,
+          ownername: @violation.address.ownername.titleize,
+          owneraddress: @violation.address.owneraddress.titleize,
+          ownercity: @violation.address.ownercity.titleize,
+          ownerstate: @violation.address.ownerstate,
+          ownerzip: @violation.address.ownerzip
+        }
         # Add more data here as needed
       }
     )
-
+  
     # Write the generated file to disk
-    File.open("#{Rails.root}/tmp/violation_report.docx", "w") do |f|
+    output_path = "#{Rails.root}/tmp/violation_report.docx"
+    File.open(output_path, "wb") do |f|
       f.write(rendered_template)
     end
 
-    # Send the generated file as a download
-    send_file("#{Rails.root}/tmp/violation_report.docx", filename: "violation_report.docx", type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
+    # Format the address and today's date for the filename
+    formatted_address = @address.combadd.gsub(/[^\w\s-]/, '').gsub(/[\s]/, '_')
+    formatted_date = Time.zone.now.strftime("%Y-%m-%d")
+    filename = "violation_notice_#{formatted_address}_#{formatted_date}.docx"
+    
+    # Send the generated file as a download with the custom filename
+    send_file(output_path, filename: filename, type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
   end
 
   private

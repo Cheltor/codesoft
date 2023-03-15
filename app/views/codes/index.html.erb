@@ -26,7 +26,7 @@
       </tr>
     </thead>
     <tbody>
-    <% @codes.each do |code| %>
+    <% @codes.order("updated_at DESC").each do |code| %>
       <tr>
         <th><%= code.chapter %></th>
         <td><%= code.section.split("-").last %></td>

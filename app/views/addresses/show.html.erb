@@ -83,8 +83,9 @@
               <% end %>
                 <% if violation.current? %>
                   <%= button_to "Mark as Abated", resolve_address_violation_path(@address, violation), method: :patch, class: "btn btn-success mt-3" %>
-                  <%= link_to "Generate Report", generate_report_address_violation_path(@address, violation), class: "btn btn-primary" %>
-
+                  <% if violation.violation_type == "Formal Notice"%>
+                    <%= link_to "Generate VN", generate_report_address_violation_path(@address, violation), class: "btn btn-primary mt-3" %>
+                  <% end %>
                   <% if violation.deadline_passed? and violation.violation_type == "Doorhanger" %>
                     <%= link_to "Update to VN", edit_address_violation_path(@address, violation), class: "btn btn-warning mt-3" %>
                   <% end %>
