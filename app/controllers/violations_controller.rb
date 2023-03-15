@@ -69,7 +69,8 @@ class ViolationsController < ApplicationController
           created_at: formatted_date,
           today: today,
           deadline_date: @violation.deadline_date.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y"),
-          user: @violation.user.id,
+          username: @violation.user.name,
+          userphone: @violation.user.phone,
           violation_codes: @violation.violation_codes
         },
         address: {
