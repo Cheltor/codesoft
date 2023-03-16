@@ -14,6 +14,9 @@ Rails.application.routes.draw do
   get "dashboard" => 'static#dashboard'
   get 'violations' => 'addresses#violist'
 
+  get "sir" => "violations#sir"
+
+
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path route ("/")

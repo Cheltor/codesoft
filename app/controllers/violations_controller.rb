@@ -1,5 +1,5 @@
 class ViolationsController < ApplicationController
-  before_action :set_address
+  before_action :set_address, except: [:sir]
   before_action :set_violation, only: [:resolve, :extender, :update, :edit]
   layout 'new_violation', only: [:new, :edit]
 
@@ -20,6 +20,16 @@ class ViolationsController < ApplicationController
   end
 
   def edit
+  end
+
+  def sir 
+    if params[:start_date].present? && params[:end_date].present?
+      start_date = Date.parse(params[:start_date])
+      end_date = Date.parse(params[:end_date])
+      @violations = Violation.where(created_at: start_date..end_date)
+    else
+      @violations = Violation.where("created_at >= ?", 2.weeks.ago)
+    end
   end
 
   def create

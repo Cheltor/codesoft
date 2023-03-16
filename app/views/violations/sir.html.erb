@@ -2,7 +2,28 @@
 <div class="container">
   <div class="row">
     <div class="col-12">
-      <h1 style="text-align:center">Current Violations (<%= @violations.count %>)</h1>
+      <h1 style="text-align:center">SIR Violations</h1>
+      <div class="row mx-auto">
+        <div class="col-4">
+            <%= form_tag sir_path, method: :get do %>
+              <label for="start_date">Start date:</label>
+              <%= date_field_tag "start_date", params[:start_date], class: "form-control" %>
+
+              <label for="end_date">End date:</label>
+              <%= date_field_tag "end_date", params[:end_date], class: "form-control" %>
+
+              <%= submit_tag "Filter", class: "btn btn-primary mt-3" %>
+            <% end %>
+        </div>
+      </div>
+      <br>
+
+      <% if params[:start_date].present? && params[:end_date].present? %>
+        <h2>Violations between <%= params[:start_date] %> and <%= params[:end_date] %> - (<%= @violations.count %> total)</h2>
+      <% else %>
+        <h2>Violations within the last 2 weeks - (<%= @violations.count %> total)</h2>
+      <% end %>
+
       <br>
       <div class="table-responsive">
       <table class="table table-sm table-striped">
