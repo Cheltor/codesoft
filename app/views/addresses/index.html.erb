@@ -70,7 +70,7 @@
         
         <% if violation.photos.attached? %>
           <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#violation-<%= violation.id %>">
-            <span class="badge bg-primary rounded-pill">Photos</span>
+            <span class="badge bg-primary rounded-pill">Attachments</span>
           </button>
         <% end %>
       </li>
@@ -124,7 +124,7 @@
     </div>
               <% if comment.photos.attached? %>
               <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#comment-<%= comment.id %>">
-                    <span class="badge bg-primary rounded-pill">Photos</span>
+                    <span class="badge bg-primary rounded-pill">Attachments</span>
 
               </button>
               <% end %>
