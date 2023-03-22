@@ -1,7 +1,7 @@
 <br>
 <div class="container">
   <div class="row">
-    <h1 style="text-align:center">Violations for <%= @user.email.split("@").first %></h1>
+    <h1 style="text-align:center">Violations for <%= @user.name %></h1>
 
       <div class="table-responsive">
 
@@ -9,6 +9,7 @@
         <thead>
           <tr>
             <th>Address</th>
+            <th>Type</th>
             <th>Code</th>
             <th>Created</th>
             <th>Deadline</th>
@@ -22,6 +23,7 @@
           <tr class="table-warning">
           <% end %>
             <td><%= link_to violation.address.combadd, address_path(violation.address), class: "btn btn-warning" %></td>
+            <td><%= violation.violation_type %></td>
             <td><% violation.codes.each do |code| %>
                   
               <button class="btn " type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop<%= code.id %>" aria-controls="offcanvasTop"><strong><%= code.name %></strong></button>

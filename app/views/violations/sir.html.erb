@@ -30,6 +30,7 @@
         <thead>
           <tr>
             <th>Address</th>
+            <th>Type</th>
             <th>Created</th>
             <th>ONS</th>
             <th>Code(s)</th>
@@ -44,8 +45,9 @@
           <% if violation.deadline_passed? %>
           <tr class="table-danger">
           <td><%= link_to violation.address.combadd, address_path(violation.address), class: "btn btn-danger" %></td>
+          <td><%= violation.violation_type %></td>
             <td><%= violation.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y at %I:%M%p") %></td>
-            <td><%= violation.user.email.split("@").first %></td>
+            <td><%= violation.user.name %></td>
             <td>
  <% violation.codes.each do |code| %>
                   
@@ -68,8 +70,10 @@
           <% else %>
           <tr class="table-warning">
           <td><%= link_to violation.address.combadd, address_path(violation.address), class: "btn btn-warning" %></td>
+                    <td><%= violation.violation_type %></td>
+
             <td><%= violation.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y at %I:%M%p") %></td>
-            <td><%= violation.user.email.split("@").first %></td>
+            <td><%= violation.user.name %></td>
             <td>
  <% violation.codes.each do |code| %>
                   
@@ -93,8 +97,10 @@
           <%else%>
           <tr class="table-success">
           <td><%= link_to violation.address.combadd, address_path(violation.address), class: "btn btn-success" %></td>
+                    <td><%= violation.violation_type %></td>
+
             <td><%= violation.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y at %I:%M%p") %></td>
-            <td><%= violation.user.email.split("@").first %></td>
+            <td><%= violation.user.name %></td>
             <td>
  <% violation.codes.each do |code| %>
                   
