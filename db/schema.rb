@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_15_214026) do
+ActiveRecord::Schema[7.0].define(version: 2023_04_04_194039) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -59,6 +59,20 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_15_214026) do
     t.datetime "updated_at", null: false
     t.string "combadd"
     t.boolean "outstanding", default: false
+  end
+
+  create_table "citations", force: :cascade do |t|
+    t.integer "fine"
+    t.date "deadline"
+    t.integer "violation_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["violation_id"], name: "index_citations_on_violation_id"
+  end
+
+  create_table "citations_codes", id: false, force: :cascade do |t|
+    t.integer "citation_id", null: false
+    t.integer "code_id", null: false
   end
 
   create_table "codes", force: :cascade do |t|
@@ -119,6 +133,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_03_15_214026) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "citations", "violations"
   add_foreign_key "comments", "addresses"
   add_foreign_key "comments", "users"
   add_foreign_key "violation_codes", "codes"

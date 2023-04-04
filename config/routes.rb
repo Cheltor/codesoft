@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   root to: "addresses#index"
   resources :addresses do
     resources :violations do
+      resources :citations
       patch :resolve, on: :member
       patch :extender, on: :member
       patch :update, on: :member

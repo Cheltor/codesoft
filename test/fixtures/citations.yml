@@ -1,0 +1,11 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  fine: 1
+  deadline: 2023-04-04
+  violation: one
+
+two:
+  fine: 1
+  deadline: 2023-04-04
+  violation: two

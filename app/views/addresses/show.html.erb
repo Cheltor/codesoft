@@ -82,6 +82,8 @@
               </button>
               <% end %>
                 <% if violation.current? %>
+                    <%= link_to "New citation", new_address_violation_citation_path(@address, violation) %>
+
                   <%= button_to "Mark as Abated", resolve_address_violation_path(@address, violation), method: :patch, class: "btn btn-success mt-3" %>
                   <% if violation.violation_type == "Formal Notice"%>
                     <%= link_to "Generate VN", generate_report_address_violation_path(@address, violation), class: "btn btn-primary mt-3" %>

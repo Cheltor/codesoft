@@ -6,6 +6,7 @@ class Violation < ApplicationRecord
   validate :at_least_one_code_selected
   has_many_attached :photos
   validates :violation_type, presence: true
+  has_many :citations
 
 
   def at_least_one_code_selected
