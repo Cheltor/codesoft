@@ -17,7 +17,7 @@
       <% @code_ids.each do |code_id| %>
         <% code = Code.find(code_id) %>
         <div class="checkbox">
-          <%= f.check_box :code_ids, { multiple: true }, code.id, true %>
+          <%= f.check_box :code_ids, { multiple: true }, code.id, nil %>
           <%= code.name %>
         </div>
       <% end %>
