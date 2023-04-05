@@ -10,6 +10,8 @@ class CitationsController < ApplicationController
     @address = Address.find(params[:address_id])
     @violation = Violation.find(params[:violation_id])
     @citation = @violation.citations.build(citation_params)
+    @citation.user = current_user
+
     if @citation.save
       redirect_to address_path(@address), notice: "Citation created successfully"
     else
