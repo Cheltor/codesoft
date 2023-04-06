@@ -1,31 +1,36 @@
-<%= form_with model: [@address, @violation, @citation], url: address_violation_citations_path(@address, @violation), class: "form-horizontal" do |f| %>
-  <div class="form-group">
-    <%= f.label :fine, class: "control-label col-sm-2" %>
-    <div class="col-sm-10">
-      <%= f.number_field :fine, class: "form-control" %>
-    </div>
-  </div>
-  <div class="form-group">
-    <%= f.label :deadline, class: "control-label col-sm-2" %>
-    <div class="col-sm-10">
-      <%= f.date_select :deadline, default: 3.weeks.from_now , class: "form-control" %>
-    </div>
-  </div>
-  <div class="form-group">
-    <%= f.label :codes, class: "control-label col-sm-2" %>
-    <div class="col-sm-10">
-      <% @code_ids.each do |code_id| %>
-        <% code = Code.find(code_id) %>
-        <div class="checkbox">
-          <%= f.check_box :code_ids, { multiple: true }, code.id, nil %>
-          <%= code.name %>
+<div class="container">
+  <div class="row mt-5">
+    <h2>Record a Citation</h2>
+    <%= form_with model: [@address, @violation, @citation], url: address_violation_citations_path(@address, @violation), class: "form-horizontal" do |f| %>
+      <div class="form-group">
+        <strong>Fine</strong>
+        <div class="col-sm-10">
+          <%= f.number_field :fine, class: "form-control" %>
         </div>
-      <% end %>
-    </div>
+      </div>
+      <div class="form-group mt-3">
+        <strong>Deadline</strong>
+        <div class="col-sm-10">
+          <%= f.date_select :deadline, default: 3.weeks.from_now , class: "form-control" %>
+        </div>
+      </div>
+      <div class="form-group mt-3">
+        <strong>Code violations</strong>
+        <div class="col-sm-10">
+          <% @code_ids.each do |code_id| %>
+            <% code = Code.find(code_id) %>
+            <div class="checkbox">
+              <%= f.check_box :code_ids, { multiple: true }, code.id, nil %>
+              <%= code.name %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+      <div class="form-group mt-3">
+        <div class="col-sm-offset-2 col-sm-10">
+          <%= f.submit class: "btn btn-primary" %>
+        </div>
+      </div>
+    <% end %>
   </div>
-  <div class="form-group">
-    <div class="col-sm-offset-2 col-sm-10">
-      <%= f.submit class: "btn btn-primary" %>
-    </div>
-  </div>
-<% end %>
+</div>

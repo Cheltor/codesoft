@@ -3,67 +3,100 @@
 <br>
 <div class="container">
   <div class="row">
-  <div class="col-xl-9">
-  
-  <div class="card"><div class="card-body">
-    <h2><%= @address.combadd %> <a href="https://www.google.com/maps/search/?api=1&query=<%= @address.combadd %>+MD+<%= @address.premisezip %>" target="_blank" class="btn btn-secondary">Search on Google Maps</a>
-    </h2>
-    <!-- Button trigger modal -->
-    <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
-      Update
-    </button>
+    <div class="col-xl-6">  
+      <div class="card">
+        <div class="card-body">
+          <h2><%= @address.combadd %> <a href="https://www.google.com/maps/search/?api=1&query=<%= @address.combadd %>+MD+<%= @address.premisezip %>" target="_blank" class="btn btn-secondary">Search on Google Maps</a>
+          </h2>
+          <!-- Button trigger modal -->
+          <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            Update
+          </button>
 
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Are you sure?</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <!-- Modal -->
+          <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Are you sure?</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  Be very careful when updating the address information.
+                  
+                </div>
+                <div class="modal-footer">
+                  <%= link_to "Update", edit_address_path(@address), class: "btn btn-primary" %>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="modal-body">
-            Be very careful when updating the address information.
-            
-          </div>
-          <div class="modal-footer">
-            <%= link_to "Update", edit_address_path(@address), class: "btn btn-primary" %>
-          </div>
+      
+          <h4>Owner:</h4>
+          <p><%= @address.ownername %></p>
+          <h4>Owner Address:</h4>
+          <p><%= @address.owneraddress %> <%= @address.ownercity %>, <%= @address.ownerstate %> <%= @address.ownerzip %></p>
         </div>
       </div>
-    </div>
-    
-    <h4>Owner:</h4>
-    <p><%= @address.ownername %></p>
-    <h4>Owner Address:</h4>
-    <p><%= @address.owneraddress %> <%= @address.ownercity %>, <%= @address.ownerstate %> <%= @address.ownerzip %></p>
-  </div></div>
-  <br>
-  <div class="card text-center"><div class="card-body">
-  <h2 style="text-align: center">Violations</h2>
-    <%= link_to "Create a Violation", new_address_violation_path(@address), class: "btn btn-outline-danger btn-lg" %>
-    <br>
-    <br>
-<div class="container">
-<div class="row">
-          <% @address.violations.order("created_at DESC").each do |violation| %>
-<div class="col-sm-12 col-md-6 col-lg-4">
-
-          <div class="card text-center">
+      <br>
+      <h2 style="text-align: center">Violations</h2>
+      <div style="text-align: center">
+        <%= link_to "Create a Violation", new_address_violation_path(@address), class: "btn btn-outline-danger btn-lg" %>
+      </div>
+      <br>
+      <br>
+      <% @address.violations.order("created_at DESC").each do |violation| %>
+      <div class="d-grid gap-2">
+        <% if violation.deadline_passed? and violation.current? %>
+        <button type="button" class="btn btn-danger btn-lg" data-bs-toggle="modal" data-bs-target="#newModal-<%= violation.id %>">
+        <% elsif violation.current? %>
+        <button type="button" class="btn btn-warning btn-lg" data-bs-toggle="modal" data-bs-target="#newModal-<%= violation.id %>">
+        <% else %>
+        <button type="button" class="btn btn-secondary btn-lg" data-bs-toggle="modal" data-bs-target="#newModal-<%= violation.id %>">
+        <% end %>
+          <%= violation.violation_type %> - <%= violation.user.name %> - <%= violation.deadline_date.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %>
+        </button>
+      </div>
+      <br>
+      <!-- Modal -->
+      <div class="modal fade custom-modal-lg" id="newModal-<%= violation.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
             <% if violation.deadline_passed? and violation.current? %>
-            <div class="card-header text-white bg-danger">
+            <div class="modal-header text-white bg-danger">
             <% elsif violation.current? %>
-            <div class="card-header bg-warning">
+            <div class="modal-header bg-warning">
             <% else %>
-            <div class="card-header">
+            <div class="modal-header">
             <% end %>
-              <%= violation.violation_type %> - <%= violation.user.email.split("@").first %>
+              <h5 class="modal-title" id="exampleModalLabel"><%= violation.violation_type %> - <%= violation.user.name %> - <%= violation.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="card-body">
-              <h5 class="card-title">
-                              <% violation.codes.each do |code| %>
-                  
-              <button class="btn " type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop<%= code.id %>" aria-controls="offcanvasTop"><strong><%= code.name %></strong></button>
+            <div class="modal-header">
+              <% if violation.current? %>
+                <%= button_to "Mark as Abated", resolve_address_violation_path(@address, violation), method: :patch, class: "btn btn-success" %>
+                <% if violation.violation_type == "Formal Notice"%>
+                  <% if violation.deadline_passed? %>
+                    <%= link_to "Record citation", new_address_violation_citation_path(@address, violation), class: "btn btn-info" %>
+                  <% end %>
+                  <%= link_to "Generate VN", generate_report_address_violation_path(@address, violation), class: "btn btn-primary" %>
+                <% end %>
+                <% if violation.deadline_passed? and violation.violation_type == "Doorhanger" %>
+                  <%= link_to "Update to VN", edit_address_violation_path(@address, violation), class: "btn btn-warning" %>
+                <% end %>
+              <% else %>
+              <p>Closed <%= violation.updated_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></p>
+              <% end %>
+            </div>
+            <div class="modal-header">
+            <p>Created on:</p>
+            <%= violation.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %>
+            </div>
+            <div class="modal-body">
+            <p>Code violations:</p>
 
+              <% violation.codes.each do |code| %>
+              <button class="btn " type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop<%= code.id %>" aria-controls="offcanvasTop"><strong><%= code.name %></strong></button>
               <div class="offcanvas offcanvas-top" tabindex="-1" id="offcanvasTop<%= code.id %>" aria-labelledby="offcanvasTopLabel">
                 <div class="offcanvas-header">
                   <h5 id="offcanvasTopLabel"><%= code.name %></h5>
@@ -73,115 +106,97 @@
                   <%= code.description %>
                 </div>
               </div>
-
-                <% end %>
-              </h5>
-                <% if violation.photos.attached? %>
-                <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#violation-<%= violation.id %>">
-                Attachments
-              </button>
               <% end %>
-                <% if violation.current? %>
-                    <%= link_to "New citation", new_address_violation_citation_path(@address, violation) %>
-
-                  <%= button_to "Mark as Abated", resolve_address_violation_path(@address, violation), method: :patch, class: "btn btn-success mt-3" %>
-                  <% if violation.violation_type == "Formal Notice"%>
-                    <%= link_to "Generate VN", generate_report_address_violation_path(@address, violation), class: "btn btn-primary mt-3" %>
-                  <% end %>
-                  <% if violation.deadline_passed? and violation.violation_type == "Doorhanger" %>
-                    <%= link_to "Update to VN", edit_address_violation_path(@address, violation), class: "btn btn-warning mt-3" %>
-                  <% end %>
-                <% else %>
-                <br>
-                <br>
-                <p>Closed <%= violation.updated_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></p>
-                <% end %>
-              </div>
-            <div class="card-footer">
-            Created: <%= violation.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %>
-            </div>            
-            <div class="card-footer text-muted">
-              Deadline: <%= violation.deadline_date.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %> 
-                <% if violation.current? %>
-                <button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#violation-extend-<%= violation.id %>">
-                  Extend
-                </button>
-                <% end %>
             </div>
-
-          </div>
-
-            <br>
-            <!-- Violation Photo Modal -->
-            <div class="modal fade custom-modal-lg" role="dialog" id="violation-<%= violation.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">
-                      <% violation.codes.each do |code| %>
-                        <%= code.name %>;
-                      <% end %>
-                    </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                  </div>
-                  <div class="modal-body">
-                    <% violation.photos.each do |photo| %>
-
-                      <% if photo.content_type == 'application/pdf' %>
-                        <iframe src="<%= rails_blob_url(photo) %>" width="100%" height="800px"></iframe>
-                      <% elsif photo.filename.to_s.ends_with?('.doc', '.docx') %>
-                        <%= link_to photo.filename, rails_blob_url(photo, disposition: 'photo') %>
-                      <% else %>
-                        <%= image_tag photo, class: "img-fluid" %>
-                      <% end %>
-
-                    <% end %>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Violation Extend Modal -->
-            <div class="modal fade" role="dialog" id="violation-extend-<%= violation.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">
+            <% if violation.current? %>
+            <div class="modal-body">
+              <div class="accordion accordion-flush" id="accordionFlushExample">
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="flush-headingOne">
+                    <button class="accordion-button collapsed text-white bg-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
                       Extend
-                    </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                  </div>
-                  <div class="modal-body">
-                    <%= button_to "Extend one day", extender_address_violation_path(@address, violation, days: 1), method: :patch, class: "btn btn-success mt-3" %>
-                    <%= button_to "Extend one week", extender_address_violation_path(@address, violation, days: 7), method: :patch, class: "btn btn-success mt-3" %>
-                    <%= button_to "Extend two weeks", extender_address_violation_path(@address, violation, days: 14), method: :patch, class: "btn btn-success mt-3" %>
-                    <%= button_to "Extend one month", extender_address_violation_path(@address, violation, days: 30), method: :patch, class: "btn btn-success mt-3" %>
+                    </button>
+                  </h2>
+                  <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                    <div class="accordion-body" style="text-align:center">
+                      <%= button_to "Extend one day", extender_address_violation_path(@address, violation, days: 1), method: :patch, class: "btn btn-success mt-3" %>
+                      <%= button_to "Extend one week", extender_address_violation_path(@address, violation, days: 7), method: :patch, class: "btn btn-success mt-3" %>
+                      <%= button_to "Extend two weeks", extender_address_violation_path(@address, violation, days: 14), method: :patch, class: "btn btn-success mt-3" %>
+                      <%= button_to "Extend one month", extender_address_violation_path(@address, violation, days: 30), method: :patch, class: "btn btn-success mt-3" %>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
+            <% end %>
+            <% if violation.photos.any? %>
+              <div class="modal-body">
+                <div class="accordion accordion-flush" id="accordionFlushExample">
+                  <div class="accordion-item">
+                    <h2 class="accordion-header" id="flush-headingOne">
+                      <button class="accordion-button collapsed text-white bg-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse<%= violation.id %>" aria-expanded="false" aria-controls="flush-collapseOne">
+                        Attachments
+                      </button>
+                    </h2>
+                    <div id="flush-collapse<%= violation.id %>" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                      <div class="accordion-body" style="text-align:center">
+                          <% violation.photos.each do |photo| %>
+                            <% if photo.content_type == 'application/pdf' %>
+                              <iframe src="<%= rails_blob_url(photo) %>" width="100%" height="800px"></iframe>
+                            <% elsif photo.filename.to_s.ends_with?('.doc', '.docx') %>
+                              <%= link_to photo.filename, rails_blob_url(photo, disposition: 'photo') %>
+                            <% else %>
+                              <%= image_tag photo, class: "img-fluid" %>
+                            <% end %>
+                          <% end %>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+            <% if violation.citations.any? %>
+            <div class="modal-body" style="text-align:center">
+                    <strong>Citations</strong>
+            </div>
+            <div class="modal-body">
+            <div class="row">
+            <% violation.citations.each do |citation| %>
+            <div class="card border-dark mb-3">
+              <div class="card-body">
+                <p><strong>Fine:</strong> $<%= citation.fine %></p>
+                <p><strong>Created on:</strong> <%= citation.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></p>
+                <p><strong>Deadline on:</strong> <%= citation.deadline.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></p>
+                <strong>Code:</strong>
+                <% citation.codes.each do |code| %>
+                  <p><%= code.name %></p>
+                <% end %>
+              </div>
+            </div>  
+            <% end %>
+            </div>
+            
 
-</div>
-          <% end %>
-</div></div>
-
-
-  </div></div>
-
-
-  <br>
-
-  </div>
-    <br>
-    <div class="col-xl-3">
-    <div class="card" style="background-color: #e3f2fd;"><div class="card-body">
-      <%= render 'comments/form' %>
-    </div></div>
-    <br>
-    <div class="card" style="background-color: #e3f2fd;"><div class="card-body">
-      <%= render 'comments/comments' %>
-    </div></div>
+            </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <% end %>
     </div>
+    <br>  
+    <div class="col-xl-6">
+      <div class="card" style="background-color: #e3f2fd;">
+        <div class="card-body">
+          <%= render 'comments/form' %>
+        </div>
+      </div>
+      <br>
+      <div class="card" style="background-color: #e3f2fd;">
+        <div class="card-body">
+          <%= render 'comments/comments' %>
+        </div>
+      </div>
     </div>
   </div>
 </div>
