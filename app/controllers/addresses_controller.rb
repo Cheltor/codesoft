@@ -11,6 +11,7 @@ class AddressesController < ApplicationController
     
     def show
         @address = Address.find(params[:id])
+        @address_photos = (@address.violations.map(&:photos) + @address.comments.map(&:photos)).flatten.sort_by(&:created_at).reverse
     end
 
     def search
