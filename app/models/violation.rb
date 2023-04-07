@@ -1,6 +1,6 @@
 class Violation < ApplicationRecord
   belongs_to :address
-  has_many :violation_codes
+  has_many :violation_codes, dependent: :destroy
   has_many :codes, through: :violation_codes
   belongs_to :user
   validate :at_least_one_code_selected
