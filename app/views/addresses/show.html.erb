@@ -1,7 +1,7 @@
 <% content_for :title, @address.combadd %>
 
 <br>
-<div class="container">
+<div class="container mb-5">
   <div class="row">
     <div class="col-xl-6">  
       <div class="card">
@@ -192,28 +192,34 @@
               </div>
             <% end %>
             <% if violation.citations.any? %>
-            <div class="modal-body" style="text-align:center">
-                    <strong>Citations</strong>
-            </div>
-            <div class="modal-body">
-            <div class="row">
-            <% violation.citations.each do |citation| %>
-            <div class="card border-dark mb-3">
-              <div class="card-body">
-                <p><strong>Fine:</strong> $<%= citation.fine %></p>
-                <p><strong>Created on:</strong> <%= citation.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></p>
-                <p><strong>Deadline on:</strong> <%= citation.deadline.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></p>
-                <strong>Code:</strong>
-                <% citation.codes.each do |code| %>
-                  <p><%= code.name %></p>
-                <% end %>
+              <div class="modal-body">
+                <div class="accordion accordion-flush" id="accordionFlushExample">
+                  <div class="accordion-item">
+                    <h2 class="accordion-header" id="flush-headingOne">
+                      <button class="accordion-button collapsed text-white bg-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<%= violation.id %>" aria-expanded="false" aria-controls="flush-collapseOne">
+                        Citations - <%= violation.citations.count %> total
+                      </button>
+                    </h2>
+                    <div id="collapse<%= violation.id %>" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                      <div class="accordion-body" style="text-align:center">
+                        <% violation.citations.each do |citation| %>
+                        <div class="card border-dark mb-3">
+                          <div class="card-body">
+                            <p><strong>Fine:</strong> $<%= citation.fine %></p>
+                            <p><strong>Created on:</strong> <%= citation.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></p>
+                            <p><strong>Deadline on:</strong> <%= citation.deadline.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></p>
+                            <strong>Code:</strong>
+                            <% citation.codes.each do |code| %>
+                              <p><%= code.name %></p>
+                            <% end %>
+                          </div>
+                        </div>  
+                        <% end %>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>  
-            <% end %>
-            </div>
-            
-
-            </div>
             <% end %>
           </div>
         </div>
