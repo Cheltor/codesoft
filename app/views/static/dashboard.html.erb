@@ -23,7 +23,8 @@
           <tr class="table-warning">
           <% end %>
             <td><%= link_to violation.address.combadd, address_path(violation.address), class: "btn btn-warning" %></td>
-            <td><%= violation.violation_type %></td>
+            <td><%= violation.violation_type %>
+            </td>
             <td><% violation.codes.each do |code| %>
                   
               <button class="btn " type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop<%= code.id %>" aria-controls="offcanvasTop"><strong><%= code.name %></strong></button>

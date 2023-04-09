@@ -13,7 +13,7 @@ class CitationsController < ApplicationController
     @citation.user = current_user
 
     if @citation.save
-      redirect_to address_path(@address), notice: "Citation created successfully"
+      redirect_to address_violation_path(@address, @violation), notice: "Citation created successfully"
     else
       render :new
     end

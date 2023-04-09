@@ -1,0 +1,110 @@
+<div class="container mt-5">
+  <div class="row">
+    <div class="col">
+      <h1>Violation</h1>
+      <p><strong>Address:</strong> <%= link_to @violation.address.combadd, address_path(@address), class:"btn btn-outline-dark" %></p> 
+      <p><strong>Violation Type:</strong> <%= @violation.violation_type %></p>
+      <p><strong>Deadline:</strong> <%= @violation.deadline_date.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></p>
+      <p><strong>Violation Date:</strong> <%= @violation.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></p>
+      <strong>Codes in Violation:</strong>
+      <br>
+      <br>
+      <div class="col mb-5">
+        <% @violation.codes.each do |code| %>
+        <button class="btn btn-outline-dark" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop<%= code.id %>" aria-controls="offcanvasTop"><strong><%= code.name %></strong></button>
+        <div class="offcanvas offcanvas-top" tabindex="-1" id="offcanvasTop<%= code.id %>" aria-labelledby="offcanvasTopLabel">
+          <div class="offcanvas-header">
+            <h5 id="offcanvasTopLabel"><%= code.name %></h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <%= code.description %>
+          </div>
+        </div>
+        <% end %>
+      </div>
+      <% if @violation.photos.attached? %>
+      <button type="button" class="btn btn-outline-primary btn-lg" data-bs-toggle="modal" data-bs-target="#allphotoModal">
+        Attachments
+      </button>
+      <% end %>
+      <br>
+      <br>
+      <% if @violation.current? %>
+        <%= button_to "Mark as Abated", resolve_address_violation_path(@address, @violation), method: :patch, class: "btn btn-success mb-3" %>
+        <% if @violation.violation_type == "Formal Notice"%>
+          <%= link_to "Generate Letter", generate_report_address_violation_path(@address, @violation), class: "btn btn-primary mb-3" %>
+        <% end %>
+        <% if @violation.deadline_passed? and @violation.violation_type == "Doorhanger" %>
+          <%= link_to "Update to VN", edit_address_violation_path(@address, @violation), class: "btn btn-warning mb-5" %>
+        <% end %>
+      <% else %>
+      <br>
+        <p><strong>Status: </strong>Closed <%= @violation.updated_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></p>
+      <% end %>
+
+
+      <div class="modal fade custom-modal-lg" id="allphotoModal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              All Attachments
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <% @violation.photos.each do |photo| %>
+            <div class="modal-header" style="text-align:center">
+              <% if photo.content_type == 'application/pdf' %>
+                <iframe src="<%= rails_blob_url(photo) %>" width="100%" height="800px"></iframe>
+              <% elsif photo.filename.to_s.ends_with?('.doc', '.docx') %>
+                <%= link_to photo.filename, rails_blob_url(photo, disposition: 'photo') %>
+              <% else %>
+                <%= image_tag photo, class: "img-fluid" %>
+              <% end %>
+              <br>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <div class="table-responsive">
+
+    <% if @violation.current? && @violation.deadline_passed? && @violation.violation_type == "Formal Notice" %>
+      <h1>Citations</h1>
+            <%= link_to "New Citation", new_address_violation_citation_path(@address, @violation), class: "btn btn-danger" %>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Fine</th>
+            <th scope="col">Deadline</th>
+            <th scope="col">Codes</th>
+            <th scope="col">Status</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @violation.citations.each do |citation| %>
+            <tr>
+              <td>$<%= citation.fine %></td>
+              <td><%= citation.deadline %></td>
+              <td>
+                <% citation.codes.each do |code| %>
+                  <%= code.name %>
+                <% end %>
+              </td>
+              <td>Paid</td>
+              <td>
+              Pending-
+              Update to Paid-
+              Going to Trial
+              </td>
+            </tr>
+          <% end %>
+          </tbody> 
+        </table>
+      <% end %>
+    </div>
+  </div>
+</div>

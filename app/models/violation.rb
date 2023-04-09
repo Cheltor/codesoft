@@ -44,6 +44,7 @@ class Violation < ApplicationRecord
 
   validates :deadline, presence: true, inclusion: { in: DEADLINE_OPTIONS }
   
+  
   private
 
   def set_default_status

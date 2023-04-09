@@ -19,8 +19,8 @@
         <div class="col-sm-10">
           <% @code_ids.each do |code_id| %>
             <% code = Code.find(code_id) %>
-            <div class="checkbox">
-              <%= f.check_box :code_ids, { multiple: true }, code.id, nil %>
+            <div class="radio">
+              <%= f.radio_button :code_id, code.id %>
               <%= code.name %>
             </div>
           <% end %>

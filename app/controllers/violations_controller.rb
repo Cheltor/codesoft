@@ -1,5 +1,5 @@
 class ViolationsController < ApplicationController
-  before_action :set_address, except: [:sir]
+  before_action :set_address, except: [:sir, :show]
   before_action :set_violation, only: [:resolve, :extender, :update, :edit]
   layout 'new_violation', only: [:new, :edit]
 
@@ -21,6 +21,11 @@ class ViolationsController < ApplicationController
 
   def edit
   end
+
+  def show 
+    @violation = Violation.find(params[:id])
+    @address = @violation.address
+  end    
 
   def sir 
     if params[:start_date].present? && params[:end_date].present?
