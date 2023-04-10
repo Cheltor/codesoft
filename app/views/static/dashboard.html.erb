@@ -85,13 +85,15 @@
   <% if @recent_citations.present? %>
   <div class="row">
     <div class="col">
-    <h1> Today's Citations</h1>
+    <h1 style="text-align:center"> Today's Citations</h1>
       <div class="table-responsive">
         <table class="table table-striped">
           <thead>
             <tr>
+              <th>Address</th>
               <th>Amount</th>
               <th>Deadline</th>
+              <th>Status</th>
             </tr>
           </thead>
           <tbody>
@@ -101,8 +103,10 @@
             <% else %>
             <tr class="table-warning">
             <% end %>
-              <td><%= citation.fine %></td>
+              <td><%= link_to citation.violation.address.combadd, address_path(citation.violation.address), class: "btn btn-warning" %></td>
+              <td><%= number_to_currency(citation.fine) %></td>
               <td><%= citation.deadline.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></td>
+              <td>Status</td>
             </tr>
           <% end %>
           </tbody>

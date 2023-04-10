@@ -20,7 +20,7 @@
             <td><%= citation.id %></td>
             <td><%= citation.created_at.strftime("%m/%d/%Y") %></td>
             <td><%= citation.deadline %></td>
-            <td>$<%= citation.fine %></td>
+            <td><%= number_to_currency(citation.fine) %></td>
             <td>Status</td>
             <td>
 

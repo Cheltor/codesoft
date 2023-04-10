@@ -87,7 +87,7 @@
         <tbody>
           <% @violation.citations.each do |citation| %>
             <tr>
-              <td>$<%= citation.fine %></td>
+              <td><%= number_to_currency(citation.fine) %></td>
               <td><%= citation.deadline %></td>
               <td>
                 <% citation.codes.each do |code| %>
