@@ -19,6 +19,14 @@ class CitationsController < ApplicationController
     end
   end
 
+  def my_citations
+    @citations = Citation.where(user: current_user)
+  end
+
+  def all_citations
+    @citations = Citation.all
+  end
+
   private
 
   def citation_params

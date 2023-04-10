@@ -1,7 +1,6 @@
 Rails.application.routes.draw do
   resources :codes
   devise_for :users
-  root to: "addresses#index"
   resources :addresses do
     resources :violations do
       resources :citations
@@ -12,11 +11,15 @@ Rails.application.routes.draw do
     end
     resources :comments
   end
-  get "dashboard" => 'static#dashboard'
-  get 'violations' => 'addresses#violist'
 
+  get 'all_violations' => 'addresses#violist'
+  get 'my_violations' => 'addresses#my_violations'
+  get 'helpful' => 'static#helpful'
+
+  root 'static#dashboard'
   get "sir" => "violations#sir"
-
+  get 'my_citations' => 'citations#my_citations'
+  get 'all_citations' => 'citations#all_citations'
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

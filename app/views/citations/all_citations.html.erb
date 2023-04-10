@@ -1,0 +1,33 @@
+<div class="container mt-5">
+  <div class="row">
+    <div class="col">
+    <h1 style="text-align: center">All Citations</h1>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">Citation Number</th>
+          <th scope="col">Date Issued</th>
+          <th scope="col">Deadline</th>
+          <th scope="col">Amount</th>
+          <th scope="col">Status</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @citations.each do |citation| %>
+          <tr>
+            <td><%= citation.id %></td>
+            <td><%= citation.created_at.strftime("%m/%d/%Y") %></td>
+            <td><%= citation.deadline %></td>
+            <td>$<%= citation.fine %></td>
+            <td>Status</td>
+            <td>
+
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+
+    </div>
+  </div>
+</div>

@@ -5,4 +5,8 @@ class Citation < ApplicationRecord
 
   validates :fine, presence: true
   validates :deadline, presence: true
+
+  def deadline_passed?
+    deadline < Date.today
+  end
 end

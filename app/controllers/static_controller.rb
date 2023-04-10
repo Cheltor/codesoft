@@ -6,5 +6,11 @@ class StaticController < ApplicationController
     .select {|violation| violation.deadline_date <= Date.tomorrow }
     .reject {|violation| violation.citations.any? {|citation| citation.deadline >= Date.tomorrow }}
     .sort_by(&:deadline_date)
+    @recent_citations = Citation.where(user: @user)
+    @addresses = @q.result.where.not(streetnumb: nil)
+
+  end
+
+  def helpful
   end
 end

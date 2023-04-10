@@ -1,53 +1,116 @@
-<br>
-<div class="container">
+<div class="container mt-5">
   <div class="row">
-    <h1 style="text-align:center">Violations for <%= @user.name %></h1>
-
-      <div class="table-responsive">
-
+    <div class="col">
+      <div class="card" style="background-color: #e3f2fd;">
+        <div class="card-body">
+          <%= search_form_for @q, url: root_path, method: :get do |f| %>
+          <%= f.search_field :combadd_cont, class:"form-control form-control-lg", placeholder: "Type in the address here", required: true, minlength: 4, style: "text-align:center" %>
+          <br><div style="text-align:center"><%= f.submit "Search", class:"btn btn-primary" %></div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <% if params[:q].present? %>
+  <div class="row mt-5">
+    <div class="col">
+      <h1 style="text-align:center">Search Results</h1>
       <table class="table table-striped">
-        <thead>
+        <thead class="thead-light">
           <tr>
-            <th>Address</th>
-            <th>Type</th>
-            <th>Code</th>
-            <th>Created</th>
-            <th>Deadline</th>
+            <th scope="col">Address</th>
           </tr>
         </thead>
         <tbody>
-        <% @recent_violations.each do |violation| %>
-          <% if violation.deadline_passed? %>
-          <tr class="table-danger">
+          <% @addresses.each do |address| %>
+          <tr>
+          <% if address.violations.current.exists? == true %>
+            <td><%= link_to address.combadd, address_path(address), class:"btn btn-warning" %></td>
           <% else %>
-          <tr class="table-warning">
+            <td><%= link_to address.combadd, address_path(address), class:"btn btn-primary" %></td>
           <% end %>
-            <td><%= link_to violation.address.combadd, address_path(violation.address), class: "btn btn-warning" %></td>
-            <td><%= violation.violation_type %>
-            </td>
-            <td><% violation.codes.each do |code| %>
-                  
-              <button class="btn " type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop<%= code.id %>" aria-controls="offcanvasTop"><strong><%= code.name %></strong></button>
-
-              <div class="offcanvas offcanvas-top" tabindex="-1" id="offcanvasTop<%= code.id %>" aria-labelledby="offcanvasTopLabel">
-                <div class="offcanvas-header">
-                  <h5 id="offcanvasTopLabel"><%= code.name %></h5>
-                  <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                </div>
-                <div class="offcanvas-body">
-                  <%= code.description %>
-                </div>
-              </div>
-
-                <% end %></td>
-            <td><%= violation.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></td>
-            <td><%= violation.deadline_date.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></td>
           </tr>
-        <% end %>
+          <% end %>
         </tbody>
       </table>
-      </div>
+    </div>
   </div>
+  <% end %>
+  <div class="row mt-5">
+    <div class="col">
+    <h1 style="text-align:center">Today's Violations</h1>
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Address</th>
+              <th>Type</th>
+              <th>Code</th>
+              <th>Deadline</th>
+            </tr>
+          </thead>
+          <tbody>
+          <% @recent_violations.each do |violation| %>
+            <% if violation.deadline_passed? %>
+            <tr class="table-danger">
+            <% else %>
+            <tr class="table-warning">
+            <% end %>
+              <td><%= link_to violation.address.combadd, address_path(violation.address), class: "btn btn-warning" %></td>
+              <td><%= violation.violation_type %>
+              </td>
+              <td><% violation.codes.each do |code| %>
+                    
+                <button class="btn " type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop<%= code.id %>" aria-controls="offcanvasTop"><strong><%= code.name %></strong></button>
+
+                <div class="offcanvas offcanvas-top" tabindex="-1" id="offcanvasTop<%= code.id %>" aria-labelledby="offcanvasTopLabel">
+                  <div class="offcanvas-header">
+                    <h5 id="offcanvasTopLabel"><%= code.name %></h5>
+                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                  </div>
+                  <div class="offcanvas-body">
+                    <%= code.description %>
+                  </div>
+                </div>
+
+                  <% end %></td>
+              <td><%= violation.deadline_date.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></td>
+            </tr>
+          <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <% if @recent_citations.present? %>
+  <div class="row">
+    <div class="col">
+    <h1> Today's Citations</h1>
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Amount</th>
+              <th>Deadline</th>
+            </tr>
+          </thead>
+          <tbody>
+          <% @recent_citations.each do |citation| %>
+            <% if citation.deadline_passed? %>
+            <tr class="table-danger">
+            <% else %>
+            <tr class="table-warning">
+            <% end %>
+              <td><%= citation.fine %></td>
+              <td><%= citation.deadline.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></td>
+            </tr>
+          <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <% end %>  
 </div>
 
 

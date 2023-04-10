@@ -49,7 +49,7 @@
             <td><%= violation.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y at %I:%M%p") %></td>
             <td><%= violation.user.name %></td>
             <td>
- <% violation.codes.each do |code| %>
+              <% violation.codes.each do |code| %>
                   
               <button class="btn " type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop<%= code.id %>" aria-controls="offcanvasTop"><%= code.name %></button>
 
@@ -75,7 +75,7 @@
             <td><%= violation.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y at %I:%M%p") %></td>
             <td><%= violation.user.name %></td>
             <td>
- <% violation.codes.each do |code| %>
+            <% violation.codes.each do |code| %>
                   
               <button class="btn " type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop<%= code.id %>" aria-controls="offcanvasTop"><%= code.name %></button>
 
@@ -102,7 +102,7 @@
             <td><%= violation.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y at %I:%M%p") %></td>
             <td><%= violation.user.name %></td>
             <td>
- <% violation.codes.each do |code| %>
+            <% violation.codes.each do |code| %>
                   
               <button class="btn " type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop<%= code.id %>" aria-controls="offcanvasTop"><%= code.name %></button>
 

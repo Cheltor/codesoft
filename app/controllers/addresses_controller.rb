@@ -4,15 +4,47 @@ class AddressesController < ApplicationController
         @violations = Violation.recent
         @comments = Comment.recent
     end
-
-    def violist
-        @violations =Violation.where(violations: { status: :current }).sort_by(&:deadline_date)
-    end
     
     def show
         @address = Address.find(params[:id])
         @address_photos = (@address.violations.map(&:photos) + @address.comments.map(&:photos)).flatten.sort_by(&:created_at).reverse
     end
+
+    def violist
+        @status = params[:status]
+        @violations = Violation.all
+      
+        case @status
+        when "current"
+          @violations = @violations.where(status: :current)
+        when "resolved"
+          @violations = @violations.where(status: :resolved)
+        when "closed"
+          @violations = @violations.where(status: :closed)
+        else
+          @status = "all"
+        end
+      
+        @violations = @violations.order(created_at: :desc)
+    end
+
+    def my_violations
+        @status = params[:status]
+        @violations = Violation.where(user: current_user)
+      
+        case @status
+        when "current"
+          @violations = @violations.where(status: :current)
+        when "resolved"
+          @violations = @violations.where(status: :resolved)
+        when "closed"
+          @violations = @violations.where(status: :closed)
+        else
+          @status = "all"
+        end
+      
+        @violations = @violations.order(created_at: :desc)
+      end
 
     def search
         @search = Address.ransack(params[:q])

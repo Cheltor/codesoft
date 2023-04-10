@@ -10,14 +10,25 @@
             <a class="nav-link" aria-current="page" href="/">Search</a>
           </li>
           <li><%= link_to "Codes", codes_path, class:"nav-link" %></li>
-          <li><%= link_to "My Violations", dashboard_path, class:"nav-link" %></li>
-          <li><%= link_to "All Violations", violations_path, class:"nav-link" %></li>
-          <li><%= link_to "SIR", sir_path, class:"nav-link" %></li>
-          <% if user_signed_in? %>
-          <li>
-            <!-- <%= link_to "Logout", destroy_user_session_path, method: :delete, class:"nav-link", data: { turbo: false } %>-->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Violations
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <li><%= link_to "All Violations", all_violations_path, class:"dropdown-item" %></li>
+              <li><%= link_to "My Violations", my_violations_path, class:"dropdown-item" %></li>
+            </ul>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Citations
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <li><%= link_to "All Citations", all_citations_path, class:"dropdown-item" %></li>
+              <li><%= link_to "My Citations", my_citations_path, class:"dropdown-item" %></li>
+            </ul>
           </li>
-          <% end %>
+          <li><%= link_to "SIR", sir_path, class:"nav-link" %></li>
+          <li><%= link_to "Helpful links", helpful_path, class:"nav-link" %></li>
         </ul>
       </div>
     </div>

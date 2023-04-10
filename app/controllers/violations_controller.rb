@@ -25,7 +25,7 @@ class ViolationsController < ApplicationController
   def show 
     @violation = Violation.find(params[:id])
     @address = @violation.address
-  end    
+  end
 
   def sir 
     if params[:start_date].present? && params[:end_date].present?

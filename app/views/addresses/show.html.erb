@@ -36,9 +36,11 @@
           <p><%= @address.ownername %></p>
           <h4>Owner Address:</h4>
           <p><%= @address.owneraddress %> <%= @address.ownercity %>, <%= @address.ownerstate %> <%= @address.ownerzip %></p>
-                <button type="button" class="btn btn-outline-primary btn-lg" data-bs-toggle="modal" data-bs-target="#allphotoModal">
-          All Attachments
-        </button>
+          <% if @address_photos.any? %>
+          <button type="button" class="btn btn-outline-primary btn-lg" data-bs-toggle="modal" data-bs-target="#allphotoModal">
+            All Attachments
+          </button>
+          <% end %>
         </div>
       </div>
 
@@ -66,26 +68,42 @@
           </div>
         </div>
       </div>
-
       <br>
       <h2 style="text-align: center">Violations</h2>
       <div style="text-align: center">
         <%= link_to "Create a Violation", new_address_violation_path(@address), class: "btn btn-outline-danger btn-lg" %>
       </div>
       <br>
-      <br>
+      <div class="table-responsive">
+        <table class="table table-striped table-hover">
+          <thead>
+            <tr>
+              <th scope="col">Violation Type</th>
+              <th scope="col">Deadline Date</th>
+              <th scope="col">Status</th>
+              <th scope="col">Created By</th>
+              <th scope="col">Show</th>
+            </tr>
+          </thead>
+          <tbody>
       <% @address.violations.order("created_at DESC").each do |violation| %>
-      <div class="d-grid gap-2">
-        <% if violation.deadline_passed? and violation.current? %>
-          <%= link_to "#{violation.violation_type} - #{violation.user.name} - #{violation.deadline_date.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y")}", address_violation_path(@address, violation), class: "btn btn-danger btn-lg" %>
-        <% elsif violation.current? %>
-          <%= link_to "#{violation.violation_type} - #{violation.user.name} - #{violation.deadline_date.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y")}", address_violation_path(@address, violation), class: "btn btn-warning btn-lg" %>
-        <% else %>
-          <%= link_to "#{violation.violation_type} - #{violation.user.name} - #{violation.deadline_date.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y")}", address_violation_path(@address, violation), class: "btn btn-secondary btn-lg" %>
-        <% end %>
-      </div>
-      <br>
+            <tr>
+              <td><%= violation.violation_type %></td>
+              <td><%= violation.deadline_date.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></td>
+              <td><%= violation.status.capitalize %></td>
+              <td><%= violation.user.name %></td>
+              <% if violation.status == "current" && violation.deadline_date < Date.today %>
+              <td><%= link_to "Show", address_violation_path(@address, violation), class: "btn btn-danger" %></td>
+              <% elsif violation.status == "current" && violation.deadline_date > Date.today %>
+              <td><%= link_to "Show", address_violation_path(@address, violation), class: "btn btn-warning" %></td>
+              <% else %>
+              <td><%= link_to "Show", address_violation_path(@address, violation), class: "btn btn-secondary" %></td>
+              <% end %>
+            </tr>
       <% end %>
+          </tbody>
+        </table>
+      </div>
     </div>
     <br>  
     <div class="col-xl-6">

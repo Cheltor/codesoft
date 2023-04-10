@@ -2,12 +2,13 @@
 <div class="container mt-5">
   <div class="row">
     <div class="col-12">
-      <h1 style="text-align:center">All Violations</h1>
-      <br>
-      <%= link_to "All Violations", all_violations_path, class:"btn btn-secondary" %>
-      <%= link_to "Current", all_violations_path(status: "current"), class:"btn btn-warning" %>
-      <%= link_to "Resolved", all_violations_path(status: "resolved"), class:"btn btn-success" %>
+    <% current_user.name ? (name = current_user.name) : (name = "My") %>
+    <h1 style="text-align:center"><%= name %> Violations</h1>
     <br>
+    <%= link_to "All Violations", my_violations_path, class:"btn btn-secondary" %>
+    <%= link_to "Current", my_violations_path(status: "current"), class:"btn btn-warning" %>
+    <%= link_to "Resolved", my_violations_path(status: "resolved"), class:"btn btn-success" %>
+      <br>
       <div class="table-responsive">
       <table class="table table-sm table-striped">
         <thead>
