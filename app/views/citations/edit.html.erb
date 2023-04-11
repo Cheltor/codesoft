@@ -1,14 +1,14 @@
 <div class="container mt-5">
   <div class="row">
     <div class="col">
-      <h1>Update Citation <%= @citation.id %></h1>
+      <h1>Update Citation - <%= @citation.violation.address.combadd %></h1>
         <%= form_for @citation do |f| %>
           <div class="form-group">
-            <%= f.label :status %>
+            <strong>Status</strong>
             <%= f.select :status, [["Unpaid", "unpaid"], ["Paid", "paid"], ["Pending Trial", "pending trial"], ["Dismissed", "dismissed"]], {}, class: "form-control" %>
           </div>
-          <div class="form-group">
-            <%= f.label :trial_date %>
+          <div class="form-group mt-2">
+            <strong>If going to trial, add the trial date:</strong>
             <%= f.date_field :trial_date, class: "form-control" %>
           </div>
           <%= f.submit "Update Citation", class: "btn btn-primary mt-5" %>

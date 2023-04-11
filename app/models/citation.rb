@@ -2,6 +2,7 @@ class Citation < ApplicationRecord
   belongs_to :violation
   belongs_to :user
   belongs_to :code
+  has_many_attached :photos
 
   validates :fine, presence: true
   validates :deadline, presence: true

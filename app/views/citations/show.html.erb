@@ -1,3 +1,5 @@
+<% content_for :title, @citation.violation.address.combadd %>
+
 <div class="container mt-5">
   <div class="row">
     <div class="col">
@@ -7,11 +9,47 @@
       <p><strong>Violation:</strong> <%= link_to @citation.violation.violation_type, violation_path(@citation.violation), class: "btn btn-secondary" %></p>
       <p><strong>Amount:</strong> <%= number_to_currency(@citation.fine) %></p>
       <p><strong>Deadline:</strong> <%= @citation.deadline.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></p>
-      <p><strong>Status:</strong> <%= @citation.status.capitalize %></p>
+      <p><strong>Status:</strong>
+        <% if @citation.status == "unpaid" && @citation.deadline < Date.today %>
+          <%= link_to "Unpaid", edit_citation_path(@citation), class:"btn btn-danger" %>
+        <% elsif @citation.status == "unpaid" && @citation.deadline > Date.today %>
+          <%= link_to "Unpaid", edit_citation_path(@citation), class:"btn btn-warning" %>
+        <% elsif @citation.status == "paid" %>
+          <%= link_to "Paid", edit_citation_path(@citation), class:"btn btn-success" %> on <%= @citation.updated_at.in_time_zone("Eastern Time (US & Canada)").strftime("%m/%d/%Y") %>
+        <% elsif @citation.status == "dismissed" %>
+          <%= link_to "Dismissed", edit_citation_path(@citation), class:"btn btn-secondary" %>
+        <% elsif @citation.status == "pending trial" %>
+          <%= link_to "Pending Trial", edit_citation_path(@citation), class:"btn btn-info" %> on <%= @citation.trial_date.strftime("%m/%d/%Y") %>
+        <% end %>
+      </p>
       <% if @citation.trial_date.present? %>
       <p><strong>Trial Date:</strong> <%= @citation.trial_date.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></p>
       <% end %>
-      <%= link_to "Update Citation", edit_citation_path(@citation), class: "btn btn-primary" %>
+      <% if @citation.photos.attached? %>
+      <p><strong>Attachment:</strong></p>
+
+      <!-- Button trigger modal -->
+      <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        Attachments
+      </button>
+
+      <!-- Modal -->
+      <div class="modal fade custom-modal-lg" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Attachments</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <% @citation.photos.each do |photo| %>
+              <%= image_tag photo, class: "img-fluid" %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+      <% end %>
     </div>
   </div>
 </div>
