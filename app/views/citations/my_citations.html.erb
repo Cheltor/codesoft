@@ -1,34 +1,62 @@
 <div class="container mt-5">
   <div class="row">
     <div class="col">
-    <% current_user.name ? (name = current_user.name) : (name = "My") %>
-    <h1 style="text-align:center"><%= name %> Citations</h1>
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th scope="col">Citation Number</th>
-          <th scope="col">Date Issued</th>
-          <th scope="col">Deadline</th>
-          <th scope="col">Amount</th>
-          <th scope="col">Status</th>
-          <th scope="col">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <% @citations.each do |citation| %>
-          <tr>
-            <td><%= citation.id %></td>
-            <td><%= citation.created_at.strftime("%m/%d/%Y") %></td>
-            <td><%= citation.deadline %></td>
-            <td><%= number_to_currency(citation.fine) %></td>
-            <td>Status</td>
-            <td>
-
-            </td>
-          </tr>
-        <% end %>
-      </tbody>
-
+      <% current_user.name ? (name = current_user.name) : (name = "My") %>
+      <h1 style="text-align:center"><%= name %> Citations</h1>
+      <br>
+        <%= link_to "All Citations", my_citations_path, class:"btn btn-secondary" %>
+        <%= link_to "Current", my_citations_path(status: "current"), class:"btn btn-warning" %>
+        <%= link_to "Resolved", my_citations_path(status: "resolved"), class:"btn btn-success" %>
+      <br>
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">Address</th>
+              <th scope="col">Code</th>
+              <th scope="col">Deadline</th>
+              <th scope="col">Amount</th>
+              <th scope="col">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @citations.each do |citation| %>
+              <tr>
+                <td>
+                  <%= link_to citation.violation.address.combadd, citation.violation.address, class:"btn btn-outline-dark" %>
+                </td>
+                <td>
+                  <button class="btn btn-outline-dark" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop<%= citation.code.id %>" aria-controls="offcanvasTop"><strong><%= citation.code.name %></strong></button>
+                  <div class="offcanvas offcanvas-top" tabindex="-1" id="offcanvasTop<%= citation.code.id %>" aria-labelledby="offcanvasTopLabel">
+                    <div class="offcanvas-header">
+                      <h5 id="offcanvasTopLabel"><%= citation.code.name %></h5>
+                      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    </div>
+                    <div class="offcanvas-body">
+                      <%= citation.code.description %>
+                    </div>
+                  </div>
+                </td>
+                <td><%= citation.deadline.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></td>
+                <td><%= number_to_currency(citation.fine) %></td>
+                <td>
+                <% if citation.status == "unpaid" && citation.deadline < Date.today %>
+                  <%= link_to "Unpaid", edit_citation_path(citation), class:"btn btn-danger" %>
+                <% elsif citation.status == "unpaid" && citation.deadline > Date.today %>
+                  <%= link_to "Unpaid", edit_citation_path(citation), class:"btn btn-warning" %>
+                <% elsif citation.status == "paid" %>
+                  <%= link_to "Paid", edit_citation_path(citation), class:"btn btn-success" %> on <%= citation.updated_at.in_time_zone("Eastern Time (US & Canada)").strftime("%m/%d/%Y") %>
+                <% elsif citation.status == "dismissed" %>
+                  <%= link_to "Dismissed", edit_citation_path(citation), class:"btn btn-secondary" %>
+                <% elsif citation.status == "pending trial" %>
+                  <%= link_to "Pending Trial", edit_citation_path(citation), class:"btn btn-info" %> on <%= citation.trial_date.strftime("%m/%d/%Y") %>
+                <% end %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </div>

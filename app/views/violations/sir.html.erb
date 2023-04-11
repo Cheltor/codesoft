@@ -46,7 +46,7 @@
           <tr class="table-danger">
           <td><%= link_to violation.address.combadd, address_path(violation.address), class: "btn btn-danger" %></td>
           <td><%= violation.violation_type %></td>
-            <td><%= violation.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y at %I:%M%p") %></td>
+            <td><%= violation.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></td>
             <td><%= violation.user.name %></td>
             <td>
               <% violation.codes.each do |code| %>
@@ -72,7 +72,7 @@
           <td><%= link_to violation.address.combadd, address_path(violation.address), class: "btn btn-warning" %></td>
                     <td><%= violation.violation_type %></td>
 
-            <td><%= violation.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y at %I:%M%p") %></td>
+            <td><%= violation.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></td>
             <td><%= violation.user.name %></td>
             <td>
             <% violation.codes.each do |code| %>
@@ -99,7 +99,7 @@
           <td><%= link_to violation.address.combadd, address_path(violation.address), class: "btn btn-success" %></td>
                     <td><%= violation.violation_type %></td>
 
-            <td><%= violation.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y at %I:%M%p") %></td>
+            <td><%= violation.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></td>
             <td><%= violation.user.name %></td>
             <td>
             <% violation.codes.each do |code| %>

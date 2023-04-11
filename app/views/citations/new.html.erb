@@ -1,7 +1,7 @@
 <div class="container">
   <div class="row mt-5">
     <h2>Record a Citation</h2>
-    <%= form_with model: [@address, @violation, @citation], url: address_violation_citations_path(@address, @violation), class: "form-horizontal" do |f| %>
+    <%= form_with model: [@violation, @citation], url: violation_citations_path(@violation), class: "form-horizontal" do |f| %>
       <div class="form-group">
         <strong>Fine</strong>
         <div class="col-sm-10">

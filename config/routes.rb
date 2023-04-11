@@ -2,8 +2,8 @@ Rails.application.routes.draw do
   resources :codes
   devise_for :users
   resources :addresses do
-    resources :violations do
-      resources :citations
+    resources :violations, shallow: true do
+      resources :citations, shallow: true
       patch :resolve, on: :member
       patch :extender, on: :member
       patch :update, on: :member

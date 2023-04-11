@@ -57,7 +57,7 @@
             <tr class="table-warning">
             <% end %>
               <td><%= link_to violation.address.combadd, address_path(violation.address), class: "btn btn-warning" %></td>
-              <td><%= violation.violation_type %>
+              <td><%= link_to violation.violation_type,violation_path(violation), class: "btn btn-warning" %>
               </td>
               <td><% violation.codes.each do |code| %>
                     
@@ -106,7 +106,19 @@
               <td><%= link_to citation.violation.address.combadd, address_path(citation.violation.address), class: "btn btn-warning" %></td>
               <td><%= number_to_currency(citation.fine) %></td>
               <td><%= citation.deadline.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></td>
-              <td>Status</td>
+              <td>
+              <% if citation.status == "unpaid" && citation.deadline < Date.today %>
+                <%= link_to "Unpaid", edit_citation_path(citation), class:"btn btn-danger" %>
+              <% elsif citation.status == "unpaid" && citation.deadline > Date.today %>
+                <%= link_to "Unpaid", edit_citation_path(citation), class:"btn btn-warning" %>
+              <% elsif citation.status == "paid" %>
+                <%= link_to "Paid", edit_citation_path(citation), class:"btn btn-success" %> on <%= citation.updated_at.in_time_zone("Eastern Time (US & Canada)").strftime("%m/%d/%Y") %>
+              <% elsif citation.status == "dismissed" %>
+                <%= link_to "Dismissed", edit_citation_path(citation), class:"btn btn-secondary" %>
+              <% elsif citation.status == "pending trial" %>
+                <%= link_to "Pending Trial", edit_citation_path(citation), class:"btn btn-info" %> on <%= citation.trial_date.strftime("%m/%d/%Y") %>
+              <% end %>
+              </td>
             </tr>
           <% end %>
           </tbody>

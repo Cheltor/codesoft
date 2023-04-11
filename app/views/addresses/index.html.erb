@@ -65,7 +65,7 @@
             <% end %></div></div>
             </strong>
             <br>
-            <%= violation.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y at %I:%M%p") %>
+            <%= violation.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %>
         </div>
         
         <% if violation.photos.attached? %>
@@ -120,7 +120,7 @@
     <% end %>
       <strong><%= truncate(comment.content, length: 200) %></strong> - <%= comment.user.email.split("@").first %>
       <br>
-      <%= comment.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y at %I:%M%p") %>
+      <%= comment.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %>
     </div>
               <% if comment.photos.attached? %>
               <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#comment-<%= comment.id %>">

@@ -2,7 +2,7 @@
 <br>
   <h1>Update to a Violation Notice</h1>
 
-  <%= form_with(model: [@address, @violation], local: true) do |form| %>
+  <%= form_with(model: [@violation], local: true) do |form| %>
 
   <% if @violation.errors.any? %>
     <div id="error_explanation">

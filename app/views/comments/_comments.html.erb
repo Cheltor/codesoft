@@ -1,7 +1,6 @@
-<h3>Comments</h3>
 <% @address.comments.order("created_at DESC").each do |comment| %>
 <div class="card"><div class="card-body">
-  <p><%= comment.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y at %I:%M%p") %> 
+  <p><%= comment.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %> 
   <br>
   <strong><%= comment.user.email.split("@").first %></strong> says: 
   <br>

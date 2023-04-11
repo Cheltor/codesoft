@@ -1,0 +1,17 @@
+<div class="container mt-5">
+  <div class="row">
+    <div class="col">
+
+      <h1>Citation</h1>
+      <p><strong>Address:</strong> <%= link_to @citation.violation.address.combadd, address_path(@citation.violation.address), class: "btn btn-secondary" %></p>
+      <p><strong>Violation:</strong> <%= link_to @citation.violation.violation_type, violation_path(@citation.violation), class: "btn btn-secondary" %></p>
+      <p><strong>Amount:</strong> <%= number_to_currency(@citation.fine) %></p>
+      <p><strong>Deadline:</strong> <%= @citation.deadline.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></p>
+      <p><strong>Status:</strong> <%= @citation.status.capitalize %></p>
+      <% if @citation.trial_date.present? %>
+      <p><strong>Trial Date:</strong> <%= @citation.trial_date.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></p>
+      <% end %>
+      <%= link_to "Update Citation", edit_citation_path(@citation), class: "btn btn-primary" %>
+    </div>
+  </div>
+</div>

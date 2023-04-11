@@ -1,5 +1,5 @@
 class ViolationsController < ApplicationController
-  before_action :set_address, except: [:sir, :show]
+  before_action :set_address, except: [:sir, :show, :edit, :update]
   before_action :set_violation, only: [:resolve, :extender, :update, :edit]
   layout 'new_violation', only: [:new, :edit]
 
@@ -119,14 +119,21 @@ class ViolationsController < ApplicationController
   private
 
   def set_address
-    @address = Address.find(params[:address_id])
-  end
+    if params[:address_id].present?
+      @address = Address.find(params[:address_id])
+    elsif params[:id].present?
+      @violation = Violation.find(params[:id])
+      @address = @violation.address
+    end
+  end  
 
   def violation_params
     params.require(:violation).permit(:description, :deadline, :status, :extend, :violation_type, photos: [], code_ids: [])
   end
 
   def set_violation
-    @violation = @address.violations.find(params[:id])
+    @violation = Violation.find(params[:id])
+    @address = @violation.address
   end
+  
 end

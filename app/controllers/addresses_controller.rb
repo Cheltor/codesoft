@@ -44,7 +44,7 @@ class AddressesController < ApplicationController
           @status = "all"
         end
       
-        @violations = @violations.order(created_at: :desc)
+        @violations = @violations.where(user: current_user).order(created_at: :desc)
       end
 
     def search

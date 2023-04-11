@@ -3,7 +3,7 @@
 <br>
 <div class="container mb-5">
   <div class="row">
-    <div class="col-xl-6">  
+    <div class="col mt-5">
       <div class="card">
         <div class="card-body">
           <h2><%= @address.combadd %> <a href="https://www.google.com/maps/search/?api=1&query=<%= @address.combadd %>+MD+<%= @address.premisezip %>" target="_blank" class="btn btn-secondary">Search on Google Maps</a>
@@ -43,6 +43,31 @@
           <% end %>
         </div>
       </div>
+      <div class="card mt-5" style="background-color: #e3f2fd;">
+        <div class="card-body">
+          <%= render 'comments/form' %>
+        </div>
+      </div>
+      <br>
+      <div class="card" style="background-color: #e3f2fd;">
+        <div class="card-body">
+          <div class="accordion" id="accordionExample">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingOne">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                  <strong>Show Comments</strong>
+                </button>
+              </h2>
+              <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                  <%= render 'comments/comments' %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
 
       <!-- Modal -->
       <div class="modal fade custom-modal-lg" id="allphotoModal">
@@ -68,7 +93,8 @@
           </div>
         </div>
       </div>
-      <br>
+    </div>
+    <div class="col mt-5">
       <h2 style="text-align: center">Violations</h2>
       <div style="text-align: center">
         <%= link_to "Create a Violation", new_address_violation_path(@address), class: "btn btn-outline-danger btn-lg" %>
@@ -82,48 +108,28 @@
               <th scope="col">Deadline Date</th>
               <th scope="col">Status</th>
               <th scope="col">Created By</th>
-              <th scope="col">Show</th>
             </tr>
           </thead>
           <tbody>
-      <% @address.violations.order("created_at DESC").each do |violation| %>
+          <% @address.violations.order("created_at DESC").each do |violation| %>
             <tr>
-              <td><%= violation.violation_type %></td>
+            <% if violation.status == "current" && violation.deadline_date < Date.today %>
+              <td><%= link_to violation.violation_type, violation_path(violation), class:"btn btn-danger" %></td>
+              <% elsif violation.status == "current" && violation.deadline_date > Date.today %>
+              <td><%= link_to violation.violation_type, violation_path(violation), class:"btn btn-warning" %></td>
+              <% else %>
+              <td><%= link_to violation.violation_type, violation_path(violation), class:"btn btn-secondary" %></td>
+              <% end %>
               <td><%= violation.deadline_date.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></td>
               <td><%= violation.status.capitalize %></td>
               <td><%= violation.user.name %></td>
-              <% if violation.status == "current" && violation.deadline_date < Date.today %>
-              <td><%= link_to "Show", address_violation_path(@address, violation), class: "btn btn-danger" %></td>
-              <% elsif violation.status == "current" && violation.deadline_date > Date.today %>
-              <td><%= link_to "Show", address_violation_path(@address, violation), class: "btn btn-warning" %></td>
-              <% else %>
-              <td><%= link_to "Show", address_violation_path(@address, violation), class: "btn btn-secondary" %></td>
-              <% end %>
             </tr>
-      <% end %>
+            <% end %>
           </tbody>
         </table>
       </div>
-    </div>
-    <br>  
-    <div class="col-xl-6">
-      <div class="card" style="background-color: #e3f2fd;">
-        <div class="card-body">
-          <%= render 'comments/form' %>
-        </div>
-      </div>
-      <br>
-      <div class="card" style="background-color: #e3f2fd;">
-        <div class="card-body">
-          <%= render 'comments/comments' %>
-        </div>
-      </div>
-    </div>
-  </div>
-  <% if @address_citations.any? %>
-  <div class="row">
-    <div class="col">
-      <h2>Citations</h2>
+      <% if @address_citations.any? %>
+      <h2 style="text-align:center">Citations</h2>
       <div class="table-responsive">
         <table class="table table-striped table-hover">
           <thead>
@@ -132,20 +138,31 @@
               <th scope="col">Created By</th>
               <th scope="col">Amount</th>
               <th scope="col">Status</th>
-              <th scope="col">Actions</th>
             </tr>
           </thead>
           <tbody>
             <% @address_citations.each do |citation| %>
             <tr>
-              <td><%= citation.id %></td>
+              <% if citation.status == "unpaid" && citation.deadline < Date.today %>
+              <td><%= link_to citation.id, citation_path(citation), class:"btn btn-danger" %></td>
+              <% elsif citation.status == "unpaid" && citation.deadline > Date.today %>
+              <td><%= link_to citation.id, citation_path(citation), class:"btn btn-warning" %></td>
+              <% elsif citation.status == "paid" %>
+              <td><%= link_to citation.id, citation_path(citation), class:"btn btn-success" %></td>
+              <% elsif citation.status == "dismissed" %>
+              <td><%= link_to citation.id, citation_path(citation), class:"btn btn-secondary" %></td>
+              <% elsif citation.status == "pending trial" %>
+              <td><%= link_to citation.id, citation_path(citation), class:"btn btn-info" %></td>
+              <% end %>
               <td><%= citation.user.name %></td>
               <td><%= number_to_currency(citation.fine) %></td>
-              <td>Status</td>
-              <td>Actions</td>
+              <td><%= citation.status.capitalize %></td>
             </tr>
           <% end %>
+          </tbody>
+        </table>
+      </div>
+      <% end %>
     </div>
   </div>
-  <% end %>
 </div>

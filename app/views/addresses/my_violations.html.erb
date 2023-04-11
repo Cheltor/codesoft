@@ -16,7 +16,6 @@
             <th>Address</th>
             <th>Type</th>
             <th>Created</th>
-            <th>ONS</th>
             <th>Code(s)</th>
             <th>Deadline</th>
           </tr>
@@ -29,13 +28,12 @@
           <% if violation.deadline_passed? %>
           <tr class="table-danger">
           <td><%= link_to violation.address.combadd, address_path(violation.address), class: "btn btn-danger" %></td>
-          <td><%= violation.violation_type %></td>
-            <td><%= violation.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y at %I:%M%p") %></td>
-            <td><%= violation.user.name %></td>
+          <td><%= link_to violation.violation_type, violation_path(violation), class: "btn btn-danger" %></td>
+            <td><%= violation.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></td>
             <td>
               <% violation.codes.each do |code| %>
                   
-              <button class="btn " type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop<%= code.id %>" aria-controls="offcanvasTop"><%= code.name %></button>
+              <button class="btn btn-outline-dark" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop<%= code.id %>" aria-controls="offcanvasTop"><%= code.name %></button>
 
               <div class="offcanvas offcanvas-top" tabindex="-1" id="offcanvasTop<%= code.id %>" aria-labelledby="offcanvasTopLabel">
                 <div class="offcanvas-header">
@@ -54,14 +52,13 @@
           <% else %>
           <tr class="table-warning">
           <td><%= link_to violation.address.combadd, address_path(violation.address), class: "btn btn-warning" %></td>
-                    <td><%= violation.violation_type %></td>
+          <td><%= link_to violation.violation_type, violation_path(violation), class: "btn btn-warning" %></td>
 
-            <td><%= violation.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y at %I:%M%p") %></td>
-            <td><%= violation.user.name %></td>
+            <td><%= violation.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></td>
             <td>
             <% violation.codes.each do |code| %>
                   
-              <button class="btn " type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop<%= code.id %>" aria-controls="offcanvasTop"><%= code.name %></button>
+              <button class="btn btn-outline-dark" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop<%= code.id %>" aria-controls="offcanvasTop"><%= code.name %></button>
 
               <div class="offcanvas offcanvas-top" tabindex="-1" id="offcanvasTop<%= code.id %>" aria-labelledby="offcanvasTopLabel">
                 <div class="offcanvas-header">
@@ -81,14 +78,13 @@
           <%else%>
           <tr class="table-success">
           <td><%= link_to violation.address.combadd, address_path(violation.address), class: "btn btn-success" %></td>
-                    <td><%= violation.violation_type %></td>
+          <td><%= link_to violation.violation_type, violation_path(violation), class: "btn btn-success" %></td>
 
-            <td><%= violation.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y at %I:%M%p") %></td>
-            <td><%= violation.user.name %></td>
+            <td><%= violation.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></td>
             <td>
             <% violation.codes.each do |code| %>
                   
-              <button class="btn " type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop<%= code.id %>" aria-controls="offcanvasTop"><%= code.name %></button>
+              <button class="btn btn-outline-dark" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop<%= code.id %>" aria-controls="offcanvasTop"><%= code.name %></button>
 
               <div class="offcanvas offcanvas-top" tabindex="-1" id="offcanvasTop<%= code.id %>" aria-labelledby="offcanvasTopLabel">
                 <div class="offcanvas-header">

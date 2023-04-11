@@ -11,5 +11,6 @@ class User < ApplicationRecord
     has_many :addresses, through: :comments
 
     has_many :violations
+    has_many :citations, through: :violations
 
   end
