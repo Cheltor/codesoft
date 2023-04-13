@@ -18,8 +18,10 @@
           <%= link_to "Paid", edit_citation_path(@citation), class:"btn btn-success" %> on <%= @citation.updated_at.in_time_zone("Eastern Time (US & Canada)").strftime("%m/%d/%Y") %>
         <% elsif @citation.status == "dismissed" %>
           <%= link_to "Dismissed", edit_citation_path(@citation), class:"btn btn-secondary" %>
-        <% elsif @citation.status == "pending trial" %>
+        <% elsif @citation.status == "pending trial" && citaiton.trial_date.present? %> 
           <%= link_to "Pending Trial", edit_citation_path(@citation), class:"btn btn-info" %> on <%= @citation.trial_date.strftime("%m/%d/%Y") %>
+        <% elsif @citation.status == "pending trial" && citaiton.trial_date.nil? %>
+          <%= link_to "Pending Trial", edit_citation_path(@citation), class:"btn btn-info" %>
         <% end %>
       </p>
       <% if @citation.trial_date.present? %>
