@@ -21,7 +21,7 @@ class CitationsController < ApplicationController
 
   def my_citations
     @status = params[:status]
-    @citations = Citation.where(user: current_user)
+    @citations = Citation.where(user: current_user).order(created_at: :desc)
 
     case @status
     when "current"
@@ -39,7 +39,7 @@ class CitationsController < ApplicationController
 
   def all_citations
     @status = params[:status]
-    @citations = Citation.all
+    @citations = Citation.all.order(created_at: :desc)
 
     case @status
     when "current"

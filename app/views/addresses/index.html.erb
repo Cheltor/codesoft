@@ -50,18 +50,7 @@
           <strong>
           <div class="card"><div class="card-body">
             <% violation.codes.each do |code| %>
-              <button class="btn btn-sm" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop<%= code.id %>" aria-controls="offcanvasTop"><%= code.name %></button>
-
-              <div class="offcanvas offcanvas-top" tabindex="-1" id="offcanvasTop<%= code.id %>" aria-labelledby="offcanvasTopLabel">
-                <div class="offcanvas-header">
-                  <h5 id="offcanvasTopLabel"><%= code.name %></h5>
-                  <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                </div>
-                <div class="offcanvas-body">
-                  <%= code.description %>
-                </div>
-              </div>
-
+              <%= render partial: 'shared/code_def_show', locals: { code: code } %>
             <% end %></div></div>
             </strong>
             <br>

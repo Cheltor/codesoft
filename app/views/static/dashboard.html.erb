@@ -61,17 +61,8 @@
               </td>
               <td><% violation.codes.each do |code| %>
                     
-                <button class="btn btn-outline-dark" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop<%= code.id %>" aria-controls="offcanvasTop"><strong><%= code.name %></strong></button>
+              <%= render partial: 'shared/code_def_show', locals: { code: code } %>
 
-                <div class="offcanvas offcanvas-top" tabindex="-1" id="offcanvasTop<%= code.id %>" aria-labelledby="offcanvasTopLabel">
-                  <div class="offcanvas-header">
-                    <h5 id="offcanvasTopLabel"><%= code.name %></h5>
-                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                  </div>
-                  <div class="offcanvas-body">
-                    <%= code.description %>
-                  </div>
-                </div>
 
                   <% end %></td>
               <td><%= violation.deadline_date.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></td>
@@ -123,16 +114,8 @@
               <% end %>
               </td>
               <td>
-                <button class="btn btn-outline-dark" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop<%= citation.code.id %>" aria-controls="offcanvasTop"><strong><%= citation.code.name %></strong></button>
-                <div class="offcanvas offcanvas-top" tabindex="-1" id="offcanvasTop<%= citation.code.id %>" aria-labelledby="offcanvasTopLabel">
-                  <div class="offcanvas-header">
-                    <h5 id="offcanvasTopLabel"><%= citation.code.name %></h5>
-                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                  </div>
-                  <div class="offcanvas-body">
-                    <%= citation.code.description %>
-                  </div>
-                </div>
+              <%= render partial: 'shared/code_def_show', locals: { code: citation.code } %>
+
               </td>
             </tr>
           <% end %>

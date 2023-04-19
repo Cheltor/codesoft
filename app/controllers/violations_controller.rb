@@ -42,7 +42,7 @@ class ViolationsController < ApplicationController
     @violation.user = current_user
 
     if @violation.save
-      redirect_to @address, notice: "Violation reported successfully."
+      redirect_to @violation, notice: "Violation reported successfully."
     else
       render :new
     end
@@ -50,9 +50,9 @@ class ViolationsController < ApplicationController
 
   def resolve
     if @violation.update(status: :resolved)
-      redirect_to @address, notice: "Violation resolved successfully."
+      redirect_to @violation, notice: "Violation resolved successfully."
     else
-      redirect_to @address, alert: "Failed to resolve violation."
+      redirect_to @violation, alert: "Failed to resolve violation."
     end
   end
 
@@ -61,9 +61,9 @@ class ViolationsController < ApplicationController
     @violation.extend += days
     if @violation.save
       @violation.reload
-      redirect_to @address, notice: "Extended by #{days} days"
+      redirect_to @violation, notice: "Extended by #{days} days"
     else
-      redirect_to @address, alert: "Failed to extend"
+      redirect_to @violation, alert: "Failed to extend"
     end
   end
 
