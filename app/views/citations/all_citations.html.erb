@@ -25,16 +25,8 @@
                 <%= link_to citation.violation.address.combadd, citation.violation.address, class:"btn btn-outline-dark" %>
               </td>
               <td>
-                <button class="btn btn-outline-dark" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop<%= citation.code.id %>" aria-controls="offcanvasTop"><strong><%= citation.code.name %></strong></button>
-                <div class="offcanvas offcanvas-top" tabindex="-1" id="offcanvasTop<%= citation.code.id %>" aria-labelledby="offcanvasTopLabel">
-                  <div class="offcanvas-header">
-                    <h5 id="offcanvasTopLabel"><%= citation.code.name %></h5>
-                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                  </div>
-                  <div class="offcanvas-body">
-                    <%= citation.code.description %>
-                  </div>
-                </div>
+              <%= render partial: 'shared/code_def_show', locals: { code: citation.code } %>
+
               </td>
               <td><%= citation.deadline.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></td>
               <td><%= number_to_currency(citation.fine) %></td>
