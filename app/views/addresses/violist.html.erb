@@ -6,7 +6,7 @@
       <br>
       <%= link_to "All Violations", all_violations_path, class:"btn btn-secondary" %>
       <%= link_to "Current", all_violations_path(status: "current"), class:"btn btn-warning" %>
-      <%= link_to "Resolved", all_violations_path(status: "resolved"), class:"btn btn-success" %>
+      <%= link_to "Closed", all_violations_path(status: "resolved"), class:"btn btn-success" %>
     <br>
       <div class="table-responsive">
       <table class="table table-sm table-striped">
