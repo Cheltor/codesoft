@@ -99,7 +99,7 @@
               <td><%= number_to_currency(citation.fine) %></td>
               <td><%= citation.deadline.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></td>
               <td>
-              <% if citation.status == "unpaid" && citation.deadline < Date.today %>
+              <% if citation.status == "unpaid" && citation.deadline <= Date.today %>
                 <%= link_to "Unpaid", citation_path(citation), class:"btn btn-danger" %>
               <% elsif citation.status == "unpaid" && citation.deadline > Date.today %>
                 <%= link_to "Unpaid", citation_path(citation), class:"btn btn-warning" %>

@@ -10,7 +10,7 @@
       <p><strong>Amount:</strong> <%= number_to_currency(@citation.fine) %></p>
       <p><strong>Deadline:</strong> <%= @citation.deadline.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></p>
       <p><strong>Status:</strong>
-        <% if @citation.status == "unpaid" && @citation.deadline < Date.today %>
+        <% if @citation.status == "unpaid" && @citation.deadline <= Date.today %>
           <%= link_to "Unpaid", edit_citation_path(@citation), class:"btn btn-danger" %>
         <% elsif @citation.status == "unpaid" && @citation.deadline > Date.today %>
           <%= link_to "Unpaid", edit_citation_path(@citation), class:"btn btn-warning" %>

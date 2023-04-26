@@ -127,7 +127,7 @@
               </div>
               </td>
               <td>
-                            <% if citation.status == "unpaid" && citation.deadline < Date.today %>
+                            <% if citation.status == "unpaid" && citation.deadline <= Date.today %>
                 <%= link_to "Unpaid", citation_path(citation), class:"btn btn-danger" %>
               <% elsif citation.status == "unpaid" && citation.deadline > Date.today %>
                 <%= link_to "Unpaid", citation_path(citation), class:"btn btn-warning" %>

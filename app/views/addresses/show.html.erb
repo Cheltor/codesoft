@@ -152,7 +152,7 @@
               <td><%= citation.user.name %></td>
               <td><%= number_to_currency(citation.fine) %></td>
               <td>
-              <% if citation.status == "unpaid" && citation.deadline < Date.today %>
+              <% if citation.status == "unpaid" && citation.deadline <= Date.today %>
                 <%= link_to citation.status.capitalize, citation_path(citation), class:"btn btn-danger" %>
               <% elsif citation.status == "unpaid" && citation.deadline > Date.today %>
                 <%= link_to citation.status.capitalize, citation_path(citation), class:"btn btn-warning" %>
