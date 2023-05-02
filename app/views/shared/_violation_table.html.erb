@@ -1,0 +1,16 @@
+<% if violation.deadline_passed? %>
+<tr class="table-danger">
+<% else %>
+<tr class="table-warning">
+<% end %>
+  <td><%= link_to violation.address.combadd, address_path(violation.address), class: "btn btn-danger" %></td>
+  <td><%= link_to violation.violation_type,violation_path(violation), class: "btn btn-danger" %>
+  </td>
+  <td><% violation.codes.each do |code| %>
+        
+  <%= render partial: 'shared/code_def_show', locals: { code: code } %>
+
+
+      <% end %></td>
+  <td><%= violation.deadline_date.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></td>
+</tr>

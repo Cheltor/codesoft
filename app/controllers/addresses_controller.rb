@@ -9,8 +9,7 @@ class AddressesController < ApplicationController
         @address = Address.find(params[:id])
         @address_photos = (
                             @address.violations.map(&:photos) + 
-                            @address.comments.map(&:photos) + 
-                            @address.violations.citations.map(&:photos)
+                            @address.comments.map(&:photos)
                           ).flatten.sort_by(&:created_at).reverse
         @address_citations = @address.violations.map(&:citations).flatten
     end

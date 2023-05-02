@@ -1,0 +1,31 @@
+<div class="container">
+  <div class="row mt-5">
+    <div class="col">
+    <h1>List of Users</h1>
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @users.each do |user| %>
+            <tr>
+              <%= form_for(user, url: update_user_path(user), method: :put) do |f| %>
+                <td><%= f.text_field :name, value: user.name %></td>
+                <td><%= user.email %></td>
+                <td><%= f.select :role, User.roles.keys, {selected: user.role}, {class: "form-control"} %></td>
+                <td><%= f.submit "Update", class: "btn btn-primary" %></td>
+              <% end %>
+            </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

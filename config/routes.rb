@@ -16,10 +16,16 @@ Rails.application.routes.draw do
   get 'my_violations' => 'addresses#my_violations'
   get 'helpful' => 'static#helpful'
 
+  authenticated :user, ->(u) { u.admin? } do
+    root 'static#admin', as: :admin_root
+  end
+
   root 'static#dashboard'
   get "sir" => "violations#sir"
   get 'my_citations' => 'citations#my_citations'
   get 'all_citations' => 'citations#all_citations'
+  get 'admin_user' => 'static#admin_user'
+  put "/update_user/:id", to: "static#update_user", as: "update_user"
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

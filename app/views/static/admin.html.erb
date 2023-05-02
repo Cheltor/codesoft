@@ -1,0 +1,113 @@
+<div class="container mt-5">
+  <div class="row">
+    <div class="col">
+      <div class="card" style="background-color: #e3f2fd;">
+        <div class="card-body">
+          <%= search_form_for @q, url: root_path, method: :get do |f| %>
+          <%= f.search_field :combadd_cont, class:"form-control form-control-lg", placeholder: "Type in the address here", required: true, minlength: 4, style: "text-align:center" %>
+          <br><div style="text-align:center"><%= f.submit "Search", class:"btn btn-primary" %></div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <% if params[:q].present? %>
+  <div class="row mt-5">
+    <div class="col">
+      <h1 style="text-align:center">Search Results</h1>
+      <table class="table table-striped">
+        <thead class="thead-light">
+          <tr>
+            <th scope="col">Address</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @addresses.each do |address| %>
+          <tr>
+          <% if address.violations.current.exists? == true %>
+            <td><%= link_to address.combadd, address_path(address), class:"btn btn-warning" %></td>
+          <% else %>
+            <td><%= link_to address.combadd, address_path(address), class:"btn btn-primary" %></td>
+          <% end %>
+          </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <% end %>
+
+
+
+  <div class="row">
+    <div class="col">
+      <%= form_tag root_path, method: :get do %>
+        <label for="onsstaff">ONS Staff:</label>
+        <%= select_tag(:onsstaff, options_for_select([["All", ""]] + @ons_users.map{ |user| [user.email] }), class: "form-control") %>
+        <%= submit_tag "Show", class: "btn btn-primary mt-3" %>
+      <% end %>  
+
+      <% if params[:onsstaff].present? %>
+      <h1 style="text-align: center"><%= @user.name %></h1>
+      <% else %>
+      <h1>All ONS Staff</h1>
+      <% end %>
+      <h3>Active Violations</h3>
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Address</th>
+              <th>Owner</th>
+              <th>Created</th>
+              <th>Deadline</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @violations.each do |violation| %>
+              <%= render partial: "shared/violation_table", locals: {violation: violation} %>
+            <% end %>
+          </tbody>
+        </table>        
+      </div>
+      <h3>Active Citations</h3>
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Address</th>
+              <th>Owner</th>
+              <th>Created</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @citations.each do |citation| %>
+              <%= render partial: "shared/citation_table", locals: {citation: citation} %>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+      <h3>Comments</h3>
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>Address</th>
+              <th>Content</th>
+              <th>Created</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @comments.each do |comment| %>
+            <tr>
+              <td><%= comment.address.combadd %></td>
+              <td><%= comment.content %></td>
+              <td><%= comment.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></td>
+            </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
