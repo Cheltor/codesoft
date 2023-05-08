@@ -1,12 +1,88 @@
 <% content_for :title, @citation.violation.address.combadd %>
 
-<div class="container mt-5">
-  <div class="row">
-    <div class="col">
+<div class="row">
+  <div class="col-sm-4 d-none d-sm-block">
+    <%# address information %>
+    <h2><%= @address.combadd %></h2>
+    <%# link to google maps from icon %>
+    <a href="https://www.google.com/maps/search/?api=1&query=<%= @address.combadd %>+MD+<%= @address.premisezip %>" target="_blank" class="btn btn-secondary mb-2">
+    <i class="bi bi-geo-alt-fill"></i> Search on Google Maps</a>
+    <br>
+    <% if @address_photos.any? %>
+    <button type="button" class="btn btn-primary mt-2 mb-2" data-bs-toggle="modal" data-bs-target="#allphotoModal">
+      <i class="bi bi-paperclip"></i>
+      All Photos and Attachments
+    </button>
+    <% end %>
 
-      <h1>Citation</h1>
-      <p><strong>Address:</strong> <%= link_to @citation.violation.address.combadd, address_path(@citation.violation.address), class: "btn btn-secondary" %></p>
-      <p><strong>Violation:</strong> <%= link_to @citation.violation.violation_type, violation_path(@citation.violation), class: "btn btn-secondary" %></p>
+        <!-- Modal -->
+    <div class="modal fade custom-modal-lg" id="allphotoModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+              All Attachments
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+            <% @address_photos.each do |photo| %>
+
+          <div class="modal-header" style="text-align:center">
+              <% if photo.content_type == 'application/pdf' %>
+                <iframe src="<%= rails_blob_url(photo) %>" width="100%" height="800px"></iframe>
+              <% elsif photo.filename.to_s.ends_with?('.doc', '.docx') %>
+                <%= link_to photo.filename, rails_blob_url(photo, disposition: 'photo') %>
+              <% else %>
+                <%= image_tag photo, class: "img-fluid" %>
+              <% end %>
+              <br>
+          </div>
+            <% end %>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="col-sm-4">
+  <div class="card shadow mb-2">
+  <div class="card-body">
+  <h1>Violation #<%= @violation.id %>
+  </h1>
+  <p><strong>Violation Type: <%= link_to @violation.violation_type, violation_path(@violation), class: "btn btn-secondary" %>
+  </strong></p>
+  <p><strong>Violation Date:</strong> <%= @violation.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></p>
+  <p><strong>Deadline:</strong> <%= @violation.deadline_date.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></p>
+  <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#violation-extend-<%= @violation.id %>">
+    Extend
+  </button>
+  <br>
+  <br>
+  <!-- Violation Extend Modal -->
+    <div class="modal fade" role="dialog" id="violation-extend-<%= @violation.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">
+              Extend
+            </h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <%= button_to "Extend one day", extender_violation_path(@violation, days: 1), method: :patch, class: "btn btn-success mt-3" %>
+            <%= button_to "Extend one week", extender_violation_path(@violation, days: 7), method: :patch, class: "btn btn-success mt-3" %>
+            <%= button_to "Extend two weeks", extender_violation_path(@violation, days: 14), method: :patch, class: "btn btn-success mt-3" %>
+            <%= button_to "Extend one month", extender_violation_path(@violation, days: 30), method: :patch, class: "btn btn-success mt-3" %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+  </div>
+    <div class="col-sm-4">
+      <div class="card shadow">
+      <div class="card-body">
+      
+      <h1>Citation #<%= @citation.id %>
+      </h1>
       <p><strong>Amount:</strong> <%= number_to_currency(@citation.fine) %></p>
       <p><strong>Deadline:</strong> <%= @citation.deadline.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></p>
       <p><strong>Status:</strong>
@@ -52,6 +128,5 @@
         </div>
       </div>
       <% end %>
-    </div>
-  </div>
+    </div></div></div>
 </div>

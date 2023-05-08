@@ -5,46 +5,27 @@
       <h1 style="text-align:center"><%= name %> Citations</h1>
       <br>
         <%= link_to "All Citations", my_citations_path, class:"btn btn-secondary" %>
-        <%= link_to "Current", my_citations_path(status: "current"), class:"btn btn-warning" %>
+        <%= link_to "Unpaid", my_citations_path(status: "current"), class:"btn btn-warning" %>
+        <%= link_to "Pending Trial", my_citations_path(status: "pending"), class:"btn btn-info" %>
         <%= link_to "Resolved", my_citations_path(status: "resolved"), class:"btn btn-success" %>
       <br>
       <div class="table-responsive">
         <table class="table table-striped">
           <thead>
             <tr>
+              <th scope="col">Citation ID</th>
               <th scope="col">Address</th>
-              <th scope="col">Code</th>
-              <th scope="col">Deadline</th>
-              <th scope="col">Amount</th>
+              <th scope="col">Created By</th>
+              <th scope="col">Created At</th>
+              <th scope="col">Fine</th>
               <th scope="col">Status</th>
+              <th scope="col">Code</th>
+              <th scope="col">Deadline Date</th>
             </tr>
           </thead>
           <tbody>
             <% @citations.each do |citation| %>
-              <tr>
-                <td>
-                  <%= link_to citation.violation.address.combadd, citation.violation.address, class:"btn btn-outline-dark" %>
-                </td>
-                <td>
-                    <%= render partial: 'shared/code_def_show', locals: { code: citation.code } %>
-
-                </td>
-                <td><%= citation.deadline.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></td>
-                <td><%= number_to_currency(citation.fine) %></td>
-                <td>
-                <% if citation.status == "unpaid" && citation.deadline <= Date.today %>
-                  <%= link_to "Unpaid", edit_citation_path(citation), class:"btn btn-danger" %>
-                <% elsif citation.status == "unpaid" && citation.deadline > Date.today %>
-                  <%= link_to "Unpaid", edit_citation_path(citation), class:"btn btn-warning" %>
-                <% elsif citation.status == "paid" %>
-                  <%= link_to "Paid", edit_citation_path(citation), class:"btn btn-success" %> on <%= citation.updated_at.in_time_zone("Eastern Time (US & Canada)").strftime("%m/%d/%Y") %>
-                <% elsif citation.status == "dismissed" %>
-                  <%= link_to "Dismissed", edit_citation_path(citation), class:"btn btn-secondary" %>
-                <% elsif citation.status == "pending trial" %>
-                  <%= link_to "Pending Trial", edit_citation_path(citation), class:"btn btn-info" %> on <%= citation.trial_date.strftime("%m/%d/%Y") %>
-                <% end %>
-                </td>
-              </tr>
+              <%= render partial: "shared/citation_table", locals: {citation: citation} %>
             <% end %>
           </tbody>
         </table>

@@ -19,7 +19,9 @@ Rails.application.routes.draw do
   authenticated :user, ->(u) { u.admin? } do
     root 'static#admin', as: :admin_root
   end
-
+  unauthenticated do
+    root 'static#issue', as: :unauthenticated_root
+  end
   root 'static#dashboard'
   get "sir" => "violations#sir"
   get 'my_citations' => 'citations#my_citations'
@@ -27,8 +29,5 @@ Rails.application.routes.draw do
   get 'admin_user' => 'static#admin_user'
   put "/update_user/:id", to: "static#update_user", as: "update_user"
 
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
-  # Defines the root path route ("/")
-  # root "articles#index"
 end

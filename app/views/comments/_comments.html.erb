@@ -1,6 +1,11 @@
-<% @address.comments.order("created_at DESC").each do |comment| %>
-<div class="card"><div class="card-body">
-  <p><%= comment.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %> 
+<div class="card shadow"><div class="card-body">
+  <% if show_address_info %>
+  <div class="address-info">
+    <%# link to address %> 
+    <%= link_to comment.address.combadd, address_path(comment.address), class: "btn btn-secondary" %> 
+  </div>
+  <% end %>
+  <p><small style="text-align:right"><%= comment.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></small> 
   <br>
   <strong><%= comment.user.email.split("@").first %></strong> says: 
   <br>
@@ -38,4 +43,3 @@
   </div>
 </div>
 
-<% end %>

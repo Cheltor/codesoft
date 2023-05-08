@@ -3,7 +3,7 @@
   <div class="row">
     <div class="col-12">
     <% current_user.name ? (name = current_user.name) : (name = "My") %>
-    <h1 style="text-align:center"><%= name %> Violations</h1>
+    <h1 style="text-align:center"><%= name %> Violations (<%= @violations.count %>)</h1>
     <br>
     <%= link_to "All Violations", my_violations_path, class:"btn btn-secondary" %>
     <%= link_to "Current", my_violations_path(status: "current"), class:"btn btn-warning" %>
@@ -13,64 +13,19 @@
       <table class="table table-sm table-striped">
         <thead>
           <tr>
-            <th>Address</th>
-            <th>Type</th>
-            <th>Created</th>
-            <th>Code(s)</th>
-            <th>Deadline</th>
+            <th scope="col">Address</th>
+            <th scope="col">Created By</th>
+            <th scope="col">Created At</th>
+            <th scope="col">Violation Type</th>
+            <th scope="col">Code</th>
+            <th scope="col">Deadline Date</th>
+            <th scope="col">Citations</th>
           </tr>
         </thead>
       </div>
       <tbody>
         <% @violations.each do |violation| %>
-                  <% if violation.status == "current" %>
-
-          <% if violation.deadline_passed? %>
-          <tr class="table-danger">
-          <td><%= link_to violation.address.combadd, address_path(violation.address), class: "btn btn-danger" %></td>
-          <td><%= link_to violation.violation_type, violation_path(violation), class: "btn btn-danger" %></td>
-            <td><%= violation.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></td>
-            <td>
-              <% violation.codes.each do |code| %>
-                  
-                <%= render partial: 'shared/code_def_show', locals: { code: code } %>
-
-                <% end %>
-            </td>
-            <td><%= violation.deadline_date.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></td>
-          </tr>
-          <% else %>
-          <tr class="table-warning">
-          <td><%= link_to violation.address.combadd, address_path(violation.address), class: "btn btn-warning" %></td>
-          <td><%= link_to violation.violation_type, violation_path(violation), class: "btn btn-warning" %></td>
-
-            <td><%= violation.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></td>
-            <td>
-            <% violation.codes.each do |code| %>
-                  
-              <%= render partial: 'shared/code_def_show', locals: { code: code } %>
-
-                <% end %>
-            </td>
-            <td><%= violation.deadline_date.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></td>
-          </tr>
-          <% end %>
-          <%else%>
-          <tr class="table">
-          <td><%= link_to violation.address.combadd, address_path(violation.address), class: "btn btn-secondary" %></td>
-          <td><%= link_to violation.violation_type, violation_path(violation), class: "btn btn-secondary" %></td>
-
-            <td><%= violation.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></td>
-            <td>
-            <% violation.codes.each do |code| %>
-                  
-              <%= render partial: 'shared/code_def_show', locals: { code: code } %>
-
-                <% end %>
-            </td>
-            <td><%= violation.deadline_date.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></td>
-          </tr>
-          <% end %>
+          <%= render partial: 'shared/violation_table', locals: { violation: violation } %>
         <% end %>
       </tbody>
       </table>

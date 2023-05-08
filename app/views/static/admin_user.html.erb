@@ -16,9 +16,10 @@
             <% @users.each do |user| %>
             <tr>
               <%= form_for(user, url: update_user_path(user), method: :put) do |f| %>
-                <td><%= f.text_field :name, value: user.name %></td>
+                <td><%= f.text_field :name, value: user.name, class: "form-control" %></td>
                 <td><%= user.email %></td>
                 <td><%= f.select :role, User.roles.keys, {selected: user.role}, {class: "form-control"} %></td>
+                <td><%= f.text_field :phone, value: user.phone, class: "form-control" %></td>
                 <td><%= f.submit "Update", class: "btn btn-primary" %></td>
               <% end %>
             </tr>

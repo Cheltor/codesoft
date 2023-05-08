@@ -1,42 +1,152 @@
-<div class="container">
-  <div class="row mt-5">
-    <h2>Record a Citation</h2>
-    <%= form_with model: [@violation, @citation], url: violation_citations_path(@violation), class: "form-horizontal" do |f| %>
-      <div class="form-group">
-        <strong>Fine</strong>
-        <div class="col-sm-10">
-          <%= f.number_field :fine, class: "form-control" %>
-        </div>
-      </div>
-      <div class="form-group mt-3">
-        <strong>Deadline</strong>
-        <div class="col-sm-10">
-          <%= f.date_select :deadline, default: 3.weeks.from_now , class: "form-control" %>
-        </div>
-      </div>
-      <div class="form-group mt-3">
-        <strong>Code violations</strong>
-        <div class="col-sm-10">
-          <% @code_ids.each do |code_id| %>
-            <% code = Code.find(code_id) %>
-            <div class="radio">
-              <%= f.radio_button :code_id, code.id %>
-              <%= code.name %>
+  <div class="row">
+    <div class="col-sm-4">
+      <%# address information %>
+      <h2><%= @violation.address.combadd %></h2>
+      <%# link to google maps from icon %>
+      <a href="https://www.google.com/maps/search/?api=1&query=<%= @violation.address.combadd %>+MD+<%= @violation.address.premisezip %>" target="_blank" class="btn btn-secondary">
+      <i class="bi bi-geo-alt-fill"></i> Search on Google Maps</a>
+      <br>
+      <% if @address_photos.any? %>
+      <button type="button" class="btn btn-primary mt-2 mb-2" data-bs-toggle="modal" data-bs-target="#allphotoModal">
+        <i class="bi bi-paperclip"></i>
+        All Photos and Attachments
+      </button>
+      <% end %>
+
+          <!-- Modal -->
+      <div class="modal fade custom-modal-lg" id="allphotoModal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+                All Attachments
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
+              <% @address_photos.each do |photo| %>
+
+            <div class="modal-header" style="text-align:center">
+                <% if photo.content_type == 'application/pdf' %>
+                  <iframe src="<%= rails_blob_url(photo) %>" width="100%" height="800px"></iframe>
+                <% elsif photo.filename.to_s.ends_with?('.doc', '.docx') %>
+                  <%= link_to photo.filename, rails_blob_url(photo, disposition: 'photo') %>
+                <% else %>
+                  <%= image_tag photo, class: "img-fluid" %>
+                <% end %>
+                <br>
+            </div>
+              <% end %>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="col-sm-4 d-none d-sm-block">
+    <div class="card shadow mb-3">
+    <div class="card-body">
+         
+    <h1>Violation #<%= @violation.id %>
+    </h1>
+    <p><strong>Address:</strong> <%= link_to @violation.address.combadd, address_path(@address), class:"btn btn-secondary" %></p> 
+    <p><strong>Violation Type:</strong> <%= @violation.violation_type %></p>
+    <p><strong>Violation Date:</strong> <%= @violation.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></p>
+    <p><strong>Deadline:</strong> <%= @violation.deadline_date.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></p>
+    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#violation-extend-<%= @violation.id %>">
+      Extend
+    </button>
+    <br>
+    <br>
+      <!-- Violation Extend Modal -->
+      <div class="modal fade" role="dialog" id="violation-extend-<%= @violation.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">
+                Extend
+              </h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <%= button_to "Extend one day", extender_violation_path(@violation, days: 1), method: :patch, class: "btn btn-success mt-3" %>
+              <%= button_to "Extend one week", extender_violation_path(@violation, days: 7), method: :patch, class: "btn btn-success mt-3" %>
+              <%= button_to "Extend two weeks", extender_violation_path(@violation, days: 14), method: :patch, class: "btn btn-success mt-3" %>
+              <%= button_to "Extend one month", extender_violation_path(@violation, days: 30), method: :patch, class: "btn btn-success mt-3" %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div></div> 
+    <div class="col-sm-4 d-none d-sm-block">
+      <div class="card shadow">
+        <div class="card-body">
+          <strong>Codes in Violation:</strong>
+          <% @violation.codes.each do |code| %>
+            <%= render partial: 'shared/code_def_show', locals: { code: code } %>
           <% end %>
+          <% if @violation.photos.attached? %>
+          <button type="button" class="btn btn-outline-primary btn-lg mt-3" data-bs-toggle="modal" data-bs-target="#allphotoModal">
+            Attachments
+          </button>
+          <% end %>
+          <% if @violation.current? %>
+          <%= button_to "Mark as Abated", resolve_violation_path(@violation), method: :patch, class: "btn btn-success mb-3 mt-3" %>
+          <% if @violation.violation_type == "Formal Notice"%>
+            <%= link_to "Generate VN Letter", generate_report_violation_path(@violation), class: "btn btn-primary mb-3" %>
+          <% end %>
+          <% if @violation.deadline_passed? and @violation.violation_type == "Doorhanger" %>
+            <%= link_to "Update to VN", edit_violation_path(@violation), class: "btn btn-warning mb-5" %>
+          <% end %>
+        <% else %>
+        <br>
+          <p><strong>Status: </strong>Closed <%= @violation.updated_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></p>
+        <% end %>
         </div>
       </div>
-      <div class="form-group mt-3">
-        <strong>Attachment</strong>
-        <div class="col-sm-10">
-          <%= f.file_field :photos, multiple: true, class: "form-control" %>
-        </div>
-      </div>
-      <div class="form-group mt-3">
-        <div class="col-sm-offset-2 col-sm-10">
-          <%= f.submit class: "btn btn-primary" %>
-        </div>
-      </div>
-    <% end %>
+    </div>
   </div>
+<div class="container">
+<div class="row mt-5"><div class="col">
+<div class="card shadow mb-3">
+<div class="card-body">
+
+  <h2>Record a Citation</h2>
+  <%= form_with model: [@violation, @citation], url: violation_citations_path(@violation), class: "form-horizontal" do |f| %>
+    <div class="form-group">
+      <strong>Fine</strong>
+      <div class="col-sm-10">
+    <div class="input-group mb-3">
+      <span class="input-group-text">$</span>
+      <%= f.number_field :fine, class: "form-control" %>
+    </div>      </div>
+    </div>
+    <div class="form-group mt-3">
+      <strong>Deadline</strong>
+      <div class="col-sm-10">
+      <%= f.date_field :deadline, value: 3.weeks.from_now.to_date, class: "form-control" %>
+      </div>
+    </div>
+    <div class="form-group mt-3">
+      <strong>Code violations</strong>
+      <div class="col-sm-10">
+        <% @code_ids.each do |code_id| %>
+          <% code = Code.find(code_id) %>
+          <div class="radio">
+            <%= f.radio_button :code_id, code.id %>
+            <%= code.name %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <div class="form-group mt-3">
+      <strong>Attachment</strong>
+      <div class="col-sm-10">
+        <%= f.file_field :photos, multiple: true, class: "form-control" %>
+      </div>
+    </div>
+    <div class="form-group mt-3">
+      <div class="col-sm-offset-2 col-sm-10">
+        <%= f.submit class: "btn btn-primary" %>
+      </div>
+    </div>
+  <% end %>
 </div>
+</div></div></div></div>

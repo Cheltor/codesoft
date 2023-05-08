@@ -2,6 +2,7 @@ class ViolationsController < ApplicationController
   before_action :set_address, except: [:sir, :show, :edit, :update]
   before_action :set_violation, only: [:resolve, :extender, :update, :edit]
   layout 'new_violation', only: [:new, :edit]
+  before_action :require_ons_or_admin, except: [:sir]
 
   def new
     @violation = @address.violations.new
@@ -25,6 +26,10 @@ class ViolationsController < ApplicationController
   def show 
     @violation = Violation.find(params[:id])
     @address = @violation.address
+    @address_photos = (
+                        @address.violations.map(&:photos) + 
+                        @address.comments.map(&:photos)
+                      ).flatten.sort_by(&:created_at).reverse
   end
 
   def sir 
@@ -134,6 +139,13 @@ class ViolationsController < ApplicationController
   def set_violation
     @violation = Violation.find(params[:id])
     @address = @violation.address
+  end
+
+  def require_ons_or_admin
+    unless current_user&.ons? || current_user&.admin?
+      flash[:alert] = 'You do not have permission to perform this action.'
+      redirect_to root_path
+    end
   end
   
 end

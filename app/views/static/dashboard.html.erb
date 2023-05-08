@@ -1,3 +1,4 @@
+<% content_for :title, "Dashboard" %>
 <div class="container mt-5">
   <div class="row">
     <div class="col">
@@ -15,6 +16,27 @@
   <div class="row mt-5">
     <div class="col">
       <h1 style="text-align:center">Search Results</h1>
+      <%# if user is guest show this %>
+      <% if @current_user.guest? %>
+            <% @addresses.each do |address| %>
+        <% if address.violations.current.exists? == true %>
+          <div class="card mt-3" style="background-color: #ffccbc;">
+            <div class="card-body">
+              <h5 class="card-title"><%= address.combadd %></h5>
+              <p class="card-text">Active Violations</p>
+            </div>
+          </div>
+        <% else %>
+          <div class="card mt-3" style="background-color: #c8e6c9;">
+            <div class="card-body">
+              <h5 class="card-title"><%= address.combadd %></h5>
+              <p class="card-text">No Active Violations</p>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+      <%# if user is not guest show this %>
+      <% else %>
       <table class="table table-striped">
         <thead class="thead-light">
           <tr>
@@ -33,61 +55,98 @@
           <% end %>
         </tbody>
       </table>
+      <% end %>
     </div>
   </div>
   <% end %>
+</div>
+
   <% if @current_user.ons? %>
   <div class="row mt-5">
     <div class="col">
-      <h1 style="text-align:center">Today's Violations</h1>
-        <div class="table-responsive">
-          <table class="table table-striped">
-            <thead>
-              <tr>
-                <th>Address</th>
-                <th>Type</th>
-                <th>Code</th>
-                <th>Deadline</th>
-              </tr>
-            </thead>
-            <tbody>
-            <% @recent_violations.each do |violation| %>
-              <%= render partial: "shared/violation_table", locals: {violation: violation} %>
-            <% end %>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-    <% if @recent_citations.present? %>
-    <div class="row">
-      <div class="col">
-      <h1 style="text-align:center"> Active Citations</h1>
-        <div class="table-responsive">
-          <table class="table table-striped">
-            <thead>
-              <tr>
-                <th>Address</th>
-                <th>Amount</th>
-                <th>Deadline</th>
-                <th>Status</th>
-                <th>Code</th>
-              </tr>
-            </thead>
-            <tbody>
-            <% @recent_citations.each do |citation| %>
-              <%= render partial: "shared/citation_table", locals: {citation: citation} %>
-            <% end %>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-    <% end %>
-  <% end %>
-  
-</div>
+      <nav class="nav nav-pills nav-fill">
+        <a class="nav-item nav-link" href="#" data-bs-toggle="tab" data-bs-target="#comment">
+          <i class="bi bi-chat-dots"></i> <%= pluralize(@comments.count, "Comment") %>
+        </a>
+        <a class="nav-item nav-link active" href="#" data-bs-toggle="tab" data-bs-target="#violation">
+          <i class="bi bi-exclamation-triangle-fill"></i> <%= pluralize(@violations.count, "Current Violation") %>
+        </a>
+        <a class="nav-item nav-link" href="#" data-bs-toggle="tab" data-bs-target="#citation">
+          <i class="bi bi-file-earmark-text-fill"></i> <%= pluralize(@citations.count, "Current Citation") %>
+        </a>
+        <a class="nav-item nav-link disabled" href="#" data-bs-toggle="tab" data-bs-target="#inspection">
+          <i class="bi bi-clipboard-check"></i> <%#= pluralize(@address.inspections.count, "Inspection") %> Inspections
+        </a>
+      </nav>
 
+      <div class="tab-content">
+        <div class="tab-pane fade" id="comment">
+        <br>
+        <% @comments.each do |comment| %>
+          <%= render 'comments/comments', comment: comment, show_address_info: true %>
+        <% end %>
+        </div>
+      </div>     
+
+      <div class="tab-content">
+        <div class="tab-pane fade show active" id="violation">
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th scope="col">Address</th>
+                  <th scope="col">Created By</th>
+                  <th scope="col">Created At</th>
+                  <th scope="col">Violation Type</th>
+                  <th scope="col">Code</th>
+                  <th scope="col">Deadline Date</th>
+                  <th scope="col">Citations</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @violations.each do |violation| %>
+                  <%= render partial: "shared/violation_table", locals: {violation: violation} %>
+                <% end %>
+              </tbody>
+            </table>        
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-content">
+        <div class="tab-pane fade" id="citation">
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                    <th scope="col">Citation ID</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">Created By</th>
+                    <th scope="col">Created On</th>
+                    <th scope="col">Amount</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Code</th>
+                    <th scope="col">Deadline</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @citations.each do |citation| %>
+                  <%= render partial: "shared/citation_table", locals: {citation: citation} %>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+  </div>
+  <% end %>
+  <% if @current_user.oas? %>
+  <div class="row mt-3">
+    <div class="col">
+      <h1 style="text-align:center">Welcome OAS!</h1>
+    </div>
+  </div>
+  <% end %>
 
 
 

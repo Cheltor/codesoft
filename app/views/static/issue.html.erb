@@ -1,0 +1,38 @@
+<div class="container mt-5">
+  <div class="row">
+    <div class="col">
+      <div class="card" style="background-color: #e3f2fd;">
+        <div class="card-body">
+          <%= search_form_for @q, url: root_path, method: :get do |f| %>
+          <%= f.search_field :combadd_cont, class:"form-control form-control-lg", placeholder: "Type in the address here", required: true, minlength: 4, style: "text-align:center" %>
+          <br><div style="text-align:center"><%= f.submit "Search", class:"btn btn-primary" %></div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <% if params[:q].present? %>
+  <div class="row mt-5">
+    <div class="col">
+      <h1 style="text-align:center">Search Results</h1>
+      <% @addresses.each do |address| %>
+        <% if address.violations.current.exists? == true %>
+          <div class="card mt-3" style="background-color: #ffccbc;">
+            <div class="card-body">
+              <h5 class="card-title"><%= address.combadd %></h5>
+              <p class="card-text">At least 1 active violation</p>
+            </div>
+          </div>
+        <% else %>
+          <div class="card mt-3" style="background-color: #c8e6c9;">
+            <div class="card-body">
+              <h5 class="card-title"><%= address.combadd %></h5>
+              <p class="card-text">No Active Violations</p>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+  <% end %>
+</div>
