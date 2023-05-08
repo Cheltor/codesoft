@@ -26,9 +26,11 @@ class ViolationsController < ApplicationController
   def show 
     @violation = Violation.find(params[:id])
     @address = @violation.address
+    @address_citations = @address.violations.map(&:citations).flatten
     @address_photos = (
-                        @address.violations.map(&:photos) + 
-                        @address.comments.map(&:photos)
+                        @address.violations.map(&:photos) +
+                        @address.comments.map(&:photos) + 
+                        @address_citations.map(&:photos)
                       ).flatten.sort_by(&:created_at).reverse
   end
 

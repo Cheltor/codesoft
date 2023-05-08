@@ -7,11 +7,12 @@ class AddressesController < ApplicationController
     
     def show
         @address = Address.find(params[:id])
+        @address_citations = @address.violations.map(&:citations).flatten
         @address_photos = (
                             @address.violations.map(&:photos) + 
-                            @address.comments.map(&:photos)
+                            @address.comments.map(&:photos) + 
+                            @address_citations.map(&:photos)
                           ).flatten.sort_by(&:created_at).reverse
-        @address_citations = @address.violations.map(&:citations).flatten
     end
 
     def violist

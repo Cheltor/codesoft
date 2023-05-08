@@ -24,17 +24,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
             <% @address_photos.each do |photo| %>
-
-          <div class="modal-header" style="text-align:center">
-              <% if photo.content_type == 'application/pdf' %>
-                <iframe src="<%= rails_blob_url(photo) %>" width="100%" height="800px"></iframe>
-              <% elsif photo.filename.to_s.ends_with?('.doc', '.docx') %>
-                <%= link_to photo.filename, rails_blob_url(photo, disposition: 'photo') %>
-              <% else %>
-                <%= image_tag photo, class: "img-fluid" %>
-              <% end %>
-              <br>
-          </div>
+              <%= render partial: 'shared/show_image', locals: { photo: photo } %>
             <% end %>
         </div>
       </div>
@@ -115,17 +105,8 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <% @violation.photos.each do |photo| %>
-      <div class="modal-header" style="text-align:center">
-        <% if photo.content_type == 'application/pdf' %>
-          <iframe src="<%= rails_blob_url(photo) %>" width="100%" height="800px"></iframe>
-        <% elsif photo.filename.to_s.ends_with?('.doc', '.docx') %>
-          <%= link_to photo.filename, rails_blob_url(photo, disposition: 'photo') %>
-        <% else %>
-          <%= image_tag photo, class: "img-fluid" %>
-        <% end %>
-        <br>
-      </div>
-    <% end %>
+        <%= render partial: 'shared/show_image', locals: { photo: photo } %>
+      <% end %>
     </div>
   </div>
 </div>

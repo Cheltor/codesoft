@@ -4,9 +4,11 @@ class CitationsController < ApplicationController
     @citation = @violation.citations.new
     @code_ids = @violation.code_ids
     @address = @violation.address
+    @address_citations = @address.violations.map(&:citations).flatten
     @address_photos = (
                         @address.violations.map(&:photos) +
-                        @address.comments.map(&:photos)
+                        @address.comments.map(&:photos) + 
+                        @address_citations.map(&:photos)
                       ).flatten.sort_by(&:created_at).reverse
   end
 
@@ -15,9 +17,11 @@ class CitationsController < ApplicationController
     @citation = @violation.citations.build(citation_params)
     @citation.user = current_user
     @address = @violation.address
+    @address_citations = @address.violations.map(&:citations).flatten
     @address_photos = (
                         @address.violations.map(&:photos) +
-                        @address.comments.map(&:photos)
+                        @address.comments.map(&:photos) + 
+                        @address_citations.map(&:photos)
                       ).flatten.sort_by(&:created_at).reverse
     if @citation.save
       redirect_to violation_path(@violation), notice: "Citation created successfully"
@@ -73,9 +77,11 @@ class CitationsController < ApplicationController
     @citation = Citation.find(params[:id])
     @violation = @citation.violation
     @address = @violation.address
+    @address_citations = @address.violations.map(&:citations).flatten
     @address_photos = (
                         @address.violations.map(&:photos) +
-                        @address.comments.map(&:photos)
+                        @address.comments.map(&:photos) + 
+                        @address_citations.map(&:photos)
                       ).flatten.sort_by(&:created_at).reverse
                       
   end
@@ -84,9 +90,11 @@ class CitationsController < ApplicationController
     @citation = Citation.find(params[:id])
     @violation = @citation.violation
     @address = @violation.address
+    @address_citations = @address.violations.map(&:citations).flatten
     @address_photos = (
                         @address.violations.map(&:photos) +
-                        @address.comments.map(&:photos)
+                        @address.comments.map(&:photos) + 
+                        @address_citations.map(&:photos)
                       ).flatten.sort_by(&:created_at).reverse
   end
 
@@ -94,9 +102,11 @@ class CitationsController < ApplicationController
     @citation = Citation.find(params[:id])
     @violation = @citation.violation
     @address = @violation.address
+    @address_citations = @address.violations.map(&:citations).flatten
     @address_photos = (
                         @address.violations.map(&:photos) +
-                        @address.comments.map(&:photos)
+                        @address.comments.map(&:photos) + 
+                        @address_citations.map(&:photos)
                       ).flatten.sort_by(&:created_at).reverse
     
     if @citation.update(citation_params)
