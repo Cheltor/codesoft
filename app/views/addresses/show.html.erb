@@ -14,23 +14,28 @@
       All Photos and Attachments
     </button>
     <% end %>
+    <!--
+    <br>
+    <a href="https://sdat.dat.maryland.gov/RealProperty/Pages" target="_blank" class="btn btn-secondary">
+      <i class="bi bi-building"></i> SDAT Property Search
+    </a> -->
 
-        <!-- Modal -->
-<div class="modal fade custom-modal-lg" id="allphotoModal">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        All Attachments
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <% @address_photos.each do |photo| %>
-          <%= render partial: "shared/show_image", locals: { photo: photo } %>
-        <% end %>
+    <!-- Modal -->
+    <div class="modal fade custom-modal-lg" id="allphotoModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            All Attachments
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <% @address_photos.each do |photo| %>
+              <%= render partial: "shared/show_image", locals: { photo: photo } %>
+            <% end %>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
 
 
   </div>
