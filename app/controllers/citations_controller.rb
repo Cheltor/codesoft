@@ -119,6 +119,6 @@ class CitationsController < ApplicationController
   private
 
   def citation_params
-    params.require(:citation).permit(:fine, :deadline, :status, :trial_date, :code_id, photos: [])
+    params.require(:citation).permit(:fine, :deadline, :status, :trial_date, :code_id, :citationid, photos: [])
   end
 end
