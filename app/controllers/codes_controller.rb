@@ -3,8 +3,8 @@ class CodesController < ApplicationController
 
   # GET /codes or /codes.json
   def index
-    @q = Code.ransack(params[:q])
-    @codes = @q.result
+    @codes_q = Code.ransack(params[:q])
+    @codes = @codes_q.result
   end
 
   # GET /codes/1 or /codes/1.json

@@ -2,19 +2,15 @@
 				<a class="sidebar-toggle js-sidebar-toggle">
           <i class="hamburger align-self-center"></i>
         </a>
-                            <form>
-                                <div class="input-group">
-                                    <input type="search" class="form-control dropdown-toggle" placeholder="Search..." id="top-search">
-                                    <span class="mdi mdi-magnify search-icon"></span>
-                                    <button class="input-group-text btn btn-primary" type="submit">Search</button>
-                                </div>
-                            </form>
+<%= search_form_for @q, url: root_path, method: :get do |f| %>
+  <div class="input-group">
+    <%= f.search_field :combadd_cont, class: "form-control dropdown-toggle", placeholder: "Search By Address...", required: true, minlength: 4, id: "top-search" %>
+    <span class="mdi mdi-magnify search-icon"></span>
+    <%= f.button "Search", class: "input-group-text btn btn-primary", type: "submit" %>
+  </div>
+<% end %>
+
 				<div class="navbar-collapse collapse">
-					<ul class="navbar-nav me-auto mb-2 mb-lg-0">
-						<li class="nav-item">
-							<a class="nav-link" aria-current="page" href="/">Search</a>
-						</li>
-					</ul>
 					<ul class="navbar-nav navbar-align">
 						<li class="nav-item dropdown">
 							<a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#" data-bs-toggle="dropdown">

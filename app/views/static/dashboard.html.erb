@@ -1,17 +1,5 @@
 <% content_for :title, "Dashboard" %>
 <div class="container mt-5">
-  <div class="row">
-    <div class="col">
-      <div class="card" style="background-color: #e3f2fd;">
-        <div class="card-body">
-          <%= search_form_for @q, url: root_path, method: :get do |f| %>
-          <%= f.search_field :combadd_cont, class:"form-control form-control-lg", placeholder: "Type in the address here", required: true, minlength: 4, style: "text-align:center" %>
-          <br><div style="text-align:center"><%= f.submit "Search", class:"btn btn-primary" %></div>
-          <% end %>
-        </div>
-      </div>
-    </div>
-  </div>
   <% if params[:q].present? %>
   <div class="row mt-5">
     <div class="col">
@@ -59,9 +47,9 @@
     </div>
   </div>
   <% end %>
-</div>
 
-  <% if @current_user.ons? %>
+<!-- if current user is ons and params not present -->
+<% if @current_user.ons? && !params[:q].present? %>
   <div class="row mt-5">
     <div class="col">
       <nav class="nav nav-pills nav-fill">
@@ -148,6 +136,7 @@
   </div>
   <% end %>
 
+</div>
 
 
 
