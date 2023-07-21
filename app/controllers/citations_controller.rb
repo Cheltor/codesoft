@@ -110,7 +110,7 @@ class CitationsController < ApplicationController
                       ).flatten.sort_by(&:created_at).reverse
     
     if @citation.update(citation_params)
-      redirect_to citation_path(@citation), notice: "Citation was successfully updated."
+      redirect_to address_path(@address), notice: "Citation was successfully updated."
     else
       render :edit
     end

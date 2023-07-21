@@ -1,0 +1,75 @@
+  <div class="col-sm-4">
+    <%# address information %>
+    <h2><%= @address.combadd %></h2>
+    <%# link to google maps from icon %>
+    <a href="https://www.google.com/maps/search/?api=1&query=<%= @address.combadd %>+MD+<%= @address.premisezip %>" target="_blank" class="btn btn-secondary">
+    <i class="bi bi-geo-alt-fill"></i> Search on Google Maps</a>
+    <br>
+    <% if @address_photos.any? %>
+    <button type="button" class="btn btn-primary mt-2 mb-2" data-bs-toggle="modal" data-bs-target="#allphotoModal">
+      <i class="bi bi-paperclip"></i>
+      All Photos and Attachments
+    </button>
+    <% end %>
+    <!--
+    <br>
+    <a href="https://sdat.dat.maryland.gov/RealProperty/Pages" target="_blank" class="btn btn-secondary">
+      <i class="bi bi-building"></i> SDAT Property Search
+    </a> -->
+
+    <!-- Modal -->
+    <div class="modal fade custom-modal-lg" id="allphotoModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            All Attachments
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <% @address_photos.each do |photo| %>
+              <%= render partial: "shared/show_image", locals: { photo: photo } %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+  <div class="col-sm-4">
+    <h4>Owner:</h4>
+    <p><%= @address.ownername %></p>
+    <h4>Owner Address:</h4>
+    <p><%= @address.owneraddress %> <%= @address.ownercity %>, <%= @address.ownerstate %> <%= @address.ownerzip %></p>
+
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-secondary mt-2 mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
+      Update Owner/Address
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Are you sure?</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            Be careful when updating the address information.
+            
+          </div>
+          <div class="modal-footer">
+            <%= link_to "Update", edit_address_path(@address), class: "btn btn-primary" %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-4">
+    <div class="card shadow" style="background-color: #e3f2fd;">
+      <div class="card-body">
+        <%= render 'comments/form' %>
+      </div>
+    </div>
+  </div>

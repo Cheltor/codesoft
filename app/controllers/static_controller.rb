@@ -9,7 +9,7 @@ class StaticController < ApplicationController
                               .reject {|violation| violation.citations.where(citations: { status: [:unpaid, "pending trial"] }).any? {|citation| citation.deadline >= Date.tomorrow }}
                               .sort_by(&:deadline_date)
 
-    @citations = @user.citations.where(citations: { status: [:unpaid, "pending trial"] })
+    @citations = @user.citations.where(citations: { status: [:unpaid, "pending trial"] }).sort_by(&:deadline)
     @addresses = @q.result.where.not(streetnumb: nil)
   
   end
@@ -34,14 +34,14 @@ class StaticController < ApplicationController
                           .select {|violation| violation.deadline_date <= Date.tomorrow }
                           .reject {|violation| violation.citations.where(citations: { status: [:unpaid, "pending trial"] }).any? {|citation| citation.deadline >= Date.tomorrow }}
                           .sort_by(&:deadline_date)
-      @citations = @user.citations.where(citations: { status: [:unpaid, "pending trial"] })
+      @citations = @user.citations.where(citations: { status: [:unpaid, "pending trial"] }).sort_by(&:deadline)
       @comments = @user.comments.order(created_at: :desc).limit(50)
     else
       @violations = Violation.where(violations: { status: :current })
                               .select {|violation| violation.deadline_date <= Date.tomorrow }
                               .reject {|violation| violation.citations.where(citations: { status: [:unpaid, "pending trial"] }).any? {|citation| citation.deadline >= Date.tomorrow }}
                               .sort_by(&:deadline_date)
-      @citations = Citation.where(citations: { status: [:unpaid, "pending trial"] })
+      @citations = Citation.where(citations: { status: [:unpaid, "pending trial"] }).sort_by(&:deadline)
       @comments = Comment.order(created_at: :desc).limit(50)
     end
   end
