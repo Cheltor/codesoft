@@ -1,0 +1,93 @@
+		<nav id="sidebar" class="sidebar js-sidebar">
+			<div class="sidebar-content js-simplebar">
+				<a class="sidebar-brand" href="/">
+          <span class="align-middle">CodeSoft</span>
+        </a>
+
+				<ul class="sidebar-nav">
+					<li class="sidebar-header">
+						Pages
+					</li>
+
+					<li class="sidebar-item">
+						<%= link_to(root_path, class: "sidebar-link") do %>
+              <i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Dashboard</span>
+            <% end %>
+					</li>
+
+          <li class="sidebar-item">
+            <%= link_to(codes_path, class: "sidebar-link") do %>
+              <i class="align-middle" data-feather="book"></i>
+              <span class="align-middle">Codes</span>
+            <% end %>
+          </li>
+
+          <li class="sidebar-item">
+            <%= link_to(helpful_path, class: "sidebar-link") do %>
+              <i class="align-middle" data-feather="help-circle"></i>
+              <span class="align-middle">Helpful Links</span>
+            <% end %>
+          </li>
+
+          <li class="sidebar-item">
+            <%= link_to(sir_path, class: "sidebar-link") do %>
+              <i class="align-middle" data-feather="clipboard"></i>
+              <span class="align-middle">SIR</span>
+            <% end %>
+          </li>
+
+          <% if current_user.admin? %>
+          <li class="sidebar-item">
+            <%= link_to(admin_user_path, class: "sidebar-link") do %>
+              <i class="align-middle" data-feather="users"></i>
+              <span class="align-middle">Users</span>
+            <% end %>
+          </li>
+        <% end %>
+
+          <% if current_user.admin? || current_user.ons? || current_user.oas? %>
+					<li class="sidebar-header">
+						Violations
+					</li>
+
+          <li class="sidebar-item">
+            <%= link_to(all_violations_path, class: "sidebar-link") do %>
+              <i class="align-middle" data-feather="alert-triangle"></i>
+              <span class="align-middle">All Violations</span>
+            <% end %>
+          </li>
+
+            <% if current_user.ons? %>
+            <li class="sidebar-item">
+              <%= link_to(my_violations_path, class: "sidebar-link") do %>
+                <i class="align-middle" data-feather="alert-circle"></i>
+                <span class="align-middle">My Violations</span>
+              <% end %>
+            </li>
+            <% end %>
+          <% end %>
+
+          <% if current_user.admin? || current_user.ons? || current_user.oas? %>
+					<li class="sidebar-header">
+						Citations
+					</li>
+
+          <li class="sidebar-item">
+            <%= link_to(all_citations_path, class: "sidebar-link") do %>
+              <i class="align-middle" data-feather="dollar-sign"></i>
+              <span class="align-middle">All Citations</span>
+            <% end %>
+          </li>
+
+            <% if current_user.ons? %>
+            <li class="sidebar-item">
+              <%= link_to(my_citations_path, class: "sidebar-link") do %>
+                <i class="align-middle" data-feather="file"></i>
+                <span class="align-middle">My Citations</span>
+              <% end %>
+            </li>
+            <% end %>
+          <% end %>
+				</ul>
+			</div>
+		</nav>

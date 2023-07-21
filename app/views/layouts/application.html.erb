@@ -14,8 +14,10 @@
 
   <body>
     <div class="wrapper">
+    <%# if user is signed in show the sidebar %> <% if user_signed_in? %>
       <!-- Render Sidebar  -->
       <%= render 'shared/sidebar' %>
+    <% end %>
 
       <div class="main">
         <!-- Render Navbar  -->
@@ -30,8 +32,6 @@
         <!-- Render Main Content -->
         <main class="content">
           <div class="container-fluid p-0">
-
-            <h1 class="h3 mb-3"><strong>Analytics</strong> Dashboard</h1>
 
             <%= yield %>
 
