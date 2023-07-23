@@ -16,7 +16,7 @@ class StaticController < ApplicationController
 
   def issue
     @addresses = @q.result.where.not(streetnumb: nil)
-
+    @concern = Concern.new # Create a new concern object for the form
   end
 
   def helpful

@@ -2,6 +2,7 @@ class Address < ApplicationRecord
     has_many :comments
     has_many :users, through: :comments
     has_many :violations
+    has_many :concerns, dependent: :destroy
     def toggle_outstanding_violation
         self.update_attribute(:outstanding_violation, !self.outstanding_violation)
     end      
@@ -10,5 +11,5 @@ class Address < ApplicationRecord
     end
     def self.ransackable_associations(auth_object = nil)
         ["comments", "users", "violations"]
-      end
+    end
 end

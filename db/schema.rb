@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_06_16_004857) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_22_194932) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -101,6 +101,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_16_004857) do
     t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
+  create_table "concerns", force: :cascade do |t|
+    t.integer "address_id", null: false
+    t.text "content"
+    t.string "emailorphone"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["address_id"], name: "index_concerns_on_address_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -146,6 +155,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_06_16_004857) do
   add_foreign_key "citations", "violations"
   add_foreign_key "comments", "addresses"
   add_foreign_key "comments", "users"
+  add_foreign_key "concerns", "addresses"
   add_foreign_key "violation_codes", "codes"
   add_foreign_key "violation_codes", "violations"
   add_foreign_key "violations", "addresses"
