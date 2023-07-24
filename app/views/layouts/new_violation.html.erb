@@ -19,7 +19,34 @@
   </head>
 
   <body>
-  <%= render 'layouts/header' %>
-    <%= yield %>
+    <div class="wrapper">
+    <%# if user is signed in show the sidebar %> <% if user_signed_in? %>
+      <!-- Render Sidebar  -->
+      <%= render 'shared/sidebar' %>
+    <% end %>
+
+      <div class="main">
+        <!-- Render Navbar  -->
+        <%# if user is signed in show the header %> <% if user_signed_in? %>
+        <%= render 'layouts/newnav' %>
+        <% end %>
+        <%# if user is not signed in show the unauth header %> <% unless user_signed_in? %>
+        <%= render 'layouts/unauth_header' %>
+        <% end %>
+    <% if notice %> <p class="alert alert-success"><%= notice %></p> <% end %> <% if alert %> <p class="alert alert-danger"><%= alert %></p> <% end %>
+
+        <!-- Render Main Content -->
+        <main class="content">
+          <div class="container-fluid p-0">
+
+            <%= yield %>
+
+
+          </div>
+        </main>
+
+        <!-- Render Footer -->
+        <%= render 'shared/footer' %>
+      </div>
   </body>
 </html>
