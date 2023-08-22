@@ -69,9 +69,24 @@ class AddressesController < ApplicationController
         end
     end
 
+    def new
+        @address = Address.new(premisezip: "20737")
+    end
+
+    def create
+        @address = Address.new(address_params)
+
+        if @address.save
+            redirect_to @address, notice: 'Address was successfully created.'
+        else
+            render :new
+        end
+    end
+
     private
 
     def address_params
         params.require(:address).permit(:pid, :ownername, :owneraddress, :ownercity, :ownerstate, :ownerzip, :streetnumb, :streetname, :streettype, :landusecode, :zoning, :owneroccupiedin, :vacant, :absent, :premisezip, :combadd, :outstanding)
     end
+    
 end

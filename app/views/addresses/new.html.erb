@@ -1,0 +1,53 @@
+<h2>New Address</h2>
+
+<p>Don't forget to check that the address is not already in the database, and that the address is in Town.</p>
+<p>You should be able to findthe following information on the addresses page on SDAT.</p>
+
+<%= form_for @address do |f| %>
+  <div class="form-group">
+    <label for="ownername">Owner Name</label>
+    <%= f.text_field :ownername, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <label for="owneraddress">Owner Address</label>
+    <%= f.text_field :owneraddress, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <label for="ownercity">Owner City</label>
+    <%= f.text_field :ownercity, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <label for="ownerstate">Owner State</label>
+    <%= f.text_field :ownerstate, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <label for="ownerzip">Owner Zip</label>
+    <%= f.text_field :ownerzip, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <label for="streetnumb">Street Number</label>
+    <%= f.text_field :streetnumb, class: "form-control", placeholder: "Street Number...", pattern: "[0-9]+", title: "Please enter a valid street number (numbers only)", required: true %>
+  </div>
+
+  <div class="form-group">
+    <label for="streetname">Street Name</label>
+    <%= f.text_field :streetname, class: "form-control", placeholder: "Street Name...", required: true, minlength: 4, maxlength: 50 %>
+  </div>
+
+  <div class="form-group">
+    <label for="streettype">Street Type(Road, Ave, etc.)</label>
+    <%= f.text_field :streettype, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <label for="premisezip">Premise Zip</label>
+    <%= f.text_field :premisezip, class: "form-control" %>
+  </div>
+
+    <%= f.submit "Create Address", class: "btn btn-primary mt-3" %>
+<% end %>
