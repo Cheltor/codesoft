@@ -10,6 +10,10 @@
   <strong><%= comment.user.email.split("@").first %></strong> says: 
   <br>
   <%= comment.content %></p>
+    <%# if user is current user, and comment is on address show page, show edit link %>
+    <% if comment.user == current_user && show_edit_link %>
+      <%= link_to "Edit Comment", edit_address_comment_path(@address, comment), class: "btn btn-outline-secondary" %>
+    <% end %>
   <% if comment.photos.attached? %>
     <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#comment-<%= comment.id %>">
       Attachments

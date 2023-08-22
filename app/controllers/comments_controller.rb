@@ -9,6 +9,22 @@ class CommentsController < ApplicationController
         render 'addresses/show'
       end
     end
+
+    def edit
+      @address = Address.find(params[:address_id])
+      @comment = @address.comments.find(params[:id])
+    end
+  
+    def update
+      @address = Address.find(params[:address_id])
+      @comment = @address.comments.find(params[:id])
+      
+      if @comment.update(comment_params)
+        redirect_to @address, notice: 'Comment was successfully updated.'
+      else
+        render :edit
+      end
+    end
   
     private
 

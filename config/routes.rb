@@ -10,7 +10,7 @@ Rails.application.routes.draw do
       get :generate_report, on: :member
     end
     resources :comments
-    resources :concerns, only: [:create]
+    resources :concerns, only: [:create, :edit, :update]
   end
 
   get 'all_violations' => 'addresses#violist'

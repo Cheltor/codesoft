@@ -1,0 +1,17 @@
+<h3>Edit Comment</h3>
+
+<%= form_for([@address, @comment]) do |f| %>
+  <div class="field">
+    <strong><label>Original Comment:</label></strong>
+    <div class="original-comment">
+      <%= @comment.content %>
+    </div>
+  </div>
+  
+  <div class="field">
+    <strong><label>Updated Comment:</label></strong>
+    <%= f.text_area :content, class: "form-control" %>
+  </div>
+  <br>
+  <%= f.submit class: "btn btn-primary" %>
+<% end %>

@@ -71,7 +71,7 @@
         <div class="tab-pane fade" id="comment">
         <br>
         <% @comments.each do |comment| %>
-          <%= render 'comments/comments', comment: comment, show_address_info: true %>
+          <%= render 'comments/comments', comment: comment, show_address_info: true, show_edit_link: false %>
         <% end %>
         </div>
       </div>     
