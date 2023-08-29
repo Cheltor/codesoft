@@ -1,0 +1,12 @@
+<!-- app/views/units/_form.html.erb -->
+<h4>Current unit number:</h4>
+<p><%= unit.number %></p>
+
+<%= form_with(model: unit, url: address_unit_path(unit.address, unit), method: :patch) do |form| %>
+  <div class="field">
+    <label>New unit number:</label>
+    <%= form.text_field :number, class: "form-control" %>
+  </div>
+
+  <%= form.submit "Update Unit", class: "btn btn-primary" %>
+<% end %>

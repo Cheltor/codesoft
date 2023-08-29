@@ -1,6 +1,23 @@
 <!-- list all units -->
 
-<h4>Units:</h4>
-<% @address.units.each do |unit| %>
-  <p><%= unit.unitnumber %></p>
-<% end %>
+<h4>Address:</h4>
+<p><%= link_to @address.combadd, address_path(@address), class: "btn btn-primary" %> </p>
+
+<!-- table of units -->
+
+<table>
+  <thead>
+    <tr>
+      <th>Unit Number</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @address.units.each do |unit| %>
+      <tr>
+        <td><%= unit.number %></td>
+        <td><%= link_to "Edit Unit", edit_address_unit_path(@address, unit), class: "btn btn-primary" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
