@@ -1,0 +1,15 @@
+<h2>Add Unit to Address</h2>
+<!-- show the address -->
+<p>
+  <strong>Address:</strong>
+  <%= @address.combadd %>
+</p>
+
+<%= form_with(model: [@address, Unit.new]) do |form| %>
+  <div class="field">
+    <%= form.label :number %>
+    <%= form.text_field :number, class: "form-control" %>
+  </div>
+
+  <%= form.submit "Add Unit", class: "btn btn-primary" %>
+<% end %>

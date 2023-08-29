@@ -14,6 +14,10 @@
       All Photos and Attachments
     </button>
     <% end %>
+    <!-- button to add units -->
+    <%= link_to "Add Units", new_address_unit_path(@address), class: "btn btn-primary mt-2 mb-2" %>
+    <!-- button to show all units -->
+    <%= link_to "Show Units", address_units_path(@address), class: "btn btn-primary mt-2 mb-2" %>
     <!--
     <br>
     <a href="https://sdat.dat.maryland.gov/RealProperty/Pages" target="_blank" class="btn btn-secondary">

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_22_194932) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_22_173658) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -110,6 +110,14 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_22_194932) do
     t.index ["address_id"], name: "index_concerns_on_address_id"
   end
 
+  create_table "units", force: :cascade do |t|
+    t.string "number"
+    t.integer "address_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["address_id"], name: "index_units_on_address_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -156,6 +164,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_22_194932) do
   add_foreign_key "comments", "addresses"
   add_foreign_key "comments", "users"
   add_foreign_key "concerns", "addresses"
+  add_foreign_key "units", "addresses"
   add_foreign_key "violation_codes", "codes"
   add_foreign_key "violation_codes", "violations"
   add_foreign_key "violations", "addresses"

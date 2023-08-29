@@ -3,6 +3,7 @@ class Address < ApplicationRecord
     has_many :users, through: :comments
     has_many :violations
     has_many :concerns, dependent: :destroy
+    has_many :units, dependent: :destroy
     before_create :generate_combadd
     before_save :upcase_streetname
     before_save :upcase_streettype
