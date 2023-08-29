@@ -5,11 +5,17 @@
     <%= link_to comment.address.combadd, address_path(comment.address), class: "btn btn-secondary" %> 
   </div>
   <% end %>
+
   <p><small style="text-align:right"><%= comment.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></small> 
   <br>
-  <strong><%= comment.user.email.split("@").first %></strong> says: 
+    <% if comment.unit.present? %>
+      <p><strong>Unit:</strong> <%= comment.unit.number %></p>
+    <% end %>
+    <strong><%= comment.user.email.split("@").first %></strong> says: 
   <br>
-  <%= comment.content %></p>
+
+    <%= comment.content %></p>
+
     <%# if user is current user, and comment is on address show page, show edit link %>
     <% if comment.user == current_user && show_edit_link %>
       <%= link_to "Edit Comment", edit_address_comment_path(@address, comment), class: "btn btn-outline-secondary" %>

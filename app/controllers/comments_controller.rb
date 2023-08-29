@@ -29,7 +29,7 @@ class CommentsController < ApplicationController
     private
 
     def comment_params
-      params.require(:comment).permit(:content, photos: [])
+      params.require(:comment).permit(:content, :unit_id, photos: [])
     end
   end
   
