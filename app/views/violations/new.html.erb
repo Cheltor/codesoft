@@ -27,7 +27,7 @@
     </div>
     <br>
     <strong>Attachments/Images</strong>
-       <%= form.file_field :photos, multiple: true, class: "form-control" %>
+      <%= form.file_field :photos, multiple: true, class: "form-control" %>
 
     <br>
       <div class="form-group">
@@ -42,6 +42,17 @@
 
     </div>
     <br>
+    <!-- if address has units, show unit select -->
+    <% if @address.units.any? %>
+    <div class="form-group">
+      <strong>
+        <label for="unit_id">Unit</label>
+      </strong>
+      <%= form.select :unit_id, options_for_select(unit_options(@address.units), nil), {prompt: "Leave Blank for Building"}, class: "form-select" %>
+    </div>
+    <br>
+    <br>
+    <% end %>
 
     <div class="form-group">
       <%= form.submit "Create Violation", class: "btn btn-primary" %>

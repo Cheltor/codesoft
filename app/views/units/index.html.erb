@@ -15,7 +15,7 @@
   <tbody>
     <% @address.units.each do |unit| %>
       <tr>
-        <td><%= unit.number %></td>
+        <td><%= link_to unit.number, address_unit_path(@address, unit), class: "btn btn-primary" %></td>
         <td><%= link_to "Edit Unit", edit_address_unit_path(@address, unit), class: "btn btn-primary" %></td>
       </tr>
     <% end %>

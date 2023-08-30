@@ -138,7 +138,13 @@
         <%= f.file_field :photos, multiple: true, class: "form-control" %>
       </div>
     </div>
+    <!-- if address has units, show unit select -->
+    <% if @address.units.any? %>
+    <%= f.select :unit_id, options_for_select(unit_options(@address.units), nil), {prompt: "Select Unit or Building"}, class: "form-select" %>
 
+    <br>
+    <br>
+    <% end %>
     <div class="form-group mt-3">
       <div class="col-sm-offset-2 col-sm-10">
         <%= f.submit class: "btn btn-primary" %>

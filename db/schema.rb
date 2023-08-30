@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_29_004657) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_30_180833) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -72,7 +72,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_29_004657) do
     t.date "trial_date"
     t.integer "code_id", null: false
     t.string "citationid"
+    t.integer "unit_id"
     t.index ["code_id"], name: "index_citations_on_code_id"
+    t.index ["unit_id"], name: "index_citations_on_unit_id"
     t.index ["user_id"], name: "index_citations_on_user_id"
     t.index ["violation_id"], name: "index_citations_on_violation_id"
   end
@@ -154,13 +156,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_29_004657) do
     t.string "deadline"
     t.string "violation_type"
     t.integer "extend", default: 0
+    t.integer "unit_id"
     t.index ["address_id"], name: "index_violations_on_address_id"
+    t.index ["unit_id"], name: "index_violations_on_unit_id"
     t.index ["user_id"], name: "index_violations_on_user_id"
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "citations", "codes"
+  add_foreign_key "citations", "units"
   add_foreign_key "citations", "users"
   add_foreign_key "citations", "violations"
   add_foreign_key "comments", "addresses"
@@ -171,5 +176,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_29_004657) do
   add_foreign_key "violation_codes", "codes"
   add_foreign_key "violation_codes", "violations"
   add_foreign_key "violations", "addresses"
+  add_foreign_key "violations", "units"
   add_foreign_key "violations", "users"
 end

@@ -2,7 +2,11 @@
 
 <% if violation.deadline_passed? && violation.status == "current" %>
 <tr class="table-danger">
-  <td><%= link_to violation.address.combadd, address_path(violation.address), class: "btn btn-danger" %></td>
+  <td><%= link_to violation.address.combadd, address_path(violation.address), class: "btn btn-danger" %>
+    <% if violation.unit.present? %>
+      <br><%= violation.unit.number %>
+    <% end %>
+  </td>
   <td><%= violation.user.name %></td>
   <td><%= violation.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></td>
   <td><%= link_to violation.violation_type,violation_path(violation), class: "btn btn-danger" %></td>

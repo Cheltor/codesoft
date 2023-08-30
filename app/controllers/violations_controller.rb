@@ -135,7 +135,7 @@ class ViolationsController < ApplicationController
   end  
 
   def violation_params
-    params.require(:violation).permit(:description, :deadline, :status, :extend, :violation_type, photos: [], code_ids: [])
+    params.require(:violation).permit(:description, :deadline, :status, :extend, :violation_type, :unit_id, photos: [], code_ids: [])
   end
 
   def set_violation

@@ -3,6 +3,14 @@ class UnitsController < ApplicationController
     @address = Address.find(params[:address_id])
     @units = @address.units
   end
+
+  def show
+    @address = Address.find(params[:address_id])
+    @unit = @address.units.find(params[:id])
+    @violations = @unit.violations
+    @comments = @unit.comments
+    @address_citations = @unit.citations
+  end
   
   def new
     @address = Address.find(params[:address_id])

@@ -7,7 +7,7 @@ class Violation < ApplicationRecord
   has_many_attached :photos
   validates :violation_type, presence: true
   has_many :citations
-
+  belongs_to :unit, optional: true
 
   def at_least_one_code_selected
     errors.add(:base, "Please select at least one code") if codes.none?
