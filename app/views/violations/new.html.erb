@@ -48,7 +48,7 @@
       <strong>
         <label for="unit_id">Unit</label>
       </strong>
-      <%= form.select :unit_id, options_for_select(unit_options(@address.units), nil), {prompt: "Leave Blank for Building"}, class: "form-select" %>
+      <%= form.select :unit_id, options_for_select(unit_options(@address.units), @unit), {prompt: "Leave Blank for Building"}, class: "form-select" %>
     </div>
     <br>
     <br>

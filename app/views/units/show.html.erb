@@ -51,7 +51,7 @@
       </div>
       <div class="tab-pane fade " id="violation">
     <div style="text-align: center">
-      <%= link_to "Create a Violation Notice/Doorhanger", new_address_violation_path(@address), class: "btn btn-danger btn-lg mt-5" %>
+      <%= link_to "Create a Violation Notice/Doorhanger", new_address_violation_path(@address, unit: @unit), class: "btn btn-danger btn-lg mt-5" %>
     </div>
     <br>
     <% if @unit.violations.any? %>

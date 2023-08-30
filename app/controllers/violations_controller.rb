@@ -6,6 +6,7 @@ class ViolationsController < ApplicationController
 
   def new
     @violation = @address.violations.new
+    @unit = Unit.find(params[:unit]) if params[:unit].present?
   end
 
   def update
