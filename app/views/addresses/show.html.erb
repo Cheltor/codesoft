@@ -1,5 +1,16 @@
 <% content_for :title, @address.combadd %>
 
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">
+      <%= link_to "Home", root_path %>
+    </a></li>
+    <li class="breadcrumb-item active"><a href="#">
+    <%= link_to @address.combadd.titleize, address_path(@address) %>
+    </a></li>
+  </ol>
+</nav>
+
 <div class="row">
   <div class="col-sm-4">
     <%# address information %>
@@ -102,7 +113,7 @@
       <div class="tab-pane fade show active" id="comment">
       <br>
         <% @address.comments.order("created_at DESC").each do |comment| %>
-          <%= render 'comments/comments', comment: comment, show_address_info: false, show_edit_link: true %>
+          <%= render 'comments/comments', comment: comment, show_address_info: false, show_edit_link: true, show_unit_info: false %>
         <% end %>
       </div>
       <div class="tab-pane fade " id="violation">
