@@ -6,7 +6,6 @@ class ViolationsController < ApplicationController
 
   def new
     @violation = @address.violations.new
-    @unit = Unit.find(params[:unit]) if params[:unit].present?
   end
 
   def update
@@ -28,6 +27,7 @@ class ViolationsController < ApplicationController
     @violation = Violation.find(params[:id])
     @address = @violation.address
     @address_citations = @address.violations.map(&:citations).flatten
+    @unit = @violation.unit
     @address_photos = (
                         @address.violations.map(&:photos) +
                         @address.comments.map(&:photos) + 
@@ -129,6 +129,9 @@ class ViolationsController < ApplicationController
   def set_address
     if params[:address_id].present?
       @address = Address.find(params[:address_id])
+      if params[:unit_id].present?
+        @unit = Unit.find(params[:unit_id])
+      end
     elsif params[:id].present?
       @violation = Violation.find(params[:id])
       @address = @violation.address

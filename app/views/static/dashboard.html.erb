@@ -1,4 +1,12 @@
 <% content_for :title, "Dashboard" %>
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">
+      <%= link_to "Home", root_path %>
+    </a></li>
+  </ol>
+</nav>
+
 <div class="container mt-5">
   <% if params[:q].present? %>
   <div class="row mt-5">

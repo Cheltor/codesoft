@@ -1,34 +1,32 @@
 <% content_for :title, @violation.address.combadd %>
-
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">
+      <%= link_to "Home", root_path %>
+    </a></li>
+    <li class="breadcrumb-item"><a href="#">
+    <% if @violation.unit.present? %>
+      <%= link_to @violation.unit.number, address_unit_path(@address, @unit) %>
+    <% end %>
+    <%= link_to @address.combadd.titleize, address_path(@address) %>
+    </a></li>
+    <li class="breadcrumb-item active">
+      <%= "Violation ##{params[:id]}" %>
+    </li>
+  </ol>
+</nav>
 <div class="row">
   <div class="col-sm-4">
     <%# address information %>
-    <h2><%= @violation.address.combadd %></h2>
+    <h2><%= @violation.address.combadd %>
+    <% if @unit.present? %>
+      <small>Unit <%= @unit.number.upcase %></small>
+    <% end %>
+    </h2>
     <%# link to google maps from icon %>
     <a href="https://www.google.com/maps/search/?api=1&query=<%= @violation.address.combadd %>+MD+<%= @violation.address.premisezip %>" target="_blank" class="btn btn-secondary">
     <i class="bi bi-geo-alt-fill"></i> Search on Google Maps</a>
     <br>
-    <% if @address_photos.any? %>
-    <button type="button" class="btn btn-primary mt-2 mb-2" data-bs-toggle="modal" data-bs-target="#allphotoModal">
-      <i class="bi bi-paperclip"></i>
-      All Photos and Attachments
-    </button>
-    <% end %>
-
-        <!-- Modal -->
-    <div class="modal fade custom-modal-lg" id="allphotoModal">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-              All Attachments
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-            <% @address_photos.each do |photo| %>
-              <%= render partial: 'shared/show_image', locals: { photo: photo } %>
-            <% end %>
-        </div>
-      </div>
-    </div>
 
   </div>
   <div class="col-sm-4">

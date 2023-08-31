@@ -1,23 +1,57 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">
+      <%= link_to "Home", root_path %>
+    </a></li>
+    <li class="breadcrumb-item active"><a href="#">
+    <%= link_to @address.combadd.titleize, address_path(@address) %>
+    </a></li>
+  </ol>
+</nav>
+
+<div class="row">
+  <div class="col-sm-4">
+    <%# address information %>
+    <h2><%= @address.combadd %></h2>
+    <%# link to google maps from icon %>
+    <a href="https://www.google.com/maps/search/?api=1&query=<%= @address.combadd %>+MD+<%= @address.premisezip %>" target="_blank" class="btn btn-secondary">
+    <i class="bi bi-geo-alt-fill"></i> Search on Google Maps</a>
+    <br>
+
+  </div>
+  <div class="col-sm-4">
+    <h4>Owner:</h4>
+    <p><%= @address.ownername %></p>
+    <h4>Owner Address:</h4>
+    <p><%= @address.owneraddress %> <%= @address.ownercity %>, <%= @address.ownerstate %> <%= @address.ownerzip %></p>
+
+  </div>
+  <div class="col-sm-4">
+  </div>
+</div>
 <!-- list all units -->
-
-<h4>Address:</h4>
-<p><%= link_to @address.combadd, address_path(@address), class: "btn btn-primary" %> </p>
-
 <!-- table of units -->
+<div class="card flex-fill">
+  <div class="card-header">
 
-<table>
-  <thead>
-    <tr>
-      <th>Unit Number</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @address.units.each do |unit| %>
+    <h5 class="card-title mb-0">Units</h5>
+  </div>
+  <table class="table table-hover my-0">
+    <thead>
       <tr>
-        <td><%= link_to unit.number, address_unit_path(@address, unit), class: "btn btn-primary" %></td>
-        <td><%= link_to "Edit Unit", edit_address_unit_path(@address, unit), class: "btn btn-primary" %></td>
+        <th>Unit</th>
+        <th>Violations</th>
+        <th>Actions</th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      <% @address.units.each do |unit| %>
+      <tr>
+        <td><%= link_to unit.number, address_unit_path(@address, unit), class: "btn" %></td>
+        <td><%= link_to pluralize(unit.violations.count, "Violation"), address_unit_path(@address, unit), class: "btn"%></td>
+        <td><%= link_to "Edit Unit", edit_address_unit_path(@address, unit), class: "btn btn-secondary" %></td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

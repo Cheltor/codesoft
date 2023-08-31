@@ -1,5 +1,22 @@
 <div class="container">
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">
+      <%= link_to "Home", root_path %>
+    </a></li>
+    <li class="breadcrumb-item">
+    <%= link_to @address.combadd.titleize, address_path(@address) %>
+    </li>
+    <% if @unit.present? %>
+      <li class="breadcrumb-item active" aria-current="page">
+        <%= link_to "Unit " + @unit.number, address_unit_path(@address, @unit) %>
+      </li>
+    <% end %>
+  </ol>
+</nav>
 <br>
+
+<div class="row">
   <h1>Create a Violation</h1>
 
   <%= form_with(model: [@address, @violation], local: true) do |form| %>
@@ -48,7 +65,8 @@
       <strong>
         <label for="unit_id">Unit</label>
       </strong>
-      <%= form.select :unit_id, options_for_select(unit_options(@address.units), @unit), {prompt: "Leave Blank for Building"}, class: "form-select" %>
+      <em><p>You can leave blank or select "Building" for a building violation, or select a specific unit.</p></em>
+      <%= form.select :unit_id, options_for_select(unit_options(@address.units), @unit), {prompt: "Select Building or Unit"}, class: "form-select" %>
     </div>
     <br>
     <br>
@@ -58,6 +76,7 @@
       <%= form.submit "Create Violation", class: "btn btn-primary" %>
     </div>
   <% end %>
+</div>
 </div>
 
 <script>
