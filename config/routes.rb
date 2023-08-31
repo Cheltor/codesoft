@@ -12,6 +12,7 @@ Rails.application.routes.draw do
     resources :comments
     resources :concerns, only: [:create, :edit, :update]
     resources :units, only: [:new, :create, :edit, :update, :destroy, :index, :show]
+    resources :inspections
   end
 
   get 'all_violations' => 'addresses#violist'

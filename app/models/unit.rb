@@ -3,4 +3,5 @@ class Unit < ApplicationRecord
   has_many :violations
   has_many :comments
   has_many :citations
+  has_many :inspections
 end

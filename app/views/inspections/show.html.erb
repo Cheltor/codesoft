@@ -1,0 +1,51 @@
+<%# inspection show page %>
+<% content_for :title, @address.combadd + " Inspection # " + @inspection.id.to_s %>
+
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">
+      <%= link_to "Home", root_path %>
+    </a></li>
+    <li class="breadcrumb-item"><a href="#">
+    <%= link_to @address.combadd.titleize, address_path(@address) %>
+    </a></li>
+
+    <% if @inspection.unit_id.present? %>
+      <li class="breadcrumb-item"><a href="#">
+      <%= link_to @inspection.unit.number, address_unit_path(@address, @inspection.unit) %>
+      </a></li>
+    <% end %>
+
+    <li class="breadcrumb-item active"><a href="#">
+    <%= link_to "Inspection ##{@inspection.id}", address_path(@address) %>
+    </a></li>
+  </ol>
+</nav>
+
+<div class="row">
+  <div class="col-sm-4">
+    <%# address information %>
+    <h2><%= @inspection.address.combadd %>
+    <% if @unit.present? %>
+      <small>Unit <%= @unit.number.upcase %></small>
+    <% end %>
+    </h2>
+    <%# link to google maps from icon %>
+    <a href="https://www.google.com/maps/search/?api=1&query=<%= @inspection.address.combadd %>+MD+<%= @inspection.address.premisezip %>" target="_blank" class="btn btn-secondary">
+    <i class="bi bi-geo-alt-fill"></i> Search on Google Maps</a>
+    <br>
+
+  </div>
+  <div class="col-sm-4">
+    <div class="card shadow mb-3">
+      <div class="card-body">         
+        <h1>Inspection #<%= @inspection.id %>
+        </h1>
+        <p><strong>Address:</strong> <%= link_to @inspection.address.combadd, address_path(@address), class:"btn btn-secondary" %></p> 
+        <p><strong>Inspection Requested Date:</strong> <%= @inspection.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></p>
+        <br>
+        <br>
+      </div>
+    </div>
+  </div>
+</div> 

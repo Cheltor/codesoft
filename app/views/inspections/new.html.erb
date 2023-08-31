@@ -1,0 +1,28 @@
+<h2>Create New Inspection</h2>
+
+<%= form_with(model: [@address, @inspection]) do |form| %>
+  <div class="field">
+    <%= form.label :source %>
+    <%= form.select :source, ["complaint", "permit", "license"], class: "form-select" %>
+  </div>
+  <%= form.hidden_field :originator, value: current_user.id %>
+
+  <div class="field">
+    <%= form.label :status %>
+    <%= form.select :status, ["not scheduled","complete", "scheduled"], class: "form-select" %>
+  </div>
+
+    <%= form.file_field :attachments, multiple: true, class: "form-control" %>
+    <br>
+    <!-- if address has units, show unit select -->
+    <% if @address.units.any? %>
+    <%= form.select :unit_id, options_for_select(unit_options(@address.units), nil), {prompt: "Select Unit or Building"}, class: "form-select" %>
+
+    <br>
+    <br>
+    <% end %>
+
+  <div class="actions">
+    <%= form.submit "Create Inspection", class: "btn btn-primary" %>
+  </div>
+<% end %>

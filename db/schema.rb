@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_30_180833) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_31_185747) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -114,6 +114,22 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_30_180833) do
     t.index ["address_id"], name: "index_concerns_on_address_id"
   end
 
+  create_table "inspections", force: :cascade do |t|
+    t.string "source"
+    t.string "status"
+    t.string "attachments"
+    t.string "result"
+    t.text "description"
+    t.text "thoughts"
+    t.string "originator"
+    t.integer "unit_id"
+    t.integer "address_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["address_id"], name: "index_inspections_on_address_id"
+    t.index ["unit_id"], name: "index_inspections_on_unit_id"
+  end
+
   create_table "units", force: :cascade do |t|
     t.string "number"
     t.integer "address_id", null: false
@@ -157,7 +173,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_30_180833) do
     t.string "violation_type"
     t.integer "extend", default: 0
     t.integer "unit_id"
+    t.integer "inspection_id"
     t.index ["address_id"], name: "index_violations_on_address_id"
+    t.index ["inspection_id"], name: "index_violations_on_inspection_id"
     t.index ["unit_id"], name: "index_violations_on_unit_id"
     t.index ["user_id"], name: "index_violations_on_user_id"
   end
@@ -172,10 +190,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_30_180833) do
   add_foreign_key "comments", "units"
   add_foreign_key "comments", "users"
   add_foreign_key "concerns", "addresses"
+  add_foreign_key "inspections", "addresses"
+  add_foreign_key "inspections", "units"
   add_foreign_key "units", "addresses"
   add_foreign_key "violation_codes", "codes"
   add_foreign_key "violation_codes", "violations"
   add_foreign_key "violations", "addresses"
+  add_foreign_key "violations", "inspections"
   add_foreign_key "violations", "units"
   add_foreign_key "violations", "users"
 end

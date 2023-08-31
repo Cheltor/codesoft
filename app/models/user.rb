@@ -12,6 +12,7 @@ class User < ApplicationRecord
 
     has_many :violations
     has_many :citations, through: :violations
+    has_many :inspections
 
     enum role: { guest: 0, ons: 1, oas: 2, admin: 3 }
   end

@@ -4,6 +4,7 @@ class Address < ApplicationRecord
     has_many :violations
     has_many :concerns, dependent: :destroy
     has_many :units, dependent: :destroy
+    has_many :inspections, dependent: :destroy
     before_create :generate_combadd
     before_save :upcase_streetname
     before_save :upcase_streettype
