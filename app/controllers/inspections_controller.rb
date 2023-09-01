@@ -8,17 +8,19 @@ class InspectionsController < ApplicationController
 
   def show
     @inspection = @address.inspections.find(params[:id])
+    @attachments = @inspection.attachments.all
   end
 
   def new
     @address = Address.find(params[:address_id])
     @inspection = @address.inspections.build
+    @assignees = User.ons 
   end
 
   def create
     @address = Address.find(params[:address_id])
     @inspection = @address.inspections.build(inspection_params)
-    @inspection.originator = current_user
+    @inspection.originator = current_user if user_signed_in?
 
     if @inspection.save
       redirect_to @address, notice: 'Inspection was successfully created.'
@@ -57,7 +59,7 @@ class InspectionsController < ApplicationController
   end
 
   def inspection_params
-    params.require(:inspection).permit(:source, :status, :result, :description, :thoughts, :originator, :unit_id, attachments: [])
+    params.require(:inspection).permit(:source, :status, :result, :description, :thoughts, :originator, :unit_id, :assignee, attachments: [])
   end
 
 end

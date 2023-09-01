@@ -7,11 +7,12 @@
   <td><%= inspection.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></td>
   <td><%= inspection.source %></td>
   <td><%= inspection.status %></td>
+  <td><%= link_to "Show", address_inspection_path(inspection.address, inspection), class: "btn btn-primary" %></td>
+  <td><%= inspection.assignee %></td>
   <%# if attachments present, show badge with count %>
-<%# if attachments present, show badge with count %>
-<td>
-  <% if inspection.attachments.attached? %>
-    <%= link_to inspection.attachments.count, address_inspection_path(inspection.address, inspection), class: "btn btn-primary" %>
-  <% end %>
-</td>
+  <td>
+    <% if inspection.attachments.attached? %>
+      <%= link_to inspection.attachments.count, address_inspection_path(inspection.address, inspection), class: "btn btn-primary" %>
+    <% end %>
+  </td>
 </tr>

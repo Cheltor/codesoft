@@ -1,19 +1,25 @@
-<h2>Create New Inspection</h2>
+<h2>Create New Inspection Request</h2>
+<h4><%= @address.combadd.titleize %></h4>
 
 <%= form_with(model: [@address, @inspection]) do |form| %>
-  <div class="field">
+  <div class="field mt-3">
     <%= form.label :source %>
-    <%= form.select :source, ["complaint", "permit", "license"], class: "form-select" %>
-  </div>
-  <%= form.hidden_field :originator, value: current_user.id %>
-
-  <div class="field">
-    <%= form.label :status %>
-    <%= form.select :status, ["not scheduled","complete", "scheduled"], class: "form-select" %>
+    <%= form.select :source, ["Complaint", "Building/Dumpster/POD permit", "Business license", "Single Family License", "Multifamily License", "Donation Bin"], {}, class: "form-select" %>
   </div>
 
+  <div class="field mt-3">
+    <%= form.label :description %>
+    <%= form.text_area :description, class: "form-control" %>
+  </div>
+
+  <div class="field mt-3">
+  <label>
+  Application or photos
+  </label>
     <%= form.file_field :attachments, multiple: true, class: "form-control" %>
-    <br>
+</div>
+
+  <div class="field mt-3">
     <!-- if address has units, show unit select -->
     <% if @address.units.any? %>
     <%= form.select :unit_id, options_for_select(unit_options(@address.units), nil), {prompt: "Select Unit or Building"}, class: "form-select" %>
@@ -21,8 +27,12 @@
     <br>
     <br>
     <% end %>
-
-  <div class="actions">
+  </div>
+  <div class="form-group mt-3">
+    <%= form.label :assignee %>
+    <%= form.select :assignee_id, options_for_select([["Unassigned", nil]] + @assignees.map { |user| [user.email, user.id] }), {}, class: "form-select" %>
+  </div>
+  <div class="actions mt-3">
     <%= form.submit "Create Inspection", class: "btn btn-primary" %>
   </div>
 <% end %>

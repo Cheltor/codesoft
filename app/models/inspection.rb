@@ -4,4 +4,8 @@ class Inspection < ApplicationRecord
   has_many :violations, dependent: :destroy
   belongs_to :user, optional: true
   has_many_attached :attachments
+
+  STATUS_OPTIONS = ["scheduled", "not scheduled"].freeze
+  RESULT_OPTIONS = ["passed", "failed"].freeze
+  
 end
