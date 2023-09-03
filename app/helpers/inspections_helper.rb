@@ -5,4 +5,12 @@ module InspectionsHelper
     options += users.pluck(:email, :id)
     options_for_select(options, selected_assignee)
   end
+
+  def generate_pre_inspection_email_link
+    recipient_email = "recipient@example.com"
+    subject = "Pre-Inspection Notification"
+    body = "Hello, this is a pre-inspection notification."
+
+    mail_to(recipient_email, subject, body: body, class: "btn btn-primary")
+  end
 end
