@@ -19,14 +19,14 @@
         <% if address.violations.current.exists? == true %>
           <div class="card mt-3" style="background-color: #ffccbc;">
             <div class="card-body">
-              <h5 class="card-title"><%= address.combadd %></h5>
+              <h5 class="card-title"><%= address.combadd.titleize %></h5>
               <p class="card-text">At least 1 active violation</p>
             </div>
           </div>
         <% else %>
           <div class="card mt-3" style="background-color: #c8e6c9;">
             <div class="card-body">
-              <h5 class="card-title"><%= address.combadd %></h5>
+              <h5 class="card-title"><%= address.combadd.titleize %></h5>
               <p class="card-text">No Active Violations</p>
               <!-- Concern form 
               <h3>Report a Concern</h3>

@@ -22,9 +22,9 @@
           <% @addresses.order("updated_at DESC").first(10).each do |address| %>
           <tr>
           <% if address.violations.current.exists? == true %>
-            <td><%= link_to address.combadd, address_path(address), class:"btn btn-warning" %></td>
+            <td><%= link_to address.combadd.titleize, address_path(address), class:"btn btn-warning" %></td>
           <% else %>
-            <td><%= link_to address.combadd, address_path(address), class:"btn btn-primary" %></td>
+            <td><%= link_to address.combadd.titleize, address_path(address), class:"btn btn-primary" %></td>
           <% end %>
           </tr>
           <% end %>
@@ -42,9 +42,9 @@
       <li class="list-group-item d-flex justify-content-between align-items-start">
         <div class="ms-2 me-auto">
           <% if violation.status == "current" %>
-          <div><%= link_to violation.address.combadd, address_path(violation.address), class: "btn btn-warning" %> - <%= violation.user.email.split("@").first %></div>
+          <div><%= link_to violation.address.combadd.titleize, address_path(violation.address), class: "btn btn-warning" %> - <%= violation.user.email.split("@").first %></div>
           <% else %>
-          <div><%= link_to violation.address.combadd, address_path(violation.address), class: "btn btn-success" %> - <%= violation.user.email.split("@").first %></div>
+          <div><%= link_to violation.address.combadd.titleize, address_path(violation.address), class: "btn btn-success" %> - <%= violation.user.email.split("@").first %></div>
           <% end %>
           <br>
           <strong>
@@ -97,9 +97,9 @@
   <li class="list-group-item d-flex justify-content-between align-items-start">
     <div class="ms-2 me-auto">
     <% if comment.address.violations.where(status: "current").exists? %>
-      <div class="fw-bold"><%= link_to comment.address.combadd, address_path(comment.address), class: "btn btn-warning" %></div>
+      <div class="fw-bold"><%= link_to comment.address.titleize, address_path(comment.address), class: "btn btn-warning" %></div>
     <% else %>
-      <div class="fw-bold"><%= link_to comment.address.combadd, address_path(comment.address), class: "btn btn-primary" %></div>
+      <div class="fw-bold"><%= link_to comment.address.combadd.titleize, address_path(comment.address), class: "btn btn-primary" %></div>
     <% end %>
       <strong><%= truncate(comment.content, length: 200) %></strong> - <%= comment.user.email.split("@").first %>
       <br>

@@ -5,7 +5,7 @@
     <% if comment.unit.present?  %> 
       <%= link_to "#{comment.address.combadd.titleize} - Unit #{comment.unit.number.upcase}", address_unit_path(comment.address, comment.unit), class: "btn btn-secondary" %>
     <% else %>
-      <%= link_to comment.address.combadd, address_path(comment.address), class: "btn btn-secondary" %> 
+      <%= link_to comment.address.combadd.titleize, address_path(comment.address), class: "btn btn-secondary" %> 
     <% end %>
   </div>
   <% end %>

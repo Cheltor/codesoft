@@ -18,14 +18,14 @@
         <% if address.violations.current.exists? == true %>
           <div class="card mt-3" style="background-color: #ffccbc;">
             <div class="card-body">
-              <h5 class="card-title"><%= address.combadd %></h5>
+              <h5 class="card-title"><%= address.titleize %></h5>
               <p class="card-text">Active Violations</p>
             </div>
           </div>
         <% else %>
           <div class="card mt-3" style="background-color: #c8e6c9;">
             <div class="card-body">
-              <h5 class="card-title"><%= address.combadd %></h5>
+              <h5 class="card-title"><%= address.combadd.titleize %></h5>
               <p class="card-text">No Active Violations</p>
             </div>
           </div>
@@ -43,9 +43,9 @@
           <% @addresses.each do |address| %>
           <tr>
           <% if address.violations.current.exists? == true %>
-            <td><%= link_to address.combadd, address_path(address), class:"btn btn-warning" %></td>
+            <td><%= link_to address.combadd.titleize, address_path(address), class:"btn btn-warning" %></td>
           <% else %>
-            <td><%= link_to address.combadd, address_path(address), class:"btn btn-primary" %></td>
+            <td><%= link_to address.combadd.titleize, address_path(address), class:"btn btn-primary" %></td>
           <% end %>
           </tr>
           <% end %>

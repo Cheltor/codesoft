@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-sm-4">
     <%# address information %>
-    <h2><%= @address.combadd %></h2>
+    <h2><%= @address.combadd.titleize %></h2>
     <%# link to google maps from icon %>
     <a href="https://www.google.com/maps/search/?api=1&query=<%= @address.combadd %>+MD+<%= @address.premisezip %>" target="_blank" class="btn btn-secondary">
     <i class="bi bi-geo-alt-fill"></i> Search on Google Maps</a>

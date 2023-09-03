@@ -1,9 +1,9 @@
-<% content_for :title, @citation.violation.address.combadd %>
+<% content_for :title, @citation.violation.address.combadd.titleize %>
 
 <div class="row">
   <div class="col-sm-4 d-none d-sm-block">
     <%# address information %>
-    <h2><%= @address.combadd %></h2>
+    <h2><%= @address.combadd.titleize %></h2>
     <%# link to google maps from icon %>
     <a href="https://www.google.com/maps/search/?api=1&query=<%= @address.combadd %>+MD+<%= @address.premisezip %>" target="_blank" class="btn btn-secondary mb-2">
     <i class="bi bi-geo-alt-fill"></i> Search on Google Maps</a>

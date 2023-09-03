@@ -1,5 +1,5 @@
 <%# inspection show page %>
-<% content_for :title, @address.combadd + " Inspection # " + @inspection.id.to_s %>
+<% content_for :title, @address.combadd.titleize + " Inspection # " + @inspection.id.to_s %>
 
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
@@ -25,7 +25,7 @@
 <div class="row">
   <div class="col-sm-4">
     <%# address information %>
-    <h2><%= @inspection.address.combadd %>
+    <h2><%= @inspection.address.combadd.titleize %>
     <% if @unit.present? %>
       <small>Unit <%= @unit.number.upcase %></small>
     <% end %>
@@ -41,7 +41,7 @@
       <div class="card-body">         
         <h1>Inspection #<%= @inspection.id %>
         </h1>
-        <p><strong>Address:</strong> <%= link_to @inspection.address.combadd, address_path(@address), class:"btn btn-secondary" %></p> 
+        <p><strong>Address:</strong> <%= link_to @inspection.address.combadd.titleize, address_path(@address), class:"btn btn-secondary" %></p> 
         <p><strong>Inspection Request Was Created:</strong> <%= @inspection.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></p>
         <p>This inspection is for a <strong><%= @inspection.source %> </strong></p>
         <p><strong>Inspection Status:</strong> <%= @inspection.status %></p>
