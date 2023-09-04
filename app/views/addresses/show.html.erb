@@ -26,9 +26,31 @@
     </button>
     <% end %>
     <!-- button to add units -->
+    <br>
     <%= link_to "Add Units", new_address_unit_path(@address), class: "btn btn-primary mt-2 mb-2" %>
-    <!-- button to show all units -->
-    <%= link_to "Show Units (#{@address.units.count} units)", address_units_path(@address), class: "btn btn-primary mt-2 mb-2" %>
+
+    <!-- bootstrap collapse listing a link to all units -->
+
+    <% if @address.units.present? %>
+    <div class="accordion mt-2 mb-2" id="accordionExample">
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingOne">
+          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+            <i class="bi bi-chevron-down"></i>  Show <%= pluralize(@address.units.count, "Unit") %>
+          </button>
+        </h2>
+        <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+          <div class="accordion-body">
+            <% @address.units.each do |unit| %>
+              <%= link_to unit.number.upcase, address_unit_path(@address, unit) %>
+              <br>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+    <% end %>
+
     <!--
     <br>
     <a href="https://sdat.dat.maryland.gov/RealProperty/Pages" target="_blank" class="btn btn-secondary">
@@ -56,7 +78,7 @@
   </div>
   <div class="col-sm-4">
     <h4>Owner:</h4>
-    <p><%= @address.ownername %></p>
+    <p><%= @address.ownername.titleize %></p>
     <h4>Owner Address:</h4>
     <p><%= @address.owneraddress %> <%= @address.ownercity %>, <%= @address.ownerstate %> <%= @address.ownerzip %></p>
 
