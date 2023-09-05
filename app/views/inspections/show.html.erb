@@ -17,7 +17,7 @@
     <% end %>
 
     <li class="breadcrumb-item active"><a href="#">
-    <%= link_to "Inspection ##{@inspection.id}", address_path(@address) %>
+    <%= link_to "Inspection ##{@inspection.id}", address_inspection_path(@address, @inspection) %>
     </a></li>
   </ol>
 </nav>
@@ -41,21 +41,28 @@
       <div class="card-body">         
         <h1>Inspection #<%= @inspection.id %>
         </h1>
-        <p><strong>Address:</strong> <%= link_to @inspection.address.combadd.titleize, address_path(@address), class:"btn btn-secondary" %></p> 
-        <p><strong>Inspection Request Was Created:</strong> <%= @inspection.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></p>
-        <p>This inspection is for a <strong><%= @inspection.source %> </strong></p>
-        <p><strong>Inspection Status:</strong> <%= @inspection.status %></p>
-        <p><strong>Inspection Description:</strong> <%= @inspection.description %></p>
-        <p><strong>Inspector:</strong> <%= @inspection.inspector ? @inspection.inspector.email : "Unassigned" %></p>
-        </p>
-        <br>
-        <br>
-              <% if @attachments.any? %>
+                      <% if @attachments.any? %>
     <button type="button" class="btn btn-primary mt-2 mb-2" data-bs-toggle="modal" data-bs-target="#allphotoModal">
       <i class="bi bi-paperclip"></i>
-      All Photos and Attachments
+      Application/photos
     </button>
     <% end %>
+        <p><strong>Inspection Request Was Created:</strong> <%= @inspection.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></p>
+        <p>This inspection is for a <strong><%= @inspection.source %> </strong></p>
+        <% if @inspection.status.present? %>
+        <p><strong>Inspection Status:</strong> <%= @inspection.status %></p>
+        <% else %>
+        <p><strong>Inspection Status:</strong> Pending</p>
+        <% end %>
+        <% if @inspection.description.present? %>
+        <p><strong>Inspection Description:</strong> <%= @inspection.description %></p>
+        <% end %>
+        <p><strong>Inspector:</strong> <%= @inspection.inspector ? @inspection.inspector.email : "Unassigned" %></p>
+        </p>
+        <%= link_to "Edit inspection", edit_address_inspection_path(@address, @inspection), class: "btn btn-primary mt-3" %>
+        <br>
+        <%= link_to "Schedule inspection", schedule_address_inspection_path(@address, @inspection), class: "btn btn-primary mt-3" %>
+        <br>
       </div>
     </div>
   </div>
@@ -64,8 +71,7 @@
   <div class="col-sm-4">
     <%= generate_pre_inspection_email_link %>
     <br>
-    <%= link_to "Conduct inspection", edit_address_inspection_path(@address, @inspection), class: "btn btn-primary mt-3" %>
-
+    <%= link_to "Conduct inspection", conduct_address_inspection_path(@address, @inspection), class: "btn btn-primary mt-3" %>
   </div>
 
 </div>

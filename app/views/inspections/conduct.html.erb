@@ -1,0 +1,20 @@
+<h1>Conduct Inspection</h1>
+<%= form_with(model: [@address, @inspection]) do |form| %>
+  <div class="field mt-3">
+    <label>Notes</label>
+    <%= form.text_area :thoughts, class: "form-control" %>
+  </div>
+  <div class="field mt-3">
+    <label>Photos</label>
+    <%= form.file_field :photos, multiple: true, class: "form-control" %>
+  </div>
+  
+
+  <div class="field mt-3">
+    <label>Outcome</label>
+    <%= form.select :status , ["Passed", "Failed", "Reinspection Required"], {}, class: "form-select" %>
+  </div>
+  <div class="actions mt-3">
+    <%= form.submit "Submit", class: "btn btn-primary" %>
+  </div>
+<% end %>

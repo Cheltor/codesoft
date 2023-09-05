@@ -1,8 +1,8 @@
 class InspectionsController < ApplicationController
-  before_action :set_address
+  before_action :set_address, except: [:all_inspections]
   before_action :set_inspection, only: [:show, :edit, :update, :destroy]
 
-  def index
+  def all_inspections
     @inspections = Inspection.all
   end
 
@@ -12,24 +12,27 @@ class InspectionsController < ApplicationController
   end
 
   def new
-    @address = Address.find(params[:address_id])
     @inspection = @address.inspections.build
     @assignees = User.where(role: :ons)
+  end
+
+  def conduct
+    @inspection = Inspection.find(params[:id])
+  end
+
+  def schedule
+    @inspection = Inspection.find(params[:id])
   end
 
   def create
     @address = Address.find(params[:address_id])
     @inspection = @address.inspections.build(inspection_params)
     @inspection.originator = current_user if user_signed_in?
-  
-    if params[:inspection][:assignee].present?
-      @inspection.assignee = User.find(params[:inspection][:assignee])
-    end
 
     if @inspection.save
       redirect_to @address, notice: 'Inspection was successfully created.'
     else
-      render :new
+      render :new, notice: 'Inspection was not successfully created.'
     end
   end
 
@@ -41,10 +44,13 @@ class InspectionsController < ApplicationController
   def update
     @inspection = Inspection.find(params[:id])
 
+    existing_attachments = @inspection.attachments
+
     if @inspection.update(inspection_params)
+      @inspection.attachments += existing_attachments
       redirect_to address_inspection_path(@address, @inspection), notice: 'Inspection was successfully updated.'
     else
-      render :edit
+      render :edit, notice: 'Inspection was not successfully updated.'
     end
   end
 
@@ -65,7 +71,7 @@ class InspectionsController < ApplicationController
   end
 
   def inspection_params
-    params.require(:inspection).permit(:source, :status, :result, :description, :thoughts, :originator, :unit_id, :assignee_id, :inspector_id, attachments: [])
+    params.require(:inspection).permit(:source, :status, :result, :description, :thoughts, :originator, :unit_id, :assignee_id, :inspector_id, :scheduled_datetime, :name, :email, :phone, attachments: []).reject { |key, value| value.blank? }
   end
 
 end

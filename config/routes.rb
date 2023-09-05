@@ -14,10 +14,16 @@ Rails.application.routes.draw do
     resources :units, only: [:new, :create, :edit, :update, :destroy, :index, :show] do
       resources :businesses, shallow: true
     end
-    resources :inspections
+    resources :inspections do
+      member do
+        get 'conduct'
+        get 'schedule'
+      end
+    end
     resources :businesses
   end
 
+  get 'all_inspections' => 'inspections#all_inspections'
   get 'all_violations' => 'addresses#violist'
   get 'my_violations' => 'addresses#my_violations'
   get 'helpful' => 'static#helpful'

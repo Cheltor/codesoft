@@ -97,6 +97,19 @@
             </li>
             <% end %>
           <% end %>
+
+          <% if current_user.admin? || current_user.ons? || current_user.oas? %>
+          <li class="sidebar-header">
+            Inspections
+          </li>
+
+          <li class="sidebar-item">
+            <%= link_to(all_inspections_path, class: "sidebar-link") do %>
+              <i class="align-middle" data-feather="clipboard"></i>
+              <span class="align-middle">All Inspections</span>
+            <% end %>
+          </li>
+          <% end %>
 				</ul>
 			</div>
 		</nav>

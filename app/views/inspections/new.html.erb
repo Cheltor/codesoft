@@ -1,3 +1,21 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">
+      <%= link_to "Home", root_path %>
+    </a></li>
+    <li class="breadcrumb-item"><a href="#">
+    <%= link_to @address.combadd.titleize, address_path(@address) %>
+    </a></li>
+
+    <% if @inspection.unit_id.present? %>
+      <li class="breadcrumb-item"><a href="#">
+      <%= link_to @inspection.unit.number, address_unit_path(@address, @inspection.unit) %>
+      </a></li>
+    <% end %>
+  </ol>
+</nav>
+
+
 <h2>Create New Inspection Request</h2>
 <h4><%= @address.combadd.titleize %></h4>
 
@@ -26,6 +44,21 @@
     <br>
     <br>
     <% end %>
+  </div>
+
+    <div class="field mt-3">
+    <label>Applicant/Complaintant Name</label>
+    <%= form.text_field :name, class: "form-control" %>
+  </div>
+
+  <div class="field mt-3">
+    <label>Applicant/Complaintant Email</label>
+    <%= form.email_field :email, class: "form-control" %>
+  </div>
+
+  <div class="field mt-3">
+    <label>Applicant/Complaintant Phone Number</label>
+    <%= form.text_field :phone, class: "form-control" %>
   </div>
   <div class="form-group mt-3">
     <%= form.label :inspector_id %>

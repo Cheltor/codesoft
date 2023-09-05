@@ -8,15 +8,22 @@
   <% else %>
     <td>Pending</td>
   <% end %>
-  <td><%= link_to "Show", address_inspection_path(inspection.address, inspection), class: "btn btn-primary" %></td>
-  <% if inspection.inspector.present? %>
-    <td><%= inspection.inspector.email %></td>
+  <% if inspection.scheduled_datetime.present? %>
+    <td><%= inspection.scheduled_datetime.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y %I:%M %p") %></td>
   <% else %>
-    <td>Unassigned</td>
-  <% end %> 
+    <td>Not Scheduled</td>
+  <% end %>
   <td>
     <% if inspection.attachments.attached? %>
       <%= link_to inspection.attachments.count, address_inspection_path(inspection.address, inspection), class: "btn btn-primary" %>
     <% end %>
   </td>
+  <% if inspection.inspector.present? %>
+    <td><%= inspection.inspector.email %></td>
+  <% else %>
+    <td>Unassigned</td>
+  <% end %> 
+
+    <td><%= link_to "Show", address_inspection_path(inspection.address, inspection), class: "btn btn-primary" %></td>
+
 </tr>
