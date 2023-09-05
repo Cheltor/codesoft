@@ -23,14 +23,13 @@
     <!-- if address has units, show unit select -->
     <% if @address.units.any? %>
     <%= form.select :unit_id, options_for_select(unit_options(@address.units), nil), {prompt: "Select Unit or Building"}, class: "form-select" %>
-
     <br>
     <br>
     <% end %>
   </div>
   <div class="form-group mt-3">
-    <%= form.label :assignee %>
-    <%= form.select :assignee_id, options_for_select([["Unassigned", nil]] + @assignees.map { |user| [user.email, user.id] }), {}, class: "form-select" %>
+    <%= form.label :inspector_id %>
+    <%= form.select :inspector_id, options_for_select([["Unassigned", nil]] + User.ons.map { |user| [user.email, user.id] }), {}, class: "form-select" %>
   </div>
   <div class="actions mt-3">
     <%= form.submit "Create Inspection", class: "btn btn-primary" %>

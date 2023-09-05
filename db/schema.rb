@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_04_000510) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_05_181925) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -134,8 +134,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_04_000510) do
     t.integer "address_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "assignee"
+    t.integer "assignee"
+    t.integer "inspector_id"
     t.index ["address_id"], name: "index_inspections_on_address_id"
+    t.index ["inspector_id"], name: "index_inspections_on_inspector_id"
     t.index ["unit_id"], name: "index_inspections_on_unit_id"
   end
 
@@ -202,6 +204,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_04_000510) do
   add_foreign_key "concerns", "addresses"
   add_foreign_key "inspections", "addresses"
   add_foreign_key "inspections", "units"
+  add_foreign_key "inspections", "users", column: "inspector_id"
   add_foreign_key "units", "addresses"
   add_foreign_key "violation_codes", "codes"
   add_foreign_key "violation_codes", "violations"

@@ -1,15 +1,19 @@
 <%# table for inspections %>
 
 <tr class="">
-  <td><%= link_to inspection.address.combadd.titleize, address_path(inspection.address), class: "btn" %></td>
-  </td>
-  <td><%= inspection.user %></td>
   <td><%= inspection.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></td>
   <td><%= inspection.source %></td>
-  <td><%= inspection.status %></td>
+  <% if inspection.status.present? %>
+    <td><%= inspection.status %></td>
+  <% else %>
+    <td>Pending</td>
+  <% end %>
   <td><%= link_to "Show", address_inspection_path(inspection.address, inspection), class: "btn btn-primary" %></td>
-  <td><%= inspection.assignee %></td>
-  <%# if attachments present, show badge with count %>
+  <% if inspection.inspector.present? %>
+    <td><%= inspection.inspector.email %></td>
+  <% else %>
+    <td>Unassigned</td>
+  <% end %> 
   <td>
     <% if inspection.attachments.attached? %>
       <%= link_to inspection.attachments.count, address_inspection_path(inspection.address, inspection), class: "btn btn-primary" %>

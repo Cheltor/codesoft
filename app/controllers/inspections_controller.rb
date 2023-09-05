@@ -14,13 +14,17 @@ class InspectionsController < ApplicationController
   def new
     @address = Address.find(params[:address_id])
     @inspection = @address.inspections.build
-    @assignees = User.ons 
+    @assignees = User.where(role: :ons)
   end
 
   def create
     @address = Address.find(params[:address_id])
     @inspection = @address.inspections.build(inspection_params)
     @inspection.originator = current_user if user_signed_in?
+  
+    if params[:inspection][:assignee].present?
+      @inspection.assignee = User.find(params[:inspection][:assignee])
+    end
 
     if @inspection.save
       redirect_to @address, notice: 'Inspection was successfully created.'
@@ -31,12 +35,14 @@ class InspectionsController < ApplicationController
 
   def edit
     @inspection = Inspection.find(params[:id])
+    @assignees = User.where(role: :ons)
   end
 
   def update
     @inspection = Inspection.find(params[:id])
+
     if @inspection.update(inspection_params)
-      redirect_to @inspection
+      redirect_to address_inspection_path(@address, @inspection), notice: 'Inspection was successfully updated.'
     else
       render :edit
     end
@@ -59,7 +65,7 @@ class InspectionsController < ApplicationController
   end
 
   def inspection_params
-    params.require(:inspection).permit(:source, :status, :result, :description, :thoughts, :originator, :unit_id, :assignee, attachments: [])
+    params.require(:inspection).permit(:source, :status, :result, :description, :thoughts, :originator, :unit_id, :assignee_id, :inspector_id, attachments: [])
   end
 
 end

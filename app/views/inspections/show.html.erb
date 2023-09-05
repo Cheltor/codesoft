@@ -46,7 +46,8 @@
         <p>This inspection is for a <strong><%= @inspection.source %> </strong></p>
         <p><strong>Inspection Status:</strong> <%= @inspection.status %></p>
         <p><strong>Inspection Description:</strong> <%= @inspection.description %></p>
-        <p><strong>Inspection Assignee:</strong> <%= @inspection.assignee %></p>
+        <p><strong>Inspector:</strong> <%= @inspection.inspector ? @inspection.inspector.email : "Unassigned" %></p>
+        </p>
         <br>
         <br>
               <% if @attachments.any? %>
@@ -62,7 +63,8 @@
 <div class="row">
   <div class="col-sm-4">
     <%= generate_pre_inspection_email_link %>
-
+    <br>
+    <%= link_to "Conduct inspection", edit_address_inspection_path(@address, @inspection), class: "btn btn-primary mt-3" %>
 
   </div>
 
