@@ -11,8 +11,11 @@ Rails.application.routes.draw do
     end
     resources :comments
     resources :concerns, only: [:create, :edit, :update]
-    resources :units, only: [:new, :create, :edit, :update, :destroy, :index, :show]
+    resources :units, only: [:new, :create, :edit, :update, :destroy, :index, :show] do
+      resources :businesses, shallow: true
+    end
     resources :inspections
+    resources :businesses
   end
 
   get 'all_violations' => 'addresses#violist'

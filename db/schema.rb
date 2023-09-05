@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_31_204355) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_04_000510) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -59,6 +59,14 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_31_204355) do
     t.datetime "updated_at", null: false
     t.string "combadd"
     t.boolean "outstanding", default: false
+  end
+
+  create_table "businesses", force: :cascade do |t|
+    t.string "name"
+    t.integer "address_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["address_id"], name: "index_businesses_on_address_id"
   end
 
   create_table "citations", force: :cascade do |t|
@@ -183,6 +191,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_31_204355) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "businesses", "addresses"
   add_foreign_key "citations", "codes"
   add_foreign_key "citations", "units"
   add_foreign_key "citations", "users"

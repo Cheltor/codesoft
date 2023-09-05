@@ -37,6 +37,7 @@ class StaticController < ApplicationController
                           .sort_by(&:deadline_date)
       @citations = @user.citations.where(citations: { status: [:unpaid, "pending trial"] }).sort_by(&:deadline)
       @comments = @user.comments.order(created_at: :desc).limit(50)
+      @inspections = Inspection.where(assignee: @user).order(created_at: :desc).limit(50)
     else
       @violations = Violation.where(violations: { status: :current })
                               .select {|violation| violation.deadline_date <= Date.tomorrow }
@@ -44,6 +45,7 @@ class StaticController < ApplicationController
                               .sort_by(&:deadline_date)
       @citations = Citation.where(citations: { status: [:unpaid, "pending trial"] }).sort_by(&:deadline)
       @comments = Comment.order(created_at: :desc).limit(50)
+      @inspections = Inspection.order(created_at: :desc).limit(50)
     end
   end
 

@@ -4,7 +4,7 @@ class CommentsController < ApplicationController
       @comment = @address.comments.new(comment_params)
       @comment.user = current_user
       if @comment.save
-        redirect_to @address
+        redirect_to @address, notice: 'Comment was successfully created.'
       else
         render 'addresses/show'
       end

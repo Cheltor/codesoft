@@ -4,4 +4,5 @@ class Unit < ApplicationRecord
   has_many :comments
   has_many :citations
   has_many :inspections
+  has_many :businesses
 end
