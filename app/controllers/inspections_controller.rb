@@ -43,11 +43,8 @@ class InspectionsController < ApplicationController
 
   def update
     @inspection = Inspection.find(params[:id])
-
-    existing_attachments = @inspection.attachments
-
+  
     if @inspection.update(inspection_params)
-      @inspection.attachments += existing_attachments
       redirect_to address_inspection_path(@address, @inspection), notice: 'Inspection was successfully updated.'
     else
       render :edit, notice: 'Inspection was not successfully updated.'
@@ -71,7 +68,7 @@ class InspectionsController < ApplicationController
   end
 
   def inspection_params
-    params.require(:inspection).permit(:source, :status, :result, :description, :thoughts, :originator, :unit_id, :assignee_id, :inspector_id, :scheduled_datetime, :name, :email, :phone, attachments: []).reject { |key, value| value.blank? }
+    params.require(:inspection).permit(:source, :status, :result, :description, :thoughts, :originator, :unit_id, :assignee_id, :inspector_id, :scheduled_datetime, :name, :email, :phone, :notes_area_1, :notes_area_2, :notes_area_3, photos: [], attachments: []).reject { |key, value| value.blank? }
   end
 
 end

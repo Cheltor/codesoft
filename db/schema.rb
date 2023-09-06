@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_05_213555) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_06_005104) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -140,6 +140,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_05_213555) do
     t.string "email"
     t.string "phone"
     t.datetime "scheduled_datetime"
+    t.string "photos"
+    t.text "notes_area_1"
+    t.text "notes_area_2"
+    t.text "notes_area_3"
     t.index ["address_id"], name: "index_inspections_on_address_id"
     t.index ["inspector_id"], name: "index_inspections_on_inspector_id"
     t.index ["unit_id"], name: "index_inspections_on_unit_id"

@@ -39,16 +39,15 @@
   <div class="col-sm-4">
     <div class="card shadow mb-3">
       <div class="card-body">         
-        <h1>Inspection #<%= @inspection.id %>
+        <h1><%= @inspection.source %> Inspection 
         </h1>
-                      <% if @attachments.any? %>
-    <button type="button" class="btn btn-primary mt-2 mb-2" data-bs-toggle="modal" data-bs-target="#allphotoModal">
+          <% if @attachments.any? %>
+    <button type="button" class="btn btn-primary mt-2 mb-2" data-bs-toggle="modal" data-bs-target="#allAttachModal">
       <i class="bi bi-paperclip"></i>
       Application/photos
     </button>
     <% end %>
         <p><strong>Inspection Request Was Created:</strong> <%= @inspection.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></p>
-        <p>This inspection is for a <strong><%= @inspection.source %> </strong></p>
         <% if @inspection.status.present? %>
         <p><strong>Inspection Status:</strong> <%= @inspection.status %></p>
         <% else %>
@@ -66,22 +65,54 @@
       </div>
     </div>
   </div>
-</div> 
-<div class="row">
   <div class="col-sm-4">
     <%= generate_pre_inspection_email_link %>
     <br>
     <%= link_to "Conduct inspection", conduct_address_inspection_path(@address, @inspection), class: "btn btn-primary mt-3" %>
+    <br>
+    <% if @inspection.photos.attached? %>
+        <button type="button" class="btn btn-primary mt-2 mb-2" data-bs-toggle="modal" data-bs-target="#allphotoModal">
+      <i class="bi bi-paperclip"></i>
+      Inspection photos
+    </button>
+    <% end %>
+    <%= @inspection.notes_area_1 %>
+    <br>
+    <%= @inspection.notes_area_2 %>
+    <br>
+    <%= @inspection.notes_area_3 %>
+    <br>
   </div>
+
+</div> 
+<div class="row">
+
 
 </div>
 
-    <!-- Modal -->
-    <div class="modal fade custom-modal-lg" id="allphotoModal">
+    <!-- Attachment Modal -->
+    <div class="modal fade custom-modal-lg" id="allAttachModal">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
             All Attachments
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <% @attachments.each do |photo| %>
+              <%= render partial: "shared/show_image", locals: { photo: photo } %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+        <!-- Photo Modal -->
+    <div class="modal fade custom-modal-lg" id="allphotoModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            All photos
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">

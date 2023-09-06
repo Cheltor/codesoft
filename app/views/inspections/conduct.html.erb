@@ -1,15 +1,52 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">
+      <%= link_to "Home", root_path %>
+    </a></li>
+    <li class="breadcrumb-item"><a href="#">
+    <%= link_to @address.combadd.titleize, address_path(@address) %>
+    </a></li>
+
+    <% if @inspection.unit_id.present? %>
+      <li class="breadcrumb-item"><a href="#">
+      <%= link_to @inspection.unit.number, address_unit_path(@address, @inspection.unit) %>
+      </a></li>
+    <% end %>
+
+    <li class="breadcrumb-item active"><a href="#">
+    <%= link_to "Inspection ##{@inspection.id}", address_inspection_path(@address, @inspection) %>
+    </a></li>
+  </ol>
+</nav>
+
 <h1>Conduct Inspection</h1>
 <%= form_with(model: [@address, @inspection]) do |form| %>
   <div class="field mt-3">
-    <label>Notes</label>
-    <%= form.text_area :thoughts, class: "form-control" %>
+    <%= form.label :notes_area_1 %>
+    <%= form.text_area :notes_area_1, class: "form-control" %>
+  </div>
+
+  <div class="field mt-3">
+    <%= form.label :notes_area_2 %>
+    <%= form.text_area :notes_area_2, class: "form-control" %>
+  </div>
+
+  <div class="field mt-3">
+    <%= form.label :notes_area_3 %>
+    <%= form.text_area :notes_area_3, class: "form-control" %>
   </div>
   <div class="field mt-3">
-    <label>Photos</label>
+    <label>Exterior Photos</label>
     <%= form.file_field :photos, multiple: true, class: "form-control" %>
   </div>
-  
-
+  <div class="field mt-3">
+    <label>Interior Photos</label>
+    <%= form.file_field :photos, multiple: true, class: "form-control" %>
+  </div>
+  <div class="field mt-3">
+    <label>Other Photos</label>
+    <%= form.file_field :photos, multiple: true, class: "form-control" %>
+  </div>
   <div class="field mt-3">
     <label>Outcome</label>
     <%= form.select :status , ["Passed", "Failed", "Reinspection Required"], {}, class: "form-select" %>
