@@ -24,6 +24,7 @@ Rails.application.routes.draw do
   end
 
   get 'all_inspections' => 'inspections#all_inspections'
+  get 'my_inspections' => 'inspections#my_inspections'
   get 'all_violations' => 'addresses#violist'
   get 'my_violations' => 'addresses#my_violations'
   get 'helpful' => 'static#helpful'

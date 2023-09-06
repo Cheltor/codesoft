@@ -1,6 +1,9 @@
 <%# table for inspections %>
 
 <tr class="">
+  <%# if show_address_info %>
+  <!-- <td><%= link_to inspection.address.combadd.titleize, address_path(inspection.address), class:"btn btn-secondary" %></td> -->
+  <%# end %>
   <td><%= inspection.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></td>
   <td><%= inspection.source %></td>
   <% if inspection.status.present? %>
@@ -9,7 +12,7 @@
     <td>Pending</td>
   <% end %>
   <% if inspection.scheduled_datetime.present? %>
-    <td><%= inspection.scheduled_datetime.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y %I:%M %p") %></td>
+    <td><%= inspection.scheduled_datetime.strftime("%B %d, %Y %I:%M %p") %></td>
   <% else %>
     <td>Not Scheduled</td>
   <% end %>
