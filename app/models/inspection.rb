@@ -5,6 +5,8 @@ class Inspection < ApplicationRecord
   belongs_to :user, optional: true
   has_many_attached :attachments
   has_many_attached :photos
+  has_many_attached :intphotos
+  has_many_attached :extphotos
   belongs_to :assignee, class_name: "User", foreign_key: "assignee_id", optional: true
   belongs_to :inspector, class_name: "User", optional: true
   

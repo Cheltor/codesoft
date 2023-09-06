@@ -43,8 +43,29 @@ class InspectionsController < ApplicationController
 
   def update
     @inspection = Inspection.find(params[:id])
-  
+
+    # Handle new files
+    if params[:inspection][:photos].present?
+      @inspection.photos.attach(params[:inspection][:photos])
+    end
+
+    if params[:inspection][:intphotos].present?
+      @inspection.intphotos.attach(params[:inspection][:intphotos])
+    end
+
+    if params[:inspection][:extphotos].present?
+      @inspection.extphotos.attach(params[:inspection][:extphotos])
+    end
+
+    # Get the IDs of existing attachments
+    existing_attachment_ids = @inspection.attachments.pluck(:id)
+
     if @inspection.update(inspection_params)
+      # Reattach existing attachments using their IDs
+      @inspection.attachments.where(id: existing_attachment_ids).each do |attachment|
+        @inspection.attachments.attach(attachment)
+      end
+
       redirect_to address_inspection_path(@address, @inspection), notice: 'Inspection was successfully updated.'
     else
       render :edit, notice: 'Inspection was not successfully updated.'
@@ -68,7 +89,7 @@ class InspectionsController < ApplicationController
   end
 
   def inspection_params
-    params.require(:inspection).permit(:source, :status, :result, :description, :thoughts, :originator, :unit_id, :assignee_id, :inspector_id, :scheduled_datetime, :name, :email, :phone, :notes_area_1, :notes_area_2, :notes_area_3, photos: [], attachments: []).reject { |key, value| value.blank? }
+    params.require(:inspection).permit(:source, :status, :result, :description, :thoughts, :originator, :unit_id, :assignee_id, :inspector_id, :scheduled_datetime, :name, :email, :phone, :notes_area_1, :notes_area_2, :notes_area_3, intphotos: [], extphotos: [], photos: [], attachments: []).reject { |key, value| value.blank? }
   end
 
 end
