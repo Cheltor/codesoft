@@ -1,9 +1,23 @@
 class InspectionsController < ApplicationController
-  before_action :set_address, except: [:all_inspections]
+  before_action :set_address, except: [:all_inspections, :my_inspections]
   before_action :set_inspection, only: [:show, :edit, :update, :destroy]
 
   def all_inspections
     @inspections = Inspection.all
+  end
+
+  def my_inspections
+    @scheduled_datetime = params[:scheduled_datetime]
+    @inspections = Inspection.where(inspector: current_user)
+
+    case @scheduled_datetime
+    when "scheduled"
+      @inspections = @inspections.where.not(scheduled_datetime: nil).order(scheduled_datetime: :asc)
+    when "unscheduled"
+      @inspections = @inspections.where(scheduled_datetime: nil)
+    else
+      @scheduled_datetime = "all"
+    end
   end
 
   def show
@@ -44,28 +58,8 @@ class InspectionsController < ApplicationController
   def update
     @inspection = Inspection.find(params[:id])
 
-    # Handle new files
-    if params[:inspection][:photos].present?
-      @inspection.photos.attach(params[:inspection][:photos])
-    end
-
-    if params[:inspection][:intphotos].present?
-      @inspection.intphotos.attach(params[:inspection][:intphotos])
-    end
-
-    if params[:inspection][:extphotos].present?
-      @inspection.extphotos.attach(params[:inspection][:extphotos])
-    end
-
-    # Get the IDs of existing attachments
-    existing_attachment_ids = @inspection.attachments.pluck(:id)
 
     if @inspection.update(inspection_params)
-      # Reattach existing attachments using their IDs
-      @inspection.attachments.where(id: existing_attachment_ids).each do |attachment|
-        @inspection.attachments.attach(attachment)
-      end
-
       redirect_to address_inspection_path(@address, @inspection), notice: 'Inspection was successfully updated.'
     else
       render :edit, notice: 'Inspection was not successfully updated.'

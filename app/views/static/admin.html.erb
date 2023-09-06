@@ -59,7 +59,7 @@
           <i class="bi bi-file-earmark-text-fill"></i> <%= pluralize(@citations.count, "Current Citation") %>
         </a>
         <a class="nav-item nav-link" href="#" data-bs-toggle="tab" data-bs-target="#inspection">
-          <i class="bi bi-clipboard-check"></i> <%#= pluralize(@address.inspections.count, "Inspection") %> Inspections
+          <i class="bi bi-clipboard-check"></i> <%= pluralize(@inspections.count, "Inspection") %> 
         </a>
       </nav>
 
@@ -116,6 +116,29 @@
               <tbody>
                 <% @citations.each do |citation| %>
                   <%= render partial: "shared/citation_table", locals: {citation: citation} %>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class="tab-content">
+        <div class="tab-pane fade" id="inspection">
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th scope="col">Address</th>
+                  <th scope="col">Type</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Created At</th>
+                  <th scope="col">Status</th>
+                  <th scope="col">Notes</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @inspections.each do |inspection| %>
+                  <%= render partial: "shared/inspection_table", locals: {inspection: inspection}, show_address_info: true %>
                 <% end %>
               </tbody>
             </table>
