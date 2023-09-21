@@ -22,50 +22,16 @@
 <h1>Conduct Inspection</h1>
 <%= form_with(model: [@address, @inspection]) do |form| %>
   <div class="field mt-3">
-    <%= form.label :notes_area_1 %>
+    <label>Notes</label>
     <%= form.text_area :notes_area_1, value: @inspection.notes_area_1, class: "form-control" %>
   </div>
-
   <div class="field mt-3">
-    <%= form.label :notes_area_2 %>
-    <%= form.text_area :notes_area_2, value: @inspection.notes_area_2, class: "form-control" %>
-  </div>
-
-  <div class="field mt-3">
-    <%= form.label :notes_area_3 %>
-    <%= form.text_area :notes_area_3, value: @inspection.notes_area_3, class: "form-control" %>
-  </div>
-  <div class="field mt-3">
-    <label>Exterior Photos</label>
+    <label>Photos</label>
     <%= form.file_field :extphotos, multiple: true, class: "form-control" %>
     <% if @inspection.extphotos.attached? %>
       <div>
         <strong>Uploaded Files:</strong>
         <% @inspection.extphotos.each do |attachment| %>
-          <%= attachment.filename %><br>
-        <% end %>
-      </div>
-    <% end %>
-  </div>
-  <div class="field mt-3">
-    <label>Interior Photos</label>
-    <%= form.file_field :intphotos, multiple: true, class: "form-control" %>
-        <% if @inspection.intphotos.attached? %>
-      <div>
-        <strong>Uploaded Files:</strong>
-        <% @inspection.intphotos.each do |attachment| %>
-          <%= attachment.filename %><br>
-        <% end %>
-      </div>
-    <% end %>
-  </div>
-  <div class="field mt-3">
-    <label>Other Photos</label>
-    <%= form.file_field :photos, multiple: true, class: "form-control" %>
-        <% if @inspection.photos.attached? %>
-      <div>
-        <strong>Uploaded Files:</strong>
-        <% @inspection.photos.each do |attachment| %>
           <%= attachment.filename %><br>
         <% end %>
       </div>
