@@ -82,6 +82,11 @@
     <br>
     <%= @inspection.notes_area_3 %>
     <br>
+      <td>
+    <% @inspection.codes.each do |code| %>
+      <%= render partial: 'shared/code_def_show', locals: { code: code } %>
+    <% end %>
+  </td>
   </div>
 
 </div> 

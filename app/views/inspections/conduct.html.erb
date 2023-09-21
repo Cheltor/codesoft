@@ -41,7 +41,32 @@
     <label>Outcome</label>
     <%= form.select :status, options_for_select(["Passed", "Failed", "Reinspection Required"], @inspection.status), {}, class: "form-select" %>
   </div>
+
+      <div class="form-group">
+      <strong><%= form.label :codes %></strong>
+      <em><p>If you don't see the code you're looking for, add the code using this button: <%= link_to "New code", new_code_path, class:"btn btn-outline-primary" %></p></em>
+
+<select id="code-select" multiple name="inspection[code_ids][]">
+  <% Code.all.each do |code| %>
+    <% selected = @inspection.code_ids.include?(code.id) ? 'selected' : '' %>
+    <option value="<%= code.id %>" <%= selected %>>
+      <%= code.chapter %>-<%= code.section.split("-").last %> <%= code.name %>
+    </option>
+  <% end %>
+</select>
+
+
+    </div>
   <div class="actions mt-3">
     <%= form.submit "Submit", class: "btn btn-primary" %>
   </div>
 <% end %>
+
+<script>
+  const codeSelect = new Choices('#code-select', {
+    removeItemButton: true,
+    searchEnabled: true,
+    placeholder: true,
+    placeholderValue: 'Select codes',
+  });
+</script>

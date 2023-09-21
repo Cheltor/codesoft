@@ -2,6 +2,8 @@ class Code < ApplicationRecord
     has_many :violation_codes
     has_many :violations, through: :violation_codes
     has_many :citations
+    has_many :inspection_codes
+    has_many :inspections, through: :inspection_codes
 
     validates :chapter, presence: true
     validates :section, presence: true

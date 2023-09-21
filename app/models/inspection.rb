@@ -9,5 +9,6 @@ class Inspection < ApplicationRecord
   has_many_attached :extphotos
   belongs_to :assignee, class_name: "User", foreign_key: "assignee_id", optional: true
   belongs_to :inspector, class_name: "User", optional: true
-  
+  has_many :inspection_codes
+  has_many :codes, through: :inspection_codes
 end

@@ -1,6 +1,7 @@
 class InspectionsController < ApplicationController
   before_action :set_address, except: [:all_inspections, :my_inspections]
   before_action :set_inspection, only: [:show, :edit, :update, :destroy]
+  layout 'new_violation', only: [:conduct]
 
   def all_inspections
     @inspections = Inspection.all
@@ -32,6 +33,7 @@ class InspectionsController < ApplicationController
 
   def conduct
     @inspection = Inspection.find(params[:id])
+    @codes = Code.all
   end
 
   def schedule
@@ -57,8 +59,8 @@ class InspectionsController < ApplicationController
 
   def update
     @inspection = Inspection.find(params[:id])
-
-
+    puts "Params: #{params.inspect}"
+    puts "Inspection Params: #{inspection_params.inspect}"
     if @inspection.update(inspection_params)
       redirect_to address_inspection_path(@address, @inspection), notice: 'Inspection was successfully updated.'
     else
@@ -83,7 +85,7 @@ class InspectionsController < ApplicationController
   end
 
   def inspection_params
-    params.require(:inspection).permit(:source, :status, :result, :description, :thoughts, :originator, :unit_id, :assignee_id, :inspector_id, :scheduled_datetime, :name, :email, :phone, :notes_area_1, :notes_area_2, :notes_area_3, intphotos: [], extphotos: [], photos: [], attachments: []).reject { |key, value| value.blank? }
+    params.require(:inspection).permit(:source, :status, :result, :description, :thoughts, :originator, :unit_id, :assignee_id, :inspector_id, :scheduled_datetime, :name, :email, :phone, :notes_area_1, :notes_area_2, :notes_area_3, code_ids: [], intphotos: [], extphotos: [], photos: [], attachments: []).reject { |key, value| value.blank? }
   end
 
 end

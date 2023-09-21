@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_06_011428) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_21_133315) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -122,6 +122,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_06_011428) do
     t.index ["address_id"], name: "index_concerns_on_address_id"
   end
 
+  create_table "inspection_codes", force: :cascade do |t|
+    t.integer "inspection_id", null: false
+    t.integer "code_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["code_id"], name: "index_inspection_codes_on_code_id"
+    t.index ["inspection_id"], name: "index_inspection_codes_on_inspection_id"
+  end
+
   create_table "inspections", force: :cascade do |t|
     t.string "source"
     t.string "status"
@@ -212,6 +221,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_06_011428) do
   add_foreign_key "comments", "units"
   add_foreign_key "comments", "users"
   add_foreign_key "concerns", "addresses"
+  add_foreign_key "inspection_codes", "codes"
+  add_foreign_key "inspection_codes", "inspections"
   add_foreign_key "inspections", "addresses"
   add_foreign_key "inspections", "units"
   add_foreign_key "inspections", "users", column: "inspector_id"
