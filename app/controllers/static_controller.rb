@@ -6,7 +6,7 @@ class StaticController < ApplicationController
     @comments = @user.comments.order(created_at: :desc).limit(50)
     @violations = @user.violations.where(violations: { status: :current })
                               .select {|violation| violation.deadline_date <= Date.tomorrow }
-                              .reject {|violation| violation.citations.where(citations: { status: [:unpaid, "pending trial"] }).all? {|citation| citation.deadline >= Date.tomorrow }}
+                              .reject {|violation| violation.citations.where(citations: { status: [:unpaid, "pending trial"] }).any? {|citation| citation.deadline >= Date.tomorrow }}
                               #.where.not(id: Citation.where(status: "pending trial", violation: @user.violations).pluck(:violation_id))
                               .sort_by(&:deadline_date)
 
