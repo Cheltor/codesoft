@@ -34,59 +34,90 @@
     <a href="https://www.google.com/maps/search/?api=1&query=<%= @inspection.address.combadd %>+MD+<%= @inspection.address.premisezip %>" target="_blank" class="btn btn-secondary">
     <i class="bi bi-geo-alt-fill"></i> Search on Google Maps</a>
     <br>
-
-  </div>
-  <div class="col-sm-4">
-    <div class="card shadow mb-3">
-      <div class="card-body">         
-        <h1><%= @inspection.source %> Inspection 
-        </h1>
-          <% if @attachments.any? %>
-    <button type="button" class="btn btn-primary mt-2 mb-2" data-bs-toggle="modal" data-bs-target="#allAttachModal">
-      <i class="bi bi-paperclip"></i>
-      Application/photos
-    </button>
-    <% end %>
-        <p><strong>Inspection Request Was Created:</strong> <%= @inspection.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></p>
-        <% if @inspection.status.present? %>
-        <p><strong>Inspection Status:</strong> <%= @inspection.status %></p>
-        <% else %>
-        <p><strong>Inspection Status:</strong> Pending</p>
-        <% end %>
-        <% if @inspection.description.present? %>
-        <p><strong>Inspection Description:</strong> <%= @inspection.description %></p>
-        <% end %>
-        <p><strong>Inspector:</strong> <%= @inspection.inspector ? @inspection.inspector.email : "Unassigned" %></p>
-        </p>
-        <%= link_to "Edit inspection", edit_address_inspection_path(@address, @inspection), class: "btn btn-primary mt-3" %>
-        <br>
-        <%= link_to "Schedule inspection", schedule_address_inspection_path(@address, @inspection), class: "btn btn-primary mt-3" %>
-        <br>
-      </div>
-    </div>
-  </div>
-  <div class="col-sm-4">
-    <%= generate_pre_inspection_email_link %>
-    <br>
-    <%= link_to "Conduct inspection", conduct_address_inspection_path(@address, @inspection), class: "btn btn-primary mt-3" %>
-    <br>
     <% if @inspection.photos.attached? %>
         <button type="button" class="btn btn-primary mt-2 mb-2" data-bs-toggle="modal" data-bs-target="#allphotoModal">
       <i class="bi bi-paperclip"></i>
       Inspection photos
     </button>
     <% end %>
-    <%= @inspection.notes_area_1 %>
     <br>
-    <%= @inspection.notes_area_2 %>
+    <%= generate_pre_inspection_email_link %>
     <br>
-    <%= @inspection.notes_area_3 %>
+            <%= link_to "Schedule inspection", schedule_address_inspection_path(@address, @inspection), class: "btn btn-primary mt-3" %>
+
     <br>
-      <td>
-    <% @inspection.codes.each do |code| %>
-      <%= render partial: 'shared/code_def_show', locals: { code: code } %>
+    <% if @inspection.scheduled_datetime.present? %>
+      <br>
+      <h3>Scheduled for:</h3>
+      <%= @inspection.scheduled_datetime.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y at %I:%M %p") %>
+    
     <% end %>
-  </td>
+    <% if @attachments.any? %>
+    <button type="button" class="btn btn-primary mt-2 mb-2" data-bs-toggle="modal" data-bs-target="#allAttachModal">
+      <i class="bi bi-paperclip"></i>
+      Application/photos
+    </button>
+    <% end %>
+
+        <% if @inspection.description.present? %>
+        <p><strong>Inspection Description:</strong> <%= @inspection.description %></p>
+        <% end %>
+  </div>
+  <div class="col-sm-8">
+    <div class="card shadow mb-3">
+      <div class="card-body">
+              <p><strong>Inspection Request Was Created:</strong> <%= @inspection.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></p>
+
+          <% if @inspection.status.present? %>
+      <%= link_to "Edit inspection", conduct_address_inspection_path(@address, @inspection), class: "btn btn-outline-primary btn-lg mt-3" %>
+    <% else %>
+      <%= link_to "Conduct inspection", conduct_address_inspection_path(@address, @inspection), class: "btn btn-outline-primary btn-lg mt-3" %>
+    <% end %>
+    <br>
+    <% if @inspection.status.present? %>
+    <br>
+    <h1><%= @inspection.source %> Inspection Results</h1>
+    <br>
+    <% if @inspection.inspector.present? %>
+      <h3>Inspector</h3>
+        <%= @inspection.inspector.email %>
+      <br>
+    <% end %>
+    <br>
+      <h3>Outcome</h3>
+        <%= @inspection.status %>
+      <br>
+      <% if @inspection.notes_area_1.present? %>
+        <h3>Notes</h3>
+        <%= @inspection.notes_area_1 %>
+      <% end %>
+      <br>
+      <% if @inspection.extphotos.attached? %>
+        <button type="button" class="btn btn-primary mt-2 mb-2" data-bs-toggle="modal" data-bs-target="#allextphotoModal">
+          <i class="bi bi-paperclip"></i>
+          All Photos and Attachments
+        </button>
+      <% end %>
+      <br>
+
+      <% if @inspection.codes.present? %>
+        <h3>Codes</h3>
+        <% @inspection.codes.each do |code| %>
+          <%= render partial: 'shared/code_def_show', locals: { code: code } %>
+        <% end %>
+      <% end %>
+    <% end %>
+
+          
+        <br>
+        <% if @inspection.status.present? %>
+            <%= generate_inspection_email_link %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-4">
+
   </div>
 
 </div> 
@@ -122,6 +153,23 @@
           </div>
           <div class="modal-body">
             <% @attachments.each do |photo| %>
+              <%= render partial: "shared/show_image", locals: { photo: photo } %>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+        <!-- Modal -->
+    <div class="modal fade custom-modal-lg" id="allextphotoModal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            All Attachments
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <% @inspection.extphotos.each do |photo| %>
               <%= render partial: "shared/show_image", locals: { photo: photo } %>
             <% end %>
           </div>

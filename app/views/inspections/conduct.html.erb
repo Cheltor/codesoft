@@ -19,8 +19,20 @@
   </ol>
 </nav>
 
+<% if @inspection.status.present? %>
+<h1>Edit Inspection</h1>
+<% else %>
 <h1>Conduct Inspection</h1>
+<% end %>
 <%= form_with(model: [@address, @inspection]) do |form| %>
+  <div class="form-group mt-3">
+    <%= form.label :inspector_id %>
+    <%= form.select :inspector_id, options_for_select([["Unassigned", nil]] + User.ons.map { |user| [user.email, user.id] }, @inspection.inspector_id), {}, class: "form-select" %>
+  </div>
+  <div class="form-group mt-3">
+    <%= form.label :source %>
+    <%= form.select :source, ["Complaint", "Building/Dumpster/POD permit", "Business license", "Single Family License", "Multifamily License", "Donation Bin"], { selected: @inspection.source }, class: "form-select" %>
+  </div>
   <div class="field mt-3">
     <label>Notes</label>
     <%= form.text_area :notes_area_1, value: @inspection.notes_area_1, class: "form-control" %>
@@ -46,14 +58,14 @@
       <strong><%= form.label :codes %></strong>
       <em><p>If you don't see the code you're looking for, add the code using this button: <%= link_to "New code", new_code_path, class:"btn btn-outline-primary" %></p></em>
 
-<select id="code-select" multiple name="inspection[code_ids][]">
-  <% Code.all.each do |code| %>
-    <% selected = @inspection.code_ids.include?(code.id) ? 'selected' : '' %>
-    <option value="<%= code.id %>" <%= selected %>>
-      <%= code.chapter %>-<%= code.section.split("-").last %> <%= code.name %>
-    </option>
-  <% end %>
-</select>
+  <select id="code-select" multiple name="inspection[code_ids][]">
+    <% Code.all.each do |code| %>
+      <% selected = @inspection.code_ids.include?(code.id) ? 'selected' : '' %>
+      <option value="<%= code.id %>" <%= selected %>>
+        <%= code.chapter %>-<%= code.section.split("-").last %> <%= code.name %>
+      </option>
+    <% end %>
+  </select>
 
 
     </div>

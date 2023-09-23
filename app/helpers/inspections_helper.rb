@@ -13,4 +13,12 @@ module InspectionsHelper
 
     mail_to(recipient_email, subject, body: body, class: "btn btn-primary")
   end
+
+  def generate_inspection_email_link
+    recipient_email = ""
+    subject = "Inspection Result"
+    body = "Hello, this is an inspection result."
+
+    mail_to(recipient_email, subject, body: body, class: "btn btn-primary")
+  end
 end

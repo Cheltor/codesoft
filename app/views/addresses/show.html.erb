@@ -65,7 +65,11 @@
   <div class="col-sm-4">
     <div class="card">
       <div class="card-body">
-      <%= link_to "Add Units", new_address_unit_path(@address), class: "btn btn-primary mt-2 mb-2" %>
+            <%= link_to "Create a Violation Notice/Doorhanger", new_address_violation_path(@address), class: "btn btn-danger btn-lg mt-2" %>
+            <br>
+            <%= link_to "Create New Inspection Request", new_address_inspection_path(@address), class: "btn btn-primary btn-lg mt-2" %>
+            <br>
+            <%= link_to "Add Units", new_address_unit_path(@address), class: "btn btn-primary btn-lg mt-2" %>
 
         <!-- bootstrap collapse listing a link to all units -->
 
