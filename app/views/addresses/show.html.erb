@@ -13,43 +13,91 @@
 
 <div class="row">
   <div class="col-sm-4">
-    <%# address information %>
-    <h2><%= @address.combadd.titleize %></h2>
-    <%# link to google maps from icon %>
-    <a href="https://www.google.com/maps/search/?api=1&query=<%= @address.combadd %>+MD+<%= @address.premisezip %>" target="_blank" class="btn btn-secondary">
-    <i class="bi bi-geo-alt-fill"></i> Search on Google Maps</a>
-    <br>
-    <% if @address_photos.any? %>
-    <button type="button" class="btn btn-primary mt-2 mb-2" data-bs-toggle="modal" data-bs-target="#allphotoModal">
-      <i class="bi bi-paperclip"></i>
-      All Photos and Attachments
+    <div class="card">
+      <div class="card-body">
+        <h2><%= @address.combadd %>            <a href="https://www.google.com/maps/search/?api=1&query=<%= @address.combadd %>+MD+<%= @address.premisezip %>" target="_blank" class="btn btn-secondary">
+        <i class="bi bi-geo-alt-fill"></i>Google Maps</a></h2>
+        <% if @address_photos.any? %>
+        <button type="button" class="btn btn-primary mt-2 mb-2" data-bs-toggle="modal" data-bs-target="#allphotoModal">
+          <i class="bi bi-paperclip"></i>
+          All Photos and Attachments
+        </button>
+        <% end %>
+        <br>
+            <h4>Owner:</h4>
+    <p><%= @address.ownername.titleize %></p>
+    <h4>Owner Address:</h4>
+    <p><%= @address.owneraddress %> <%= @address.ownercity %>, <%= @address.ownerstate %> <%= @address.ownerzip %></p>
+
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-secondary mt-2 mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
+      Update Owner/Address
     </button>
-    <% end %>
-    <!-- button to add units -->
-    <br>
-    <%= link_to "Add Units", new_address_unit_path(@address), class: "btn btn-primary mt-2 mb-2" %>
 
-    <!-- bootstrap collapse listing a link to all units -->
-
-    <% if @address.units.present? %>
-    <div class="accordion mt-2 mb-2" id="accordionExample">
-      <div class="accordion-item">
-        <h2 class="accordion-header" id="headingOne">
-          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-            <i class="bi bi-chevron-down"></i>  Show <%= pluralize(@address.units.count, "Unit") %>
-          </button>
-        </h2>
-        <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-          <div class="accordion-body">
-            <% @address.units.each do |unit| %>
-              <%= link_to unit.number.upcase, address_unit_path(@address, unit) %>
-              <br>
-            <% end %>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Are you sure?</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            Be careful when updating the address information.
+            
+          </div>
+          <div class="modal-footer">
+            <%= link_to "Update", edit_address_path(@address), class: "btn btn-primary" %>
           </div>
         </div>
       </div>
     </div>
-    <% end %>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-4">
+    <div class="card shadow" style="background-color: #e3f2fd;">
+      <div class="card-body">
+        <%= render 'comments/form' %>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-4">
+    <div class="card">
+      <div class="card-body">
+      <%= link_to "Add Units", new_address_unit_path(@address), class: "btn btn-primary mt-2 mb-2" %>
+
+        <!-- bootstrap collapse listing a link to all units -->
+
+        <% if @address.units.present? %>
+        <div class="accordion mt-2 mb-2" id="accordionExample">
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingOne">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                <i class="bi bi-chevron-down"></i>  Show <%= pluralize(@address.units.count, "Unit") %>
+              </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                <% @address.units.each do |unit| %>
+                  <%= link_to unit.number.upcase, address_unit_path(@address, unit) %>
+                  <br>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+        <% end %>
+      </div>
+    </div>  
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-4">
+
+    <!-- button to add units -->
+    <br>
+    
     <!-- 
     <% if @address.units.present? || @unit.present? %>
       <%= link_to "Create Business", new_address_business_path(@address), class: "btn btn-primary mt-2 mb-2" %>
@@ -82,41 +130,10 @@
 
   </div>
   <div class="col-sm-4">
-    <h4>Owner:</h4>
-    <p><%= @address.ownername.titleize %></p>
-    <h4>Owner Address:</h4>
-    <p><%= @address.owneraddress %> <%= @address.ownercity %>, <%= @address.ownerstate %> <%= @address.ownerzip %></p>
 
-    <!-- Button trigger modal -->
-    <button type="button" class="btn btn-secondary mt-2 mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
-      Update Owner/Address
-    </button>
-
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Are you sure?</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            Be careful when updating the address information.
-            
-          </div>
-          <div class="modal-footer">
-            <%= link_to "Update", edit_address_path(@address), class: "btn btn-primary" %>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
   <div class="col-sm-4">
-    <div class="card shadow" style="background-color: #e3f2fd;">
-      <div class="card-body">
-        <%= render 'comments/form' %>
-      </div>
-    </div>
+
   </div>
 </div>
 <div class="row mt-5">
