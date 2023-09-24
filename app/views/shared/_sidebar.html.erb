@@ -116,6 +116,19 @@
               <span class="align-middle">My Inspections</span>
             <% end %>
           <% end %>
+
+          <% if current_user.admin? || current_user.ons? || current_user.oas? %>
+          <li class="sidebar-header">
+            Contacts
+          </li>
+
+          <li class="sidebar-item">
+            <%= link_to(contacts_path, class: "sidebar-link") do %>
+              <i class="align-middle" data-feather="users"></i>
+              <span class="align-middle">Contacts</span>
+            <% end %>
+          </li>
+          <% end %>
 				</ul>
 			</div>
 		</nav>

@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   resources :codes
+  resources :contacts
   devise_for :users
   resources :addresses do
     resources :violations, shallow: true do
