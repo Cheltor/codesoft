@@ -11,4 +11,5 @@ class Inspection < ApplicationRecord
   belongs_to :inspector, class_name: "User", optional: true
   has_many :inspection_codes
   has_many :codes, through: :inspection_codes
+  belongs_to :contact, optional: true
 end

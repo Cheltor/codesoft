@@ -1,7 +1,7 @@
 class InspectionsController < ApplicationController
   before_action :set_address, except: [:all_inspections, :my_inspections]
   before_action :set_inspection, only: [:show, :edit, :update, :destroy]
-  layout 'new_violation', only: [:conduct]
+  layout 'choices', only: [:conduct]
 
   def all_inspections
     @inspections = Inspection.all

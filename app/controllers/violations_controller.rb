@@ -1,7 +1,7 @@
 class ViolationsController < ApplicationController
   before_action :set_address, except: [:sir, :show, :edit, :update]
   before_action :set_violation, only: [:resolve, :extender, :update, :edit]
-  layout 'new_violation', only: [:new, :edit]
+  layout 'choices', only: [:new, :edit]
   before_action :require_ons_or_admin, except: [:sir]
 
   def new

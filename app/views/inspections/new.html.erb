@@ -31,11 +31,20 @@
   </div>
 
   <div class="field mt-3">
-  <label>
-  Application or photos
-  </label>
-    <%= form.file_field :attachments, multiple: true, class: "form-control" %>
-</div>
+    <label>
+    Application or photos
+    </label>
+      <%= form.file_field :attachments, multiple: true, class: "form-control" %>
+  </div>
+
+  <div class="field mt-3">
+    <label>Inspection Contact</label>
+    <select id="code-select" multiple name="violation[code_ids][]">
+      <% Contact.all.each do |contact| %>
+        <option value="<%= code.id %>"><%= code.chapter %>-<%= code.section.split("-").last %> <%= code.name %></option>
+      <% end %>
+    </select>
+  </div>
 
   <div class="field mt-3">
     <!-- if address has units, show unit select -->
@@ -68,3 +77,12 @@
     <%= form.submit "Create Inspection", class: "btn btn-primary" %>
   </div>
 <% end %>
+
+<script>
+  const codeSelect = new Choices('#code-select', {
+    removeItemButton: true,
+    searchEnabled: true,
+    placeholder: true,
+    placeholderValue: 'Select codes',
+  });
+</script>
