@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_25_193233) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_25_230706) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -59,6 +59,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_25_193233) do
     t.datetime "updated_at", null: false
     t.string "combadd"
     t.boolean "outstanding", default: false
+  end
+
+  create_table "area_codes", force: :cascade do |t|
+    t.integer "area_id", null: false
+    t.integer "code_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["area_id"], name: "index_area_codes_on_area_id"
+    t.index ["code_id"], name: "index_area_codes_on_code_id"
   end
 
   create_table "areas", force: :cascade do |t|
@@ -236,6 +245,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_25_193233) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "area_codes", "areas"
+  add_foreign_key "area_codes", "codes"
   add_foreign_key "areas", "inspections"
   add_foreign_key "businesses", "addresses"
   add_foreign_key "citations", "codes"

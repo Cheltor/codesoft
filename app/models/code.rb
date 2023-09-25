@@ -4,6 +4,8 @@ class Code < ApplicationRecord
     has_many :citations
     has_many :inspection_codes
     has_many :inspections, through: :inspection_codes
+    has_many :area_codes
+    has_many :areas, through: :area_codes, class_name: 'Area'
 
     validates :chapter, presence: true
     validates :section, presence: true

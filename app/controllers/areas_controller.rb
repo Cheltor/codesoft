@@ -1,4 +1,6 @@
 class AreasController < ApplicationController
+  layout 'choices', only: [:new, :edit]
+
   #All of these redirects need to be updated to the new routes
   def create
     @address = Address.find(params[:address_id])
@@ -48,6 +50,6 @@ class AreasController < ApplicationController
   private
 
   def area_params
-    params.require(:area).permit(:name, :notes, :inspection_id, photos: [])
+    params.require(:area).permit(:name, :notes, :inspection_id, code_ids: [], photos: [])
   end
 end

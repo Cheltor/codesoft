@@ -63,11 +63,6 @@
     <% end %>
   </div>
 
-  <div class="field mt-3">
-  <!-- submit as  well as add new area -->
-    <%= link_to "New Area", new_address_inspection_area_path(@address, @inspection), class: "btn btn-primary" %>
-  </div>
-
   <% if @inspection.areas.present? %>
   <br>
     <h3>Areas</h3>
@@ -81,7 +76,7 @@
           </h2>
           <div id="flush-collapse<%= area.id %>" class="accordion-collapse collapse" aria-labelledby="flush-heading<%= area.id %>" data-bs-parent="#accordionFlush<%= area.id %>">
             <div class="accordion-body">
-              <h5><%= area.notes %></h5>
+              <h5><strong>Notes: </strong><%= area.notes %></h5>
               <br>
               <% if area.photos.attached? %>
                 <div>
@@ -91,6 +86,16 @@
                   <% end %>
                 </div>
               <% end %>
+              <br>
+              <% if area.codes.present? %>
+                  
+                <p><strong>Codes:</strong></p>
+                  <ul>
+                    <% area.codes.each do |code| %>
+                      <li><%= code.name %></li>
+                    <% end %>
+                  </ul>
+                <% end %>
             </div>
           </div>
         </div>
