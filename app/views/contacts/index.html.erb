@@ -17,8 +17,8 @@
     <% @contacts.each do |contact| %>
       <tr>
         <td><%= contact.name %></td>
-        <td><%= contact.email %></td>
-        <td><%= contact.phone %></td>
+        <td><%= link_to contact.email, "mailto:#{contact.email}" %></td>
+        <td><a href="tel:<%= contact.phone %>"><%= format_phone_number(contact.phone) %></a></td>
         <td><%= contact.notes %></td>
         <% if contact.notes != "" %>
         <td><%= link_to 'Edit Notes', add_notes_contact_path(contact), class: 'btn btn-primary' %></td>

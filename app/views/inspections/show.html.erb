@@ -69,8 +69,14 @@
               <p><strong>Inspection Request Was Created:</strong> <%= @inspection.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></p>
         <% if @inspection.contact.present? %>
           <p><strong>Contact:</strong> <%= @inspection.contact.name %></p>
-          <p><strong>Contact Email:</strong> <%= @inspection.contact.email %></p>
-          <p><strong>Contact Phone:</strong> <%= @inspection.contact.phone %></p>
+          <% if @inspection.contact.notes != "" %>
+            <p><strong>Contact Notes:</strong> <%= @inspection.contact.notes %></p>
+            <%= link_to "Edit Contact Notes", add_notes_contact_path(@inspection.contact), class: "btn btn-primary mt-3" %>
+          <% else %>
+            <%= link_to "Add Notes", add_notes_contact_path(@inspection.contact), class: "btn btn-primary mt-3" %>
+          <% end %>
+          <p><strong>Contact Email:</strong> <%= link_to @inspection.contact.email, "mailto:#{@inspection.contact.email}" %></p>
+          <p><strong>Contact Phone:</strong><a href="tel:<%= @inspection.contact.phone %>"><%= format_phone_number(@inspection.contact.phone) %></a></p>
         <% end %>
     <% if @inspection.status.present? %>
       <%= link_to "Edit inspection", conduct_address_inspection_path(@address, @inspection), class: "btn btn-outline-primary btn-lg mt-3" %>
