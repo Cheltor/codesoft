@@ -24,6 +24,7 @@ class InspectionsController < ApplicationController
   def show
     @inspection = @address.inspections.find(params[:id])
     @attachments = @inspection.attachments.all
+    @code_violations = @inspection.codes
   end
 
   def new
@@ -34,6 +35,9 @@ class InspectionsController < ApplicationController
   def conduct
     @inspection = Inspection.find(params[:id])
     @codes = Code.all
+
+    # Create code if they don't exist
+
   end
 
   def schedule
@@ -74,10 +78,6 @@ class InspectionsController < ApplicationController
       render :new, notice: 'Inspection was not successfully created.'
     end
   end
-  
-  
-  
-  
 
   def edit
     @inspection = Inspection.find(params[:id])

@@ -15,7 +15,7 @@ module InspectionsHelper
   end
 
   def generate_inspection_email_link
-    recipient_email = ""
+    recipient_email = @inspection.contact.email
     subject = "Inspection Result"
     body = "Hello, this is an inspection result."
 

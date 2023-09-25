@@ -1,0 +1,43 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">
+      <%= link_to "Home", root_path %>
+    </a></li>
+    <li class="breadcrumb-item"><a href="#">
+    <%= link_to @address.combadd.titleize, address_path(@address) %>
+    </a></li>
+
+    <% if @inspection.unit_id.present? %>
+      <li class="breadcrumb-item"><a href="#">
+      <%= link_to @inspection.unit.number, address_unit_path(@address, @inspection.unit) %>
+      </a></li>
+    <% end %>
+
+    <li class="breadcrumb-item active"><a href="#">
+    <%= link_to "Inspection ##{@inspection.id}", conduct_address_inspection_path(@address, @inspection) %>
+    </a></li>
+  </ol>
+</nav>
+
+<%= form_with(model: [@inspection, @area], url: address_inspection_areas_path(@address, @inspection), local: true) do |form| %>
+  <div class="mb-3">
+    <label class="form-label">Area Name</label>
+    <%= form.text_field :name, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :notes, class: "form-label" %>
+    <%= form.text_area :notes, class: "form-control", rows: 4 %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :photos, class: "form-label" %>
+    <%= form.file_field :photos, multiple: true, class: "form-control" %>
+  </div>
+
+  <div class="">
+    <%= form.submit "Create Area", class: "btn btn-primary" %>
+  </div>
+<% end %>
+
+<%= link_to "Back to Inspection", conduct_address_inspection_path(@address, @inspection), class: "btn btn-secondary mt-3" %>

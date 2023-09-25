@@ -20,6 +20,7 @@ Rails.application.routes.draw do
         get 'conduct'
         get 'schedule'
       end
+      resources :areas
     end
     resources :businesses
   end

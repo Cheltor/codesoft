@@ -49,14 +49,52 @@
       </div>
     <% end %>
   </div>
+
+  <div class="field mt-3">
+    <%= link_to "New Area", new_address_inspection_area_path(@address, @inspection), class: "btn btn-primary" %>
+  </div>
+
+  <% if @inspection.areas.present? %>
+  <br>
+    <h3>Areas</h3>
+    <% @inspection.areas.each do |area| %>
+      <div class="accordion accordion-flush" id="accordionFlush<%= area.id %>">
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="flush-heading<%= area.id %>">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse<%= area.id %>" aria-expanded="false" aria-controls="flush-collapse<%= area.id %>">
+              <%= area.name %>
+            </button>
+          </h2>
+          <div id="flush-collapse<%= area.id %>" class="accordion-collapse collapse" aria-labelledby="flush-heading<%= area.id %>" data-bs-parent="#accordionFlush<%= area.id %>">
+            <div class="accordion-body">
+              <h5><%= area.notes %></h5>
+              <br>
+              <% if area.photos.attached? %>
+                <div>
+                  <strong>Uploaded Files:</strong>
+                  <% area.photos.each do |attachment| %>
+                    <%= attachment.filename %><br>
+                  <% end %>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+
   <div class="field mt-3">
     <label>Outcome</label>
     <%= form.select :status, options_for_select(["Passed", "Failed", "Reinspection Required"], @inspection.status), {}, class: "form-select" %>
   </div>
+  <br>
 
       <div class="form-group">
       <strong><%= form.label :codes %></strong>
-      <em><p>If you don't see the code you're looking for, add the code using this button: <%= link_to "New code", new_code_path, class:"btn btn-outline-primary" %></p></em>
+      <em><p>If you don't see the code you're looking for, add the code using this button:   <button type="button" class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#myDiv">
+    New Code
+  </button></p></em>
 
   <select id="code-select" multiple name="inspection[code_ids][]">
     <% Code.all.each do |code| %>
@@ -66,7 +104,10 @@
       </option>
     <% end %>
   </select>
-
+<div id="myDiv" class="collapse">
+  <!-- Content to be displayed/hidden goes here -->
+  This is the content inside the div.
+</div>
 
     </div>
   <div class="actions mt-3">
