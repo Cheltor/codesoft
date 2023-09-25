@@ -25,10 +25,23 @@
 <h1>Conduct Inspection</h1>
 <% end %>
 <%= form_with(model: [@address, @inspection]) do |form| %>
-  <div class="form-group mt-3">
-    <%= form.label :inspector_id %>
-    <%= form.select :inspector_id, options_for_select([["Unassigned", nil]] + User.ons.map { |user| [user.email, user.id] }, @inspection.inspector_id), {}, class: "form-select" %>
+  <div class="field mt-3">
+  <!-- submit as  well as add new area -->
+    <%= link_to "New Area", new_address_inspection_area_path(@address, @inspection), class: "btn btn-primary" %>
   </div>
+  <!-- if current user is ons -->
+  <% if current_user.ons? %>
+    <div class="form-group mt-3">
+      <%= form.label :inspector_id %>
+      <br>
+      <strong><%= current_user.name %></strong>
+    </div>
+  <% elsif current_user.admin? %>
+    <div class="form-group mt-3">
+      <%= form.label :inspector_id %>
+      <%= form.select :inspector_id, options_for_select([["Unassigned", nil]] + User.ons.map { |user| [user.email, user.id] }, @inspection.inspector_id), {}, class: "form-select" %>
+    </div>
+  <% end %>
   <div class="form-group mt-3">
     <%= form.label :source %>
     <%= form.select :source, ["Complaint", "Building/Dumpster/POD permit", "Business license", "Single Family License", "Multifamily License", "Donation Bin"], { selected: @inspection.source }, class: "form-select" %>
@@ -51,6 +64,7 @@
   </div>
 
   <div class="field mt-3">
+  <!-- submit as  well as add new area -->
     <%= link_to "New Area", new_address_inspection_area_path(@address, @inspection), class: "btn btn-primary" %>
   </div>
 

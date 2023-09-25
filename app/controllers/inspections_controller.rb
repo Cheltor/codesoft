@@ -40,6 +40,17 @@ class InspectionsController < ApplicationController
 
   end
 
+  def save_and_redirect_to_area_new
+    @address = Address.find(params[:address_id])
+    @inspection = @address.inspections.build(inspection_params)
+    
+    if @inspection.update(inspection_params)
+      redirect_to new_address_inspection_area_path(@address, @inspection), notice: 'Inspection was successfully updated.'
+    else
+      render :conduct, notice: 'Inspection was not successfully updated.'
+    end
+  end
+
   def schedule
     @inspection = Inspection.find(params[:id])
   end

@@ -23,6 +23,7 @@ Rails.application.routes.draw do
       member do
         get 'conduct'
         get 'schedule'
+        post 'save_and_redirect_to_area_new' # Add this line for the new method
       end
       resources :areas
     end
