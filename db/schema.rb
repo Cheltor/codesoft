@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_09_23_210717) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_24_232911) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -163,7 +163,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_23_210717) do
     t.text "notes_area_3"
     t.string "intphotos"
     t.string "extphotos"
+    t.integer "contact_id"
+    t.string "new_contact_name"
+    t.string "new_contact_email"
+    t.string "new_contact_phone"
     t.index ["address_id"], name: "index_inspections_on_address_id"
+    t.index ["contact_id"], name: "index_inspections_on_contact_id"
     t.index ["inspector_id"], name: "index_inspections_on_inspector_id"
     t.index ["unit_id"], name: "index_inspections_on_unit_id"
   end
@@ -232,6 +237,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_09_23_210717) do
   add_foreign_key "inspection_codes", "codes"
   add_foreign_key "inspection_codes", "inspections"
   add_foreign_key "inspections", "addresses"
+  add_foreign_key "inspections", "contacts"
   add_foreign_key "inspections", "units"
   add_foreign_key "inspections", "users", column: "inspector_id"
   add_foreign_key "units", "addresses"
