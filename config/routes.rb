@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
   resources :codes
-  resources :contacts
+  resources :contacts do
+    member do
+      get 'add_notes'
+    end
+  end
   devise_for :users
   resources :addresses do
     resources :violations, shallow: true do

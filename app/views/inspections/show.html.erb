@@ -93,10 +93,11 @@
         <% if @inspection.status == "Passed" %>
           <h2><span class="badge bg-success"><%= @inspection.status %></span></h2>
         <% else %>
-          <span class="badge bg-danger"><%= @inspection.status %></span>
+          <h2><span class="badge bg-danger"><%= @inspection.status %></span></h2>
         <% end %>
-      <br>
+
       <% if @inspection.notes_area_1.present? %>
+      <br>
         <h3>Notes</h3>
         <%= @inspection.notes_area_1 %>
       <% end %>
@@ -132,7 +133,7 @@
       <% end %>
 
       <% if @inspection.codes.present? %>
-        <h3>Codes</h3>
+        <h3>Code Violations</h3>
         <% @inspection.codes.each do |code| %>
           <%= render partial: 'shared/code_def_show', locals: { code: code } %>
         <% end %>

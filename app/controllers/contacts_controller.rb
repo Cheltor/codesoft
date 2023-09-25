@@ -32,9 +32,13 @@ class ContactsController < ApplicationController
     redirect_to contacts_path
   end
 
+  def add_notes
+    @contact = Contact.find(params[:id])
+  end
+  
   private
 
   def contact_params
-    params.require(:contact).permit(:name, :email, :phone)
+    params.require(:contact).permit(:name, :email, :phone, :notes)
   end
 end
