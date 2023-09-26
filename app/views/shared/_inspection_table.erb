@@ -4,7 +4,7 @@
   <%# if show_address_info %>
   <!-- <td><%= link_to inspection.address.combadd.titleize, address_path(inspection.address), class:"btn btn-secondary" %></td> -->
   <%# end %>
-  <td><%= inspection.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></td>
+  <td><%= inspection.address.combadd %></td>
   <td><%= inspection.source %></td>
   <% if inspection.status.present? %>
     <td><%= inspection.status %></td>

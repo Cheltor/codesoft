@@ -13,7 +13,11 @@ class StaticController < ApplicationController
     @citations = @user.citations.where(citations: { status: [:unpaid, "pending trial"] }).sort_by(&:deadline)
     @addresses = @q.result.where.not(streetnumb: nil)
     @inspections = Inspection.where(inspector: @user).order(created_at: :desc).limit(50)
-  
+    @priority_addresses = []
+    @priority_addresses += @violations.map {|violation| violation.address } if @violations.any?
+    @priority_addresses += @citations.map {|citation| citation.violation.address } if @citations.any?
+    @priority_addresses += @inspections.map {|inspection| inspection.address } if @inspections.any?
+    @priority_addresses = @priority_addresses.uniq.sort_by(&:streetnumb)
   end
 
   def issue

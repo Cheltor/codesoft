@@ -7,167 +7,38 @@
   </ol>
 </nav>
 
-<div class="container mt-5">
-  <% if params[:q].present? %>
-  <div class="row mt-5">
-    <div class="col">
-      <h1 style="text-align:center">Search Results</h1>
-      <%# if user is guest show this %>
-      <% if @current_user.guest? %>
-            <% @addresses.each do |address| %>
-        <% if address.violations.current.exists? == true %>
-          <div class="card mt-3" style="background-color: #ffccbc;">
-            <div class="card-body">
-              <h5 class="card-title"><%= address.titleize %></h5>
-              <p class="card-text">Active Violations</p>
-            </div>
-          </div>
-        <% else %>
-          <div class="card mt-3" style="background-color: #c8e6c9;">
-            <div class="card-body">
-              <h5 class="card-title"><%= address.combadd.titleize %></h5>
-              <p class="card-text">No Active Violations</p>
-            </div>
+<div class="container-fluid mt-5">
+  <div class="row">
+    <!-- list of @priority_addresses -->
+      <h3>Priority Addresses</h3>
+      <h5>Addresses with current violations, unpaid citations, pending trial citations, or pending inspections</h5>
+        <% @priority_addresses.each do |address| %>
+          <div class="col-sm-2">
+            <ul class="list-group mb-3">
+                <li class="list-group-item"><strong><%= link_to address.combadd, address_path(address) %></strong></li>
+                
+                <% if address.violations.current.where(user_id: current_user.id).exists? %>
+                  <li class="list-group-item"><%= pluralize(address.violations.current.where(user_id: current_user.id).count, 'Active Violations') %></li>
+                <% end %>
+                
+                <% if address.violations.any? { |violation| violation.citations.where(status: ["unpaid"], user_id: current_user.id).exists? } %>
+                  <li class="list-group-item"><%= pluralize(address.violations.map { |violation| violation.citations.where(status: ["unpaid"], user_id: current_user.id).count }.sum, 'Unpaid Citations') %></li>
+                <% end %>
+
+                <% if address.violations.any? { |violation| violation.citations.where(status: ["pending trial"], user_id: current_user.id).exists? } %>
+                  <li class="list-group-item"><%= pluralize(address.violations.map { |violation| violation.citations.where(status: ["pending trial"], user_id: current_user.id).count }.sum, 'Pending Trial Citations') %></li>
+                <% end %>
+
+                <% if address.inspections.where(status: nil, inspector_id: current_user.id).any? %>
+                  <li class="list-group-item"><%= pluralize(address.inspections.where(status: nil, inspector_id: current_user.id).count, 'Pending Inspections') %></li>
+                <% end %>
+            </ul>          
           </div>
         <% end %>
-      <% end %>
-      <%# if user is not guest show this %>
-      <% else %>
-      <table class="table table-striped">
-        <thead class="thead-light">
-          <tr>
-            <th scope="col">Address</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% @addresses.each do |address| %>
-          <tr>
-          <% if address.violations.current.exists? == true %>
-            <td><%= link_to address.combadd.titleize, address_path(address), class:"btn btn-warning" %></td>
-          <% else %>
-            <td><%= link_to address.combadd.titleize, address_path(address), class:"btn btn-primary" %></td>
-          <% end %>
-          </tr>
-          <% end %>
-        </tbody>
-      </table>
-      <% end %>
-    </div>
+
   </div>
-  <% end %>
-
-<!-- if current user is ons and params not present -->
-<% if @current_user.ons? && !params[:q].present? %>
-  <div class="row mt-5">
-    <div class="col">
-      <nav class="nav nav-pills nav-fill">
-        <a class="nav-item nav-link" href="#" data-bs-toggle="tab" data-bs-target="#comment">
-          <i class="bi bi-chat-dots"></i> <%= pluralize(@comments.count, "Comment") %>
-        </a>
-        <a class="nav-item nav-link active" href="#" data-bs-toggle="tab" data-bs-target="#violation">
-          <i class="bi bi-exclamation-triangle-fill"></i> <%= pluralize(@violations.count, "Current Violation") %>
-        </a>
-        <a class="nav-item nav-link" href="#" data-bs-toggle="tab" data-bs-target="#citation">
-          <i class="bi bi-file-earmark-text-fill"></i> <%= pluralize(@citations.count, "Current Citation") %>
-        </a>
-        <a class="nav-item nav-link" href="#" data-bs-toggle="tab" data-bs-target="#inspection">
-          <i class="bi bi-clipboard-check"></i> <%= pluralize(@inspections.count, "Inspection") %> 
-        </a>
-      </nav>
-
-      <div class="tab-content">
-        <div class="tab-pane fade" id="comment">
-        <br>
-        <% @comments.each do |comment| %>
-          <%= render 'comments/comments', comment: comment, show_address_info: true, show_edit_link: false, show_unit_info: false %>
-        <% end %>
-        </div>
-      </div>     
-
-      <div class="tab-content">
-        <div class="tab-pane fade show active" id="violation">
-          <div class="table-responsive">
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th scope="col">Address</th>
-                  <th scope="col">Created By</th>
-                  <th scope="col">Created At</th>
-                  <th scope="col">Violation Type</th>
-                  <th scope="col">Code</th>
-                  <th scope="col">Deadline Date</th>
-                  <th scope="col">Citations</th>
-                </tr>
-              </thead>
-              <tbody>
-                <% @violations.each do |violation| %>
-                  <%= render partial: "shared/violation_table", locals: {violation: violation} %>
-                <% end %>
-              </tbody>
-            </table>        
-          </div>
-        </div>
-      </div>
-
-      <div class="tab-content">
-        <div class="tab-pane fade" id="citation">
-          <div class="table-responsive">
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                    <th scope="col">Citation ID</th>
-                    <th scope="col">Address</th>
-                    <th scope="col">Created By</th>
-                    <th scope="col">Created On</th>
-                    <th scope="col">Amount</th>
-                    <th scope="col">Status</th>
-                    <th scope="col">Code</th>
-                    <th scope="col">Deadline</th>
-                </tr>
-              </thead>
-              <tbody>
-                <% @citations.each do |citation| %>
-                  <%= render partial: "shared/citation_table", locals: {citation: citation} %>
-                <% end %>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-            <div class="tab-content">
-        <div class="tab-pane fade" id="inspection">
-          <div class="table-responsive">
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th scope="col">Address</th>
-                  <th scope="col">Type</th>
-                  <th scope="col">Status</th>
-                  <th scope="col">Created At</th>
-                  <th scope="col">Status</th>
-                  <th scope="col">Notes</th>
-                </tr>
-              </thead>
-              <tbody>
-                <% @inspections.each do |inspection| %>
-                  <%= render partial: "shared/inspection_table", locals: {inspection: inspection}, show_address_info: true %>
-                <% end %>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-  </div>
-  <% end %>
-  <% if @current_user.oas? %>
-  <div class="row mt-3">
-    <div class="col">
-      <h1 style="text-align:center">Welcome OAS!</h1>
-    </div>
-  </div>
-  <% end %>
-
 </div>
+
 
 
 
