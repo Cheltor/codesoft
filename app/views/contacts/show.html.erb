@@ -15,5 +15,41 @@
   <%= @contact.phone %>
 </p>
 
+<p>
+  <strong>Notes:</strong>
+  <%= @contact.notes %>
+</p>
+
+<!-- show any associated inspections -->
+<% if @contact.inspections.any? %>
+  <h3>Inspections (<%= @contact.inspections.count %>)</h3>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Inspection Date</th>
+        <th>Inspection Type</th>
+        <th>Status</th>
+        <th colspan="1"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @contact.inspections.each do |inspection| %>
+        <tr>
+        <% if inspection.scheduled_datetime == nil %>
+          <td><%= link_to "Not scheduled", address_inspection_path(inspection.address, inspection) %></td>
+        <% else %>
+          <td><%= link_to inspection.scheduled_datetime.strftime("%B %d, %Y %I:%M %p"), address_inspection_path(inspection.address, inspection) %></td>
+        <% end %>
+          <td><%= inspection.source %></td>
+          <td><%= inspection.status %></td>
+          <td><%= link_to "Show", address_inspection_path(inspection.address, inspection), class: "btn btn-secondary" %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>
+
+
 <%= link_to 'Edit', edit_contact_path(@contact) %> |
 <%= link_to 'Back', contacts_path %>

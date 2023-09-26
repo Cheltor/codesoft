@@ -16,7 +16,7 @@
   <tbody>
     <% @contacts.each do |contact| %>
       <tr>
-        <td><%= contact.name %></td>
+        <td><%= link_to contact.name, contact_path(contact) %></td>
         <td><%= link_to contact.email, "mailto:#{contact.email}" %></td>
         <td><a href="tel:<%= contact.phone %>"><%= format_phone_number(contact.phone) %></a></td>
         <td><%= contact.notes %></td>
