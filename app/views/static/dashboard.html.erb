@@ -18,8 +18,13 @@
                 <li class="list-group-item"><strong><%= link_to address.combadd, address_path(address) %></strong></li>
                 
                 <% if address.violations.current.where(user_id: current_user.id).exists? %>
-                  <li class="list-group-item"><%= pluralize(address.violations.current.where(user_id: current_user.id).count, 'Active Violations') %></li>
+                  <% if address.violations.current.any? { |violation| violation.deadline_date <= Date.tomorrow } %>
+                    <li class="list-group-item bg-warning"><%= pluralize(address.violations.current.where(user_id: current_user.id).count, 'Active Violations') %></li>
+                  <% else %>
+                    <li class="list-group-item"><%= pluralize(address.violations.current.where(user_id: current_user.id).count, 'Active Violations') %></li>
+                  <% end %>
                 <% end %>
+
                 
                 <% if address.violations.any? { |violation| violation.citations.where(status: ["unpaid"], user_id: current_user.id).exists? } %>
                   <li class="list-group-item"><%= pluralize(address.violations.map { |violation| violation.citations.where(status: ["unpaid"], user_id: current_user.id).count }.sum, 'Unpaid Citations') %></li>
@@ -29,10 +34,14 @@
                   <li class="list-group-item"><%= pluralize(address.violations.map { |violation| violation.citations.where(status: ["pending trial"], user_id: current_user.id).count }.sum, 'Pending Trial Citations') %></li>
                 <% end %>
 
-                <% if address.inspections.where(status: nil, inspector_id: current_user.id).any? %>
-                  <li class="list-group-item"><%= pluralize(address.inspections.where(status: nil, inspector_id: current_user.id).count, 'Pending Inspections') %></li>
-                <% end %>
-            </ul>          
+                    <% if address.inspections.where(status: nil, scheduled_datetime: nil, inspector_id: current_user.id).any? %>
+                      <li class="list-group-item"><%= pluralize(address.inspections.where(status: nil, scheduled_datetime: nil, inspector_id: current_user.id).count, 'Pending Inspections') %></li>
+                    <% end %>
+
+                    <% if address.inspections.where.not(scheduled_datetime: nil).where(status: nil, inspector_id: current_user.id).any? %>
+                      <li class="list-group-item"><%= pluralize(address.inspections.where.not(scheduled_datetime: nil).where(status: nil, inspector_id: current_user.id).count, 'Scheduled Inspections') %></li>
+                    <% end %>
+                </ul>          
           </div>
         <% end %>
 

@@ -239,7 +239,7 @@
           </tr>
         </thead>
         <tbody>
-          <% @address.inspections.order("created_at DESC").each do |inspection| %>
+          <% @address.inspections.order("updated_at DESC").each do |inspection| %>
             <%= render partial: "shared/inspection_table", locals: {inspection: inspection} %>
           <% end %>
         </tbody>

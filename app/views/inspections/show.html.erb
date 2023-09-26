@@ -41,7 +41,9 @@
     </button>
     <% end %>
     <br>
+    <% if @inspection.contact.present? %>
     <%= generate_pre_inspection_email_link %>
+    <% end %>
     <br>
             <%= link_to "Schedule inspection", schedule_address_inspection_path(@address, @inspection), class: "btn btn-primary mt-3" %>
 
@@ -162,7 +164,9 @@
         <br>
         <% if @inspection.status.present? %>
         <br>
+          <% if @inspection.contact.present? %>
             <%= generate_inspection_email_link %>
+          <% end %>
         <% end %>
       </div>
     </div>

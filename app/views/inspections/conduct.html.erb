@@ -35,6 +35,7 @@
       <%= form.label :inspector_id %>
       <br>
       <strong><%= current_user.name %></strong>
+      <%= form.hidden_field :inspector_id, value: current_user.id %>
     </div>
   <% elsif current_user.admin? %>
     <div class="form-group mt-3">

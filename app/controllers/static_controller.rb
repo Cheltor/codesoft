@@ -3,22 +3,39 @@ class StaticController < ApplicationController
 
   def dashboard
     @user = current_user
-    @comments = @user.comments.order(created_at: :desc).limit(50)
+    @comments = @user.comments.order(created_at: :desc)
     @violations = @user.violations.where(violations: { status: :current })
-                              .select {|violation| violation.deadline_date <= Date.tomorrow }
-                              .reject {|violation| violation.citations.where(citations: { status: [:unpaid, "pending trial"] }).any? {|citation| citation.deadline >= Date.tomorrow }}
-                              #.where.not(id: Citation.where(status: "pending trial", violation: @user.violations).pluck(:violation_id))
-                              .sort_by(&:deadline_date)
-
+                                 .select {|violation| violation.deadline_date <= Date.tomorrow }
+                                 .reject {|violation| violation.citations.where(citations: { status: [:unpaid, "pending trial"] }).any? {|citation| citation.deadline >= Date.tomorrow }}
+                                 .sort_by(&:deadline_date)
+  
     @citations = @user.citations.where(citations: { status: [:unpaid, "pending trial"] }).sort_by(&:deadline)
     @addresses = @q.result.where.not(streetnumb: nil)
-    @inspections = Inspection.where(inspector: @user).order(created_at: :desc).limit(50)
+    @inspections = Inspection.where(inspector: @user, status: nil).order(created_at: :desc)
     @priority_addresses = []
-    @priority_addresses += @violations.map {|violation| violation.address } if @violations.any?
-    @priority_addresses += @citations.map {|citation| citation.violation.address } if @citations.any?
-    @priority_addresses += @inspections.map {|inspection| inspection.address } if @inspections.any?
+  
+    # Print information about addresses being added to priority_addresses
+    @violations.each do |violation|
+      address = violation.address
+      puts "Adding violation address #{address.id} to priority_addresses"
+      @priority_addresses << address
+    end
+  
+    @citations.each do |citation|
+      address = citation.violation.address
+      puts "Adding citation address #{address.id} to priority_addresses"
+      @priority_addresses << address
+    end
+  
+    @inspections.each do |inspection|
+      address = inspection.address
+      puts "Adding inspection address #{address.id} to priority_addresses"
+      @priority_addresses << address
+    end
+  
     @priority_addresses = @priority_addresses.uniq.sort_by(&:streetnumb)
   end
+  
 
   def issue
     @addresses = @q.result.where.not(streetnumb: nil)
