@@ -19,7 +19,10 @@
   <strong>Notes:</strong>
   <%= @contact.notes %>
 </p>
-
+<%= link_to 'Edit', edit_contact_path(@contact), class: "btn btn-secondary" %> |
+<%= link_to 'Back', contacts_path, class: "btn btn-secondary"  %>
+<br>
+<br>
 <!-- show any associated inspections -->
 <% if @contact.inspections.any? %>
   <h3>Inspections (<%= @contact.inspections.count %>)</h3>
@@ -51,5 +54,4 @@
 <% end %>
 
 
-<%= link_to 'Edit', edit_contact_path(@contact) %> |
-<%= link_to 'Back', contacts_path %>
+

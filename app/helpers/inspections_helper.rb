@@ -7,9 +7,10 @@ module InspectionsHelper
   end
 
   def generate_pre_inspection_email_link
-    recipient_email = "recipient@example.com"
-    subject = "Pre-Inspection Notification"
-    body = "Hello, this is a pre-inspection notification."
+    recipient_email = @inspection.contact.email
+    subject = "Pre-Inspection Notification for #{@inspection.source}"
+    body = "
+    You are receiving this email to inform you #{@inspection.address.combadd} has been scheduled for its annual inspection on 09/25/2023 between the hours of 12:00pm - 01:00pm. I look forward to our collaboration and thank you for your role in ensuring life and safety in Riverdale Park. Should you have questions or concerns please reply to this email. Lastly, please confirm your receipt of this email."
 
     mail_to(recipient_email, subject, body: body, class: "btn btn-primary")
   end

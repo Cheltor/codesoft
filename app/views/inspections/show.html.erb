@@ -68,13 +68,8 @@
       <div class="card-body">
               <p><strong>Inspection Request Was Created:</strong> <%= @inspection.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></p>
         <% if @inspection.contact.present? %>
-          <p><strong>Contact:</strong> <%= @inspection.contact.name %></p>
-          <% if @inspection.contact.notes != "" %>
-            <p><strong>Contact Notes:</strong> <%= @inspection.contact.notes %></p>
-            <%= link_to "Edit Contact Notes", add_notes_contact_path(@inspection.contact), class: "btn btn-primary mt-3" %>
-          <% else %>
-            <%= link_to "Add Notes", add_notes_contact_path(@inspection.contact), class: "btn btn-primary mt-3" %>
-          <% end %>
+          <p><strong>Contact:</strong> <%= link_to @inspection.contact.name, contact_path(@inspection.contact) %></p>
+          <p><strong>Contact Notes:</strong> <%= @inspection.contact.notes %></p>
           <p><strong>Contact Email:</strong> <%= link_to @inspection.contact.email, "mailto:#{@inspection.contact.email}" %></p>
           <p><strong>Contact Phone:</strong><a href="tel:<%= @inspection.contact.phone %>"><%= format_phone_number(@inspection.contact.phone) %></a></p>
         <% end %>
@@ -111,36 +106,53 @@
       <% if @inspection.extphotos.attached? %>
         <button type="button" class="btn btn-primary mt-2 mb-2" data-bs-toggle="modal" data-bs-target="#allextphotoModal">
           <i class="bi bi-paperclip"></i>
-          All Photos and Attachments
+          All Photos and Attachments from inspection
         </button>
       <% end %>
       <br>
 
       <% if @inspection.areas.present? %>
         <h3>Areas</h3>
-        <% @inspection.areas.each do |area| %>
-          <div class="accordion accordion-flush" id="accordionFlush<%= area.id %>">
-            <div class="accordion-item">
-              <h2 class="accordion-header" id="flush-heading<%= area.id %>">
-                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse<%= area.id %>" aria-expanded="false" aria-controls="flush-collapse<%= area.id %>">
-                  <strong><%= area.name %></strong>
-                </button>
-              </h2>
-              <div id="flush-collapse<%= area.id %>" class="accordion-collapse collapse" aria-labelledby="flush-heading<%= area.id %>" data-bs-parent="#accordionFlush<%= area.id %>">
-                <div class="accordion-body">
-                  <h5><%= area.notes %></h5>
-                  <br>
-
+    <% @inspection.areas.each do |area| %>
+      <div class="accordion accordion-flush" id="accordionFlush<%= area.id %>">
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="flush-heading<%= area.id %>">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse<%= area.id %>" aria-expanded="false" aria-controls="flush-collapse<%= area.id %>">
+              <%= area.name %>
+            </button>
+          </h2>
+          <div id="flush-collapse<%= area.id %>" class="accordion-collapse collapse" aria-labelledby="flush-heading<%= area.id %>" data-bs-parent="#accordionFlush<%= area.id %>">
+            <div class="accordion-body">
+              <h5><strong>Notes: </strong><%= area.notes %></h5>
+              <br>
+              <% if area.photos.attached? %>
+                <div>
+                  <strong>Uploaded Files:</strong>
+                  <% area.photos.each do |attachment| %>
+                    <%= attachment.filename %><br>
+                  <% end %>
                 </div>
-              </div>
+              <% end %>
+              <br>
+              <% if area.codes.present? %>
+                  
+                <p><strong>Codes:</strong></p>
+                  <ul>
+                    <% area.codes.each do |code| %>
+                      <li><%= code.name %></li>
+                    <% end %>
+                  </ul>
+                <% end %>
             </div>
           </div>
-        <% end %>
+        </div>
+      </div>
+    <% end %>
       <% end %>
 
-      <% if @inspection.codes.present? %>
+      <% if @code_violations.present? %>
         <h3>Code Violations</h3>
-        <% @inspection.codes.each do |code| %>
+        <% @code_violations.each do |code| %>
           <%= render partial: 'shared/code_def_show', locals: { code: code } %>
         <% end %>
       <% end %>
@@ -157,8 +169,11 @@
   </div>
 </div> 
 <div class="row">
-
-
+<div class="col">
+<% if @inspection.status == "Passed" && @inspection.source == "Business License" %>
+  <button>Print Business License</button>
+<% end %>
+</div>
 </div>
 
     <!-- Attachment Modal -->

@@ -21,14 +21,18 @@ class AreasController < ApplicationController
   end
 
   def edit
-    
+    @address = Address.find(params[:address_id])
+    @inspection = @address.inspections.find(params[:inspection_id])
+    @area = @inspection.areas.find(params[:id])
   end
 
   def update
     @area = Area.find(params[:id])
+    @address = @area.inspection.address
+    @inspection = @area.inspection
 
     if @area.update(area_params)
-      redirect_to @area
+      redirect_to conduct_address_inspection_path(@address, @inspection)
     else
       render :edit
     end

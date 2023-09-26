@@ -96,6 +96,8 @@
                     <% end %>
                   </ul>
                 <% end %>
+                <br>
+                <%= link_to "Edit #{area.name}", edit_address_inspection_area_path(@address, @inspection, area), class: "btn btn-primary" %>
             </div>
           </div>
         </div>
@@ -103,11 +105,24 @@
     <% end %>
   <% end %>
 
+<% if @inspection.status.present? %>
+  <div class="div">
+    <label><strong>Outcome</strong></label>
+    <% if @inspection.status == "Passed" %>
+      <h2><span class="badge bg-success"><%= @inspection.status %></span></h2>
+    <% else %>
+      <h2><span class="badge bg-danger"><%= @inspection.status %></span></h2>
+    <% end %>
+  </div>
+<br>
+<% else %>
   <div class="field mt-3">
-    <label>Outcome</label>
-    <%= form.select :status, options_for_select(["Passed", "Failed", "Reinspection Required"], @inspection.status), {}, class: "form-select" %>
+    <label><strong>Outcome</strong></label>
+    <%= form.select :status, options_for_select(["Passed", "Failed", "Missed"], @inspection.status), {}, class: "form-select" %>
   </div>
   <br>
+<% end %>
+
 
       <div class="form-group">
       <strong><%= form.label :codes %></strong>

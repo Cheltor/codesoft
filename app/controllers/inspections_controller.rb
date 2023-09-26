@@ -24,7 +24,8 @@ class InspectionsController < ApplicationController
   def show
     @inspection = @address.inspections.find(params[:id])
     @attachments = @inspection.attachments.all
-    @code_violations = @inspection.codes
+    # code_violations are both the inspection codes, the area codes, and the intersection of the two
+    @code_violations = (@inspection.codes + @inspection.areas.map { |area| area.codes }.flatten).uniq
   end
 
   def new
