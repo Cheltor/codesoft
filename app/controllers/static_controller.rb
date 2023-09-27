@@ -12,6 +12,7 @@ class StaticController < ApplicationController
     @citations = @user.citations.where(citations: { status: [:unpaid, "pending trial"] }).sort_by(&:deadline)
     @addresses = @q.result.where.not(streetnumb: nil)
     @inspections = Inspection.where(inspector: @user, status: nil).order(created_at: :desc)
+    @today_inspections = Inspection.where(inspector: @user, status: nil, scheduled_datetime: Date.today.beginning_of_day..Date.today.end_of_day).order(scheduled_datetime: :desc)
     @priority_addresses = []
   
     # Print information about addresses being added to priority_addresses

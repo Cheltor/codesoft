@@ -9,7 +9,7 @@ class InspectionsController < ApplicationController
 
   def my_inspections
     @scheduled_datetime = params[:scheduled_datetime]
-    @inspections = Inspection.where(inspector: current_user)
+    @inspections = Inspection.where(inspector: current_user).order(updated_at: :desc)
 
     case @scheduled_datetime
     when "scheduled"

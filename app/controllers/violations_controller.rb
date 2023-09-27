@@ -50,7 +50,7 @@ class ViolationsController < ApplicationController
     @violation.user = current_user
 
     if @violation.save
-      redirect_to @violation, notice: "Violation reported successfully."
+      redirect_to @address, notice: "Violation reported successfully."
     else
       render :new
     end

@@ -9,43 +9,124 @@
 
 <div class="container-fluid mt-5">
   <div class="row">
-    <!-- list of @priority_addresses -->
-      <h3>Priority Addresses</h3>
-      <h5>Addresses with current violations, unpaid citations, pending trial citations, or pending inspections</h5>
-        <% @priority_addresses.each do |address| %>
-          <div class="col-sm-2">
-            <ul class="list-group mb-3">
-                <li class="list-group-item"><strong><%= link_to address.combadd, address_path(address) %></strong></li>
-                
-                <% if address.violations.current.where(user_id: current_user.id).exists? %>
-                  <% if address.violations.current.any? { |violation| violation.deadline_date <= Date.tomorrow } %>
-                    <li class="list-group-item bg-warning"><%= pluralize(address.violations.current.where(user_id: current_user.id).count, 'Active Violations') %></li>
-                  <% else %>
-                    <li class="list-group-item"><%= pluralize(address.violations.current.where(user_id: current_user.id).count, 'Active Violations') %></li>
-                  <% end %>
-                <% end %>
-
-                
-                <% if address.violations.any? { |violation| violation.citations.where(status: ["unpaid"], user_id: current_user.id).exists? } %>
-                  <li class="list-group-item"><%= pluralize(address.violations.map { |violation| violation.citations.where(status: ["unpaid"], user_id: current_user.id).count }.sum, 'Unpaid Citations') %></li>
-                <% end %>
-
-                <% if address.violations.any? { |violation| violation.citations.where(status: ["pending trial"], user_id: current_user.id).exists? } %>
-                  <li class="list-group-item"><%= pluralize(address.violations.map { |violation| violation.citations.where(status: ["pending trial"], user_id: current_user.id).count }.sum, 'Pending Trial Citations') %></li>
-                <% end %>
-
-                    <% if address.inspections.where(status: nil, scheduled_datetime: nil, inspector_id: current_user.id).any? %>
-                      <li class="list-group-item"><%= pluralize(address.inspections.where(status: nil, scheduled_datetime: nil, inspector_id: current_user.id).count, 'Pending Inspections') %></li>
-                    <% end %>
-
-                    <% if address.inspections.where.not(scheduled_datetime: nil).where(status: nil, inspector_id: current_user.id).any? %>
-                      <li class="list-group-item"><%= pluralize(address.inspections.where.not(scheduled_datetime: nil).where(status: nil, inspector_id: current_user.id).count, 'Scheduled Inspections') %></li>
-                    <% end %>
-                </ul>          
-          </div>
+  <% if params[:q].present? %>
+    <div class="row mt-5">
+      <div class="col">
+        <h1 style="text-align:center">Search Results</h1>
+        <%# if user is guest show this %>
+        <% if @current_user.guest? %>
+              <% @addresses.each do |address| %>
+          <% if address.violations.current.exists? == true %>
+            <div class="card mt-3" style="background-color: #ffccbc;">
+              <div class="card-body">
+                <h5 class="card-title"><%= address.combadd %></h5>
+                <p class="card-text">Active Violations</p>
+              </div>
+            </div>
+          <% else %>
+            <div class="card mt-3" style="background-color: #c8e6c9;">
+              <div class="card-body">
+                <h5 class="card-title"><%= address.combadd %></h5>
+                <p class="card-text">No Active Violations</p>
+              </div>
+            </div>
+          <% end %>
         <% end %>
+        <%# if user is not guest show this %>
+        <% else %>
+        <table class="table table-striped">
+          <thead class="thead-light">
+            <tr>
+              <th scope="col">Address</th>
+            </tr>
+          </thead>
+          <% if @addresses.empty? %>
+          <tbody>
+            <tr>
+              <td>No results found</td>
+            </tr>
+          </tbody>
+          <% else %>
+          <tbody>
+            <% @addresses.each do |address| %>
+            <tr>
+            <% if address.violations.current.exists? == true %>
+              <td><%= link_to address.combadd, address_path(address), class:"btn btn-warning" %></td>
+            <% else %>
+              <td><%= link_to address.combadd, address_path(address), class:"btn btn-primary" %></td>
+            <% end %>
+            </tr>
+            <% end %>
+          </tbody>
+          <% end %>
+        </table>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+  </div>
+  <% if !params[:q].present? %>
+  <div class="row">
+    <div class="col-sm-2">
+    <!-- a list of inspections scheduled today and unscheduled inspections -->
+    <h3>Today's Inspections</h3>
+    <h5>Inspections scheduled for today</h5>
+    <% @today_inspections.each do |inspection| %>
+      <div class="card mt-3" style="background-color: #c8e6c9;">
+        <div class="card-body">
+          <h5 class="card-title"><%= link_to inspection.address.combadd, address_inspection_path(inspection.address, inspection) %></h5>
+          <p class="card-text"><%= inspection.scheduled_datetime.strftime("%I:%M %p") %></p>
+        </div>
+      </div>
+    <% end %>
+    </div>
+    <div class="col-sm-10">
+    <div class="row">      <!-- list of @priority_addresses -->
+        <h3>My Priority Addresses</h3>
+        <h5>Addresses with current violations, unpaid citations, pending trial citations, or pending inspections</h5>
+          <% @priority_addresses.each do |address| %>
+            <div class="col-sm-2">
+              <ul class="list-group mb-3">
+                  <li class="list-group-item"><strong><%= link_to address.combadd, address_path(address) %></strong></li>
+                  
+                  <% if address.violations.current.where(user_id: current_user.id).exists? %>
+                    <% if address.violations.current.any? { |violation| violation.deadline_date <= Date.tomorrow } %>
+                      <li class="list-group-item bg-warning"><%= pluralize(address.violations.current.where(user_id: current_user.id).count, 'Active Violations') %></li>
+                    <% else %>
+                      <li class="list-group-item"><%= pluralize(address.violations.current.where(user_id: current_user.id).count, 'Active Violations') %></li>
+                    <% end %>
+                  <% end %>
+
+                  
+                  <% if address.violations.any? { |violation| violation.citations.where(status: ["unpaid"], user_id: current_user.id).exists? } %>
+                    <li class="list-group-item"><%= pluralize(address.violations.map { |violation| violation.citations.where(status: ["unpaid"], user_id: current_user.id).count }.sum, 'Unpaid Citations') %></li>
+                  <% end %>
+
+                  <% if address.violations.any? { |violation| violation.citations.where(status: ["pending trial"], user_id: current_user.id).exists? } %>
+                    <li class="list-group-item"><%= pluralize(address.violations.map { |violation| violation.citations.where(status: ["pending trial"], user_id: current_user.id).count }.sum, 'Pending Trial Citations') %></li>
+                  <% end %>
+
+                      <% if address.inspections.where(status: nil, scheduled_datetime: nil, inspector_id: current_user.id).any? %>
+                        <li class="list-group-item bg-warning"><%= pluralize(address.inspections.where(status: nil, scheduled_datetime: nil, inspector_id: current_user.id).count, 'Pending Inspections') %></li>
+                      <% end %>
+
+                      <% if address.inspections.where.not(scheduled_datetime: nil).where(status: nil, inspector_id: current_user.id).any? %>
+                        <% if address.inspections.where(scheduled_datetime: Date.today.beginning_of_day..Date.today.end_of_day) %>
+                        <li class="list-group-item bg-warning"><%= pluralize(address.inspections.where.not(scheduled_datetime: nil).where(status: nil, inspector_id: current_user.id).count, 'Scheduled Inspections') %></li>
+                        <% else %>
+                        <li class="list-group-item"><%= pluralize(address.inspections.where.not(scheduled_datetime: nil).where(status: nil, inspector_id: current_user.id).count, 'Scheduled Inspections') %></li>
+                        <% end %>
+                      <% end %>
+                  </ul>          
+            </div>
+          <% end %>
+
+    </div>
+    </div>
+
 
   </div>
+  <% end %>
 </div>
 
 
