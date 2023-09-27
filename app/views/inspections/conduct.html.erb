@@ -25,6 +25,15 @@
 <h1>Conduct Inspection</h1>
 <% end %>
 <%= form_with(model: [@address, @inspection]) do |form| %>
+    <% if @inspection.attachments.attached? %>
+    <div class="field mt-3">
+    <!-- modal for @inspection.attachments -->
+      <button type="button" class="btn btn-primary mt-2 mb-2" data-bs-toggle="modal" data-bs-target="#allAttachModal">
+        <i class="bi bi-paperclip"></i>
+        Application/photos
+      </button>
+    </div>
+    <% end %>
   <div class="field mt-3">
   <!-- submit as  well as add new area -->
     <%= link_to "New Inspection Area", new_address_inspection_area_path(@address, @inspection), class: "btn btn-primary" %>
@@ -142,7 +151,27 @@
   </select>
 <div id="myDiv" class="collapse">
   <!-- Content to be displayed/hidden goes here -->
-  This is the content inside the div.
+  <h4>New Code</h4>
+  <br>
+  <div>
+    <label>Chapter</label>
+    <%= form.text_field :new_chapter, class:"form-control" %>
+  </div>
+<br>
+  <div>
+    <label>Section</label>
+    <%= form.text_field :new_section, class:"form-control" %>
+  </div>
+<br>
+  <div>
+    <label>Name</label>
+    <%= form.text_field :new_name, class:"form-control" %>
+  </div>
+<br>
+  <div>
+    <label>Description</label>
+    <%= form.text_area :new_description, class:"form-control" %>
+  </div>
 </div>
 
     </div>

@@ -81,7 +81,19 @@
         </div>
       </div>
       <% end %>
-
+    <% end %>
+    <% if @future_inspections.empty? %>
+      <p>No inspections upcoming.</p>
+    <% else %>
+    <h3>Future Inspections</h3>
+      <% @future_inspections.each do |inspection| %>
+      <div class="card mt-3" style="background-color: #c8e6c9;">
+        <div class="card-body">
+          <h5 class="card-title"><%= link_to inspection.address.combadd, address_inspection_path(inspection.address, inspection) %></h5>
+            <p class="card-text"><%= inspection.scheduled_datetime.strftime("%m/%d/%Y %I:%M %p") %></p>
+        </div>
+      </div>
+      <% end %>
     <% end %>
     </div>
     <div class="col-sm-10">

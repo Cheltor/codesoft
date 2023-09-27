@@ -23,10 +23,13 @@
 <h1>Conduct Inspection</h1>
 <%= form_with(model: [@address, @inspection]) do |form| %>
   <div class="row">
-    <div class="col-md-2">
+    <div class="col-md-4">
       <div class="field mt-3">
         <%= form.label :scheduled_datetime %>
         <%= form.datetime_field :scheduled_datetime, class: "form-control" %>
+    <% if @inspection.errors[:scheduled_datetime].any? %>
+      <p class="text-danger"><%= @inspection.errors[:scheduled_datetime].join(', ') %></p>
+    <% end %>
       </div>
     </div>
   </div>

@@ -13,4 +13,24 @@ class Inspection < ApplicationRecord
   has_many :codes, through: :inspection_codes
   belongs_to :contact, optional: true
   has_many :areas, dependent: :destroy
+  validate :scheduled_datetime_cannot_be_in_the_past, on: :update
+  validate :no_inspection_within_one_hour, on: :update
+
+  private
+
+  def no_inspection_within_one_hour
+    # Check if there are any other inspections scheduled within 1 hour
+    if Inspection.where(inspector_id: inspector_id, status: nil)
+                 .where('scheduled_datetime >= ? AND scheduled_datetime <= ?', scheduled_datetime - 1.hour, scheduled_datetime + 1.hour)
+                 .where.not(id: id) # Exclude the current inspection if it's being updated
+                 .exists?
+      errors.add(:scheduled_datetime, "Another inspection is scheduled within 1 hour of this time.")
+    end
+  end
+
+  def scheduled_datetime_cannot_be_in_the_past
+    if scheduled_datetime.present? && scheduled_datetime < DateTime.now
+      errors.add(:scheduled_datetime, "can't be in the past")
+    end
+  end
 end

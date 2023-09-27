@@ -106,6 +106,11 @@ class InspectionsController < ApplicationController
       @inspection.contact = @contact
     end
 
+    if params[:inspection][:new_chapter].present?
+      @code = Code.create(chapter: params[:inspection][:new_chapter], description: params[:inspection][:new_description], section: params[:inspection][:new_section], name: params[:inspection][:new_name])
+      @inspection.codes << @code
+    end
+
     if @inspection.update(inspection_params)
       redirect_to address_inspection_path(@address, @inspection), notice: 'Inspection was successfully updated.'
     else
@@ -130,7 +135,7 @@ class InspectionsController < ApplicationController
   end
 
   def inspection_params
-    params.require(:inspection).permit(:source, :status, :result, :description, :thoughts, :originator, :unit_id, :assignee_id, :inspector_id, :scheduled_datetime, :name, :email, :phone, :notes_area_1, :notes_area_2, :notes_area_3, :contact_id,:new_contact_name, :new_contact_email, :new_contact_phone, code_ids: [], intphotos: [], extphotos: [], photos: [], attachments: []).reject { |key, value| value.blank? }
+    params.require(:inspection).permit(:source, :status, :result, :description, :thoughts, :originator, :unit_id, :assignee_id, :inspector_id, :scheduled_datetime, :name, :email, :phone, :notes_area_1, :notes_area_2, :notes_area_3, :contact_id,:new_contact_name, :new_contact_email, :new_contact_phone, :new_chapter, :new_section, :new_name, :new_description, code_ids: [], intphotos: [], extphotos: [], photos: [], attachments: []).reject { |key, value| value.blank? }
   end
 
 end
