@@ -43,7 +43,7 @@
           <% if @addresses.empty? %>
           <tbody>
             <tr>
-              <td>No results found</td>
+              <td>No results found. Please double check with SDAT that this is the correct property address.</td>
             </tr>
           </tbody>
           <% else %>
@@ -70,14 +70,18 @@
     <div class="col-sm-2">
     <!-- a list of inspections scheduled today and unscheduled inspections -->
     <h3>Today's Inspections</h3>
-    <h5>Inspections scheduled for today</h5>
-    <% @today_inspections.each do |inspection| %>
+    <% if @today_inspections.empty? %>
+      <p>No inspections scheduled for today.</p>
+    <% else %>
+      <% @today_inspections.each do |inspection| %>
       <div class="card mt-3" style="background-color: #c8e6c9;">
         <div class="card-body">
           <h5 class="card-title"><%= link_to inspection.address.combadd, address_inspection_path(inspection.address, inspection) %></h5>
           <p class="card-text"><%= inspection.scheduled_datetime.strftime("%I:%M %p") %></p>
         </div>
       </div>
+      <% end %>
+
     <% end %>
     </div>
     <div class="col-sm-10">
@@ -85,7 +89,7 @@
         <h3>My Priority Addresses</h3>
         <h5>Addresses with current violations, unpaid citations, pending trial citations, or pending inspections</h5>
           <% @priority_addresses.each do |address| %>
-            <div class="col-sm-2">
+            <div class="col-lg-2">
               <ul class="list-group mb-3">
                   <li class="list-group-item"><strong><%= link_to address.combadd, address_path(address) %></strong></li>
                   

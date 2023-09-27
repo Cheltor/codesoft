@@ -27,7 +27,7 @@
 <%= form_with(model: [@address, @inspection]) do |form| %>
   <div class="field mt-3">
   <!-- submit as  well as add new area -->
-    <%= link_to "New Area", new_address_inspection_area_path(@address, @inspection), class: "btn btn-primary" %>
+    <%= link_to "New Inspection Area", new_address_inspection_area_path(@address, @inspection), class: "btn btn-primary" %>
   </div>
   <!-- if current user is ons -->
   <% if current_user.ons? %>
@@ -45,7 +45,8 @@
   <% end %>
   <div class="form-group mt-3">
     <%= form.label :source %>
-    <%= form.select :source, ["Complaint", "Building/Dumpster/POD permit", "Business license", "Single Family License", "Multifamily License", "Donation Bin"], { selected: @inspection.source }, class: "form-select" %>
+    <br>
+    <strong><%= @inspection.source %></strong>
   </div>
   <div class="field mt-3">
     <label>Notes</label>

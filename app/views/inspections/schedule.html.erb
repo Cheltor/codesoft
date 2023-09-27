@@ -24,11 +24,10 @@
 <%= form_with(model: [@address, @inspection]) do |form| %>
   <div class="row">
     <div class="col-md-2">
-        <div class="field mt-3">
-          <%= form.label :scheduled_datetime %>
-          <%= form.date_field :scheduled_datetime, class: "form-control" %>
-          <%= form.time_field :scheduled_datetime, class: "form-control" %>
-        </div>
+      <div class="field mt-3">
+        <%= form.label :scheduled_datetime %>
+        <%= form.datetime_field :scheduled_datetime, class: "form-control" %>
+      </div>
     </div>
   </div>
 
@@ -36,3 +35,4 @@
     <%= form.submit "Submit", class: "btn btn-primary" %>
   </div>
 <% end %>
+

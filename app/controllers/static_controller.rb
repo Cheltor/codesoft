@@ -13,6 +13,8 @@ class StaticController < ApplicationController
     @addresses = @q.result.where.not(streetnumb: nil)
     @inspections = Inspection.where(inspector: @user, status: nil).order(created_at: :desc)
     @today_inspections = Inspection.where(inspector: @user, status: nil, scheduled_datetime: Date.today.beginning_of_day..Date.today.end_of_day).order(scheduled_datetime: :desc)
+    @tomorrow_inspections = Inspection.where(inspector: @user, status: nil, scheduled_datetime: Date.tomorrow.beginning_of_day..Date.tomorrow.end_of_day).order(scheduled_datetime: :desc)
+    @next_week_inspections = Inspection.where(inspector: @user, status: nil, scheduled_datetime: Date.tomorrow.beginning_of_week..Date.tomorrow.end_of_week).order(scheduled_datetime: :desc)
     @priority_addresses = []
   
     # Print information about addresses being added to priority_addresses
