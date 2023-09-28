@@ -19,12 +19,14 @@ class Inspection < ApplicationRecord
   private
 
   def no_inspection_within_one_hour
-    # Check if there are any other inspections scheduled within 1 hour
-    if Inspection.where(inspector_id: inspector_id, status: nil)
-                 .where('scheduled_datetime >= ? AND scheduled_datetime <= ?', scheduled_datetime - 1.hour, scheduled_datetime + 1.hour)
-                 .where.not(id: id) # Exclude the current inspection if it's being updated
-                 .exists?
-      errors.add(:scheduled_datetime, "Another inspection is scheduled within 1 hour of this time.")
+    if scheduled_datetime.present?
+      # Check if there are any other inspections scheduled within 1 hour
+      if Inspection.where(inspector_id: inspector_id, status: nil)
+                  .where('scheduled_datetime >= ? AND scheduled_datetime <= ?', scheduled_datetime - 1.hour, scheduled_datetime + 1.hour)
+                  .where.not(id: id) # Exclude the current inspection if it's being updated
+                  .exists?
+        errors.add(:scheduled_datetime, "Another inspection is scheduled within 1 hour of this time.")
+      end
     end
   end
 

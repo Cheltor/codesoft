@@ -1,7 +1,7 @@
 <!-- A list of the users inspections -->
 <%= link_to "All My Inspections", my_inspections_path, class:"btn btn-secondary" %>
-<%= link_to "scheduled", my_inspections_path(status: "scheduled"), class:"btn btn-primary" %>
-<%= link_to "unscheduled", my_inspections_path(status: "unscheduled"), class:"btn btn-success" %>
+<%= link_to "scheduled", my_inspections_path(scheduled_datetime: "scheduled"), class:"btn btn-primary" %>
+<%= link_to "unscheduled", my_inspections_path(scheduled_datetime: "unscheduled"), class:"btn btn-success" %>
 <div class="row">
   <div class="col">
     <div class="table-responsive mt-5" style="text-align: center">
@@ -12,7 +12,7 @@
             <th scope="col">Address</th>
             <th scope="col">Type</th>
             <th scope="col">Status</th>
-            <th scope="col">Created At</th>
+            <th scope="col">Scheduled</th>
             <th scope="col">Status</th>
             <th scope="col">Notes</th>
           </tr>

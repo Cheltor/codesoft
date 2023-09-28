@@ -1,10 +1,34 @@
 class InspectionsController < ApplicationController
-  before_action :set_address, except: [:all_inspections, :my_inspections]
+  before_action :set_address, except: [:all_inspections, :my_inspections, :my_unscheduled_inspections, :all_complaints]
   before_action :set_inspection, only: [:show, :edit, :update, :destroy]
   layout 'choices', only: [:new, :conduct]
 
   def all_inspections
     @inspections = Inspection.all
+  end
+
+  def all_complaints
+    @inspections = Inspection.where(source: "Complaint")
+  end
+
+  def my_unscheduled_inspections
+    @source = params[:source]
+    @inspections = Inspection.where(inspector: current_user, scheduled_datetime: nil).order(updated_at: :desc)
+
+    case @source
+    when "Complaint"
+      @inspections = @inspections.where(source: "Complaint")
+    when "Multifamily License"
+      @inspections = @inspections.where(source: "Multifamily License")
+    when "Business License"
+      @inspections = @inspections.where(source: "Business License")
+    when "Building/Dumpster/POD permit"
+      @inspections = @inspections.where(source: "Building/Dumpster/POD permit")
+    when "Donation Bin"
+      @inspections = @inspections.where(source: "Donation Bin")
+    when "Single Family License"
+      @inspections = @inspections.where(source: "Single Family License")
+    end
   end
 
   def my_inspections

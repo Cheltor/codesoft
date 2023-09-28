@@ -1,0 +1,44 @@
+<!-- list all inspections -->
+<%= link_to "All My Unscheduled Inspections", my_unscheduled_inspections_path, class:"btn btn-secondary" %>
+<%= link_to "Complaints", my_unscheduled_inspections_path(source: "Complaint"), class:"btn btn-primary" %>
+<%= link_to "Multifamily Licenses", my_unscheduled_inspections_path(source: "Multifamily License"), class:"btn btn-success" %>
+<%= link_to "Business Licenses", my_unscheduled_inspections_path(source: "Business License"), class:"btn btn-warning" %>
+<%= link_to "Building/Dumpster/POD permit", my_unscheduled_inspections_path(source: "Building/Dumpster/POD permit"), class:"btn btn-info" %>
+<%= link_to "Donation Bin", my_unscheduled_inspections_path(source: "Donation Bin"), class:"btn btn-danger" %>
+<%= link_to "Single Family License", my_unscheduled_inspections_path(source: "Single Family License"), class:"btn btn-dark" %>
+
+
+<div class="row">
+  <div class="col">
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">Inspections</h3>
+      </div>
+      <!-- /.card-header -->
+      <div class="card-body">
+        <table id="example2" class="table table-bordered table-hover">
+          <thead>
+            <tr>
+            <th scope="col">Created At</th>
+            <th scope="col">Source</th>
+            <th scope="col">Status</th>
+            <th scope="col">Scheduled Date</th>
+            <th scope="col">Attachments</th>
+            <th scope="col">Inspector</th>
+            <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody>
+          <% @inspections.order("created_at DESC").each do |inspection| %>
+            <%= render partial: "shared/inspection_table", locals: {inspection: inspection} %>
+          <% end %>
+          </tbody>
+        </table>
+      </div>
+      <!-- /.card-body -->
+    </div>
+    <!-- /.card -->
+  </div>
+  <!-- /.col -->
+</div>
+<!-- /.row -->

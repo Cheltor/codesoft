@@ -32,6 +32,8 @@ Rails.application.routes.draw do
 
   get 'all_inspections' => 'inspections#all_inspections'
   get 'my_inspections' => 'inspections#my_inspections'
+  get 'my_unscheduled_inspections' => 'inspections#my_unscheduled_inspections'
+  get 'all_complaints' => 'inspections#all_complaints'
   get 'all_violations' => 'addresses#violist'
   get 'my_violations' => 'addresses#my_violations'
   get 'helpful' => 'static#helpful'
