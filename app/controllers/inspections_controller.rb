@@ -1,14 +1,14 @@
 class InspectionsController < ApplicationController
-  before_action :set_address, except: [:all_inspections, :my_inspections, :my_unscheduled_inspections, :all_complaints]
+  before_action :set_address, except: [:all_inspections, :my_inspections, :my_unscheduled_inspections, :all_complaints, :assign_inspector, :update_inspector]
   before_action :set_inspection, only: [:show, :edit, :update, :destroy]
   layout 'choices', only: [:new, :conduct]
 
   def all_inspections
-    @inspections = Inspection.all
+    @inspections = Inspection.all.where.not(source: "Complaint").order(created_at: :desc)
   end
 
   def all_complaints
-    @inspections = Inspection.where(source: "Complaint")
+    @inspections = Inspection.where(source: "Complaint").order(created_at: :desc)
   end
 
   def my_unscheduled_inspections
@@ -33,7 +33,7 @@ class InspectionsController < ApplicationController
 
   def my_inspections
     @scheduled_datetime = params[:scheduled_datetime]
-    @inspections = Inspection.where(inspector: current_user).order(updated_at: :desc)
+    @inspections = Inspection.where(inspector: current_user).where.not(source: "Complaint").order(updated_at: :desc)
 
     case @scheduled_datetime
     when "scheduled"
@@ -132,7 +132,15 @@ class InspectionsController < ApplicationController
 
     if params[:inspection][:new_chapter].present?
       @code = Code.create(chapter: params[:inspection][:new_chapter], description: params[:inspection][:new_description], section: params[:inspection][:new_section], name: params[:inspection][:new_name])
+        # Validate the code doesn't already exist by checking chapter and section combination
+        if Code.where(chapter: params[:inspection][:new_chapter], section: params[:inspection][:new_section]).exists?
+        end
       @inspection.codes << @code
+    end
+
+    # Check if scheduled_datetime is nil and source is not "Complaint"
+    if @inspection.scheduled_datetime.nil? && @inspection.source != "Complaint"
+      @inspection.scheduled_datetime = Time.now
     end
 
     if @inspection.update(inspection_params)
@@ -147,6 +155,22 @@ class InspectionsController < ApplicationController
     @inspection.destroy
     redirect_to inspections_path
   end
+
+  def assign_inspector
+    
+  end
+  
+  def update_inspector
+    @inspection = Inspection.find(params[:id])
+    @inspector = User.find(params[:inspection][:inspector_id])
+  
+    if @inspection.update(inspector: @inspector)
+      redirect_to inspections_path, notice: 'Inspector assigned successfully.'
+    else
+      render :assign_inspector
+    end
+  end
+  
 
   private
 

@@ -119,7 +119,7 @@
 <% if @inspection.status.present? %>
   <div class="div">
     <label><strong>Outcome</strong></label>
-    <% if @inspection.status == "Passed" %>
+    <% if @inspection.status == "Satisfactory" %>
       <h2><span class="badge bg-success"><%= @inspection.status %></span></h2>
     <% else %>
       <h2><span class="badge bg-danger"><%= @inspection.status %></span></h2>
@@ -129,7 +129,7 @@
 <% else %>
   <div class="field mt-3">
     <label><strong>Outcome</strong></label>
-    <%= form.select :status, options_for_select(["Passed", "Failed", "Missed"], @inspection.status), {}, class: "form-select" %>
+    <%= form.select :status, options_for_select(["Satisfactory", "Unsatisfactory", "Missed"], @inspection.status), {}, class: "form-select" %>
   </div>
   <br>
 <% end %>
@@ -137,9 +137,9 @@
 
       <div class="form-group">
       <strong><%= form.label :codes %></strong>
-      <em><p>If you don't see the code you're looking for, add the code using this button:   <button type="button" class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#myDiv">
+      <!-- <em><p>If you don't see the code you're looking for, add the code using this button:   <button type="button" class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#myDiv">
     New Code
-  </button></p></em>
+  </button></p></em> -->
 
   <select id="code-select" multiple name="inspection[code_ids][]">
     <% Code.all.each do |code| %>

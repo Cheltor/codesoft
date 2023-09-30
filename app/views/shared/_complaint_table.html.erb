@@ -8,7 +8,7 @@
   <td><%= link_to inspection.address.combadd, address_path(inspection.address) %></td>
   <td><%= inspection.source %></td>
   <% if inspection.status.present? %>
-        <% if inspection.status == "Passed" %>
+        <% if inspection.status == "Satisfactory" %>
           <td><span class="badge bg-success"><%= inspection.status %></span></td>
         <% else %>
           <td><span class="badge bg-danger"><%= inspection.status %></span></td>
@@ -21,9 +21,9 @@
   <% else %>
     <td>Unassigned</td>
   <% end %> 
-  <% if inspection.status.present? && inspection.status == "Passed" %>
+  <% if inspection.status.present? && inspection.status == "Satisfactory" %>
     <td><%= link_to "Show", address_inspection_path(inspection.address, inspection), class: "btn" %></td>
-  <% elsif inspection.status.present? && inspection.status == "Failed" %>
+  <% elsif inspection.status.present? && inspection.status == "Unsatisfactory" %>
     <td><%= link_to "Show", address_inspection_path(inspection.address, inspection), class: "btn" %></td>
   <% else %>
     <td><%= link_to "Show", address_inspection_path(inspection.address, inspection), class: "btn btn-secondary" %></td>

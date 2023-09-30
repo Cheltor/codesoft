@@ -51,7 +51,7 @@
     <% if @inspection.scheduled_datetime.present? %>
       <br>
       <h3>Scheduled for:</h3>
-      <%= @inspection.scheduled_datetime.strftime("%B %d, %Y at %I:%M %p") %>
+      <%= @inspection.scheduled_datetime.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y at %I:%M %p") %>
     
     <% end %>
     <% if @attachments.any? %>
@@ -92,8 +92,8 @@
     <% end %>
     <br>
       <h3>Outcome</h3>
-      <!-- if the inspection is passed, show the passed badge -->
-        <% if @inspection.status == "Passed" %>
+      <!-- if the inspection is Satisfactory, show the Satisfactory badge -->
+        <% if @inspection.status == "Satisfactory" %>
           <h2><span class="badge bg-success"><%= @inspection.status %></span></h2>
         <% else %>
           <h2><span class="badge bg-danger"><%= @inspection.status %></span></h2>
@@ -174,7 +174,7 @@
 </div> 
 <div class="row">
 <div class="col">
-<% if @inspection.status == "Passed" && @inspection.source == "Business License" %>
+<% if @inspection.status == "Satisfactory" && @inspection.source == "Business License" %>
   <button>Print Business License</button>
 <% end %>
 </div>

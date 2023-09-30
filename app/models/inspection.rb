@@ -13,8 +13,7 @@ class Inspection < ApplicationRecord
   has_many :codes, through: :inspection_codes
   belongs_to :contact, optional: true
   has_many :areas, dependent: :destroy
-  validate :scheduled_datetime_cannot_be_in_the_past, on: :update
-  validate :no_inspection_within_one_hour, on: :update
+
 
   private
 
