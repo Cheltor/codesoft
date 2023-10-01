@@ -19,6 +19,7 @@ class StaticController < ApplicationController
     .order(scheduled_datetime: :desc)
     @past_inspections = Inspection.where(inspector: @user, status: nil).where('scheduled_datetime < ?', Date.today.beginning_of_day).order(scheduled_datetime: :desc)
     @complaints = Inspection.where(inspector: @user, status: nil, source: "Complaint").order(created_at: :desc)
+    @unscheduled_inspections = Inspection.where(inspector: @user, status: nil, scheduled_datetime: nil).where.not(source: "Complaint").order(created_at: :desc)
     @priority_addresses = []
   
     # Print information about addresses being added to priority_addresses

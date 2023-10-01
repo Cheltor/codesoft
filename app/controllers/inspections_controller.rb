@@ -13,7 +13,7 @@ class InspectionsController < ApplicationController
 
   def my_unscheduled_inspections
     @source = params[:source]
-    @inspections = Inspection.where(inspector: current_user, scheduled_datetime: nil).order(updated_at: :desc)
+    @inspections = Inspection.where(inspector: current_user, scheduled_datetime: nil, status: nil).order(updated_at: :desc)
 
     case @source
     when "Complaint"
