@@ -6,6 +6,8 @@ class Address < ApplicationRecord
     has_many :units, dependent: :destroy
     has_many :inspections, dependent: :destroy
     has_many :businesses, dependent: :destroy
+    has_many :address_contacts
+    has_many :contacts, through: :address_contacts
     before_create :generate_combadd
     before_save :upcase_streetname
     before_save :upcase_streettype

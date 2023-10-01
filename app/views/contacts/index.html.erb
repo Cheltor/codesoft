@@ -21,9 +21,9 @@
         <td><a href="tel:<%= contact.phone %>"><%= format_phone_number(contact.phone) %></a></td>
         <td><%= contact.notes %></td>
         <% if contact.notes != "" %>
-        <td><%= link_to 'Edit Notes', add_notes_contact_path(contact), class: 'btn btn-primary' %></td>
+        <td><%= link_to 'Edit Notes', add_notes_contact_path(contact), class: 'btn btn-secondary' %></td>
         <% else %>
-        <td><%= link_to 'Add Notes', add_notes_contact_path(contact), class: 'btn btn-primary' %></td>
+        <td><%= link_to 'Add Notes', add_notes_contact_path(contact), class: 'btn btn-secondary' %></td>
         <% end %>
         <td><%= link_to 'Edit', edit_contact_path(contact), class: 'btn btn-secondary' %></td>
         <td><%= link_to 'Delete', contact, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' %></td>

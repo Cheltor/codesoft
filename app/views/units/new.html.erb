@@ -2,14 +2,26 @@
 <!-- show the address -->
 <p>
   <strong>Address:</strong>
-  <%= link_to @address.combadd.titleize, address_path(@address), class: "btn btn-primary" %>
+  <%= link_to @address.combadd.titleize, address_path(@address), class: "btn" %>
 </p>
 
 <%= form_with(model: [@address, Unit.new]) do |form| %>
   <div class="field">
-    <%= form.label :number %>
+    <label>Unit Number</label>
     <%= form.text_field :number, class: "form-control" %>
   </div>
 
-  <%= form.submit "Add Unit", class: "btn btn-primary" %>
+  <%= form.submit "Add Unit", class: "btn btn-primary mt-3" %>
+<% end %>
+
+<!-- exisiting units -->
+<% if @address.units.present? %>
+  <h3>Existing Units</h3>
+  <ul>
+    <% @address.units.each do |unit| %>
+      <li>
+        <%= link_to unit.number.upcase, address_unit_path(@address, unit) %>
+      </li>
+    <% end %>
+  </ul>
 <% end %>

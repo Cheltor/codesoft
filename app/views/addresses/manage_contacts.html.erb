@@ -1,0 +1,54 @@
+<h1>Manage Contacts for <%= @address.combadd %></h1>
+
+<!-- Display existing contacts associated with the address -->
+<h2>Associated Contacts:</h2>
+<% if @address.contacts.empty? %>
+  <p>No contacts associated with this address.</p>
+<% else %>
+<ul>
+  <% @address.contacts.each do |contact| %>
+    <li><%= contact.name %> (<%= contact.email %>)</li>
+  <% end %>
+</ul>
+<% end %>
+
+<!-- Form for selecting or creating new contacts -->
+<%= form_with(model: @address, url: manage_contacts_address_path(@address), method: :post) do |form| %>
+  <h2>Select Existing Contact:</h2>
+  <select id="contact-select" multiple name="address[contact_ids][]">
+    <% Contact.all.each do |contact| %>
+      <% selected = @address.contact_ids.include?(contact.id) ? 'selected' : '' %>
+      <option value="<%= contact.id %>" <%= selected %>>
+        <%= contact.name %> - <%= contact.email %>
+      </option>
+    <% end %>
+  </select>
+
+
+  <h2>Create New Contact:</h2>
+  <div class="form-group">
+    <%= form.label :new_contact_name, 'Name' %>
+    <%= form.text_field :new_contact_name, class: 'form-control' %>
+  </div>
+  <div class="form-group">
+    <%= form.label :new_contact_email, 'Email' %>
+    <%= form.text_field :new_contact_email, class: 'form-control' %>
+  </div>
+  <div class="form-group">
+    <%= form.label :new_contact_phone, 'Phone' %>
+    <%= form.text_field :new_contact_phone, class: 'form-control' %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit 'Save Contacts', class: 'btn btn-primary mt-3' %>
+  </div>
+<% end %>
+
+<script>
+  const contactSelect = new Choices('#contact-select', {
+    removeItemButton: true,
+    searchEnabled: true,
+    placeholder: true,
+    placeholderValue: 'Select contacts',
+  });
+</script>

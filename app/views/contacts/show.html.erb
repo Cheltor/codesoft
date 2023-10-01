@@ -7,12 +7,12 @@
 
 <p>
   <strong>Email:</strong>
-  <%= @contact.email %>
+  <%= link_to @contact.email, "mailto:#{@contact.email}" %>
 </p>
 
 <p>
   <strong>Phone:</strong>
-  <%= @contact.phone %>
+  <a href="tel:<%= @contact.phone %>"><%= format_phone_number(@contact.phone) %></a>
 </p>
 
 <p>

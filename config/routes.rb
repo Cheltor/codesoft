@@ -28,6 +28,10 @@ Rails.application.routes.draw do
       resources :areas
     end
     resources :businesses
+    member do
+      get 'manage_contacts'
+      post 'manage_contacts'
+    end
   end
 
   get 'all_inspections' => 'inspections#all_inspections'

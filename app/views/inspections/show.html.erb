@@ -24,46 +24,52 @@
 
 <div class="row">
   <div class="col-sm-4">
-    <%# address information %>
-    <h2><%= @inspection.address.combadd.titleize %>
-    <% if @unit.present? %>
-      <small>Unit <%= @unit.number.upcase %></small>
-    <% end %>
-    </h2>
-    <%# link to google maps from icon %>
-    <a href="https://www.google.com/maps/search/?api=1&query=<%= @inspection.address.combadd %>+MD+<%= @inspection.address.premisezip %>" target="_blank" class="btn btn-secondary">
-    <i class="bi bi-geo-alt-fill"></i> Search on Google Maps</a>
-    <br>
-    <% if @inspection.photos.attached? %>
-        <button type="button" class="btn btn-primary mt-2 mb-2" data-bs-toggle="modal" data-bs-target="#allphotoModal">
-      <i class="bi bi-paperclip"></i>
-      Inspection photos
-    </button>
-    <% end %>
-    <br>
-    <% if @inspection.contact.present? %>
-    <%= generate_pre_inspection_email_link %>
-    <% end %>
-    <br>
-            <%= link_to "Schedule inspection", schedule_address_inspection_path(@address, @inspection), class: "btn btn-primary mt-3" %>
-
-    <br>
-    <% if @inspection.scheduled_datetime.present? %>
-      <br>
-      <h3>Scheduled for:</h3>
-      <%= @inspection.scheduled_datetime.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y at %I:%M %p") %>
-    
-    <% end %>
-    <% if @attachments.any? %>
-    <button type="button" class="btn btn-primary mt-2 mb-2" data-bs-toggle="modal" data-bs-target="#allAttachModal">
-      <i class="bi bi-paperclip"></i>
-      Application/photos
-    </button>
-    <% end %>
-
-        <% if @inspection.description.present? %>
-        <p><strong>Inspection Description:</strong> <%= @inspection.description %></p>
+    <div class="card">
+      <div class="card-body">
+        <%# address information %>
+        <h2><%= @inspection.address.combadd %>
+        <% if @unit.present? %>
+          <small>Unit <%= @unit.number.upcase %></small>
         <% end %>
+        </h2>
+        <%# link to google maps from icon %>
+        <a href="https://www.google.com/maps/search/?api=1&query=<%= @inspection.address.combadd %>+MD+<%= @inspection.address.premisezip %>" target="_blank" class="btn btn-secondary">
+        <i class="bi bi-geo-alt-fill"></i></a>
+        <br>
+        <% if @inspection.photos.attached? %>
+            <button type="button" class="btn btn-primary mt-2 mb-2" data-bs-toggle="modal" data-bs-target="#allphotoModal">
+          <i class="bi bi-paperclip"></i>
+          Inspection photos
+        </button>
+        <% end %>
+        <br>
+        <% if @inspection.contact.present? %>
+        <%= generate_pre_inspection_email_link %>
+        <% end %>
+        <br>
+                <%= link_to "Schedule inspection", schedule_address_inspection_path(@address, @inspection), class: "btn btn-primary mt-3" %>
+
+        <br>
+        <% if @inspection.scheduled_datetime.present? %>
+          <br>
+          <h3>Scheduled for:</h3>
+          <%= @inspection.scheduled_datetime.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y at %I:%M %p") %>
+        
+        <% end %>
+        <% if @attachments.any? %>
+        <button type="button" class="btn btn-primary mt-2 mb-2" data-bs-toggle="modal" data-bs-target="#allAttachModal">
+          <i class="bi bi-paperclip"></i>
+          Application/photos
+        </button>
+        <% end %>
+
+          <% if @inspection.description.present? %>
+          <br>
+          <p><strong>Inspection Description:</strong> <%= @inspection.description %></p>
+          <% end %>
+
+      </div>
+    </div>
   </div>
   <div class="col-sm-8">
     <div class="card shadow mb-3">

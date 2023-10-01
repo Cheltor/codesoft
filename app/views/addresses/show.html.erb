@@ -16,13 +16,7 @@
     <div class="card">
       <div class="card-body">
         <h2><%= @address.combadd %>            <a href="https://www.google.com/maps/search/?api=1&query=<%= @address.combadd %>+MD+<%= @address.premisezip %>" target="_blank" class="btn btn-secondary">
-        <i class="bi bi-geo-alt-fill"></i>Google Maps</a></h2>
-        <% if @address_photos.any? %>
-        <button type="button" class="btn btn-primary mt-2 mb-2" data-bs-toggle="modal" data-bs-target="#allphotoModal">
-          <i class="bi bi-paperclip"></i>
-          All Photos and Attachments
-        </button>
-        <% end %>
+        <i class="bi bi-geo-alt-fill"></i></a></h2>
         <br>
             <h4>Owner:</h4>
     <p><%= @address.ownername.titleize %></p>
@@ -33,6 +27,28 @@
     <button type="button" class="btn btn-secondary mt-2 mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
       Update Owner/Address
     </button>
+
+    <!-- add associated contacts -->
+    <%= link_to 'Manage Contacts', manage_contacts_address_path(@address), class: "btn btn-secondary mt-2 mb-3" %>
+
+        <% if @address.contacts.present? %>
+        <div class="accordion mt-2 mb-2" id="accordionExample">
+          <div class="accordion-item">
+            <h2 class="accordion-header" id="headingOne">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseContact" aria-expanded="false" aria-controls="collapseOne">
+                <i class="bi bi-chevron-down"></i>  Show <%= pluralize(@address.contacts.count, "Contact") %>
+              </button>
+            </h2>
+            <div id="collapseContact" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+              <div class="accordion-body">
+                <% @address.contacts.each do |contact| %>
+                  <p><%= link_to contact.name, contact_path(contact) %> - <a href="tel:<%= contact.phone %>"><%= format_phone_number(contact.phone) %></a> - <%= link_to contact.email, "mailto:#{contact.email}" %></p>
+                <% end %>
+              </div>
+            </div>
+          </div>
+        </div>
+        <% end %>
 
     <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -65,11 +81,20 @@
   <div class="col-sm-4">
     <div class="card">
       <div class="card-body">
-            <%= link_to "Create a Violation Notice/Doorhanger", new_address_violation_path(@address), class: "btn btn-danger btn-lg mt-2" %>
+          <% if @address_photos.any? %>
+          <button type="button" class="btn btn-outline-secondary btn-lg" data-bs-toggle="modal" data-bs-target="#allphotoModal">
+            <i class="bi bi-paperclip"></i>
+            All Photos and Attachments
+          </button>
+          <% end %>
+
+            <%= link_to "Create a Violation Notice/Doorhanger", new_address_violation_path(@address), class: "btn btn-outline-danger btn-lg mt-2" %>
             <br>
-            <%= link_to "Create New Inspection Request", new_address_inspection_path(@address), class: "btn btn-primary btn-lg mt-2" %>
+            <%= link_to "Create New Inspection Request", new_address_inspection_path(@address), class: "btn btn-outline-info btn-lg mt-2" %>
             <br>
-            <%= link_to "Add Units", new_address_unit_path(@address), class: "btn btn-primary btn-lg mt-2" %>
+            <%= link_to "Add Units", new_address_unit_path(@address), class: "btn btn-outline-secondary btn-lg mt-2" %>
+            <br>
+            <!-- add contacts -->
 
         <!-- bootstrap collapse listing a link to all units -->
 
