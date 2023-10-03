@@ -16,3 +16,16 @@ import "./modules/flatpickr";
 
 // Maps
 import "./modules/vector-maps";
+
+
+// Initialize ChoicesJS
+
+document.addEventListener('turbo:load', initializeChoices);
+document.addEventListener('DOMContentLoaded', initializeChoices);
+
+function initializeChoices() {
+  var selectElements = document.querySelectorAll('.choices-select');
+  selectElements.forEach(function (select) {
+    new Choices(select);
+  });
+}

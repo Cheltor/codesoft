@@ -141,7 +141,7 @@
     New Code
   </button></p></em> -->
 
-  <select id="code-select" multiple name="inspection[code_ids][]">
+  <select id="code-select" multiple name="inspection[code_ids][]" class="choices-select">
     <% Code.all.each do |code| %>
       <% selected = @inspection.code_ids.include?(code.id) ? 'selected' : '' %>
       <option value="<%= code.id %>" <%= selected %>>
@@ -181,10 +181,16 @@
 <% end %>
 
 <script>
-  const codeSelect = new Choices('#code-select', {
-    removeItemButton: true,
-    searchEnabled: true,
-    placeholder: true,
-    placeholderValue: 'Select codes',
-  });
+  // Function to initialize Choices.js
+  function initializeChoices() {
+    const codeSelect = new Choices('#code-select', {
+      removeItemButton: true,
+      searchEnabled: true,
+      placeholder: true,
+      placeholderValue: 'Select codes',
+    });
+  }
+
+  // Initialize Choices.js on page load
+  document.addEventListener("turbo:load", initializeChoices);
 </script>
