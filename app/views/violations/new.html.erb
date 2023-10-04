@@ -80,10 +80,16 @@
 </div>
 
 <script>
-  const codeSelect = new Choices('#code-select', {
-    removeItemButton: true,
-    searchEnabled: true,
-    placeholder: true,
-    placeholderValue: 'Select codes',
-  });
+  // Function to initialize Choices.js
+  function initializeChoices() {
+    const codeSelect = new Choices('#code-select', {
+      removeItemButton: true,
+      searchEnabled: true,
+      placeholder: true,
+      placeholderValue: 'Select codes',
+    });
+  }
+
+  // Initialize Choices.js on page load
+  document.addEventListener("turbo:load", initializeChoices);
 </script>

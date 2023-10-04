@@ -92,11 +92,18 @@
   </div>
 <% end %>
 
+
 <script>
-  const contactSelect = new Choices('#inspection_contact_id', {
-    removeItemButton: true,
-    searchEnabled: true,
-    placeholder: true,
-    placeholderValue: 'Select a contact',
-  });
+  // Function to initialize Choices.js
+  function initializeChoices() {
+    const contactSelect = new Choices('#inspection_contact_id', {
+      removeItemButton: true,
+      searchEnabled: true,
+      placeholder: true,
+      placeholderValue: 'Select a contact',
+    });
+  }
+
+  // Initialize Choices.js on page load
+  document.addEventListener("turbo:load", initializeChoices);
 </script>
