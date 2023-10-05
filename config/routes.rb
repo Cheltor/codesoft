@@ -56,5 +56,11 @@ Rails.application.routes.draw do
   get 'admin_user' => 'static#admin_user'
   put "/update_user/:id", to: "static#update_user", as: "update_user"
 
+  namespace :api do
+    namespace :v1 do
+      resources :addresses
+    end
+  end
+  
 
 end
