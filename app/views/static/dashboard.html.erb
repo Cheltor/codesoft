@@ -67,13 +67,22 @@
   </div>
   <% if !params[:q].present? %>
   <div class="row">
-    <div class="col-xl-2">
+    <div class="col-xl-3">
       <div class="card">
         <div class="card-body">
-          <button type="button" class="btn btn-secondary d-block d-xl-none float-end" data-bs-toggle="collapse" data-bs-target="#inspectionDiv">Hide Inspections</button>
+          <button type="button" class="btn btn-outline-secondary d-block d-xl-none float-end" data-bs-toggle="collapse" data-bs-target="#inspectionDiv">Hide Inspections</button>
           <br class="d-block d-xl-none">
           <div id="inspectionDiv" class="collapse show">
             <!-- a list of inspections scheduled today and unscheduled inspections -->
+            <div>
+              <!-- a count of unscheduled inspections -->
+              <% if @unscheduled_inspections.empty? %>
+                <p>No unscheduled inspections.</p>
+              <% else %>
+                <h3>Unscheduled Inspections</h3>
+                <p><%= link_to pluralize(@unscheduled_inspections.count, 'Unscheduled Inspection'), my_inspections_path(scheduled_datetime: "unscheduled"), class: "btn btn-secondary" %></p>
+              <% end %>
+            </div>
             <% if @past_inspections.present? %>
               <h3>Inspections requiring action</h3>
               <% @past_inspections.each do |inspection| %>
@@ -116,10 +125,10 @@
         </div>
       </div>
     </div>
-    <div class="col-xl-2">
+    <div class="col-xl-3">
       <div class="card">
         <div class="card-body">
-          <button type="button" class="btn btn-secondary d-block d-xl-none float-end" data-bs-toggle="collapse" data-bs-target="#complaintDiv">Hide Complaints</button>
+          <button type="button" class="btn btn-outline-secondary d-block d-xl-none float-end" data-bs-toggle="collapse" data-bs-target="#complaintDiv">Hide Complaints</button>
           <br class="d-block d-xl-none">
           <div id="complaintDiv" class="collapse show">
             <!-- a list of complaints -->
@@ -139,32 +148,6 @@
           </div>        
         </div>
       </div>
-
-    </div>
-    <div class="col-xl-2">
-      <div class="card">
-        <div class="card-body">
-          <button type="button" class="btn btn-secondary d-block d-xl-none float-end" data-bs-toggle="collapse" data-bs-target="#unscheduledDiv">Hide Unscheduled</button>
-          <br class="d-block d-xl-none">
-          <div id="unscheduledDiv" class="collapse show">
-            <!-- a list of complaints -->
-              <h3>Unscheduled Inspections</h3>
-            <% if @unscheduled_inspections.empty? %>
-              <p>No unscheduled inspections.</p>
-            <% else %>
-              <% @unscheduled_inspections.each do |inspection| %>
-                <div class="card mt-3">
-                  <div class="card-body">
-                    <h5 class="card-title"><%= link_to inspection.address.combadd, address_inspection_path(inspection.address, inspection) %></h5>
-                    <p class="card-text"><strong>Created:</strong> <%= inspection.created_at.strftime("%m/%d/%Y") %></p>
-                  </div>
-                </div>
-              <% end %>
-            <% end %>
-          </div>        
-        </div>
-      </div>
-
     </div>
     <div class="col-xl-6">
       <div class="row">      <!-- list of @priority_addresses -->

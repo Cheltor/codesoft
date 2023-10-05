@@ -1,11 +1,18 @@
 <!-- A list of the users inspections -->
 <%= link_to "All My Inspections", my_inspections_path, class:"btn btn-secondary" %>
-<%= link_to "scheduled", my_inspections_path(scheduled_datetime: "scheduled"), class:"btn btn-primary" %>
-<%= link_to "unscheduled", my_inspections_path(scheduled_datetime: "unscheduled"), class:"btn btn-success" %>
+<%= link_to "Scheduled", my_inspections_path(scheduled_datetime: "scheduled"), class:"btn btn-primary" %>
+<%= link_to "Unscheduled", my_inspections_path(scheduled_datetime: "unscheduled"), class:"btn btn-success" %>
 <div class="row">
   <div class="col">
     <div class="table-responsive mt-5" style="text-align: center">
-      <h1>My Inspections</h1>
+      <h1>My 
+      <% if params[:scheduled_datetime] == "scheduled" %>
+        Scheduled
+      <% elsif params[:scheduled_datetime] == "unscheduled" %>
+        Unscheduled
+      <% else %>
+      <% end %>
+      Inspections</h1>
       <table class="table table-striped">
         <thead>
           <tr>
