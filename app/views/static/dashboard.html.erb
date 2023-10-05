@@ -135,7 +135,7 @@
             <% if @complaints.empty? %>
               <p>No complaints.</p>
             <% else %>
-              <h3>Complaints</h3>
+                <h3>Complaints (<%= @complaints.count %>)</h3>
               <% @complaints.each do |inspection| %>
                 <div class="card mt-3">
                   <div class="card-body">

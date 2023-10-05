@@ -1,5 +1,5 @@
 class InspectionsController < ApplicationController
-  before_action :set_address, except: [:all_inspections, :my_inspections, :my_unscheduled_inspections, :all_complaints, :assign_inspector, :update_inspector]
+  before_action :set_address, except: [:all_inspections, :my_inspections, :my_unscheduled_inspections, :all_complaints, :my_complaints, :assign_inspector, :update_inspector]
   before_action :set_inspection, only: [:show, :edit, :update, :destroy]
   layout 'choices', only: [:new, :conduct]
 
@@ -9,6 +9,10 @@ class InspectionsController < ApplicationController
 
   def all_complaints
     @inspections = Inspection.where(source: "Complaint").order(created_at: :desc)
+  end
+
+  def my_complaints
+    @inspections = Inspection.where(inspector: current_user, source: "Complaint").order(created_at: :desc)
   end
 
   def my_unscheduled_inspections

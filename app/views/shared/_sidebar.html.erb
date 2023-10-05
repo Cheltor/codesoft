@@ -124,6 +124,13 @@
             <% end %>
           </li>
 
+          <li class="sidebar-item">
+            <%= link_to(my_complaints_path, class: "sidebar-link") do %>
+              <i class="align-middle" data-feather="clipboard"></i>
+              <span class="align-middle">My Complaints</span>
+            <% end %>
+          </li>
+
           <% end %>
 
           <% if current_user.admin? || current_user.ons? || current_user.oas? %>
