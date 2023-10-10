@@ -7,6 +7,9 @@ Rails.application.routes.draw do
   end
   devise_for :users
   resources :addresses do
+    member do
+      patch :mark_outstanding
+    end
     resources :violations, shallow: true do
       resources :citations, shallow: true
       patch :resolve, on: :member

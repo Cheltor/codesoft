@@ -40,8 +40,13 @@ class StaticController < ApplicationController
       puts "Adding inspection address #{address.id} to priority_addresses"
       @priority_addresses << address
     end
+
   
-    @priority_addresses = @priority_addresses.uniq.sort_by(&:streetnumb)
+    @priority_addresses = @priority_addresses.uniq.select { |address| !address.attribute_changed_today?(:outstanding) }.sort_by(&:streetnumb)
+
+    respond_to do |format|
+      format.html  # Render the HTML view (dashboard.html.erb)
+    end
   end
   
 

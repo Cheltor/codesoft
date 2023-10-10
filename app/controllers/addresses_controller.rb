@@ -35,6 +35,16 @@ class AddressesController < ApplicationController
       @violations = @violations.order(created_at: :desc)
   end
 
+  def mark_outstanding
+    @address = Address.find(params[:id])
+
+    if @address.update(outstanding: !@address.outstanding)
+      respond_to do |format|
+        format.turbo_stream
+      end
+    end
+  end
+
   def my_violations
       @status = params[:status]
       @violations = Violation.where(user: current_user)

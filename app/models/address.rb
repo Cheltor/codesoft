@@ -25,6 +25,17 @@ class Address < ApplicationRecord
         ["comments", "users", "violations"]
     end
 
+    before_save :attribute_changed_today?
+
+    def attribute_changed_today?(attribute)
+        return false unless attribute_changed?(attribute)
+
+        attribute_changed_at = send("#{attribute}_changed_at") # Assuming you have timestamps for attribute changes
+        today = Date.today.beginning_of_day
+
+        attribute_changed_at >= today
+    end
+
     private
 
     def generate_combadd
