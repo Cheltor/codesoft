@@ -67,7 +67,7 @@
   </div>
   <% if !params[:q].present? %>
   <div class="row">
-    <div class="col-xl-3">
+    <div class="col-xl-4">
       <div class="card">
         <div class="card-body">
           <button type="button" class="btn btn-outline-secondary d-block d-xl-none float-end" data-bs-toggle="collapse" data-bs-target="#inspectionDiv">Hide Inspections</button>
@@ -83,8 +83,38 @@
                 <p><%= link_to pluralize(@unscheduled_inspections.count, 'Unscheduled Inspection'), my_inspections_path(scheduled_datetime: "unscheduled"), class: "btn btn-secondary" %></p>
               <% end %>
             </div>
+            <h3>Future Inspections</h3>
+            <% if @future_inspections.empty? %>
+              <p>No inspections upcoming.</p>
+            <% else %>
+            <h3>Future Inspections</h3>
+              <% @future_inspections.each do |inspection| %>
+              <div class="card mt-3">
+                <div class="card-body">
+                  <h5 class="card-title"><%= link_to inspection.address.combadd, address_inspection_path(inspection.address, inspection) %></h5>
+                    <p class="card-text"><strong>Scheduled:</strong> <%= inspection.scheduled_datetime.strftime("%m/%d/%Y %I:%M %p") %></p>
+                </div>
+              </div>
+              <% end %>
+            <% end %>
+          </div>        
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-5">
+      <div class="card">
+        <div class="card-body">
+          <button type="button" class="btn btn-outline-secondary d-block d-xl-none float-end" data-bs-toggle="collapse" data-bs-target="#inspectionDiv2">Hide Inspections</button>
+          <br class="d-block d-xl-none">
+          <div id="inspectionDiv2" class="collapse show">
             <% if @past_inspections.present? %>
-              <h3>Inspections requiring action</h3>
+              <h3>
+              <% if @past_inspections.present? %>
+                <p><%= pluralize(@past_inspections.count, 'Inspection') %> require action.</p>
+              <% else %>
+                <p>No past inspections require action.</p>
+              <% end %>
+              </h3>
               <% @past_inspections.each do |inspection| %>
                 <div class="card mt-3" style="background-color: #ffcdd2;">
                   <div class="card-body">
@@ -103,20 +133,6 @@
                 <div class="card-body">
                   <h5 class="card-title"><%= link_to inspection.address.combadd, address_inspection_path(inspection.address, inspection) %></h5>
                   <p class="card-text"><strong>Scheduled:</strong> <%= inspection.scheduled_datetime.strftime("%I:%M %p") %></p>
-                </div>
-              </div>
-              <% end %>
-            <% end %>
-            <h3>Future Inspections</h3>
-            <% if @future_inspections.empty? %>
-              <p>No inspections upcoming.</p>
-            <% else %>
-            <h3>Future Inspections</h3>
-              <% @future_inspections.each do |inspection| %>
-              <div class="card mt-3">
-                <div class="card-body">
-                  <h5 class="card-title"><%= link_to inspection.address.combadd, address_inspection_path(inspection.address, inspection) %></h5>
-                    <p class="card-text"><strong>Scheduled:</strong> <%= inspection.scheduled_datetime.strftime("%m/%d/%Y %I:%M %p") %></p>
                 </div>
               </div>
               <% end %>
@@ -149,7 +165,9 @@
         </div>
       </div>
     </div>
-    <div class="col-xl-6">
+  </div>
+  <div class="row">
+    <div class="col-xl-12">
       <div class="row">      <!-- list of @priority_addresses -->
         <div class="card">
           <div class="card-body">
