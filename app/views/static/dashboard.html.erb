@@ -83,7 +83,6 @@
                 <p><%= link_to pluralize(@unscheduled_inspections.count, 'Unscheduled Inspection'), my_inspections_path(scheduled_datetime: "unscheduled"), class: "btn btn-secondary" %></p>
               <% end %>
             </div>
-            <h3>Future Inspections</h3>
             <% if @future_inspections.empty? %>
               <p>No inspections upcoming.</p>
             <% else %>

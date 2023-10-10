@@ -1,14 +1,15 @@
 module ApplicationHelper
   def format_phone_number(phone)
-    phone_number_pattern = /^\(\d{3}\) \d{3}-\d{4}$/
-    
-    if phone.match?(phone_number_pattern)
-      # Phone number is already properly formatted, return as-is
-      phone
-    else
-      # Reformat the phone number to (XXX) XXX-XXXX format
-      formatted_phone = "(#{phone[0..2]}) #{phone[3..5]}-#{phone[6..9]}"
+    # Remove all non-numeric characters from the phone number
+    numeric_phone = phone.gsub(/\D/, '')
+
+    if numeric_phone.length == 10
+      # Format as (XXX) XXX-XXXX for a 10-digit number
+      formatted_phone = "(#{numeric_phone[0..2]}) #{numeric_phone[3..5]}-#{numeric_phone[6..9]}"
       formatted_phone
+    else
+      # Handle other cases or return the original input if it doesn't match expectations
+      phone
     end
   end
 end

@@ -18,10 +18,11 @@
 
 <h2>Create New Inspection Request</h2>
 <h4><%= @address.combadd.titleize %></h4>
+<p>* fields are mandatory</p>
 
 <%= form_with(model: [@address, @inspection]) do |form| %>
   <div class="field mt-3">
-    <%= form.label :source %>
+    <%= form.label :source %>*
     <%= form.select :source, ["Complaint", "Building/Dumpster/POD permit", "Business license", "Single Family License", "Multifamily License", "Donation Bin"], {}, class: "form-select" %>
   </div>
 
@@ -46,8 +47,14 @@
     <br>
     <% end %>
   </div>
+  
+  <div class="field mt-3">
+    <%= form.label :scheduled_datetime %>
+    <%= form.datetime_field :scheduled_datetime, class: "form-control" %>
+  </div>
+  
 
-  <div class="form-group">
+  <div class="form-group mt-3">
     <%= form.label :contact_id %>
     <%= form.collection_select(:contact_id, Contact.all, :id, :full_name_and_email, { prompt: 'Select or create a contact' }, class: 'form-control selectpicker', data: { style: 'btn-primary' }) %>
   </div>

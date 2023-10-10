@@ -46,6 +46,8 @@ Rails.application.routes.draw do
   get 'my_violations' => 'addresses#my_violations'
   get 'helpful' => 'static#helpful'
 
+  resources :users, only: [:index, :show, :edit, :update]
+
   authenticated :user, ->(u) { u.admin? } do
     root 'static#admin', as: :admin_root
   end

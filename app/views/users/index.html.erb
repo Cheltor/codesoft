@@ -1,0 +1,29 @@
+<!-- list of users -->
+
+<div class="container">
+  <div class="row">
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @users.each do |user| %>
+            <tr>
+              <td><%= user.name %></td>
+              <td><%= user.email %></td>
+              <td><%= user.role %></td>
+              <td>
+                <%= link_to 'Edit Role', edit_user_path(user), class: 'btn btn-primary' %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+    </div>
+  </div>
+</div>

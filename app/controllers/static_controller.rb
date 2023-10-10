@@ -91,6 +91,20 @@ class StaticController < ApplicationController
 
     @users = User.all
   end
+  
+  def admin_edit_user
+    @user = User.find(params[:id])
+
+    if request.patch? # Check if it's a PATCH request (e.g., form submission)
+      if @user.update(user_params)
+        # Handle successful update, e.g., redirect to user list or show page
+        redirect_to admin_user_path, notice: 'User role updated successfully.'
+      else
+        # Handle validation errors, if any
+        render :admin_edit_user
+      end
+    end
+  end
 
   def update_user
     unless current_user.admin?

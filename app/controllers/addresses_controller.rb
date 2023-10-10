@@ -81,38 +81,49 @@ class AddressesController < ApplicationController
       end
   end
 
-# app/controllers/addresses_controller.rb
-def manage_contacts
-  @address = Address.find(params[:id])
-  @existing_contacts = Contact.all # This fetches all existing contacts for the dropdown
-
-  if request.post?
-    if params[:address][:contact_id].present?
-      # If a contact is selected from the dropdown, associate it with the address
-      selected_contact = Contact.find(params[:address][:contact_id])
-      @address.contacts << selected_contact unless @address.contacts.include?(selected_contact)
-    elsif !params[:address][:new_contact_name].blank?
-      # If a new contact is being created, check if it already exists
-      existing_contact = Contact.find_by(
-        name: params[:address][:new_contact_name],
-        email: params[:address][:new_contact_email]
-      )
-
-      if existing_contact
-        @address.contacts << existing_contact unless @address.contacts.include?(existing_contact)
-      else
-        # Create a new contact and associate it with the address
-        @contact = Contact.create(
+  # app/controllers/addresses_controller.rb
+  def manage_contacts
+    @address = Address.find(params[:id])
+    @existing_contacts = Contact.all # This fetches all existing contacts for the dropdown
+  
+    if request.post?
+      Rails.logger.debug("Received a POST request to manage_contacts")
+      
+      if params[:address][:contact_id].present?
+        # If a contact is selected from the dropdown, associate it with the address
+        selected_contact = Contact.find(params[:address][:contact_id])
+        unless @address.contacts.include?(selected_contact)
+          @address.contacts << selected_contact
+          Rails.logger.debug("Added selected_contact to the address")
+        end
+      elsif !params[:address][:new_contact_name].blank?
+        # If a new contact is being created, check if it already exists
+        existing_contact = Contact.find_by(
           name: params[:address][:new_contact_name],
-          email: params[:address][:new_contact_email],
-          phone: params[:address][:new_contact_phone]
+          email: params[:address][:new_contact_email]
         )
-        @address.contacts << @contact
+  
+        if existing_contact
+          @address.contacts << existing_contact
+          Rails.logger.debug("Added existing_contact to the address")
+        else
+          # Create a new contact and associate it with the address
+          @contact = Contact.create(
+            name: params[:address][:new_contact_name],
+            email: params[:address][:new_contact_email],
+            phone: params[:address][:new_contact_phone]
+          )
+          @address.contacts << @contact
+          Rails.logger.debug("Created and added a new contact to the address")
+        end
+      else
+        Rails.logger.debug("No contact information provided in the form")
       end
+  
+      redirect_to address_path(@address), notice: 'Contacts were successfully managed.'
     end
-    redirect_to address_path(@address), notice: 'Contacts were successfully managed.'
   end
-end
+  
 
 
 

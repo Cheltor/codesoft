@@ -15,6 +15,7 @@ class Address < ApplicationRecord
     before_save :upcase_owneraddress
     before_save :upcase_ownercity
     before_save :upcase_ownerstate
+    
     def toggle_outstanding_violation
         self.update_attribute(:outstanding_violation, !self.outstanding_violation)
     end      
