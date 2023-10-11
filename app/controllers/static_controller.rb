@@ -4,6 +4,9 @@ class StaticController < ApplicationController
   def dashboard
     @user = current_user
     @comments = @user.comments.order(created_at: :desc)
+    @comments_last_week = @user.comments.where(created_at: 1.week.ago..Time.now).order(created_at: :desc)
+    @comments_two_weeks_ago = @user.comments.where(created_at: 2.weeks.ago..1.week.ago).order(created_at: :desc)
+    @active_violations = @user.violations.where(violations: { status: :current })
     @violations = @user.violations.where(violations: { status: :current })
                                  .select {|violation| violation.deadline_date <= Date.tomorrow }
                                  .reject {|violation| violation.citations.where(citations: { status: [:unpaid, "pending trial"] }).any? {|citation| citation.deadline >= Date.tomorrow }}
@@ -40,13 +43,8 @@ class StaticController < ApplicationController
       puts "Adding inspection address #{address.id} to priority_addresses"
       @priority_addresses << address
     end
-
   
-    @priority_addresses = @priority_addresses.uniq.select { |address| !address.attribute_changed_today?(:outstanding) }.sort_by(&:streetnumb)
-
-    respond_to do |format|
-      format.html  # Render the HTML view (dashboard.html.erb)
-    end
+    @priority_addresses = @priority_addresses.uniq.select { |address| !address.attribute_changed_today?(:outstanding) }.sort_by(&:streetnumb)  
   end
   
 
@@ -66,21 +64,92 @@ class StaticController < ApplicationController
 
     if params[:onsstaff].present?
       @user = User.find_by(email: params[:onsstaff])
+      @comments = @user.comments.order(created_at: :desc)
+      @comments_last_week = @user.comments.where(created_at: 1.week.ago..Time.now).order(created_at: :desc)
+      @comments_two_weeks_ago = @user.comments.where(created_at: 2.weeks.ago..1.week.ago).order(created_at: :desc)
+      @active_violations = @user.violations.where(violations: { status: :current })
       @violations = @user.violations.where(violations: { status: :current })
-                          .select {|violation| violation.deadline_date <= Date.tomorrow }
-                          .reject {|violation| violation.citations.where(citations: { status: [:unpaid, "pending trial"] }).any? {|citation| citation.deadline >= Date.tomorrow }}
-                          .sort_by(&:deadline_date)
+                                   .select {|violation| violation.deadline_date <= Date.tomorrow }
+                                   .reject {|violation| violation.citations.where(citations: { status: [:unpaid, "pending trial"] }).any? {|citation| citation.deadline >= Date.tomorrow }}
+                                   .sort_by(&:deadline_date)
+    
       @citations = @user.citations.where(citations: { status: [:unpaid, "pending trial"] }).sort_by(&:deadline)
-      @comments = @user.comments.order(created_at: :desc).limit(50)
-      @inspections = Inspection.where(inspector: @user).order(created_at: :desc).limit(50)
+      @addresses = @q.result.where.not(streetnumb: nil)
+      @inspections = Inspection.where(inspector: @user, status: nil).order(created_at: :desc)
+      @today_inspections = Inspection.where(inspector: @user, status: nil, scheduled_datetime: Date.today.beginning_of_day..Date.today.end_of_day).order(scheduled_datetime: :desc)
+      @future_inspections = Inspection
+      .where(inspector: @user, status: nil)
+      .where('scheduled_datetime > ?', Date.today.end_of_day)
+      .order(scheduled_datetime: :desc)
+      @past_inspections = Inspection.where(inspector: @user, status: nil).where('scheduled_datetime < ?', Date.today.beginning_of_day).order(scheduled_datetime: :desc)
+      @complaints = Inspection.where(inspector: @user, status: nil, source: "Complaint").order(created_at: :desc)
+      @unscheduled_inspections = Inspection.where(inspector: @user, status: nil, scheduled_datetime: nil).where.not(source: "Complaint").order(created_at: :desc)
+      @priority_addresses = []
+    
+      # Print information about addresses being added to priority_addresses
+      @violations.each do |violation|
+        address = violation.address
+        puts "Adding violation address #{address.id} to priority_addresses"
+        @priority_addresses << address
+      end
+    
+      @citations.each do |citation|
+        address = citation.violation.address
+        puts "Adding citation address #{address.id} to priority_addresses"
+        @priority_addresses << address
+      end
+    
+      @inspections.each do |inspection|
+        address = inspection.address
+        puts "Adding inspection address #{address.id} to priority_addresses"
+        @priority_addresses << address
+      end
+    
+      @priority_addresses = @priority_addresses.uniq.select { |address| !address.attribute_changed_today?(:outstanding) }.sort_by(&:streetnumb)  
     else
+      @comments = Comment.order(created_at: :desc)
+      @comments_last_week = Comment.where(created_at: 1.week.ago..Time.now).order(created_at: :desc)
+      @comments_two_weeks_ago = Comment.where(created_at: 2.weeks.ago..1.week.ago).order(created_at: :desc)
+      @active_violations = Violation.where(violations: { status: :current })
       @violations = Violation.where(violations: { status: :current })
-                              .select {|violation| violation.deadline_date <= Date.tomorrow }
-                              .reject {|violation| violation.citations.where(citations: { status: [:unpaid, "pending trial"] }).any? {|citation| citation.deadline >= Date.tomorrow }}
-                              .sort_by(&:deadline_date)
+                                   .select {|violation| violation.deadline_date <= Date.tomorrow }
+                                   .reject {|violation| violation.citations.where(citations: { status: [:unpaid, "pending trial"] }).any? {|citation| citation.deadline >= Date.tomorrow }}
+                                   .sort_by(&:deadline_date)
+    
       @citations = Citation.where(citations: { status: [:unpaid, "pending trial"] }).sort_by(&:deadline)
-      @comments = Comment.order(created_at: :desc).limit(50)
-      @inspections = Inspection.order(scheduled_datetime: :asc).limit(50)
+      @addresses = @q.result.where.not(streetnumb: nil)
+      @inspections = Inspection.where(status: nil).order(created_at: :desc)
+      @today_inspections = Inspection.where(status: nil, scheduled_datetime: Date.today.beginning_of_day..Date.today.end_of_day).order(scheduled_datetime: :desc)
+      @future_inspections = Inspection
+      .where(status: nil)
+      .where('scheduled_datetime > ?', Date.today.end_of_day)
+      .order(scheduled_datetime: :desc)
+      @past_inspections = Inspection.where(status: nil).where('scheduled_datetime < ?', Date.today.beginning_of_day).order(scheduled_datetime: :desc)
+      @complaints = Inspection.where(status: nil, source: "Complaint").order(created_at: :desc)
+      @unscheduled_inspections = Inspection.where(status: nil, scheduled_datetime: nil).where.not(source: "Complaint").order(created_at: :desc)
+      @priority_addresses = []
+    
+      # Print information about addresses being added to priority_addresses
+      @violations.each do |violation|
+        address = violation.address
+        puts "Adding violation address #{address.id} to priority_addresses"
+        @priority_addresses << address
+      end
+    
+      @citations.each do |citation|
+        address = citation.violation.address
+        puts "Adding citation address #{address.id} to priority_addresses"
+        @priority_addresses << address
+      end
+    
+      @inspections.each do |inspection|
+        address = inspection.address
+        puts "Adding inspection address #{address.id} to priority_addresses"
+        @priority_addresses << address
+      end
+    
+      @priority_addresses = @priority_addresses.uniq.select { |address| !address.attribute_changed_today?(:outstanding) }.sort_by(&:streetnumb)  
+
     end
   end
 

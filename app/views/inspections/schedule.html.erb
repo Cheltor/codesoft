@@ -27,15 +27,42 @@
       <div class="field mt-3">
         <%= form.label :scheduled_datetime %>
         <%= form.datetime_field :scheduled_datetime, class: "form-control" %>
-    <% if @inspection.errors[:scheduled_datetime].any? %>
-      <p class="text-danger"><%= @inspection.errors[:scheduled_datetime].join(', ') %></p>
-    <% end %>
+        <% if @inspection.errors[:scheduled_datetime].any? %>
+          <p class="text-danger"><%= @inspection.errors[:scheduled_datetime].join(', ') %></p>
+        <% end %>
       </div>
+
+      <div class="actions mt-3">
+        <%= form.submit "Submit", class: "btn btn-primary" %>
+      </div>
+
+    </div>
+    <div class="col-md-8">
+      <%# list of scheduled inspections %>
+      <% if @scheduled_inspections.present? %>
+        <h3>Scheduled Inspections</h3>
+        <table class="table table-striped">
+          <thead class="thead-light">
+            <tr>
+              <th scope="col">Address</th>
+              <th scope="col">Scheduled Date</th>
+              <th scope="col">Scheduled Time</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @scheduled_inspections.each do |inspection| %>
+              <tr>
+                <td><%= inspection.address.combadd %></td>
+                <td><%= inspection.scheduled_datetime.strftime("%m/%d/%Y") %></td>
+                <td><%= inspection.scheduled_datetime.strftime("%I:%M %p") %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <% end %>
     </div>
   </div>
 
-  <div class="actions mt-3">
-    <%= form.submit "Submit", class: "btn btn-primary" %>
-  </div>
+
 <% end %>
 

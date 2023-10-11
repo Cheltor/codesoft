@@ -1,0 +1,149 @@
+<div class="row">
+  <div class="col-xl-6 col-xxl-5 d-flex">
+    <div class="w-100">
+      <div class="row">
+        <div class="col-sm-6 d-none d-lg-block">
+          <div class="card">
+            <div class="card-body">
+              <div class="row">
+                <div class="col mt-0">
+                  <h5 class="card-title">Comments Within the Last Week</h5>
+                </div>
+
+                <div class="col-auto">
+                  <div class="stat text-primary">
+                    C
+                  </div>
+                </div>
+              </div>
+              <h1 class="mt-1 mb-3"><%= @comments_last_week.count %></h1>
+              <div class="mb-0">
+                <span class="text-danger"> <i class="mdi mdi-arrow-bottom-right"></i> 
+                  <% if @comments_last_week.count > @comments_two_weeks_ago.count %>
+                    <%= number_to_percentage((@comments_last_week.count - @comments_two_weeks_ago.count) / @comments_two_weeks_ago.count.to_f * 100, precision: 2) %>
+                  <% elsif @comments_last_week.count < @comments_two_weeks_ago.count %>
+                    <%= number_to_percentage((@comments_last_week.count - @comments_two_weeks_ago.count) / @comments_two_weeks_ago.count.to_f * 100, precision: 2) %>
+                  <% else %>
+                    0.00%
+                  <% end %>
+                </span>
+                <span class="text-muted">
+                  <%# comment percentage change from last week %>
+                  <% if @comments_last_week.count > @comments_two_weeks_ago.count %>
+                    <i class="mdi mdi-arrow-up-bold"></i> change from last week
+                  <% elsif @comments_last_week.count < @comments_two_weeks_ago.count %>
+                    <i class="mdi mdi-arrow-down-bold"></i> change from last week
+                  <% else %>
+                    <i class="mdi mdi-arrow-right-bold"></i> change from last week
+                  <% end %>
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-body">
+              <div class="row">
+                <div class="col mt-0">
+                  <h5 class="card-title">Violations Requiring Attention</h5>
+                </div>
+
+                <div class="col-auto">
+                  <div class="stat text-primary">
+                    V
+                  </div>
+                </div>
+              </div>
+              <h1 class="mt-1 mb-3">
+                  <%= @violations.count %>
+              </h1>
+              <div class="mb-0">
+                <span class=""> <i class="mdi mdi-arrow-bottom-right"></i>
+                  <%= @active_violations.count %>
+                </span>
+              <span class="text-muted">Total Active Violations</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="card">
+            <div class="card-body">
+              <div class="row">
+                <div class="col mt-0">
+                  <h5 class="card-title">Complaints</h5>
+                </div>
+
+                <div class="col-auto">
+                  <div class="stat text-primary">
+                    C
+                  </div>
+                </div>
+              </div>
+              <h1 class="mt-1 mb-3">
+                <%= @complaints.count %>
+              </h1>
+            </div>
+          </div>
+          <div class="card d-none d-lg-block">
+            <div class="card-body">
+              <div class="row">
+                <div class="col mt-0">
+                  <h5 class="card-title">Inspections to be scheduled</h5>
+                </div>
+
+                <div class="col-auto">
+                  <div class="stat text-primary">
+                    I
+                  </div>
+                </div>
+              </div>
+              <h1 class="mt-1 mb-3">
+                <%= @unscheduled_inspections.count %>
+              </h1>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-xl-6 col-xxl-7">
+    <div class="card flex-fill w-100">
+      <div class="card-header">
+
+        <h5 class="card-title mb-0">Today's inspections</h5>
+      </div>
+      <div class="card-body py-3">
+        <% if @today_inspections.empty? %>
+          <p>No inspections scheduled for today.</p>
+        <% else %>
+          <% @today_inspections.each do |inspection| %>
+          <div class="card mt-3" style="background-color: #c8e6c9;">
+            <div class="card-body">
+              <h5 class="card-title"><%= link_to inspection.address.combadd, address_inspection_path(inspection.address, inspection) %></h5>
+              <p class="card-text"><strong>Scheduled:</strong> <%= inspection.scheduled_datetime.strftime("%I:%M %p") %></p>
+            </div>
+          </div>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xl-12">
+    <div class="row">      <!-- list of @priority_addresses -->
+      <div class="card">
+        <div class="card-body">
+          <div class="row table-responsive">
+          <h3>My Priority Addresses</h3>
+          <h5>Addresses with current violations, unpaid citations, pending trial citations, or pending inspections</h5>
+          <turbo-frame id="priority-addresses">
+            <%= render partial: "shared/priority_table", locals: { priority_addresses: @priority_addresses } %>
+          </turbo-frame>
+          </div>    
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

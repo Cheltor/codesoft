@@ -82,6 +82,10 @@ class InspectionsController < ApplicationController
 
   def schedule
     @inspection = Inspection.find(params[:id])
+    @scheduled_inspections = Inspection.where(inspector: current_user, status: nil)
+                                        .where.not(scheduled_datetime: nil)
+                                        .where.not(id: @inspection.id)
+                                        .order(scheduled_datetime: :asc)
   end
 
   def create
