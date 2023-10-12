@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_01_180904) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_12_004550) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -150,6 +150,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_01_180904) do
     t.index ["address_id"], name: "index_concerns_on_address_id"
   end
 
+  create_table "contact_comments", force: :cascade do |t|
+    t.text "comment"
+    t.integer "user_id", null: false
+    t.integer "contact_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["contact_id"], name: "index_contact_comments_on_contact_id"
+    t.index ["user_id"], name: "index_contact_comments_on_user_id"
+  end
+
   create_table "contacts", force: :cascade do |t|
     t.string "name"
     t.string "email"
@@ -272,6 +282,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_01_180904) do
   add_foreign_key "comments", "units"
   add_foreign_key "comments", "users"
   add_foreign_key "concerns", "addresses"
+  add_foreign_key "contact_comments", "contacts"
+  add_foreign_key "contact_comments", "users"
   add_foreign_key "inspection_codes", "codes"
   add_foreign_key "inspection_codes", "inspections"
   add_foreign_key "inspections", "addresses"

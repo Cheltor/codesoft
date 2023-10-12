@@ -23,35 +23,75 @@
 <%= link_to 'Back', contacts_path, class: "btn btn-secondary"  %>
 <br>
 <br>
-<!-- show any associated inspections -->
-<% if @contact.inspections.any? %>
-  <h3>Inspections (<%= @contact.inspections.count %>)</h3>
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>Inspection Date</th>
-        <th>Inspection Type</th>
-        <th>Status</th>
-        <th colspan="1"></th>
-      </tr>
-    </thead>
 
-    <tbody>
-      <% @contact.inspections.each do |inspection| %>
-        <tr>
-        <% if inspection.scheduled_datetime == nil %>
-          <td><%= link_to "Not scheduled", address_inspection_path(inspection.address, inspection) %></td>
-        <% else %>
-          <td><%= link_to inspection.scheduled_datetime.strftime("%B %d, %Y %I:%M %p"), address_inspection_path(inspection.address, inspection) %></td>
-        <% end %>
-          <td><%= inspection.source %></td>
-          <td><%= inspection.status %></td>
-          <td><%= link_to "Show", address_inspection_path(inspection.address, inspection), class: "btn btn-secondary" %></td>
-        </tr>
+<div class="row">
+  <div class="col-sm-6">
+  <h3>New Comment</h3>
+
+    <% if user_signed_in? %>
+      <%= form_for([@contact, @contact.contact_comments.build]) do |f| %>
+        <%= f.text_area :comment, class: "form-control" %>
+        <br>
+        <%= f.submit class: "btn btn-primary" %>
       <% end %>
-    </tbody>
-  </table>
-<% end %>
+    <% end %>
+
+    <!-- show any associated comments -->
+    <% if @contact.contact_comments.exists? %>
+    <br>
+      <h3>Comments (<%= @contact.contact_comments.count %>)</h3>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Comment</th>
+            <th>Comment Date</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @contact.contact_comments.each do |comment| %>
+            <tr>
+              <td><%= comment.comment %></td>
+              <td><%= comment.created_at&.strftime("%B %d, %Y %I:%M %p") %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% end %>
+  </div>
+  <div class="col-sm-6">
+    <!-- show any associated inspections -->
+    <% if @contact.inspections.any? %>
+      <h3>Inspections (<%= @contact.inspections.count %>)</h3>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Inspection Date</th>
+            <th>Inspection Type</th>
+            <th>Status</th>
+            <th colspan="1"></th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% @contact.inspections.each do |inspection| %>
+            <tr>
+            <% if inspection.scheduled_datetime == nil %>
+              <td><%= link_to "Not scheduled", address_inspection_path(inspection.address, inspection) %></td>
+            <% else %>
+              <td><%= link_to inspection.scheduled_datetime.strftime("%B %d, %Y %I:%M %p"), address_inspection_path(inspection.address, inspection) %></td>
+            <% end %>
+              <td><%= inspection.source %></td>
+              <td><%= inspection.status %></td>
+              <td><%= link_to "Show", address_inspection_path(inspection.address, inspection), class: "btn btn-secondary" %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    <% end %>
+  </div>
+</div>
+
 
 
 

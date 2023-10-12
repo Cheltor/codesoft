@@ -83,9 +83,9 @@
           <p><strong>Contact Phone:</strong><a href="tel:<%= @inspection.contact.phone %>"><%= format_phone_number(@inspection.contact.phone) %></a></p>
         <% end %>
     <% if @inspection.status.present? %>
-      <%= link_to "Edit inspection", conduct_address_inspection_path(@address, @inspection), class: "btn btn-outline-primary btn-lg mt-3" %>
+      <%= link_to "Edit inspection", conduct_address_inspection_path(@address, @inspection), class: "btn btn-outline-primary btn-lg mt-3", data: { turbo: false } %>
     <% else %>
-      <%= link_to "Conduct inspection", conduct_address_inspection_path(@address, @inspection), class: "btn btn-outline-primary btn-lg mt-3" %>
+      <%= link_to "Conduct inspection", conduct_address_inspection_path(@address, @inspection), class: "btn btn-outline-primary btn-lg mt-3", data: { turbo: false } %>
     <% end %>
     <br>
     <% if @inspection.status.present? %>
@@ -109,7 +109,7 @@
       <% if @inspection.notes_area_1.present? %>
       <br>
         <h3>Notes</h3>
-        <%= @inspection.notes_area_1 %>
+        <%= simple_format(@inspection.notes_area_1) %>
       <% end %>
       <br>
       <% if @inspection.extphotos.attached? %>

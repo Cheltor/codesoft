@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   resources :codes
   resources :contacts do
+    resources :contact_comments
     member do
       get 'add_notes'
     end

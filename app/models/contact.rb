@@ -2,6 +2,7 @@ class Contact < ApplicationRecord
   has_many :inspections
   has_many :address_contacts
   has_many :addresses, through: :address_contacts
+  has_many :contact_comments, dependent: :destroy
 
   def self.ransackable_attributes(auth_object = nil)
     ["name", "email", "phone", "notes", "created_at", "updated_at"]

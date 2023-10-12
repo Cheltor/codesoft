@@ -14,7 +14,7 @@
     <% end %>
 
     <li class="breadcrumb-item active"><a href="#">
-      <%= link_to "Inspection ##{@inspection.id}", conduct_address_inspection_path(@address, @inspection) %>
+      <%= link_to "Inspection ##{@inspection.id}", conduct_address_inspection_path(@address, @inspection), data: { turbo: false } %>
     </a></li>
   </ol>
 </nav>
@@ -52,7 +52,7 @@
   </div>
 <% end %>
 
-<%= link_to "Back to Inspection", conduct_address_inspection_path(@address, @inspection), class: "btn btn-secondary mt-3" %>
+<%= link_to "Back to Inspection", conduct_address_inspection_path(@address, @inspection), class: "btn btn-secondary mt-3", data: { turbo: false } %>
 
 <script>
   // Function to initialize Choices.js
