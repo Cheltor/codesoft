@@ -1,6 +1,21 @@
 <!-- app/views/contacts/index.html.erb -->
 
+
+  <div class="card" style="background-color: #e3f2fd;">
+    <div class="card-body">
+      <%= search_form_for @contact_q, url: contacts_path, method: :get do |f| %>
+      <%= f.search_field :name_or_email_or_phone_cont, class:"form-control form-control-lg", placeholder: "Search contacts" %>
+      <br><div style="text-align:center"><%= f.submit "Search", class:"btn btn-primary" %></div>
+      <% end %>
+    </div>
+  </div>
+  <br>
+
 <h1>Contacts</h1>
+
+<% if @contact_q.result.count == 0 %>
+  <p>No contacts found.</p>
+<% else %>
 <div class="table-responsive">
   <table class="table table-striped">
     <thead>
@@ -32,4 +47,5 @@
     </tbody>
   </table>
 </div>
+<% end %>
 <%= link_to 'New Contact', new_contact_path, class: 'btn btn-primary' %>

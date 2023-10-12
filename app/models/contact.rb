@@ -3,6 +3,14 @@ class Contact < ApplicationRecord
   has_many :address_contacts
   has_many :addresses, through: :address_contacts
 
+  def self.ransackable_attributes(auth_object = nil)
+    ["name", "email", "phone", "notes", "created_at", "updated_at"]
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    ["address_contacts", "addresses", "inspections"]
+  end
+
   def full_name_and_email
     "#{name} - #{email}"
   end

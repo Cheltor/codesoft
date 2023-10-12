@@ -2,7 +2,8 @@
 
 class ContactsController < ApplicationController
   def index
-    @contacts = Contact.all
+    @contact_q = Contact.ransack(params[:q])
+    @contacts = @contact_q.result(distinct: true).order(created_at: :desc)
   end
 
   def new
