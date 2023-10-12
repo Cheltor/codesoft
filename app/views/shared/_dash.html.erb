@@ -17,30 +17,9 @@
                 </div>
               </div>
               <h1 class="mt-1 mb-3"><%= @comments_last_week.count %></h1>
-              <div class="mb-0">
-                <span class="text-danger"> <i class="mdi mdi-arrow-bottom-right"></i> 
-                  <% if @comments_last_week.count > @comments_two_weeks_ago.count %>
-                    <%= number_to_percentage((@comments_last_week.count - @comments_two_weeks_ago.count) / @comments_two_weeks_ago.count.to_f * 100, precision: 2) %>
-                  <% elsif @comments_last_week.count < @comments_two_weeks_ago.count %>
-                    <%= number_to_percentage((@comments_last_week.count - @comments_two_weeks_ago.count) / @comments_two_weeks_ago.count.to_f * 100, precision: 2) %>
-                  <% else %>
-                    0.00%
-                  <% end %>
-                </span>
-                <span class="text-muted">
-                  <%# comment percentage change from last week %>
-                  <% if @comments_last_week.count > @comments_two_weeks_ago.count %>
-                    <i class="mdi mdi-arrow-up-bold"></i> change from last week
-                  <% elsif @comments_last_week.count < @comments_two_weeks_ago.count %>
-                    <i class="mdi mdi-arrow-down-bold"></i> change from last week
-                  <% else %>
-                    <i class="mdi mdi-arrow-right-bold"></i> change from last week
-                  <% end %>
-                </span>
-              </div>
             </div>
           </div>
-          <div class="card">
+          <div class="card shadow mb-3" onclick="window.location='<%= my_violations_path(status: 'current') %>';" style="cursor: pointer;">
             <div class="card-body">
               <div class="row">
                 <div class="col mt-0">
@@ -66,7 +45,7 @@
           </div>
         </div>
         <div class="col-sm-6">
-          <div class="card">
+          <div class="card shadow mb-3" onclick="window.location='<%= my_complaints_path(status: 'current') %>';" style="cursor: pointer;">
             <div class="card-body">
               <div class="row">
                 <div class="col mt-0">
@@ -84,7 +63,8 @@
               </h1>
             </div>
           </div>
-          <div class="card d-none d-lg-block">
+                    <div class="card d-none d-lg-block shadow mb-3" onclick="window.location='<%= my_inspections_path(scheduled_datetime: 'unscheduled') %>';" style="cursor: pointer;">
+
             <div class="card-body">
               <div class="row">
                 <div class="col mt-0">
