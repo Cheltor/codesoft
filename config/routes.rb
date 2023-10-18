@@ -4,6 +4,7 @@ Rails.application.routes.draw do
     resources :contact_comments
     member do
       get 'add_notes'
+      patch :hide
     end
   end
   devise_for :users

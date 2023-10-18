@@ -132,7 +132,7 @@
           </h2>
           <div id="flush-collapse<%= area.id %>" class="accordion-collapse collapse" aria-labelledby="flush-heading<%= area.id %>" data-bs-parent="#accordionFlush<%= area.id %>">
             <div class="accordion-body">
-              <h5><strong>Notes: </strong><%= area.notes %></h5>
+              <h5><strong>Notes: </strong><%= simple_format(area.notes) %></h5>
               <br>
               <% if area.photos.attached? %>
                 <div>
@@ -148,7 +148,7 @@
                 <p><strong>Codes:</strong></p>
                   <ul>
                     <% area.codes.each do |code| %>
-                      <li><%= code.name %></li>
+                      <%= render partial: 'shared/code_def_show', locals: { code: code } %>
                     <% end %>
                   </ul>
                 <% end %>

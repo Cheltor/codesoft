@@ -64,6 +64,7 @@ class InspectionsController < ApplicationController
   def conduct
     @inspection = Inspection.find(params[:id])
     @codes = Code.all
+    @attachments = @inspection.attachments.all
 
     # Create code if they don't exist
 

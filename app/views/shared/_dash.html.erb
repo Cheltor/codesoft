@@ -1,3 +1,4 @@
+<% if current_user.ons? %>
 <div class="row">
   <div class="col-xl-6 col-xxl-5 d-flex">
     <div class="w-100">
@@ -127,3 +128,47 @@
     </div>
   </div>
 </div>
+<% end %>
+
+<% if current_user.oas? %>
+<div class="row">
+  <div class="col-xl-6">
+    <!-- informative cards -->
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Inspections/Complaints</h5>
+        <p class="card-text">
+          Complaints, inspections, and violations are all related to addresses. To create a new inspection request, find the address in the search bar above and click the "Create New Inspection Request" button.
+        </p>
+        <p class="card-text">
+          If you are looking for a list of previously requested inspections, click the "Inspections" button below. If you are looking for a previously requested complaint, click the "Complaints" button below.
+        </p>
+        <%= link_to "Inspections", all_inspections_path, class: "btn btn-secondary" %>
+        <%= link_to "Complaints", all_complaints_path, class: "btn btn-secondary" %>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-6">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Contacts</h5>
+        <p class="card-text">
+          To create a new inspection request, find the address in the search bar above and click the "Create New Inspection Request" button.
+        </p>
+        <%= link_to "Contacts", contacts_path, class: "btn btn-secondary" %>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-6">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Citations</h5>
+        <p class="card-text">
+          To find the list of all current citations, click the "Citations" button below. In order to update the citation from unpaid to paid, click on the "unpaid" button.
+        </p>
+        <%= link_to "Citations", all_citations_path, class: "btn btn-secondary" %>
+      </div>
+    </div>
+  </div>
+</div>
+<% end %>

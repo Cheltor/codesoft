@@ -36,6 +36,12 @@ class ContactsController < ApplicationController
   def add_notes
     @contact = Contact.find(params[:id])
   end
+
+  def hide
+    @contact = Contact.find(params[:id])
+    @contact.update(hidden: true)
+    redirect_to contacts_path, notice: 'Contact was successfully deleted.'
+  end
   
   private
 

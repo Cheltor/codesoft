@@ -10,6 +10,7 @@ class UnitsController < ApplicationController
     @violations = @unit.violations
     @comments = @unit.comments
     @address_citations = @unit.citations
+    @inspections = @unit.inspections
   end
   
   def new
