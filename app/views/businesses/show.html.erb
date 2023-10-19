@@ -1,0 +1,18 @@
+<h2>
+  <%= @business.name %>
+</h2>
+
+<p>
+  <strong><label>Phone:</label></strong>
+  <%= @business.phone %>
+</p>
+<p>
+  <strong><label>Email:</label></strong>
+  <%= @business.email %>
+</p>
+<p>
+  <strong><label>Website:</label></strong>
+  <%= @business.website %>
+</p>
+
+<%= link_to "Edit", edit_address_business_path(@business.address, @business), class: "btn btn-primary" %>

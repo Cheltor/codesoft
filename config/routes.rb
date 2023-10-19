@@ -21,9 +21,7 @@ Rails.application.routes.draw do
     end
     resources :comments
     resources :concerns, only: [:create, :edit, :update]
-    resources :units, only: [:new, :create, :edit, :update, :destroy, :index, :show] do
-      resources :businesses, shallow: true
-    end
+    resources :units, only: [:new, :create, :edit, :update, :destroy, :index, :show]
     resources :inspections do
       member do
         get 'conduct'
@@ -32,7 +30,7 @@ Rails.application.routes.draw do
       end
       resources :areas
     end
-    resources :businesses
+    resources :businesses, except: [:index]
     member do
       get 'manage_contacts'
       post 'manage_contacts'
@@ -47,6 +45,7 @@ Rails.application.routes.draw do
   get 'all_violations' => 'addresses#violist'
   get 'my_violations' => 'addresses#my_violations'
   get 'helpful' => 'static#helpful'
+  get 'businesses' => 'businesses#index'
 
   resources :users, only: [:index, :show, :edit, :update]
 

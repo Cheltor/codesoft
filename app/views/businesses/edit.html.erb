@@ -1,4 +1,5 @@
-<h2>New Business</h2>
+<h2>Edit Business</h2>
+
 <%= form_for [@address, @business] do |f| %>
   <div class="form-group">
     <%= f.label :name %>
@@ -19,7 +20,6 @@
     <%= f.label :website %>
     <%= f.text_field :website, class: "form-control" %>
   </div>
-  
-  <%= f.submit "Create Business", class: "btn btn-primary mt-3" %>
-<% end %>
 
+  <%= f.submit "Update Business", class: "btn btn-primary mt-3" %>
+<% end %>

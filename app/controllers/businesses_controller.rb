@@ -1,6 +1,7 @@
 class BusinessesController < ApplicationController
   def index
-    @businesses = Business.all
+    @business_q = Business.ransack(params[:q])
+    @businesses = @business_q.result(distinct: true).order(created_at: :desc)
   end
 
   def show
@@ -8,24 +9,22 @@ class BusinessesController < ApplicationController
   end
 
   def new
-    @address = Address.find(params[:address_id]) if params[:address_id].present?
-    @unit = Unit.find(params[:unit_id]) if params[:unit_id].present?
+    @address = Address.find(params[:address_id])
     @business = Business.new
   end
 
   def create
-    @address = Address.find(params[:address_id]) if params[:address_id].present?
-    @unit = Unit.find(params[:unit_id]) if params[:unit_id].present?
-    @business = @address.businesses.build(business_params) if @address
-    @business = @unit.businesses.build(business_params) if @unit
-
+    @address = Address.find(params[:address_id])
+    @business = @address.businesses.build(business_params)
+  
     if @business.save
       flash[:success] = 'Business was successfully created.'
-      redirect_to @address || @unit
+      redirect_to @address # You may want to adjust the redirection path
     else
       render :new
     end
   end
+  
 
   def edit
     @address = Address.find(params[:address_id])
@@ -36,7 +35,7 @@ class BusinessesController < ApplicationController
     @address = Address.find(params[:address_id])
     @business = Business.find(params[:id])
     if @business.update(business_params)
-      redirect_to address_path(@address)
+      redirect_to address_business_path(@address, @business)
     else
       render 'edit'
     end
@@ -52,6 +51,6 @@ class BusinessesController < ApplicationController
   private
 
   def business_params
-    params.require(:business).permit(:name, :contact, :phone, :email, :website, :address_id)
+    params.require(:business).permit(:name, :phone, :email, :website, :address_id, :unit_id)
   end
 end

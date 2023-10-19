@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_17_235607) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_18_235047) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -94,7 +94,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_17_235607) do
     t.integer "address_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "unit_id"
+    t.string "website"
+    t.string "email"
+    t.string "phone"
     t.index ["address_id"], name: "index_businesses_on_address_id"
+    t.index ["unit_id"], name: "index_businesses_on_unit_id"
   end
 
   create_table "citations", force: :cascade do |t|
@@ -275,6 +280,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_17_235607) do
   add_foreign_key "area_codes", "codes"
   add_foreign_key "areas", "inspections"
   add_foreign_key "businesses", "addresses"
+  add_foreign_key "businesses", "units"
   add_foreign_key "citations", "codes"
   add_foreign_key "citations", "units"
   add_foreign_key "citations", "users"

@@ -52,7 +52,7 @@
           <% @contact.contact_comments.each do |comment| %>
             <tr>
               <td><%= comment.comment %></td>
-              <td><%= comment.created_at&.strftime("%B %d, %Y %I:%M %p") %></td>
+              <td><%= comment.created_at&.in_time_zone("Eastern Time (US & Canada)")&.strftime("%B %d, %Y %I:%M %p") %></td>
             </tr>
           <% end %>
         </tbody>

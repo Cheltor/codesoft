@@ -149,6 +149,17 @@
         <% end %>
       </li>
       <% end %>
+
+      <% if current_user.admin? || current_user.ons? || current_user.oas? %>
+
+      <li class="sidebar-header">
+        Businesses
+      </li>
+        <%= link_to(businesses_path, class: "sidebar-link") do %>
+          <i class="align-middle" data-feather="briefcase"></i>
+          <span class="align-middle">Businesses</span>
+        <% end %>
+      <% end %>
     </ul>
   </div>
 </nav>
