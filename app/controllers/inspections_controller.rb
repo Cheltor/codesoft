@@ -59,6 +59,10 @@ class InspectionsController < ApplicationController
   def new
     @inspection = @address.inspections.build
     @assignees = User.where(role: :ons)
+
+    # pre filled forms 
+    @inspection.source = params[:source] if params[:source].present?
+    @inspection.description = params[:description] if params[:description].present?
   end
 
   def conduct

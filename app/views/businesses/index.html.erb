@@ -42,12 +42,12 @@
           </td>
           <td>
             <% if business.website.present? %>
-              <%= link_to business.website, business.website, target: "_blank" %>
+                <a href="https://<%= business.website %>" target="_blank"><%= business.website %></a>
             <% end %>
           </td>
           <td>
             <%= link_to "Edit", edit_address_business_path(business.address, business), class: "btn btn-primary" %>
-          </td>
+        </td>
         </tr>
       <% end %>
     </tbody>

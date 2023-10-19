@@ -29,7 +29,7 @@
     </button>
 
     <!-- link to create a new business -->
-    <%= link_to "Add Business", new_address_business_path(@address), class: "btn btn-primary mt-2 mb-3", data: { turbo: false } %>
+    <%= link_to "Add Business", new_address_business_path(@address), class: "btn btn-info mt-2 mb-3", data: { turbo: false } %>
 
     <!-- show any associated businesses -->
     <% if @address.businesses.present? %>

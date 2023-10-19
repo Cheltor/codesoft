@@ -1,18 +1,42 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">
+      <%= link_to "Home", root_path %>
+    </a></li>
+    <li class="breadcrumb-item"><a href="#">
+    <%= link_to @address.combadd.titleize, address_path(@address) %>
+    </a></li>
+    <li class="breadcrumb-item active" aria-current="page">
+      <%= @business.name %>
+    </li>
+  </ol>
+</nav>
+
 <h2>
   <%= @business.name %>
 </h2>
 
 <p>
   <strong><label>Phone:</label></strong>
-  <%= @business.phone %>
+            <% if @business.phone.present? %>
+              <a href="tel:<%= @business.phone %>"><%= format_phone_number(@business.phone) %></a>
+            <% end %>
 </p>
 <p>
   <strong><label>Email:</label></strong>
-  <%= @business.email %>
-</p>
+            <% if @business.email.present? %>
+              <%= link_to @business.email, "mailto:#{@business.email}" %>
+            <% end %></p>
 <p>
   <strong><label>Website:</label></strong>
-  <%= @business.website %>
-</p>
-
+            <% if @business.website.present? %>
+                <a href="https://<%= @business.website %>" target="_blank"><%= @business.website %></a>
+            <% end %></p>
 <%= link_to "Edit", edit_address_business_path(@business.address, @business), class: "btn btn-primary" %>
+
+<br>
+<br>
+<h3>License inspection</h3>
+
+<%= link_to "Request an inspection", new_address_inspection_path(@address, source: 'Business license', description: @business.name), class: "btn btn-primary" %>
+
