@@ -21,5 +21,25 @@
     <%= f.text_field :website, class: "form-control" %>
   </div>
 
+  <div class="form-group mt-3">
+    <%= f.label :contact_id %>
+    <%= f.collection_select(:contact_ids, Contact.all, :id, :full_name_and_email, { prompt: 'Select or create a contact' }, class: 'form-control selectpicker', data: { style: 'btn-primary' }) %>
+  </div>
+
   <%= f.submit "Update Business", class: "btn btn-primary mt-3" %>
 <% end %>
+
+<script>
+  // Function to initialize Choices.js
+  function initializeChoices() {
+    const contactSelect = new Choices('#business_contact_ids', {
+      removeItemButton: true,
+      searchEnabled: true,
+      placeholder: true,
+      placeholderValue: 'Select a contact',
+    });
+  }
+
+  // Initialize Choices.js on page load
+  document.addEventListener("turbo:load", initializeChoices);
+</script>

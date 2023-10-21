@@ -13,6 +13,8 @@
 
 <h1>Contacts</h1>
 
+<%= link_to 'New Contact', new_contact_path, class: 'btn btn-secondary' %>
+
 <% if @contact_q.result.count == 0 %>
   <p>No contacts found.</p>
 <% else %>
@@ -43,4 +45,4 @@
   </table>
 </div>
 <% end %>
-<%= link_to 'New Contact', new_contact_path, class: 'btn btn-primary' %>
+

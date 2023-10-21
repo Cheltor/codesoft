@@ -1,4 +1,7 @@
 class BusinessesController < ApplicationController
+  layout 'choices', only: [:new, :edit]
+
+
   def index
     @business_q = Business.ransack(params[:q])
     @businesses = @business_q.result(distinct: true).order(created_at: :desc)
@@ -52,6 +55,6 @@ class BusinessesController < ApplicationController
   private
 
   def business_params
-    params.require(:business).permit(:name, :phone, :email, :website, :address_id, :unit_id)
+    params.require(:business).permit(:name, :phone, :email, :website, :address_id, :unit_id, :contact_ids)
   end
 end

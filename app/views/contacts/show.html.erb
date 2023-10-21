@@ -1,32 +1,53 @@
 <!-- app/views/contacts/show.html.erb -->
+<div class="row">
+  <div class="col-md-6">
+    <p>
+      <strong>Name:</strong>
+      <%= @contact.name %>
+    </p>
 
-<p>
-  <strong>Name:</strong>
-  <%= @contact.name %>
-</p>
+    <p>
+      <strong>Email:</strong>
+      <%= link_to @contact.email, "mailto:#{@contact.email}" %>
+    </p>
 
-<p>
-  <strong>Email:</strong>
-  <%= link_to @contact.email, "mailto:#{@contact.email}" %>
-</p>
+    <p>
+      <strong>Phone:</strong>
+      <a href="tel:<%= @contact.phone %>"><%= format_phone_number(@contact.phone) %></a>
+    </p>
 
-<p>
-  <strong>Phone:</strong>
-  <a href="tel:<%= @contact.phone %>"><%= format_phone_number(@contact.phone) %></a>
-</p>
+    <p>
+      <strong>Notes:</strong>
+      <%= @contact.notes %>
+    </p>
+    <%= link_to 'Edit', edit_contact_path(@contact), class: "btn btn-secondary" %> |
+    <%= link_to 'Back', contacts_path, class: "btn btn-secondary"  %>
+    <br>
+    <br>
+  </div>
+  <div class="col-md-6">
+    <% if @contact.businesses.any? %>
+    <h3>Businesses (<%= @contact.businesses.count %>)</h3>
+      <!-- for loop to show all businesses associated with this contact -->
+      <ul>
+      <% @contact.businesses.each do |business| %>
+        <li>
+        <%= link_to business.name, address_business_path(business.address, business) %> 
 
-<p>
-  <strong>Notes:</strong>
-  <%= @contact.notes %>
-</p>
-<%= link_to 'Edit', edit_contact_path(@contact), class: "btn btn-secondary" %> |
-<%= link_to 'Back', contacts_path, class: "btn btn-secondary"  %>
-<br>
-<br>
+        <% if business.address.present? %>
+          - <%= link_to business.address.combadd, business.address %>
+        <% end %>
+        </li>
+      <% end %>
+      </ul>
+    <% end %>
+  </div>
+</div>
+
 
 <div class="row">
-  <div class="col-sm-6">
-  <h3>New Comment</h3>
+  <div class="col-md-6">
+    <h3>New Comment</h3>
 
     <% if user_signed_in? %>
       <%= form_for([@contact, @contact.contact_comments.build]) do |f| %>
@@ -59,7 +80,7 @@
       </table>
     <% end %>
   </div>
-  <div class="col-sm-6">
+  <div class="col-md-6">
     <!-- show any associated inspections -->
     <% if @contact.inspections.any? %>
       <h3>Inspections (<%= @contact.inspections.count %>)</h3>
@@ -74,7 +95,7 @@
         </thead>
 
         <tbody>
-          <% @contact.inspections.each do |inspection| %>
+            <% @contact.inspections.order(created_at: :desc).each do |inspection| %>
             <tr>
             <% if inspection.scheduled_datetime == nil %>
               <td><%= link_to "Not scheduled", address_inspection_path(inspection.address, inspection) %></td>
@@ -82,7 +103,13 @@
               <td><%= link_to inspection.scheduled_datetime.strftime("%B %d, %Y %I:%M %p"), address_inspection_path(inspection.address, inspection) %></td>
             <% end %>
               <td><%= inspection.source %></td>
-              <td><%= inspection.status %></td>
+              <td>
+                <% if inspection.status == nil %>
+                  Pending
+                <% elsif inspection.status != nil %>
+                  <%= inspection.status %>
+                <% end %>
+              </td>
               <td><%= link_to "Show", address_inspection_path(inspection.address, inspection), class: "btn btn-secondary" %></td>
             </tr>
           <% end %>

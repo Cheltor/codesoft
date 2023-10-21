@@ -3,6 +3,8 @@ class Contact < ApplicationRecord
   has_many :address_contacts
   has_many :addresses, through: :address_contacts
   has_many :contact_comments, dependent: :destroy
+  has_many :business_contacts
+  has_many :businesses, through: :business_contacts
 
   scope :hidden, -> { where(hidden: true) }
   scope :visible, -> { where(hidden: false) }

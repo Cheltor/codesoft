@@ -46,7 +46,7 @@
             <% end %>
           </td>
           <td>
-            <%= link_to "Edit", edit_address_business_path(business.address, business), class: "btn btn-primary" %>
+            <%= link_to "Edit", edit_address_business_path(business.address, business), class: "btn btn-primary", data: { turbo: false } %>
         </td>
         </tr>
       <% end %>
