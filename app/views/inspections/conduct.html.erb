@@ -36,7 +36,7 @@
     <% end %>
   <div class="field mt-3">
   <!-- submit as  well as add new area -->
-    <%= link_to "New Inspection Area", new_address_inspection_area_path(@address, @inspection), class: "btn btn-primary", data: { turbo: false } %>
+    <%= link_to "New Inspection Area", new_address_inspection_area_path(@address, @inspection), class: "btn btn-outline-primary", data: { turbo: false } %>
   </div>
   <!-- if current user is ons -->
   <% if current_user.ons? %>
