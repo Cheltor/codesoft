@@ -42,9 +42,8 @@
   <div class="field mt-3">
     <!-- if address has units, show unit select -->
     <% if @address.units.any? %>
+    <p>Select if the inspection is for the unit or the entire building</p>
     <%= form.select :unit_id, options_for_select(unit_options(@address.units), nil), {prompt: "Select Unit or Building"}, class: "form-select" %>
-    <br>
-    <br>
     <% end %>
   </div>
   
@@ -92,10 +91,15 @@
 
   <div class="form-group mt-3">
     <%= form.label :inspector_id %>
-    <%= form.select :inspector_id, options_for_select([["Unassigned", nil]] + User.ons.map { |user| [user.email, user.id] }), {}, class: "form-select" %>
+    <% if current_user.role == "ons" %>
+      <strong><%= current_user.name %></strong>
+      <%= form.hidden_field :inspector_id, value: current_user.id %>
+    <% else %>
+      <%= form.select :inspector_id, options_for_select([["Unassigned", nil]] + User.ons.map { |user| [user.email, user.id] }), {}, class: "form-select" %>
+    <% end %>
   </div>
   <div class="actions mt-3">
-    <%= form.submit "Create Inspection", class: "btn btn-primary" %>
+    <%= form.submit "Create Inspection Request", class: "btn btn-primary" %>
   </div>
 <% end %>
 

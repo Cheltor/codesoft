@@ -8,23 +8,25 @@
       </div>
       <!-- /.card-header -->
       <div class="card-body">
-        <table id="example2" class="table table-bordered table-hover">
-          <thead>
-            <tr>
-            <th scope="col">Created At</th>
-            <th scope="col">Address</th>
-            <th scope="col">Source</th>
-            <th scope="col">Status</th>
-            <th scope="col">Inspector</th>
-            <th scope="col"></th>
-            </tr>
-          </thead>
-          <tbody>
-          <% @inspections.order("created_at DESC").each do |inspection| %>
-            <%= render partial: "shared/complaint_table", locals: {inspection: inspection} %>
-          <% end %>
-          </tbody>
-        </table>
+        <div class="table-responsive">
+          <table id="example2" class="table table-bordered table-hover">
+            <thead>
+              <tr>
+              <th scope="col">Created At</th>
+              <th scope="col">Address</th>
+              <th scope="col">Source</th>
+              <th scope="col">Status</th>
+              <th scope="col">Inspector</th>
+              <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+            <% @inspections.order("created_at DESC").each do |inspection| %>
+              <%= render partial: "shared/complaint_table", locals: {inspection: inspection} %>
+            <% end %>
+            </tbody>
+          </table>
+        </div>
       </div>
       <!-- /.card-body -->
     </div>

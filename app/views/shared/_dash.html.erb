@@ -46,7 +46,11 @@
           </div>
         </div>
         <div class="col-sm-6">
+          <% if @complaints.empty? %>
+          <div class="card d-none d-lg-block shadow mb-3" onclick="window.location='<%= my_complaints_path(status: 'current') %>';" style="cursor: pointer;">
+          <% else %>
           <div class="card shadow mb-3" onclick="window.location='<%= my_complaints_path(status: 'current') %>';" style="cursor: pointer;">
+          <% end %>
             <div class="card-body">
               <div class="row">
                 <div class="col mt-0">
@@ -64,8 +68,7 @@
               </h1>
             </div>
           </div>
-                    <div class="card d-none d-lg-block shadow mb-3" onclick="window.location='<%= my_inspections_path(scheduled_datetime: 'unscheduled') %>';" style="cursor: pointer;">
-
+          <div class="card d-none d-lg-block shadow mb-3" onclick="window.location='<%= my_inspections_path(scheduled_datetime: 'unscheduled') %>';" style="cursor: pointer;">
             <div class="card-body">
               <div class="row">
                 <div class="col mt-0">
@@ -89,9 +92,12 @@
   </div>
 
   <div class="col-xl-6 col-xxl-7">
+    <% if @today_inspections.empty? %>
+    <div class="card flex-fill w-100  d-none d-lg-block">
+    <% else %>
     <div class="card flex-fill w-100">
+    <% end %>
       <div class="card-header">
-
         <h5 class="card-title mb-0">Today's inspections</h5>
       </div>
       <div class="card-body py-3">
@@ -117,30 +123,36 @@
       <div class="card">
         <div class="card-body">
           <div class="row">
-          <h3>My Priority Addresses</h3>
-          <h5>Addresses with current violations, unpaid citations, pending trial citations, or pending inspections</h5>
+          <h3 style="text-align:center">My Priority Addresses</h3>
+          <h5 style="text-align:center">Addresses with current violations, unpaid citations, pending trial citations, or pending inspections</h5>
+            <% if @priority_addresses.empty? %>
+              <p class="pt-5">No priority addresses.</p>
+            <% else %>
             <div class="table-responsive">
               <table class="table">
                 <thead>
                   <tr>
-                    <th>Address</th>
-                    <th>Check off for today</th>
+                    <th style="text-align:center">Address</th>
+                    <th style="text-align:center">Check off for today</th>
                   </tr>
                 </thead>
                 <tbody>
                 <% @priority_addresses.each do |a| %>
                   <tr>
-                    <td>
+                    <td style="text-align:center">
                       <%= link_to a.combadd, address_path(a) %>
                     </td>
-                    <td>
-                      <%= button_to "Mark as Reviewed", mark_reviewed_path(a.id), method: :patch, class: "btn btn-primary", data: { turbolinks: false } %>
+                    <td style="text-align: center">
+                      <%= button_to mark_reviewed_path(a.id), method: :patch, class: "btn btn-primary", data: { turbolinks: false } do %>
+                        <i class="bi bi-check-lg"></i>
+                      <% end %>
                     </td>
                   </tr>
                 <% end %>
                 </tbody>
               </table>
-            </div>  
+            </div>
+            <% end %>  
           </div>    
         </div>
       </div>
