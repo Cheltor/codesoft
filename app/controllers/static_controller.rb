@@ -44,8 +44,8 @@ class StaticController < ApplicationController
       @priority_addresses << address
     end
   
-    @priority_addresses = @priority_addresses.uniq.select { |address| !address.attribute_changed_today?(:outstanding) }.sort_by(&:streetnumb)  
-  end
+      @priority_addresses = @priority_addresses.uniq.select { |address| !address.updated_at.today? }.sort_by(&:streetnumb)  
+    end
   
 
   def issue
@@ -105,7 +105,7 @@ class StaticController < ApplicationController
         @priority_addresses << address
       end
     
-      @priority_addresses = @priority_addresses.uniq.select { |address| !address.attribute_changed_today?(:outstanding) }.sort_by(&:streetnumb)  
+      @priority_addresses = @priority_addresses.uniq.select { |address| !address.updated_at.today? }.sort_by(&:streetnumb)  
     else
       @comments = Comment.order(created_at: :desc)
       @comments_last_week = Comment.where(created_at: 1.week.ago..Time.now).order(created_at: :desc)
@@ -148,10 +148,19 @@ class StaticController < ApplicationController
         @priority_addresses << address
       end
     
-      @priority_addresses = @priority_addresses.uniq.select { |address| !address.attribute_changed_today?(:outstanding) }.sort_by(&:streetnumb)  
+      @priority_addresses = @priority_addresses.uniq.select { |address| !address.updated_at.today? }.sort_by(&:streetnumb)  
 
     end
   end
+
+  def mark_reviewed
+    @address = Address.find(params[:id])
+
+    @address.update(outstanding: !@address.outstanding)
+
+    redirect_to root_path
+  end
+
 
   def admin_user
     unless current_user.admin?

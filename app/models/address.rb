@@ -16,25 +16,12 @@ class Address < ApplicationRecord
     before_save :upcase_ownercity
     before_save :upcase_ownerstate
     
-    def toggle_outstanding_violation
-        self.update_attribute(:outstanding_violation, !self.outstanding_violation)
-    end      
+
     def self.ransackable_attributes(auth_object = nil)
         ["absent", "combadd", "created_at", "id", "landusecode", "outstanding", "owneraddress", "ownercity", "ownername", "owneroccupiedin", "ownerstate", "ownerzip", "pid", "premisezip", "streetname", "streetnumb", "streettype", "updated_at", "vacant", "zoning"]
     end
     def self.ransackable_associations(auth_object = nil)
         ["comments", "users", "violations"]
-    end
-
-    before_save :attribute_changed_today?
-
-    def attribute_changed_today?(attribute)
-        return false unless attribute_changed?(attribute)
-
-        attribute_changed_at = send("#{attribute}_changed_at") # Assuming you have timestamps for attribute changes
-        today = Date.today.beginning_of_day
-
-        attribute_changed_at >= today
     end
 
     private

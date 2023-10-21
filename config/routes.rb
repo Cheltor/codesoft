@@ -9,9 +9,6 @@ Rails.application.routes.draw do
   end
   devise_for :users
   resources :addresses do
-    member do
-      patch :mark_outstanding
-    end
     resources :violations, shallow: true do
       resources :citations, shallow: true
       patch :resolve, on: :member
@@ -46,6 +43,7 @@ Rails.application.routes.draw do
   get 'my_violations' => 'addresses#my_violations'
   get 'helpful' => 'static#helpful'
   get 'businesses' => 'businesses#index'
+  patch 'mark_reviewed/:id' => 'static#mark_reviewed', as: 'mark_reviewed'
 
   resources :users, only: [:index, :show, :edit, :update]
 

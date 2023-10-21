@@ -119,44 +119,28 @@
           <div class="row">
           <h3>My Priority Addresses</h3>
           <h5>Addresses with current violations, unpaid citations, pending trial citations, or pending inspections</h5>
-            <% @priority_addresses.each do |address| %>
-              <div class="col-lg-3">
-                <ul class="list-group mb-3">
-                    <li class="list-group-item"><strong><%= link_to address.combadd, address_path(address) %></strong></li>
-                    
-                    <% if address.violations.current.where(user_id: current_user.id).exists? %>
-                      <% if address.violations.current.any? { |violation| violation.deadline_date <= Date.tomorrow } %>
-                        <li class="list-group-item"><%= pluralize(address.violations.current.where(user_id: current_user.id).count, 'Active Violations') %></li>
-                      <% else %>
-                        <li class="list-group-item"><%= pluralize(address.violations.current.where(user_id: current_user.id).count, 'Active Violations') %></li>
-                      <% end %>
-                    <% end %>
-
-                    
-                    <% if address.violations.any? { |violation| violation.citations.where(status: ["unpaid"], user_id: current_user.id).exists? } %>
-                      <li class="list-group-item"><%= pluralize(address.violations.map { |violation| violation.citations.where(status: ["unpaid"], user_id: current_user.id).count }.sum, 'Unpaid Citations') %></li>
-                    <% end %>
-
-                    <% if address.violations.any? { |violation| violation.citations.where(status: ["pending trial"], user_id: current_user.id).exists? } %>
-                      <li class="list-group-item"><%= pluralize(address.violations.map { |violation| violation.citations.where(status: ["pending trial"], user_id: current_user.id).count }.sum, 'Pending Trial Citations') %></li>
-                    <% end %>
-
-                        <% if address.inspections.where(status: nil, scheduled_datetime: nil, inspector_id: current_user.id).any? %>
-                          <li class="list-group-item"><%= pluralize(address.inspections.where(status: nil, scheduled_datetime: nil, inspector_id: current_user.id).count, 'Pending Inspections') %></li>
-                        <% end %>
-                        <% if address.inspections.where(source: "Complaint", status: nil, inspector_id: current_user.id).any? %>
-                        <li class="list-group-item"><%= pluralize(address.inspections.where(source: "Complaint", status: nil, inspector_id: current_user.id).count, 'Complaints') %></li>
-                        <% end %>
-                        <% if address.inspections.where.not(scheduled_datetime: nil).where(status: nil, inspector_id: current_user.id).any? %>
-                          <% if address.inspections.where(scheduled_datetime: Date.today.beginning_of_day..Date.today.end_of_day) %>
-                          <li class="list-group-item"><%= pluralize(address.inspections.where.not(scheduled_datetime: nil).where(status: nil, inspector_id: current_user.id).count, 'Scheduled Inspections') %></li>
-                          <% else %>
-                          <li class="list-group-item"><%= pluralize(address.inspections.where.not(scheduled_datetime: nil).where(status: nil, inspector_id: current_user.id).count, 'Scheduled Inspections') %></li>
-                          <% end %>
-                        <% end %>
-                    </ul>          
-              </div>
-            <% end %>      
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th>Address</th>
+                    <th>Check off for today</th>
+                  </tr>
+                </thead>
+                <tbody>
+                <% @priority_addresses.each do |a| %>
+                  <tr>
+                    <td>
+                      <%= link_to a.combadd, address_path(a) %>
+                    </td>
+                    <td>
+                      <%= button_to "Mark as Reviewed", mark_reviewed_path(a.id), method: :patch, class: "btn btn-primary", data: { turbolinks: false } %>
+                    </td>
+                  </tr>
+                <% end %>
+                </tbody>
+              </table>
+            </div>  
           </div>    
         </div>
       </div>
