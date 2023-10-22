@@ -161,6 +161,9 @@ class StaticController < ApplicationController
     redirect_to root_path
   end
 
+  def design_test
+  end
+
 
   def admin_user
     unless current_user.admin?

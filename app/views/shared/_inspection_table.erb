@@ -17,7 +17,9 @@
   <% if inspection.scheduled_datetime.present? %>
     <td><%= inspection.scheduled_datetime.strftime("%B %d, %Y %I:%M %p") %></td>
   <% else %>
-    <td>Not Scheduled</td>
+    <td>
+      <%= link_to "Schedule inspection", schedule_address_inspection_path(inspection.address, inspection), class: "btn btn-outline-primary" %>
+    </td>
   <% end %>
   <% if inspection.inspector.present? %>
     <td><%= inspection.inspector.email %></td>

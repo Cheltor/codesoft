@@ -15,6 +15,8 @@ class AddressesController < ApplicationController
                           @address.comments.map(&:photos) + 
                           @address_citations.map(&:photos)
                         ).flatten.sort_by(&:created_at).reverse
+
+      @timeline_items = (@address.violations + @address.comments + @address_citations + @address.inspections).sort_by(&:created_at).reverse
   end
 
   def violist

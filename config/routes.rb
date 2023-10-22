@@ -44,6 +44,7 @@ Rails.application.routes.draw do
   get 'helpful' => 'static#helpful'
   get 'businesses' => 'businesses#index'
   patch 'mark_reviewed/:id' => 'static#mark_reviewed', as: 'mark_reviewed'
+  get 'design_test' => 'static#design_test'
 
   resources :users, only: [:index, :show, :edit, :update]
 
