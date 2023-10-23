@@ -30,11 +30,11 @@
 <p>
   <strong><label>Website:</label></strong>
             <% if @business.website.present? %>
-                <a href="https://<%= @business.website %>" target="_blank"><%= @business.website %></a>
+                <a href="<%= @business.website %>" target="_blank"><%= @business.website %></a>
             <% end %></p>
 
 <p>
-  <strong><label>Contacts:</label></strong>
+  <strong><label>Contact:</label></strong>
             <% if @business.contacts.any? %>
               <% @business.contacts.each do |contact| %>
                 <%= link_to contact.full_name_and_email, contact_path(contact) %><br>
@@ -46,6 +46,8 @@
 <br>
 <br>
 <h3>License inspection</h3>
-
-<%= link_to "Request an inspection", new_address_inspection_path(@address, source: 'Business license', description: @business.name, contact_ids: @business.contacts.first.id), class: "btn btn-primary", data: { turbo: false } %>
-
+<% if @business.contacts.present? %>
+  <%= link_to "Request an inspection", new_address_inspection_path(@address, source: 'Business license', description: @business.name, contact_ids: @business.contacts.first.id), class: "btn btn-primary", data: { turbo: false } %>
+<% else %>
+  <%= link_to "Request an inspection", new_address_inspection_path(@address, source: 'Business license', description: @business.name), class: "btn btn-primary", data: { turbo: false } %>
+<% end %>

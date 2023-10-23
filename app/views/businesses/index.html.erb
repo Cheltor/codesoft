@@ -28,8 +28,8 @@
     <tbody>
       <% @businesses.each do |business| %>
         <tr>
-          <td><%= link_to business.name, address_business_path(business.address, business), class: "btn btn-primary" %></td>
-          <td><%= link_to business.address.combadd, business.address, class: "btn btn-primary" %></td>
+          <td><%= link_to business.name, address_business_path(business.address, business), class: "btn btn-outline-secondary" %></td>
+          <td><%= link_to business.address.combadd, business.address, class: "btn btn-outline-secondary" %></td>
           <td>
             <% if business.phone.present? %>
               <a href="tel:<%= business.phone %>"><%= format_phone_number(business.phone) %></a>
@@ -42,11 +42,11 @@
           </td>
           <td>
             <% if business.website.present? %>
-                <a href="https://<%= business.website %>" target="_blank"><%= business.website %></a>
+                <a href="<%= business.website %>" target="_blank"><%= business.website %></a>
             <% end %>
           </td>
           <td>
-            <%= link_to "Edit", edit_address_business_path(business.address, business), class: "btn btn-primary", data: { turbo: false } %>
+            <%= link_to "Edit", edit_address_business_path(business.address, business), class: "btn btn-outline-secondary", data: { turbo: false } %>
         </td>
         </tr>
       <% end %>

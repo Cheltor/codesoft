@@ -45,17 +45,29 @@
         <br>
         <% if @inspection.contact.present? %>
         <%= generate_pre_inspection_email_link %>
+        <br>
         <% end %>
-        <br>
-                <%= link_to "Schedule inspection", schedule_address_inspection_path(@address, @inspection), class: "btn btn-primary mt-3" %>
-
-        <br>
         <% if @inspection.scheduled_datetime.present? %>
           <br>
           <h3>Scheduled for:</h3>
           <%= @inspection.scheduled_datetime.strftime("%B %d, %Y at %I:%M %p") %>
-        
+        <br>
         <% end %>
+        <% if @inspection.scheduled_datetime.present? %>
+          <%= link_to "Update inspection time", schedule_address_inspection_path(@address, @inspection), class: "btn btn-outline-primary mt-3" %>
+        <% else %>
+          <%= link_to "Schedule inspection", schedule_address_inspection_path(@address, @inspection), class: "btn btn-outline-primary mt-3" %>
+        <% end %>
+                <br>
+                <% if @inspection.confirmed == true && @inspection.scheduled_datetime.present? %>
+                  <br>
+                  <p>Inspection time confirmed with owner or tenant</p>
+                <% elsif @inspection.confirmed == false && @inspection.scheduled_datetime.present? %>
+                  <br>
+                  <p>Inspection time not yet confirmed with owner or tenant</p>
+                <% else %>
+                <% end %>
+
         <% if @attachments.any? %>
         <button type="button" class="btn btn-primary mt-2 mb-2" data-bs-toggle="modal" data-bs-target="#allAttachModal">
           <i class="bi bi-paperclip"></i>

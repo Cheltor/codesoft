@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_19_113516) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_23_212333) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -225,6 +225,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_19_113516) do
     t.string "new_section"
     t.string "new_name"
     t.string "new_description"
+    t.boolean "confirmed", default: false
     t.index ["address_id"], name: "index_inspections_on_address_id"
     t.index ["contact_id"], name: "index_inspections_on_contact_id"
     t.index ["inspector_id"], name: "index_inspections_on_inspector_id"

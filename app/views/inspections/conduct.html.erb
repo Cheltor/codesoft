@@ -19,166 +19,172 @@
   </ol>
 </nav>
 
-<% if @inspection.status.present? %>
-<h1>Edit Inspection</h1>
-<% else %>
-<h1>Conduct Inspection</h1>
-<% end %>
-<%= form_with(model: [@address, @inspection]) do |form| %>
-    <% if @inspection.attachments.attached? %>
-    <div class="field mt-3">
-    <!-- modal for @inspection.attachments -->
-      <button type="button" class="btn btn-primary mt-2 mb-2" data-bs-toggle="modal" data-bs-target="#allAttachModal">
-        <i class="bi bi-paperclip"></i>
-        Application/photos
-      </button>
-    </div>
+
+<div class="row">
+  <div class="col-lg-8">
+    <% if @inspection.status.present? %>
+    <h1>Edit Inspection</h1>
+    <% else %>
+    <h1>Conduct Inspection</h1>
     <% end %>
-  <div class="field mt-3">
-  <!-- submit as  well as add new area -->
-    <%= link_to "New Inspection Area", new_address_inspection_area_path(@address, @inspection), class: "btn btn-outline-primary", data: { turbo: false } %>
-  </div>
-  <!-- if current user is ons -->
-  <% if current_user.ons? %>
-    <div class="form-group mt-3">
-      <%= form.label :inspector_id %>
-      <br>
-      <strong><%= current_user.name %></strong>
-      <%= form.hidden_field :inspector_id, value: current_user.id %>
-    </div>
-  <% elsif current_user.admin? %>
-    <div class="form-group mt-3">
-      <%= form.label :inspector_id %>
-      <%= form.select :inspector_id, options_for_select([["Unassigned", nil]] + User.ons.map { |user| [user.email, user.id] }, @inspection.inspector_id), {}, class: "form-select" %>
-    </div>
-  <% end %>
-  <div class="form-group mt-3">
-    <%= form.label :source %>
-    <br>
-    <strong><%= @inspection.source %></strong>
-  </div>
-  <div class="field mt-3">
-    <label>Notes</label>
-    <%= form.text_area :notes_area_1, value: @inspection.notes_area_1, class: "form-control" %>
-  </div>
-  <div class="field mt-3">
-    <label>Photos</label>
-    <%= form.file_field :extphotos, multiple: true, class: "form-control" %>
-    <% if @inspection.extphotos.attached? %>
-      <div>
-        <strong>Uploaded Files:</strong>
-        <% @inspection.extphotos.each do |attachment| %>
-          <%= attachment.filename %><br>
+    <%= form_with(model: [@address, @inspection]) do |form| %>
+        <% if @inspection.attachments.attached? %>
+        <div class="field mt-3">
+        <!-- modal for @inspection.attachments -->
+          <button type="button" class="btn btn-primary mt-2 mb-2" data-bs-toggle="modal" data-bs-target="#allAttachModal">
+            <i class="bi bi-paperclip"></i>
+            Application/photos
+          </button>
+        </div>
+        <% end %>
+      <div class="field mt-3">
+      <!-- submit as  well as add new area -->
+        <%= link_to "New Inspection Area", new_address_inspection_area_path(@address, @inspection), class: "btn btn-outline-primary", data: { turbo: false } %>
+      </div>
+      <!-- if current user is ons -->
+      <% if current_user.ons? %>
+        <div class="form-group mt-3">
+          <%= form.label :inspector_id %>
+          <br>
+          <strong><%= current_user.name %></strong>
+          <%= form.hidden_field :inspector_id, value: current_user.id %>
+        </div>
+      <% elsif current_user.admin? %>
+        <div class="form-group mt-3">
+          <%= form.label :inspector_id %>
+          <%= form.select :inspector_id, options_for_select([["Unassigned", nil]] + User.ons.map { |user| [user.email, user.id] }, @inspection.inspector_id), {}, class: "form-select" %>
+        </div>
+      <% end %>
+      <div class="form-group mt-3">
+        <%= form.label :source %>
+        <br>
+        <strong><%= @inspection.source %></strong>
+      </div>
+      <div class="field mt-3">
+        <label>Notes</label>
+        <%= form.text_area :notes_area_1, value: @inspection.notes_area_1, class: "form-control" %>
+      </div>
+      <div class="field mt-3">
+        <label>Photos</label>
+        <%= form.file_field :extphotos, multiple: true, class: "form-control" %>
+        <% if @inspection.extphotos.attached? %>
+          <div>
+            <strong>Uploaded Files:</strong>
+            <% @inspection.extphotos.each do |attachment| %>
+              <%= attachment.filename %><br>
+            <% end %>
+          </div>
         <% end %>
       </div>
-    <% end %>
-  </div>
 
-  <% if @inspection.areas.present? %>
-  <br>
-    <h3>Areas</h3>
-    <% @inspection.areas.each do |area| %>
-      <div class="accordion accordion-flush" id="accordionFlush<%= area.id %>">
-        <div class="accordion-item">
-          <h2 class="accordion-header" id="flush-heading<%= area.id %>">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse<%= area.id %>" aria-expanded="false" aria-controls="flush-collapse<%= area.id %>">
-              <%= area.name %>
-            </button>
-          </h2>
-          <div id="flush-collapse<%= area.id %>" class="accordion-collapse collapse" aria-labelledby="flush-heading<%= area.id %>" data-bs-parent="#accordionFlush<%= area.id %>">
-            <div class="accordion-body">
-              <h5><strong>Notes: </strong><%= area.notes %></h5>
-              <br>
-              <% if area.photos.attached? %>
-                <div>
-                  <strong>Uploaded Files:</strong>
-                  <% area.photos.each do |attachment| %>
-                    <%= attachment.filename %><br>
+      <% if @inspection.areas.present? %>
+      <br>
+        <h3>Areas</h3>
+        <% @inspection.areas.each do |area| %>
+          <div class="accordion accordion-flush" id="accordionFlush<%= area.id %>">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="flush-heading<%= area.id %>">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse<%= area.id %>" aria-expanded="false" aria-controls="flush-collapse<%= area.id %>">
+                  <%= area.name %>
+                </button>
+              </h2>
+              <div id="flush-collapse<%= area.id %>" class="accordion-collapse collapse" aria-labelledby="flush-heading<%= area.id %>" data-bs-parent="#accordionFlush<%= area.id %>">
+                <div class="accordion-body">
+                  <h5><strong>Notes: </strong><%= area.notes %></h5>
+                  <br>
+                  <% if area.photos.attached? %>
+                    <div>
+                      <strong>Uploaded Files:</strong>
+                      <% area.photos.each do |attachment| %>
+                        <%= attachment.filename %><br>
+                      <% end %>
+                    </div>
                   <% end %>
-                </div>
-              <% end %>
-              <br>
-              <% if area.codes.present? %>
-                  
-                <p><strong>Codes:</strong></p>
-                  <ul>
-                    <% area.codes.each do |code| %>
-                      <li><%= code.name %></li>
+                  <br>
+                  <% if area.codes.present? %>
+                      
+                    <p><strong>Codes:</strong></p>
+                      <ul>
+                        <% area.codes.each do |code| %>
+                          <li><%= code.name %></li>
+                        <% end %>
+                      </ul>
                     <% end %>
-                  </ul>
-                <% end %>
-                <br>
-                <%= link_to "Edit #{area.name}", edit_address_inspection_area_path(@address, @inspection, area), class: "btn btn-primary", data: { turbo: false } %>
+                    <br>
+                    <%= link_to "Edit #{area.name}", edit_address_inspection_area_path(@address, @inspection, area), class: "btn btn-primary", data: { turbo: false } %>
+                </div>
+              </div>
             </div>
           </div>
+        <% end %>
+      <% end %>
+
+    <% if @inspection.status.present? %>
+      <div class="div">
+        <label><strong>Outcome</strong></label>
+        <% if @inspection.status == "Satisfactory" %>
+          <h2><span class="badge bg-success"><%= @inspection.status %></span></h2>
+        <% else %>
+          <h2><span class="badge bg-danger"><%= @inspection.status %></span></h2>
+        <% end %>
+      </div>
+    <br>
+    <% else %>
+      <div class="field mt-3">
+        <label><strong>Outcome</strong></label>
+        <%= form.select :status, options_for_select(["Satisfactory", "Unsatisfactory", "Missed"], @inspection.status), {}, class: "form-select" %>
+      </div>
+      <br>
+    <% end %>
+
+
+          <div class="form-group">
+          <strong><%= form.label :codes %></strong>
+          <!-- <em><p>If you don't see the code you're looking for, add the code using this button:   <button type="button" class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#myDiv">
+        New Code
+      </button></p></em> -->
+
+      <select id="code-select" multiple name="inspection[code_ids][]" class="choices-select">
+        <% Code.all.each do |code| %>
+          <% selected = @inspection.code_ids.include?(code.id) ? 'selected' : '' %>
+          <option value="<%= code.id %>" <%= selected %>>
+            <%= code.chapter %>-<%= code.section.split("-").last %> <%= code.name %>
+          </option>
+        <% end %>
+      </select>
+    <div id="myDiv" class="collapse">
+      <!-- Content to be displayed/hidden goes here -->
+      <h4>New Code</h4>
+      <br>
+      <div>
+        <label>Chapter</label>
+        <%= form.text_field :new_chapter, class:"form-control" %>
+      </div>
+    <br>
+      <div>
+        <label>Section</label>
+        <%= form.text_field :new_section, class:"form-control" %>
+      </div>
+    <br>
+      <div>
+        <label>Name</label>
+        <%= form.text_field :new_name, class:"form-control" %>
+      </div>
+    <br>
+      <div>
+        <label>Description</label>
+        <%= form.text_area :new_description, class:"form-control" %>
+      </div>
+    </div>
+
         </div>
+      <div class="actions mt-3">
+        <%= form.submit "Submit", class: "btn btn-primary" %>
       </div>
     <% end %>
-  <% end %>
-
-<% if @inspection.status.present? %>
-  <div class="div">
-    <label><strong>Outcome</strong></label>
-    <% if @inspection.status == "Satisfactory" %>
-      <h2><span class="badge bg-success"><%= @inspection.status %></span></h2>
-    <% else %>
-      <h2><span class="badge bg-danger"><%= @inspection.status %></span></h2>
-    <% end %>
-  </div>
-<br>
-<% else %>
-  <div class="field mt-3">
-    <label><strong>Outcome</strong></label>
-    <%= form.select :status, options_for_select(["Satisfactory", "Unsatisfactory", "Missed"], @inspection.status), {}, class: "form-select" %>
-  </div>
-  <br>
-<% end %>
-
-
-      <div class="form-group">
-      <strong><%= form.label :codes %></strong>
-      <!-- <em><p>If you don't see the code you're looking for, add the code using this button:   <button type="button" class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#myDiv">
-    New Code
-  </button></p></em> -->
-
-  <select id="code-select" multiple name="inspection[code_ids][]" class="choices-select">
-    <% Code.all.each do |code| %>
-      <% selected = @inspection.code_ids.include?(code.id) ? 'selected' : '' %>
-      <option value="<%= code.id %>" <%= selected %>>
-        <%= code.chapter %>-<%= code.section.split("-").last %> <%= code.name %>
-      </option>
-    <% end %>
-  </select>
-<div id="myDiv" class="collapse">
-  <!-- Content to be displayed/hidden goes here -->
-  <h4>New Code</h4>
-  <br>
-  <div>
-    <label>Chapter</label>
-    <%= form.text_field :new_chapter, class:"form-control" %>
-  </div>
-<br>
-  <div>
-    <label>Section</label>
-    <%= form.text_field :new_section, class:"form-control" %>
-  </div>
-<br>
-  <div>
-    <label>Name</label>
-    <%= form.text_field :new_name, class:"form-control" %>
-  </div>
-<br>
-  <div>
-    <label>Description</label>
-    <%= form.text_area :new_description, class:"form-control" %>
   </div>
 </div>
 
-    </div>
-  <div class="actions mt-3">
-    <%= form.submit "Submit", class: "btn btn-primary" %>
-  </div>
-<% end %>
 
     <!-- Attachment Modal -->
     <div class="modal fade custom-modal-lg" id="allAttachModal">

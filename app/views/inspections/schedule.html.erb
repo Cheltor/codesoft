@@ -31,6 +31,17 @@
           <p class="text-danger"><%= @inspection.errors[:scheduled_datetime].join(', ') %></p>
         <% end %>
       </div>
+      
+      <div class="field mt-3">
+        <label>Inspection time confirmed with owner or tenant?</label>
+        <br>
+        <br>
+        <%= form.radio_button :confirmed, true %> Yes
+        <%= form.radio_button :confirmed, false %> No
+        <% if @inspection.errors[:confirmed].any? %>
+          <p class="text-danger"><%= @inspection.errors[:confirmed].join(', ') %></p>
+        <% end %>
+      </div>
 
       <div class="actions mt-3">
         <%= form.submit "Submit", class: "btn btn-primary" %>
@@ -38,28 +49,32 @@
 
     </div>
     <div class="col-md-8">
-      <%# list of scheduled inspections %>
-      <% if @scheduled_inspections.present? %>
-        <h3>Scheduled Inspections</h3>
-        <table class="table table-striped">
-          <thead class="thead-light">
-            <tr>
-              <th scope="col">Address</th>
-              <th scope="col">Scheduled Date</th>
-              <th scope="col">Scheduled Time</th>
-            </tr>
-          </thead>
-          <tbody>
-            <% @scheduled_inspections.each do |inspection| %>
-              <tr>
-                <td><%= inspection.address.combadd %></td>
-                <td><%= inspection.scheduled_datetime.strftime("%m/%d/%Y") %></td>
-                <td><%= inspection.scheduled_datetime.strftime("%I:%M %p") %></td>
-              </tr>
-            <% end %>
-          </tbody>
-        </table>
-      <% end %>
+      <div class="card">
+        <div class="card-body">
+          <%# list of scheduled inspections %>
+          <% if @scheduled_inspections.present? %>
+            <h3>Previously Scheduled Inspections</h3>
+            <table class="table table-striped">
+              <thead class="thead-light">
+                <tr>
+                  <th scope="col">Address</th>
+                  <th scope="col">Scheduled Date</th>
+                  <th scope="col">Scheduled Time</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% @scheduled_inspections.each do |inspection| %>
+                  <tr>
+                    <td><%= inspection.address.combadd %></td>
+                    <td><%= inspection.scheduled_datetime.strftime("%m/%d/%Y") %></td>
+                    <td><%= inspection.scheduled_datetime.strftime("%I:%M %p") %></td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          <% end %>
+        </div>
+      </div>
     </div>
   </div>
 

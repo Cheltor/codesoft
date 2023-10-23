@@ -4,6 +4,8 @@ class Business < ApplicationRecord
   has_many :business_contacts
   has_many :contacts, through: :business_contacts
 
+  before_validation :normalize_website
+
   def self.ransackable_attributes(auth_object = nil)
     ["name", "created_at", "updated_at"]
   end
@@ -14,5 +16,11 @@ class Business < ApplicationRecord
 
   def to_s
     name
+  end
+
+  private
+
+  def normalize_website
+    self.website = "http://#{website}" unless website[/\Ahttp:\/\//] || website[/\Ahttps:\/\//]
   end
 end
