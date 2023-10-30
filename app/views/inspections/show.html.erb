@@ -42,8 +42,20 @@
           Inspection photos
         </button>
         <% end %>
-        <br>
+                  <% if @inspection.description.present? %>
+          <br>
+          <p><strong>Inspection Description:</strong> <%= @inspection.description %></p>
+          <% end %>
+          <br>
+        <p><strong>Inspection Request Was Created:</strong> <%= @inspection.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></p>
         <% if @inspection.contact.present? %>
+          <p><strong>Contact:</strong> <%= link_to @inspection.contact.name, contact_path(@inspection.contact) %></p>
+          <p><strong>Contact Notes:</strong> <%= @inspection.contact.notes %></p>
+          <p><strong>Contact Email:</strong> <%= link_to @inspection.contact.email, "mailto:#{@inspection.contact.email}" %></p>
+          <p><strong>Contact Phone:</strong><a href="tel:<%= @inspection.contact.phone %>"><%= format_phone_number(@inspection.contact.phone) %></a></p>
+        <% end %>
+        <br>
+        <% if @inspection.contact.present? && current_user.ons? %>
         <%= generate_pre_inspection_email_link %>
         <br>
         <% end %>
@@ -76,10 +88,6 @@
         <% end %>
 <br>
 <br>
-          <% if @inspection.description.present? %>
-          <br>
-          <p><strong>Inspection Description:</strong> <%= @inspection.description %></p>
-          <% end %>
 
       </div>
     </div>
@@ -87,22 +95,16 @@
   <div class="col-sm-8">
     <div class="card shadow mb-3">
       <div class="card-body">
-              <p><strong>Inspection Request Was Created:</strong> <%= @inspection.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></p>
-        <% if @inspection.contact.present? %>
-          <p><strong>Contact:</strong> <%= link_to @inspection.contact.name, contact_path(@inspection.contact) %></p>
-          <p><strong>Contact Notes:</strong> <%= @inspection.contact.notes %></p>
-          <p><strong>Contact Email:</strong> <%= link_to @inspection.contact.email, "mailto:#{@inspection.contact.email}" %></p>
-          <p><strong>Contact Phone:</strong><a href="tel:<%= @inspection.contact.phone %>"><%= format_phone_number(@inspection.contact.phone) %></a></p>
-        <% end %>
+
     <% if @inspection.status.present? %>
       <%= link_to "Edit inspection", conduct_address_inspection_path(@address, @inspection), class: "btn btn-outline-primary btn-lg mt-3", data: { turbo: false } %>
     <% else %>
-      <%= link_to "Conduct inspection", conduct_address_inspection_path(@address, @inspection), class: "btn btn-outline-primary btn-lg mt-3", data: { turbo: false } %>
+      <%= link_to "Conduct #{@inspection.source.titleize} inspection", conduct_address_inspection_path(@address, @inspection), class: "btn btn-outline-primary btn-lg mt-3", data: { turbo: false } %>
     <% end %>
     <br>
     <% if @inspection.status.present? %>
     <br>
-    <h1><%= @inspection.source %> Inspection Results</h1>
+    <h1><%= @inspection.source.titleize %> Inspection Results</h1>
     <br>
     <% if @inspection.inspector.present? %>
       <h3>Inspector</h3>
@@ -193,7 +195,7 @@
 </div> 
 <div class="row">
 <div class="col">
-<% if @inspection.status == "Satisfactory" && @inspection.source == "Business License" %>
+<% if @inspection.status == "Satisfactory" && @inspection.source == "Business license" %>
   <button>Print Business License</button>
 <% end %>
 </div>
