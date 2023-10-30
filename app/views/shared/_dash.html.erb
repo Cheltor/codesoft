@@ -93,7 +93,7 @@
 
   <div class="col-xl-6 col-xxl-7">
     <% if @today_inspections.empty? %>
-    <div class="card flex-fill w-100  d-none d-lg-block">
+    <div class="card flex-fill w-100 d-none d-lg-block">
     <% else %>
     <div class="card flex-fill w-100">
     <% end %>
@@ -115,47 +115,48 @@
         <% end %>
       </div>
     </div>
-  </div>
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+      <h3 style="text-align:center">My Priority Addresses</h3>
+      <h5 style="text-align:center">Addresses with current violations, unpaid citations, pending trial citations, or pending inspections</h5>
+        <% if @priority_addresses.empty? %>
+          <p class="pt-5">No priority addresses.</p>
+        <% else %>
+        <div class="table-responsive">
+          <table class="table">
+            <thead>
+              <tr>
+                <th style="text-align:center">Address</th>
+                <th style="text-align:center">Check off for today</th>
+              </tr>
+            </thead>
+            <tbody>
+            <% @priority_addresses.each do |a| %>
+              <tr>
+                <td style="text-align:center">
+                  <%= link_to a.combadd, address_path(a) %>
+                </td>
+                <td style="text-align: center">
+                  <%= button_to mark_reviewed_path(a.id), method: :patch, class: "btn btn-primary", data: { turbolinks: false } do %>
+                    <i class="bi bi-check-lg"></i>
+                  <% end %>
+                </td>
+              </tr>
+            <% end %>
+            </tbody>
+          </table>
+        </div>
+        <% end %>  
+      </div>    
+    </div>
+  </div>    </div>
+
 </div>
 <div class="row">
   <div class="col-xl-12">
     <div class="row">      <!-- list of @priority_addresses -->
-      <div class="card">
-        <div class="card-body">
-          <div class="row">
-          <h3 style="text-align:center">My Priority Addresses</h3>
-          <h5 style="text-align:center">Addresses with current violations, unpaid citations, pending trial citations, or pending inspections</h5>
-            <% if @priority_addresses.empty? %>
-              <p class="pt-5">No priority addresses.</p>
-            <% else %>
-            <div class="table-responsive">
-              <table class="table">
-                <thead>
-                  <tr>
-                    <th style="text-align:center">Address</th>
-                    <th style="text-align:center">Check off for today</th>
-                  </tr>
-                </thead>
-                <tbody>
-                <% @priority_addresses.each do |a| %>
-                  <tr>
-                    <td style="text-align:center">
-                      <%= link_to a.combadd, address_path(a) %>
-                    </td>
-                    <td style="text-align: center">
-                      <%= button_to mark_reviewed_path(a.id), method: :patch, class: "btn btn-primary", data: { turbolinks: false } do %>
-                        <i class="bi bi-check-lg"></i>
-                      <% end %>
-                    </td>
-                  </tr>
-                <% end %>
-                </tbody>
-              </table>
-            </div>
-            <% end %>  
-          </div>    
-        </div>
-      </div>
+
     </div>
   </div>
 </div>
