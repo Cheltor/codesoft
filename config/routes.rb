@@ -66,6 +66,7 @@ Rails.application.routes.draw do
       resources :addresses
     end
   end
-  
+  mount ServiceWorker::Engine => "/service-worker.js"
+
 
 end
