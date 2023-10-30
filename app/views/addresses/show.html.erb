@@ -112,6 +112,11 @@
             All Photos and Attachments
           </button>
           <% end %>
+          <% if @is_priority_address %>
+            <p>This is a priority address.</p>
+          <% else %>
+            <p>This is not a priority address.</p>
+          <% end %>
 
             <%= link_to "Create a Violation Notice/Doorhanger", new_address_violation_path(@address), class: "btn btn-outline-danger btn-lg mt-2", data: { turbo: false } %>
             <br>

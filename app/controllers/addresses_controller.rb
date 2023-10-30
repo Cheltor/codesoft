@@ -8,15 +8,32 @@ class AddressesController < ApplicationController
   end
   
   def show
-      @address = Address.find(params[:id])
-      @address_citations = @address.violations.map(&:citations).flatten
-      @address_photos = (
-                          @address.violations.map(&:photos) + 
-                          @address.comments.map(&:photos) + 
-                          @address_citations.map(&:photos)
-                        ).flatten.sort_by(&:created_at).reverse
+    @address = Address.find(params[:id])
+    @address_citations = @address.violations.map(&:citations).flatten
+    @address_photos = (
+                        @address.violations.map(&:photos) + 
+                        @address.comments.map(&:photos) + 
+                        @address_citations.map(&:photos)
+                      ).flatten.sort_by(&:created_at).reverse
 
-      @timeline_items = (@address.violations + @address.comments + @address_citations + @address.inspections).sort_by(&:created_at).reverse
+    @timeline_items = (@address.violations + @address.comments + @address_citations + @address.inspections).sort_by(&:created_at).reverse
+
+    @address_violations = @address.violations.where(violations: { status: :current })
+                                              .select { |violation| violation.deadline_date <= Date.tomorrow }
+                                              .reject { |violation| violation.citations.where(citations: { status: [:unpaid, "pending trial"] }).any? { |citation| citation.deadline >= Date.tomorrow }}
+                                              .any?
+
+    @address_inspections = @address.inspections.where(status: nil).any?
+
+    # Check if the address has any citations
+    @address_citations_count = @address.violations.map(&:citations).flatten.select { |citation| citation.status.in?([:unpaid, "pending trial"]) }.count > 0
+
+    # Check if the address's updated_at is not today
+    not_updated_today = !@address.updated_at.today?
+
+    # Combine these checks
+    @is_priority_address = (@address_violations ||@address_citations_count ||@address_inspections ) && not_updated_today
+
   end
 
   def violist
