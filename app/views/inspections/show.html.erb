@@ -28,8 +28,8 @@
       <div class="card-body">
         <%# address information %>
         <h2><%= @inspection.address.combadd %>
-        <% if @unit.present? %>
-          <small>Unit <%= @unit.number.upcase %></small>
+        <% if @inspection.unit.present? %>
+          <small>Unit <%= @inspection.unit.number.upcase %></small>
         <% end %>
         </h2>
         <%# link to google maps from icon %>

@@ -4,11 +4,7 @@
   <%# if show_address_info %>
   <!-- <td><%= link_to inspection.address.combadd.titleize, address_path(inspection.address), class:"btn btn-secondary" %></td> -->
   <%# end %>
-  <% if inspection.unit.present? %>
-    <td><%= link_to "#{inspection.address.combadd} - #{inspection.unit.number}", address_unit_path(inspection.address, inspection.unit) %></td>
-    <% else %>
-  <td><%= link_to inspection.address.combadd, address_path(inspection.address) %></td>
-  <% end %>
+  <td><%= inspection.created_at.strftime("%B %d, %Y %I:%M %p") %></td>
   <td><%= inspection.source %></td>
   <% if inspection.status.present? %>
         <% if inspection.status == "Satisfactory" %>

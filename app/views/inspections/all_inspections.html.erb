@@ -1,4 +1,7 @@
 <!-- list all inspections -->
+<% if current_user.admin? %>
+  <%= link_to "Unassigned", all_inspections_path(inspector: "Unassigned"), class:"btn btn-secondary" %>
+<% end %>
 <div class="row">
   <div class="col">
     <div class="card">
@@ -10,7 +13,7 @@
         <table id="example2" class="table table-bordered table-hover">
           <thead>
             <tr>
-            <th scope="col">Created At</th>
+            <th scope="col">Address</th>
             <th scope="col">Source</th>
             <th scope="col">Status</th>
             <th scope="col">Scheduled Date</th>

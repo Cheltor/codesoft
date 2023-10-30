@@ -1,123 +1,164 @@
 <!-- app/views/contacts/show.html.erb -->
+
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">
+      <%= link_to "Home", root_path %>
+    </a></li>
+    <li class="breadcrumb-item"><a href="#">
+    <%= link_to contacts_path, class: "breadcrumb-item" do %>
+      Contacts
+    <% end %>
+    </a></li>
+  </ol>
+</nav>
+<% if @contact.hidden == true %>
+  <div class="alert alert-danger" role="alert">
+    This contact has been deleted. If this was a mistake, please contact Ryan.
+  </div>
+<% else %>
 <div class="row">
   <div class="col-md-6">
-    <p>
-      <strong>Name:</strong>
-      <%= @contact.name %>
-    </p>
+    <div class="card">
+      <div class="card-body">
+        <h3>
+          <strong>Name:</strong>
+          <%= @contact.name %>
+        </h3>
 
-    <p>
-      <strong>Email:</strong>
-      <%= link_to @contact.email, "mailto:#{@contact.email}" %>
-    </p>
+        <p>
+          <strong>Email:</strong>
+          <%= link_to @contact.email, "mailto:#{@contact.email}" %>
+        </p>
 
-    <p>
-      <strong>Phone:</strong>
-      <a href="tel:<%= @contact.phone %>"><%= format_phone_number(@contact.phone) %></a>
-    </p>
+        <p>
+          <strong>Phone:</strong>
+          <a href="tel:<%= @contact.phone %>"><%= format_phone_number(@contact.phone) %></a>
+        </p>
 
-    <p>
-      <strong>Notes:</strong>
-      <%= @contact.notes %>
-    </p>
-    <%= link_to 'Edit', edit_contact_path(@contact), class: "btn btn-secondary" %> |
-    <%= link_to 'Back', contacts_path, class: "btn btn-secondary"  %>
-    <br>
-    <br>
+        <p>
+          <strong>Notes:</strong>
+          <%= @contact.notes %>
+        </p>
+        <%= link_to 'Edit', edit_contact_path(@contact), class: "btn btn-secondary" %>
+        <%= button_to 'Delete', hide_contact_path(@contact), method: :patch, class: 'btn btn-outline-danger mt-1', data: { confirm: 'Are you sure you want to delete this contact?' } %>  
+      </div>
+    </div>
+
   </div>
   <div class="col-md-6">
-    <% if @contact.businesses.any? %>
-    <h3>Businesses (<%= @contact.businesses.count %>)</h3>
-      <!-- for loop to show all businesses associated with this contact -->
-      <ul>
-      <% @contact.businesses.each do |business| %>
-        <li>
-        <%= link_to business.name, address_business_path(business.address, business) %> 
+    <div class="card">
+      <div class="card-body">
+        <% if @contact.businesses.any? %>
+        <h3>Businesses (<%= @contact.businesses.count %>)</h3>
+          <!-- for loop to show all businesses associated with this contact -->
+          <ul>
+          <% @contact.businesses.each do |business| %>
+            <li>
+            <%= link_to business.name, address_business_path(business.address, business) %> 
 
-        <% if business.address.present? %>
-          - <%= link_to business.address.combadd, business.address %>
-        <% end %>
-        </li>
-      <% end %>
-      </ul>
-    <% end %>
-  </div>
-</div>
-
-
-<div class="row">
-  <div class="col-md-6">
-    <h3>New Comment</h3>
-
-    <% if user_signed_in? %>
-      <%= form_for([@contact, @contact.contact_comments.build]) do |f| %>
-        <%= f.text_area :comment, class: "form-control" %>
-        <br>
-        <%= f.submit class: "btn btn-primary" %>
-      <% end %>
-    <% end %>
-
-    <!-- show any associated comments -->
-    <% if @contact.contact_comments.exists? %>
-    <br>
-      <h3>Comments (<%= @contact.contact_comments.count %>)</h3>
-      <table class="table table-striped">
-        <thead>
-          <tr>
-            <th>Comment</th>
-            <th>Comment Date</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <% @contact.contact_comments.each do |comment| %>
-            <tr>
-              <td><%= comment.comment %></td>
-              <td><%= comment.created_at&.in_time_zone("Eastern Time (US & Canada)")&.strftime("%B %d, %Y %I:%M %p") %></td>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
-    <% end %>
-  </div>
-  <div class="col-md-6">
-    <!-- show any associated inspections -->
-    <% if @contact.inspections.any? %>
-      <h3>Inspections (<%= @contact.inspections.count %>)</h3>
-      <table class="table table-striped">
-        <thead>
-          <tr>
-            <th>Inspection Date</th>
-            <th>Inspection Type</th>
-            <th>Status</th>
-            <th colspan="1"></th>
-          </tr>
-        </thead>
-
-        <tbody>
-            <% @contact.inspections.order(created_at: :desc).each do |inspection| %>
-            <tr>
-            <% if inspection.scheduled_datetime == nil %>
-              <td><%= link_to "Not scheduled", address_inspection_path(inspection.address, inspection) %></td>
-            <% else %>
-              <td><%= link_to inspection.scheduled_datetime.strftime("%B %d, %Y %I:%M %p"), address_inspection_path(inspection.address, inspection) %></td>
+            <% if business.address.present? %>
+              - <%= link_to business.address.combadd, business.address %>
             <% end %>
-              <td><%= inspection.source %></td>
-              <td>
-                <% if inspection.status == nil %>
-                  Pending
-                <% elsif inspection.status != nil %>
-                  <%= inspection.status %>
-                <% end %>
-              </td>
-              <td><%= link_to "Show", address_inspection_path(inspection.address, inspection), class: "btn btn-secondary" %></td>
-            </tr>
+            </li>
           <% end %>
-        </tbody>
-      </table>
-    <% end %>
+          </ul>
+          <% else %>
+            <h3>No businesses associated with this contact</h3>
+        <% end %>
+      </div>
+    </div>
+
   </div>
 </div>
+
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-body">
+        <h3>New Comment</h3>
+
+        <% if user_signed_in? %>
+          <%= form_for([@contact, @contact.contact_comments.build]) do |f| %>
+            <%= f.text_area :comment, class: "form-control" %>
+            <br>
+            <%= f.submit class: "btn btn-primary" %>
+          <% end %>
+        <% end %>
+
+        <!-- show any associated comments -->
+        <% if @contact.contact_comments.exists? %>
+        <br>
+          <h3>Comments (<%= @contact.contact_comments.count %>)</h3>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Comment</th>
+                <th>Comment Date</th>
+                <th>Commenter</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <% @contact.contact_comments.order(created_at: :desc).each do |comment| %>
+                <tr>
+                  <td><%= comment.comment %></td>
+                  <td><%= comment.created_at&.in_time_zone("Eastern Time (US & Canada)")&.strftime("%B %d, %Y %I:%M %p") %></td>
+                  <td><%= comment.user.email %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        <% end %>      
+      </div>  
+    </div>
+
+  </div>
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-body">
+        <!-- show any associated inspections -->
+        <% if @contact.inspections.any? %>
+          <h3>Inspections (<%= @contact.inspections.count %>)</h3>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Inspection Date</th>
+                <th>Inspection Type</th>
+                <th>Status</th>
+                <th colspan="1"></th>
+              </tr>
+            </thead>
+
+            <tbody>
+                <% @contact.inspections.order(created_at: :desc).each do |inspection| %>
+                <tr>
+                <% if inspection.scheduled_datetime == nil %>
+                  <td><%= link_to "Not scheduled", address_inspection_path(inspection.address, inspection) %></td>
+                <% else %>
+                  <td><%= inspection.scheduled_datetime.strftime("%B %d, %Y %I:%M %p") %></td>
+                <% end %>
+                  <td><%= inspection.source %></td>
+                  <td>
+                    <% if inspection.status == nil %>
+                      Pending
+                    <% elsif inspection.status != nil %>
+                      <%= inspection.status %>
+                    <% end %>
+                  </td>
+                  <td><%= link_to "Show", address_inspection_path(inspection.address, inspection), class: "btn btn-secondary" %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        <% end %>        
+      </div>
+    </div>
+
+  </div>
+</div>
+<% end %>
 
 
 

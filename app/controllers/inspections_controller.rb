@@ -5,6 +5,10 @@ class InspectionsController < ApplicationController
 
   def all_inspections
     @inspections = Inspection.all.where.not(source: "Complaint").order(created_at: :desc)
+    case @inspector
+    when "Unassigned"
+      @inspections = @inspections.where(inspector_id: nil)
+    end
   end
 
   def all_complaints

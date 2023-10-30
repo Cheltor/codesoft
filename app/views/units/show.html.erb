@@ -19,8 +19,8 @@
   </div>
   <div class="col">
     <div class="float-end">
-      <%= link_to "Edit Unit", edit_address_unit_path(@address, @unit), class: "btn btn-primary" %>
-      <%= link_to "Delete Unit", address_unit_path(@address, @unit), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-danger" %>
+      <%= link_to "Edit Unit", edit_address_unit_path(@address, @unit), class: "btn btn-outline-primary" %>
+      <%= link_to "Delete Unit", address_unit_path(@address, @unit), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-outline-danger" %>
     </div>
   </div>
 </div>
@@ -37,8 +37,8 @@
       <a class="nav-item nav-link" href="#" data-bs-toggle="tab" data-bs-target="#citation">
         <i class="bi bi-file-earmark-text-fill"></i> <%= pluralize(@unit.citations.count, "Citation") %>
       </a>
-      <a class="nav-item nav-link disabled" href="#" data-bs-toggle="tab" data-bs-target="#inspection">
-        <i class="bi bi-clipboard-check"></i> <%= pluralize(@address.inspections.count, "Inspection") %>
+      <a class="nav-item nav-link" href="#" data-bs-toggle="tab" data-bs-target="#inspection">
+        <i class="bi bi-clipboard-check"></i> <%= pluralize(@unit.inspections.count, "Inspection") %>
       </a>
     </nav>
 
@@ -105,8 +105,34 @@
     <% end %>
     </div>
       <div class="tab-pane fade" id="inspection">
-        This is the inspection tab.
-    </div>
+        <div style="text-align: center">
+            <%= link_to "Create New Inspection", new_address_inspection_path(@address, unit_id: @unit.id), class: "btn btn-primary btn-lg mt-5", data: { turbo: false } %>
+        </div>
+        <br>
+        <% if @address.inspections.any? %>
+        <div class="table-responsive" style="text-align: center">
+          <table class="table table-striped table-hover">
+            <thead>
+              <tr>
+                <th scope="col">Created At</th>
+                <th scope="col">Source</th>
+                <th scope="col">Status</th>
+                <th scope="col">Scheduled Date</th>
+                <th scope="col">Inspector</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @unit.inspections.order("updated_at DESC").each do |inspection| %>
+                <%= render partial: "shared/inspection_table2", locals: {inspection: inspection} %>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+        <% else %>
+        <p style="text-align: center">No inspections have been created for this address.</p>
+        <% end %>
+      </div>
 
 
   </div>

@@ -11,43 +11,46 @@
     </li>
   </ol>
 </nav>
+<div class="card">
+  <div class="card-body">
+    <h2>
+      <%= @business.name %>
+    </h2>
 
-<h2>
-  <%= @business.name %>
-</h2>
+    <p>
+      <strong><label>Phone:</label></strong>
+                <% if @business.phone.present? %>
+                  <a href="tel:<%= @business.phone %>"><%= format_phone_number(@business.phone) %></a>
+                <% end %>
+    </p>
+    <p>
+      <strong><label>Email:</label></strong>
+                <% if @business.email.present? %>
+                  <%= link_to @business.email, "mailto:#{@business.email}" %>
+                <% end %></p>
+    <p>
+      <strong><label>Website:</label></strong>
+                <% if @business.website.present? %>
+                    <a href="<%= @business.website %>" target="_blank"><%= @business.website %></a>
+                <% end %></p>
 
-<p>
-  <strong><label>Phone:</label></strong>
-            <% if @business.phone.present? %>
-              <a href="tel:<%= @business.phone %>"><%= format_phone_number(@business.phone) %></a>
-            <% end %>
-</p>
-<p>
-  <strong><label>Email:</label></strong>
-            <% if @business.email.present? %>
-              <%= link_to @business.email, "mailto:#{@business.email}" %>
-            <% end %></p>
-<p>
-  <strong><label>Website:</label></strong>
-            <% if @business.website.present? %>
-                <a href="<%= @business.website %>" target="_blank"><%= @business.website %></a>
-            <% end %></p>
+    <p>
+      <strong><label>Contact:</label></strong>
+                <% if @business.contacts.any? %>
+                  <% @business.contacts.each do |contact| %>
+                    <%= link_to contact.full_name_and_email, contact_path(contact) %><br>
+                  <% end %>
+                <% end %>
+    </p>
+    <%= link_to "Edit", edit_address_business_path(@business.address, @business), class: "btn btn-outline-secondary", data: { turbo: false } %>
 
-<p>
-  <strong><label>Contact:</label></strong>
-            <% if @business.contacts.any? %>
-              <% @business.contacts.each do |contact| %>
-                <%= link_to contact.full_name_and_email, contact_path(contact) %><br>
-              <% end %>
-            <% end %>
-</p>
-<%= link_to "Edit", edit_address_business_path(@business.address, @business), class: "btn btn-primary", data: { turbo: false } %>
-
-<br>
-<br>
-<h3>License inspection</h3>
-<% if @business.contacts.present? %>
-  <%= link_to "Request an inspection", new_address_inspection_path(@address, source: 'Business license', description: @business.name, contact_ids: @business.contacts.first.id), class: "btn btn-primary", data: { turbo: false } %>
-<% else %>
-  <%= link_to "Request an inspection", new_address_inspection_path(@address, source: 'Business license', description: @business.name), class: "btn btn-primary", data: { turbo: false } %>
-<% end %>
+    <br>
+    <br>
+    <h3>License inspection</h3>
+    <% if @business.contacts.present? %>
+      <%= link_to "Request an inspection", new_address_inspection_path(@address, source: 'Business license', description: @business.name, contact_ids: @business.contacts.first.id), class: "btn btn-outline-primary", data: { turbo: false } %>
+    <% else %>
+      <%= link_to "Request an inspection", new_address_inspection_path(@address, source: 'Business license', description: @business.name), class: "btn btn-outline-primary", data: { turbo: false } %>
+    <% end %>
+  </div>
+</div>
