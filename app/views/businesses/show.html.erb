@@ -48,9 +48,43 @@
     <br>
     <h3>License inspection</h3>
     <% if @business.contacts.present? %>
-      <%= link_to "Request an inspection", new_address_inspection_path(@address, source: 'Business license', description: @business.name, contact_ids: @business.contacts.first.id), class: "btn btn-outline-primary", data: { turbo: false } %>
+      <%= link_to "Request an inspection", new_address_inspection_path(@address, source: 'Business license', description: @business.name, contact_ids: @business.contacts.first.id, business_id: @business.id), class: "btn btn-outline-primary", data: { turbo: false } %>
     <% else %>
-      <%= link_to "Request an inspection", new_address_inspection_path(@address, source: 'Business license', description: @business.name), class: "btn btn-outline-primary", data: { turbo: false } %>
+      <%= link_to "Request an inspection", new_address_inspection_path(@address, source: 'Business license', description: @business.name, business_id: @business.id), class: "btn btn-outline-primary", data: { turbo: false } %>
+    <% end %>
+    <br>
+    <!-- table of inspections for this business -->
+    <% if @business.inspections.any? %>
+    <br>
+      <h3>Inspections</h3>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Source</th>
+            <th>Scheduled</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @business.inspections.each do |inspection| %>
+            <tr>
+              <td><%= inspection.source %></td>
+              <% if inspection.scheduled_datetime.present? %>
+                <td><%= inspection.scheduled_datetime.strftime("%m/%d/%Y %I:%M %p") %></td>
+              <% else %>
+                <td>Not scheduled</td>
+              <% end %>
+              <% if inspection.status == nil %>
+                <td>Pending</td>
+              <% else %>
+              <td><%= inspection.status %></td>
+              <% end %>
+              <td><%= link_to "View", address_inspection_path(inspection.address, inspection) %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
     <% end %>
   </div>
 </div>

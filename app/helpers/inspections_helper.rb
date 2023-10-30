@@ -83,4 +83,11 @@ module InspectionsHelper
       "Inspection result email"
     end
   end
+
+  def business_options(businesses)
+    options = []
+    options << ["No Business", nil]
+    options += businesses.pluck(:name, :id)
+    options_for_select(options)
+  end
 end

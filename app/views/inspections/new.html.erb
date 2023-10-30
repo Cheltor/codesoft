@@ -46,6 +46,13 @@
     <%= form.select :unit_id, options_for_select(unit_options(@address.units), nil), {prompt: "Select Unit or Building"}, class: "form-select" %>
     <% end %>
   </div>
+
+  <% if @address.businesses.exists? || @address.units.joins(:businesses).exists? %>
+  <div class="field mt-3">
+    <label>Select if the inspection is for a business in the building</label>
+    <%= form.select :business_id, options_for_select(business_options(@address.businesses), nil), {prompt: "Select Business"}, class: "form-select" %>
+  </div>
+  <% end %>
   
   <div class="field mt-3">
     <%= form.label :scheduled_datetime %>

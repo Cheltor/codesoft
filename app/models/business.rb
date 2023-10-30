@@ -3,6 +3,7 @@ class Business < ApplicationRecord
   belongs_to :unit, optional: true
   has_many :business_contacts
   has_many :contacts, through: :business_contacts
+  has_many :inspections
 
   before_validation :normalize_website
 

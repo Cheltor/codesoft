@@ -13,6 +13,7 @@ class Inspection < ApplicationRecord
   has_many :codes, through: :inspection_codes
   belongs_to :contact, optional: true
   has_many :areas, dependent: :destroy
+  belongs_to :business, optional: true
 
 
   private
