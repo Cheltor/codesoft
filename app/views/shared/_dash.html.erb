@@ -209,7 +209,8 @@
         <p class="card-text">
           To find a list of all businesses, click the businesses button below. To add a new business, click the "Add New Business" button on an address page.
         </p>
-        <%= link_to "Contacts", contacts_path, class: "btn btn-secondary" %>
+        <%= link_to "Businesses", businesses_path, class: "btn btn-secondary" %>
+        <%= link_to "Add New Business", new_business_path, class: "btn btn-secondary", data: { turbo: false } %>
       </div>
     </div>
   </div>

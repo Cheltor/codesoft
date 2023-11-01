@@ -27,7 +27,7 @@ Rails.application.routes.draw do
       end
       resources :areas
     end
-    resources :businesses, except: [:index]
+    resources :businesses, except: [:index, :new_business]
     member do
       get 'manage_contacts'
       post 'manage_contacts'
@@ -45,6 +45,8 @@ Rails.application.routes.draw do
   get 'businesses' => 'businesses#index'
   patch 'mark_reviewed/:id' => 'static#mark_reviewed', as: 'mark_reviewed'
   get 'design_test' => 'static#design_test'
+  get 'new_business' => 'businesses#new_business'
+  post 'new_business' => 'businesses#create_business'
 
   resources :users, only: [:index, :show, :edit, :update]
 

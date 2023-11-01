@@ -97,12 +97,14 @@
 
 
   <div class="form-group mt-3">
-    <%= form.label :inspector_id %>
     <% if current_user.role == "ons" %>
+        <%= form.label :inspector_id %>
       <strong><%= current_user.name %></strong>
       <%= form.hidden_field :inspector_id, value: current_user.id %>
-    <% else %>
+    <% elsif current_user.role == "admin" %>
+        <%= form.label :inspector_id %>
       <%= form.select :inspector_id, options_for_select([["Unassigned", nil]] + User.ons.map { |user| [user.email, user.id] }), {}, class: "form-select" %>
+      <% else %>
     <% end %>
   </div>
   <div class="actions mt-3">

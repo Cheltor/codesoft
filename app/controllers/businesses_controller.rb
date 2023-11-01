@@ -1,5 +1,5 @@
 class BusinessesController < ApplicationController
-  layout 'choices', only: [:new, :edit]
+  layout 'choices', only: [:new, :edit, :new_business]
 
 
   def index
@@ -15,6 +15,20 @@ class BusinessesController < ApplicationController
   def new
     @address = Address.find(params[:address_id])
     @business = Business.new
+  end
+
+  def new_business
+    @business = Business.new
+  end
+
+  def create_business
+    @business = Business.new(business_params)
+    if @business.save
+      flash[:success] = 'Business was successfully created.'
+      redirect_to businesses_path # You may want to adjust the redirection path
+    else
+      render :new_business
+    end
   end
 
   def create
