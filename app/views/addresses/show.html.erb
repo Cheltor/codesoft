@@ -112,14 +112,15 @@
             All Photos and Attachments
           </button>
           <% end %>
-          <% if @is_priority_address %>
-            <%= button_to mark_reviewed_path(@address.id), method: :patch, class: "btn btn-outline-primary mt-2", data: { turbolinks: false } do %>
-              Mark as Reviewed <i class="bi bi-check-lg"></i>
+          <% if current_user.ons? %>
+            <% if @is_priority_address %>
+              <%= button_to mark_reviewed_path(@address.id), method: :patch, class: "btn btn-outline-primary mt-2", data: { turbolinks: false } do %>
+                Mark as Reviewed <i class="bi bi-check-lg"></i>
+              <% end %>
+            <% else %>
+              <p>This is not a priority address.</p>
             <% end %>
-          <% else %>
-            <p>This is not a priority address.</p>
           <% end %>
-
             <%= link_to "Create a Violation Notice/Doorhanger", new_address_violation_path(@address), class: "btn btn-outline-danger btn-lg mt-2", data: { turbo: false } %>
             <br>
             <%= link_to "Create New Inspection Request", new_address_inspection_path(@address), class: "btn btn-outline-info btn-lg mt-2", data: { turbo: false } %>
