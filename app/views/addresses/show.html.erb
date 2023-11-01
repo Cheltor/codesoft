@@ -53,8 +53,8 @@
     <% end %>
 
 
-    <!-- add associated contacts 
-    <%= link_to 'Manage Contacts', manage_contacts_address_path(@address), class: "btn btn-secondary mt-2 mb-3", data: { turbo: false } %>-->
+    <!-- add associated contacts -->
+    <%= link_to 'Manage Contacts', manage_contacts_address_path(@address), class: "btn btn-secondary mt-2 mb-3", data: { turbo: false } %>
 
         <% if @address.contacts.present? %>
         <div class="accordion mt-2 mb-2" id="accordionExample">

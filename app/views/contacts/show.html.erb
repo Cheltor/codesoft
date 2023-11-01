@@ -50,7 +50,7 @@
     <div class="card">
       <div class="card-body">
         <% if @contact.businesses.any? %>
-        <h3>Businesses (<%= @contact.businesses.count %>)</h3>
+          <h3>Businesses (<%= @contact.businesses.count %>)</h3>
           <!-- for loop to show all businesses associated with this contact -->
           <ul>
           <% @contact.businesses.each do |business| %>
@@ -65,6 +65,19 @@
           </ul>
           <% else %>
             <h3>No businesses associated with this contact</h3>
+        <% end %>
+        <% if @contact.addresses.any? %>
+          <h3>Addresses (<%= @contact.addresses.count %>)</h3>
+          <!-- for loop to show all addresses associated with this contact -->
+          <ul>
+          <% @contact.addresses.each do |address| %>
+            <li>
+            <%= link_to address.combadd, address %> 
+            </li>
+          <% end %>
+          </ul>
+          <% else %>
+            <h3>No addresses associated with this contact</h3>
         <% end %>
       </div>
     </div>
@@ -152,6 +165,8 @@
               <% end %>
             </tbody>
           </table>
+        <% else %>
+          <h3>No inspections associated with this contact</h3>
         <% end %>        
       </div>
     </div>

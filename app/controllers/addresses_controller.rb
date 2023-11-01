@@ -108,12 +108,13 @@ class AddressesController < ApplicationController
     if request.post?
       Rails.logger.debug("Received a POST request to manage_contacts")
       
-      if params[:address][:contact_id].present?
-        # If a contact is selected from the dropdown, associate it with the address
-        selected_contact = Contact.find(params[:address][:contact_id])
-        unless @address.contacts.include?(selected_contact)
-          @address.contacts << selected_contact
-          Rails.logger.debug("Added selected_contact to the address")
+      if params[:address][:contact_ids].present?
+        params[:address][:contact_ids].each do |contact_id|
+          selected_contact = Contact.find(contact_id)
+          unless @address.contacts.include?(selected_contact)
+            @address.contacts << selected_contact
+            Rails.logger.debug("Added selected_contact with ID #{contact_id} to the address")
+          end
         end
       elsif !params[:address][:new_contact_name].blank?
         # If a new contact is being created, check if it already exists

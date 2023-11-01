@@ -1,8 +1,8 @@
 <h1>Currently not functioning properly. Please check back later.</h1>
 
-<!-- <h1>Manage Contacts for <%= @address.combadd %></h1>
+ <h1>Manage Contacts for <%= @address.combadd %></h1>
 
-<!-- Display existing contacts associated with the address 
+<!-- Display existing contacts associated with the address -->
 <h2>Associated Contacts:</h2>
 <% if @address.contacts.empty? %>
   <p>No contacts associated with this address.</p>
@@ -15,7 +15,7 @@
 <% end %>
 
 
-<!-- Form for selecting or creating new contacts 
+<!-- Form for selecting or creating new contacts -->
 <%= form_with(model: @address, url: manage_contacts_address_path(@address), method: :post) do |form| %>
   <h2>Select Existing Contact:</h2>
   <select id="contact-select" multiple name="address[contact_ids][]">
@@ -27,7 +27,7 @@
     <% end %>
   </select>
 
-<!-- 
+ 
   <h2>Create New Contact:</h2>
   <div class="form-group">
     <%= form.label :new_contact_name, 'Name' %>
@@ -46,7 +46,7 @@
     <%= form.submit 'Save Contacts', class: 'btn btn-primary mt-3' %>
   </div>
 <% end %>
--->
+
 
 
 <script>
