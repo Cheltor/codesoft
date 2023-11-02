@@ -39,9 +39,52 @@ class ViolationsController < ApplicationController
     if params[:start_date].present? && params[:end_date].present?
       start_date = Date.parse(params[:start_date])
       end_date = Date.parse(params[:end_date])
-      @violations = Violation.where(created_at: start_date..end_date)
+      @complaint_responses = Inspection.where(created_at: start_date..end_date, source: "Complaint")
+      @warnings = Violation.where(created_at: start_date..end_date, violation_type: "Doorhanger")
+      @violations = Violation.where(created_at: start_date..end_date, violation_type: "Formal Notice")
+      @citations = Citation.where(created_at: start_date..end_date)
+      # Single Family Inspections created in the date range
+      @sf_inspections = Inspection.where(created_at: start_date..end_date, source: "Single Family License")
+      # Single Family Inspections updated in the date range
+      @sf_inspections_updated = Inspection.where(updated_at: start_date..end_date, source: "Single Family License")
+      # Single Family Inspections approved in the date range
+      @sf_inspections_approved = Inspection.where(updated_at: start_date..end_date, source: "Single Family License", status: "Satisfactory")
+      # Multifamily Inspections created in the date range
+      @mf_inspections = Inspection.where(created_at: start_date..end_date, source: "Multifamily License")
+      # Multifamily Inspections updated in the date range
+      @mf_inspections_updated = Inspection.where(updated_at: start_date..end_date, source: "Multifamily License")
+      # Multifamily Inspections approved in the date range
+      @mf_inspections_approved = Inspection.where(updated_at: start_date..end_date, source: "Multifamily License", status: "Satisfactory")
+      # Business License Inspections created in the date range
+      @bl_inspections = Inspection.where(created_at: start_date..end_date, source: "Business license")
+      # Business License Inspections updated in the date range
+      @bl_inspections_updated = Inspection.where(updated_at: start_date..end_date, source: "Business license")
+      # Business License Inspections approved in the date range
+      @bl_inspections_approved = Inspection.where(updated_at: start_date..end_date, source: "Business license", status: "Satisfactory")
+      # Permit Inspections created in the date range
+      @permit_inspections = Inspection.where(created_at: start_date..end_date, source: "Building/Dumpster/POD permit")
+      # Permit Inspections updated in the date range
+      @permit_inspections_updated = Inspection.where(updated_at: start_date..end_date, source: "Building/Dumpster/POD permit")
     else
-      @violations = Violation.where("created_at >= ?", 2.weeks.ago)
+      @complaint_responses = Inspection.where("created_at >= ? AND source = ?", 2.weeks.ago, "Complaint")
+      @warnings = Violation.where("created_at >= ? AND violation_type = ?", 2.weeks.ago, "Doorhanger")
+      @violations = Violation.where("created_at >= ? AND violation_type = ?", 2.weeks.ago, "Formal Notice")
+      @citations = Citation.where("created_at >= ?", 2.weeks.ago)
+      
+      @sf_inspections = Inspection.where("created_at >= ? AND source = ?", 2.weeks.ago, "Single Family License")
+      @sf_inspections_updated = Inspection.where("updated_at >= ? AND source = ?", 2.weeks.ago, "Single Family License")
+      @sf_inspections_approved = Inspection.where("updated_at >= ? AND source = ? AND status = ?", 2.weeks.ago, "Single Family License", "Satisfactory")
+      
+      @mf_inspections = Inspection.where("created_at >= ? AND source = ?", 2.weeks.ago, "Multifamily License")
+      @mf_inspections_updated = Inspection.where("updated_at >= ? AND source = ?", 2.weeks.ago, "Multifamily License")
+      @mf_inspections_approved = Inspection.where("updated_at >= ? AND source = ? AND status = ?", 2.weeks.ago, "Multifamily License", "Satisfactory")
+      
+      @bl_inspections = Inspection.where("created_at >= ? AND source = ?", 2.weeks.ago, "Business license")
+      @bl_inspections_updated = Inspection.where("updated_at >= ? AND source = ?", 2.weeks.ago, "Business license")
+      @bl_inspections_approved = Inspection.where("updated_at >= ? AND source = ? AND status = ?", 2.weeks.ago, "Business license", "Satisfactory")
+      
+      @permit_inspections = Inspection.where("created_at >= ? AND source = ?", 2.weeks.ago, "Building/Dumpster/POD permit")
+      @permit_inspections_updated = Inspection.where("updated_at >= ? AND source = ?", 2.weeks.ago, "Building/Dumpster/POD permit")
     end
   end
 

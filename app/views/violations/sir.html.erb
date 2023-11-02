@@ -2,7 +2,7 @@
 <div class="container mt-5">
   <div class="row">
     <div class="col-12">
-      <h1 style="text-align:center">SIR Violations</h1>
+      <h1 style="text-align:center">SIR Stats</h1>
       <div class="row mx-auto">
         <div class="col-4">
             <%= form_tag sir_path, method: :get do %>
@@ -19,32 +19,192 @@
       <br>
 
       <% if params[:start_date].present? && params[:end_date].present? %>
-        <h2>Violations between <%= params[:start_date] %> and <%= params[:end_date] %> - (<%= @violations.count %> total)</h2>
+        <h2>Stats between <%= params[:start_date] %> and <%= params[:end_date] %></h2>
       <% else %>
-        <h2>Violations within the last 2 weeks - (<%= @violations.count %> total)</h2>
+        <h2>Stats within the last 2 weeks</h2>
       <% end %>
 
       <br>
-      <div class="table-responsive">
-      <table class="table table-sm table-striped">
-        <thead>
-          <tr>
-            <th scope="col">Address</th>
-            <th scope="col">Created By</th>
-            <th scope="col">Created At</th>
-            <th scope="col">Violation Type</th>
-            <th scope="col">Code</th>
-            <th scope="col">Deadline Date</th>
-            <th scope="col">Citations</th>
-          </tr>
-        </thead>
+    </div>
+    <!-- complaint_responses card -->
+    <div class="col-3">
+      <div class="card">
+        <div class="card-body">
+          <% if @complaint_responses.present? %>
+            <%= pluralize(@complaint_responses.count, "Complaint Response") %>
+          <% else %>
+            <p>No Complaint Responses</p>
+          <% end %>
+          </div>
       </div>
-      <tbody>
-        <% @violations.each do |violation| %>
-          <%= render partial: "shared/violation_table", locals: {violation: violation} %>
-        <% end %>
-      </tbody>
-      </table>
+    </div>
+    <!-- warnings card -->
+    <div class="col-3">
+      <div class="card">
+        <div class="card-body">
+          <% if @warnings.present? %>
+            <%= pluralize(@warnings.count, "Doorhanger") %>
+          <% else %>
+            <p>No Doorhangers</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <!-- violations card -->
+    <div class="col-3">
+      <div class="card">
+        <div class="card-body">
+          <% if @violations.present? %>
+            <%= pluralize(@violations.count, "Violation Notice") %>
+          <% else %>
+            <p>No Violation Notices</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <!-- citations card -->
+    <div class="col-3">
+      <div class="card">
+        <div class="card-body">
+          <% if @citations.present? %>
+            <%= pluralize(@citations.count, "Citation") %>
+          <% else %>
+            <p>No Citations</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <!-- sf_inspections card -->
+    <div class="col-3">
+      <div class="card">
+        <div class="card-body">
+          <% if @sf_inspections.present? %>
+            <%= pluralize(@sf_inspections.count, "Single Family Inspection Request") %>
+          <% else %>
+            <p>No Single Family Inspections Requests</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <!-- sf_inspection_updated card -->
+    <div class="col-3">
+      <div class="card">
+        <div class="card-body">
+          <% if @sf_inspection_updated.present? %>
+            <%= pluralize(@sf_inspection_updated.count, "Single Family Inspection Performed") %>
+          <% else %>
+            <p>No Single Family Inspections Performed</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <!-- sf_inspection_approved card -->
+    <div class="col-3">
+      <div class="card">
+        <div class="card-body">
+          <% if @sf_inspection_approved.present? %>
+            <%= pluralize(@sf_inspection_approved.count, "Single Family Inspection Approved") %>
+          <% else %>
+            <p>No Single Family Inspections Completed</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <!-- mf_inspections card -->
+    <div class="col-3">
+      <div class="card">
+        <div class="card-body">
+          <% if @mf_inspections.present? %>
+            <%= pluralize(@mf_inspections.count, "Multifamily Inspections Request") %>
+          <% else %>
+            <p>No Multifamily Inspections Requests</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <!-- mf_inspection_updated card -->
+    <div class="col-3">
+      <div class="card">
+        <div class="card-body">
+          <% if @mf_inspection_updated.present? %>
+            <%= pluralize(@mf_inspection_updated.count, "Multifamily Inspection performed") %>
+          <% else %>
+            <p>No Multifamily Inspections Performed</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <!-- mf_inspection_approved card -->
+    <div class="col-3">
+      <div class="card">
+        <div class="card-body">
+          <% if @mf_inspection_approved.present? %>
+            <%= pluralize(@mf_inspection_approved.count, "Multifamily Inspection Completed") %>
+          <% else %>
+            <p>No Multifamily Inspections Completed</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <!-- bl_inspections card -->
+    <div class="col-3">
+      <div class="card">
+        <div class="card-body">
+          <% if @bl_inspections.present? %>
+            <%= pluralize(@bl_inspections.count, "Business License Inspection Request") %>
+          <% else %>
+            <p>No Business License Inspections Requests</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <!-- bl_inspection_updated card -->
+    <div class="col-3">
+      <div class="card">
+        <div class="card-body">
+          <% if @bl_inspection_updated.present? %>
+            <%= pluralize(@bl_inspection_updated.count, "Business License Inspection Performed") %>
+          <% else %>
+            <p>No Business License Inspections Performed</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <!-- bl_inspection_approved card -->
+    <div class="col-3">
+      <div class="card">
+        <div class="card-body">
+          <% if @bl_inspection_approved.present? %>
+            <%= pluralize(@bl_inspection_approved.count, "Business License Inspection Completed") %>
+          <% else %>
+            <p>No Business License Inspections Completed</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <!-- permit_inspections card -->
+    <div class="col-3">
+      <div class="card">
+        <div class="card-body">
+          <% if @permit_inspections.present? %>
+            <%= pluralize(@permit_inspections.count, "Permit Inspection Request") %>
+          <% else %>
+            <p>No Permit Inspections Requests</p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <!-- permit_inspection_updated card -->
+    <div class="col-3">
+      <div class="card">
+        <div class="card-body">
+          <% if @permit_inspection_updated.present? %>
+            <%= pluralize(@permit_inspection_updated.count, "Permit Inspection Performed") %>
+          <% else %>
+            <p>No Permit Inspections Performed</p>
+          <% end %>
+        </div>
+      </div>
     </div>
   </div>
 </div>
