@@ -25,7 +25,7 @@
     <% if @inspection.status.present? %>
     <h1>Edit Inspection</h1>
     <% else %>
-    <h1>Conduct Inspection</h1>
+    <h1>Conduct Inspection for <%= @inspection.source %></h1>
     <% end %>
     <%= form_with(model: [@address, @inspection]) do |form| %>
         <% if @inspection.attachments.attached? %>
@@ -39,7 +39,11 @@
         <% end %>
       <div class="field mt-3">
       <!-- submit as  well as add new area -->
-        <%= link_to "New Inspection Area", new_address_inspection_area_path(@address, @inspection), class: "btn btn-outline-primary", data: { turbo: false } %>
+        <!-- button for modal -->
+        <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#new-area">
+          <i class="bi bi-plus-circle"></i>
+          New Inspection Area
+        </button>
       </div>
       <!-- if current user is ons -->
       <% if current_user.ons? %>
@@ -203,6 +207,27 @@
       </div>
     </div>
 
+    <!-- New Area Modal -->
+    <div class="modal fade" role="dialog" id="new-area" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">
+              New Area
+            </h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <%= link_to "Bathroom", new_address_inspection_area_path(@address, @inspection, area_type: "bathroom"), class: "btn btn-primary mt-3" %>
+            <%= link_to "Bedroom", new_address_inspection_area_path(@address, @inspection, area_type: "bedroom"), class: "btn btn-primary mt-3" %>
+            <%= link_to "Common Area", new_address_inspection_area_path(@address, @inspection, area_type: "common_area"), class: "btn btn-primary mt-3" %>
+            <%= link_to "Exterior", new_address_inspection_area_path(@address, @inspection, area_type: "exterior"), class: "btn btn-primary mt-3" %>
+            <%= link_to "Kitchen", new_address_inspection_area_path(@address, @inspection, area_type: "kitchen"), class: "btn btn-primary mt-3" %>
+            <%= link_to "Other", new_address_inspection_area_path(@address, @inspection, area_type: "other"), class: "btn btn-primary mt-3" %>
+          </div>
+        </div>
+      </div>
+    </div>
 <script>
   // Function to initialize Choices.js
   function initializeChoices() {

@@ -22,8 +22,18 @@
 <%= form_with(model: [@inspection, @area], url: address_inspection_areas_path(@address, @inspection), local: true) do |form| %>
   <div class="mb-3">
     <label class="form-label">Area Name</label>
-    <%= form.text_field :name, class: "form-control" %>
+    <%= form.text_field :name, class: "form-control", value: params[:area_type].titleize %>
   </div>
+
+  <% if params[:area_type] == "bathroom" %>
+     Checklist for Bathroom 
+  <% elsif params[:area_type] == "bedroom" %>
+     Checklist for Bedroom 
+  <% elsif params[:area_type] == "common_area" %>
+    Checklist for Common Area 
+  <% # ... etc ... %>
+  <% end %>
+
 
   <div class="mb-3">
     <%= form.label :notes, class: "form-label" %>

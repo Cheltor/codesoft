@@ -3,4 +3,7 @@ class Area < ApplicationRecord
   has_many_attached :photos
   has_many :area_codes
   has_many :codes, through: :area_codes, class_name: 'Code'
+
+  attr_accessor :area_type
+
 end
