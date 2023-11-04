@@ -1,7 +1,7 @@
 class InspectionsController < ApplicationController
-  before_action :set_address, except: [:all_inspections, :my_inspections, :my_unscheduled_inspections, :all_complaints, :my_complaints, :assign_inspector, :update_inspector, :create_complaint, :new_complaint]
+  before_action :set_address, except: [:all_inspections, :my_inspections, :my_unscheduled_inspections, :all_complaints, :my_complaints, :assign_inspector, :update_inspector, :create_complaint, :new_complaint, :create_permit_inspection, :new_permit_inspection]
   before_action :set_inspection, only: [:show, :edit, :update, :destroy]
-  layout 'choices', only: [:new, :conduct, :new_complaint]
+  layout 'choices', only: [:new, :conduct, :new_complaint, :new_permit_inspection]
 
   def all_inspections
     @inspections = Inspection.all.where.not(source: "Complaint").order(created_at: :desc)
@@ -79,6 +79,44 @@ class InspectionsController < ApplicationController
 
   end
 
+  def new_permit_inspection
+    @inspection = Inspection.new
+    @assignees = User.where(role: :ons)
+    @inspection.source = "Building/Dumpster/POD permit"
+  end
+
+  def create_permit_inspection
+    @inspection = Inspection.new(inspection_params)
+
+    if params[:inspection][:contact_id].present?
+      # If a contact is selected from the dropdown, associate it with the inspection
+      @inspection.contact_id = params[:inspection][:contact_id]
+    elsif !params[:inspection][:new_contact_name].blank?
+      # If a new contact is being created, check if it already exists
+      existing_contact = Contact.find_by(
+        name: params[:inspection][:new_contact_name],
+        email: params[:inspection][:new_contact_email]
+      )
+  
+      if existing_contact
+        @inspection.contact = existing_contact
+      else
+        # Create a new contact and associate it with the inspection
+        @contact = Contact.create(
+          name: params[:inspection][:new_contact_name],
+          email: params[:inspection][:new_contact_email],
+          phone: params[:inspection][:new_contact_phone]
+        )
+        @inspection.contact = @contact
+      end
+    end
+
+    if @inspection.save
+      redirect_to all_inspections_path, notice: 'Inspection request was successfully created.'
+    else
+      render :new_permit_inspection
+    end
+  end
   
   def new_complaint
     @inspection = Inspection.new
@@ -113,7 +151,7 @@ class InspectionsController < ApplicationController
     end
     
     if @inspection.save
-      redirect_to all_complaints_path, notice: 'Complaint was successfully created.'
+      redirect_to all_complaints_path, notice: 'Inspection request was successfully created.'
     else
       render :new_complaint
     end
@@ -167,7 +205,7 @@ class InspectionsController < ApplicationController
     end
   
     if @inspection.save
-      redirect_to @address, notice: 'Inspection was successfully created.'
+      redirect_to @address, notice: 'Inspection request was successfully created.'
     else
       render :new, notice: 'Inspection was not successfully created.'
     end

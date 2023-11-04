@@ -49,6 +49,8 @@ Rails.application.routes.draw do
   post 'new_business' => 'businesses#create_business'
   get 'new_complaint' => 'inspections#new_complaint'
   post 'new_complaint' => 'inspections#create_complaint'
+  get 'new_permit_inspection' => 'inspections#new_permit_inspection'
+  post 'new_permit_inspection' => 'inspections#create_permit_inspection'
 
   resources :users, only: [:index, :show, :edit, :update]
 
