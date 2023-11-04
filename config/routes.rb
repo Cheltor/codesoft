@@ -47,6 +47,8 @@ Rails.application.routes.draw do
   get 'design_test' => 'static#design_test'
   get 'new_business' => 'businesses#new_business'
   post 'new_business' => 'businesses#create_business'
+  get 'new_complaint' => 'inspections#new_complaint'
+  post 'new_complaint' => 'inspections#create_complaint'
 
   resources :users, only: [:index, :show, :edit, :update]
 

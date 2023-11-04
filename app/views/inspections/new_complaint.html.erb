@@ -1,0 +1,52 @@
+<h2>New Complaint</h2>
+<%= form_for @inspection, url: new_complaint_path, method: :post do |f| %>
+  <div class="form-group">
+    <strong><label>Address</label></strong><label> (If complaint is for a specific unit, please visit the address page, then unit's page)</label>
+    <%= f.collection_select(:address_id, Address.all, :id, :combadd, { prompt: 'Select an address' }, class: 'form-control selectpicker', data: { style: 'btn-primary' }) %>
+  </div>
+
+  <%= f.hidden_field :source, value: "Complaint" %>
+
+  <div class="field mt-3">
+    <strong><label>Description</label></strong>
+    <%= f.text_area :description, class: "form-control" %>
+  </div>
+
+  <div class="field mt-3">
+    <strong><label>
+    Photos
+    </label></strong>
+      <%= f.file_field :attachments, multiple: true, class: "form-control" %>
+  </div>
+
+  <div class="form-group mt-3">
+    <strong><label>Contact</label></strong>
+    <%= f.collection_select(:contact_id, Contact.all, :id, :full_name_and_email, { prompt: 'Select a contact' }, class: 'form-control selectpicker', data: { style: 'btn-primary' }) %>
+  </div>
+  
+  <%= f.submit "Create Complaint", class: "btn btn-primary mt-3" %>
+<% end %>
+
+<script>
+  // Function to initialize Choices.js
+  function initializeChoices() {
+    // Initialize Choices.js for contact select
+    new Choices('#inspection_contact_id', {
+      removeItemButton: true,
+      searchEnabled: true,
+      placeholder: true,
+      placeholderValue: 'Select a contact',
+    });
+
+    // Initialize Choices.js for address select
+    new Choices('#inspection_address_id', {
+      removeItemButton: true,
+      searchEnabled: true,
+      placeholder: true,
+      placeholderValue: 'Select an address',
+    });
+  }
+
+  // Initialize Choices.js on page load
+  document.addEventListener("turbo:load", initializeChoices);
+</script>

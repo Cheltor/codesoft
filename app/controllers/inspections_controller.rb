@@ -1,7 +1,7 @@
 class InspectionsController < ApplicationController
-  before_action :set_address, except: [:all_inspections, :my_inspections, :my_unscheduled_inspections, :all_complaints, :my_complaints, :assign_inspector, :update_inspector]
+  before_action :set_address, except: [:all_inspections, :my_inspections, :my_unscheduled_inspections, :all_complaints, :my_complaints, :assign_inspector, :update_inspector, :create_complaint, :new_complaint]
   before_action :set_inspection, only: [:show, :edit, :update, :destroy]
-  layout 'choices', only: [:new, :conduct]
+  layout 'choices', only: [:new, :conduct, :new_complaint]
 
   def all_inspections
     @inspections = Inspection.all.where.not(source: "Complaint").order(created_at: :desc)
@@ -77,6 +77,22 @@ class InspectionsController < ApplicationController
 
     # Create code if they don't exist
 
+  end
+
+  
+  def new_complaint
+    @inspection = Inspection.new
+    @assignees = User.where(role: :ons)
+    @inspection.source = "Complaint"
+  end
+
+  def create_complaint
+    @inspection = Inspection.new(inspection_params)
+    if @inspection.save
+      redirect_to all_complaints_path, notice: 'Complaint was successfully created.'
+    else
+      render :new_complaint
+    end
   end
 
   def save_and_redirect_to_area_new
@@ -187,8 +203,7 @@ class InspectionsController < ApplicationController
     else
       render :assign_inspector
     end
-  end
-  
+  end  
 
   private
 
@@ -201,7 +216,7 @@ class InspectionsController < ApplicationController
   end
 
   def inspection_params
-    params.require(:inspection).permit(:source, :business_id, :status, :result, :description, :thoughts, :originator, :unit_id, :assignee_id, :inspector_id, :scheduled_datetime, :name, :email, :phone, :notes_area_1, :notes_area_2, :notes_area_3, :contact_id,:new_contact_name, :new_contact_email, :new_contact_phone, :new_chapter, :new_section, :new_name, :new_description, :confirmed, code_ids: [], intphotos: [], extphotos: [], photos: [], attachments: []).reject { |key, value| value.blank? }
+    params.require(:inspection).permit(:address_id, :source, :business_id, :status, :result, :description, :thoughts, :originator, :unit_id, :assignee_id, :inspector_id, :scheduled_datetime, :name, :email, :phone, :notes_area_1, :notes_area_2, :notes_area_3, :contact_id,:new_contact_name, :new_contact_email, :new_contact_phone, :new_chapter, :new_section, :new_name, :new_description, :confirmed, code_ids: [], intphotos: [], extphotos: [], photos: [], attachments: []).reject { |key, value| value.blank? }
   end
 
 end
