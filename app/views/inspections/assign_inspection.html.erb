@@ -1,0 +1,11 @@
+<%= @inspection.address.combadd.titleize %>
+
+<%= @inspection.created_at.strftime("%B %d, %Y %I:%M %p") %>
+
+<%= @inspection.source %>
+
+<!-- form for inspection inspector -->
+<%= form_with model: @inspection, url: update_inspector_path(@inspection), method: :patch do |f| %>
+  <%= f.select :inspector_id, options_for_select([["Unassigned", nil]] + User.ons.map { |user| [user.email, user.id] }, @inspection.inspector_id), {}, class: "form-select" %>
+  <%= f.submit "Assign", class: "btn btn-outline-primary" %>
+<% end %>

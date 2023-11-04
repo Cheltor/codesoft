@@ -103,6 +103,15 @@
         Inspections
       </li>
 
+      <% if current_user.admin? %>
+      <li class="sidebar-item">
+        <%= link_to(unassigned_inspections_path, class: "sidebar-link") do %>
+          <i class="align-middle" data-feather="clipboard"></i>
+          <span class="align-middle">Unassigned Inspections</span>
+        <% end %>
+      </li>
+      <% end %>
+
       <li class="sidebar-item">
         <%= link_to(all_inspections_path, class: "sidebar-link") do %>
           <i class="align-middle" data-feather="clipboard"></i>

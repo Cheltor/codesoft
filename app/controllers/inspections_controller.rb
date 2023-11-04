@@ -1,5 +1,5 @@
 class InspectionsController < ApplicationController
-  before_action :set_address, except: [:all_inspections, :my_inspections, :my_unscheduled_inspections, :all_complaints, :my_complaints, :assign_inspector, :update_inspector, :create_complaint, :new_complaint, :create_permit_inspection, :new_permit_inspection, :create_license_inspection, :new_license_inspection]
+  before_action :set_address, except: [:all_inspections, :my_inspections, :my_unscheduled_inspections, :all_complaints, :my_complaints, :assign_inspector, :update_inspector, :create_complaint, :new_complaint, :create_permit_inspection, :new_permit_inspection, :create_license_inspection, :new_license_inspection, :unassigned_inspections, :assign_inspection]
   before_action :set_inspection, only: [:show, :edit, :update, :destroy]
   layout 'choices', only: [:new, :conduct, :new_complaint, :new_permit_inspection, :new_license_inspection]
 
@@ -115,6 +115,10 @@ class InspectionsController < ApplicationController
     else
       render :new_license_inspection
     end
+  end
+
+  def unassigned_inspections
+    @inspections = Inspection.where(inspector_id: nil).order(created_at: :desc)
   end
 
   def new_permit_inspection
@@ -290,8 +294,9 @@ class InspectionsController < ApplicationController
     redirect_to inspections_path
   end
 
-  def assign_inspector
-    
+  def assign_inspection
+    @inspection = Inspection.find(params[:id])
+    @assignees = User.where(role: :ons)
   end
   
   def update_inspector
@@ -299,9 +304,9 @@ class InspectionsController < ApplicationController
     @inspector = User.find(params[:inspection][:inspector_id])
   
     if @inspection.update(inspector: @inspector)
-      redirect_to inspections_path, notice: 'Inspector assigned successfully.'
+      redirect_to unassigned_inspections_path, notice: 'Inspector assigned successfully.'
     else
-      render :assign_inspector
+      render :assign_inspection, notice: 'Inspector was not successfully assigned.'
     end
   end  
 

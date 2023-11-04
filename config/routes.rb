@@ -53,6 +53,10 @@ Rails.application.routes.draw do
   post 'new_permit_inspection' => 'inspections#create_permit_inspection'
   get 'new_license_inspection' => 'inspections#new_license_inspection'
   post 'new_license_inspection' => 'inspections#create_license_inspection'
+  get 'unassigned_inspections' => 'inspections#unassigned_inspections'
+  get 'assign_inspection/:id' => 'inspections#assign_inspection', as: 'assign_inspection'
+  patch 'update_inspector/:id' => 'inspections#update_inspector', as: 'update_inspector'
+
 
   resources :users, only: [:index, :show, :edit, :update]
 
