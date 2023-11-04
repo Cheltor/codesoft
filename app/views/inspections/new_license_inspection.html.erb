@@ -1,11 +1,14 @@
-<h2>New Building/Dumpster/POD Permit</h2>
+<h2>New License Inspection</h2>
 <%= form_for @inspection, url: new_permit_inspection_path, method: :post do |f| %>
   <div class="form-group">
     <strong><label>Address</label></strong><label> (If complaint is for a specific unit, please visit the address page, then unit's page)</label>
     <%= f.collection_select(:address_id, Address.all, :id, :combadd, { prompt: 'Select an address' }, class: 'form-control selectpicker', data: { style: 'btn-primary' }) %>
   </div>
 
-  <%= f.hidden_field :source, value: "Building/Dumpster/POD permit" %>
+  <div class="field mt-3">
+    <%= f.label :source %>
+    <%= f.select :source, ["Business license", "Single Family License", "Multifamily License", "Donation Bin"], {}, class: "form-select" %>
+  </div>
 
   <div class="field mt-3">
     <strong><label>Description</label></strong>
@@ -66,7 +69,7 @@
     <% end %>
   </div>
   
-  <%= f.submit "Create Permit Inspection", class: "btn btn-primary mt-3" %>
+  <%= f.submit "Create License Inspection", class: "btn btn-primary mt-3" %>
 <% end %>
 
 <script>

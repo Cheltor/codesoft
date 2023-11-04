@@ -51,6 +51,8 @@ Rails.application.routes.draw do
   post 'new_complaint' => 'inspections#create_complaint'
   get 'new_permit_inspection' => 'inspections#new_permit_inspection'
   post 'new_permit_inspection' => 'inspections#create_permit_inspection'
+  get 'new_license_inspection' => 'inspections#new_license_inspection'
+  post 'new_license_inspection' => 'inspections#create_license_inspection'
 
   resources :users, only: [:index, :show, :edit, :update]
 
