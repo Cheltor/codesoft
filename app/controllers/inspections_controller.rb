@@ -88,6 +88,30 @@ class InspectionsController < ApplicationController
 
   def create_complaint
     @inspection = Inspection.new(inspection_params)
+
+    if params[:inspection][:contact_id].present?
+      # If a contact is selected from the dropdown, associate it with the inspection
+      @inspection.contact_id = params[:inspection][:contact_id]
+    elsif !params[:inspection][:new_contact_name].blank?
+      # If a new contact is being created, check if it already exists
+      existing_contact = Contact.find_by(
+        name: params[:inspection][:new_contact_name],
+        email: params[:inspection][:new_contact_email]
+      )
+  
+      if existing_contact
+        @inspection.contact = existing_contact
+      else
+        # Create a new contact and associate it with the inspection
+        @contact = Contact.create(
+          name: params[:inspection][:new_contact_name],
+          email: params[:inspection][:new_contact_email],
+          phone: params[:inspection][:new_contact_phone]
+        )
+        @inspection.contact = @contact
+      end
+    end
+    
     if @inspection.save
       redirect_to all_complaints_path, notice: 'Complaint was successfully created.'
     else

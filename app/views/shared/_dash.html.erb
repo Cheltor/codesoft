@@ -170,14 +170,14 @@
       <div class="card-body">
         <h5 class="card-title">Inspections/Complaints</h5>
         <p class="card-text">
-          Complaints, inspections, and violations are all related to addresses. To create a new inspection request, find the address in the search bar above and click the "Create New Inspection Request" button.
+          Complaints, inspections, and violations are all related to addresses.
         </p>
         <p class="card-text">
           If you are looking for a list of previously requested inspections, click the "Inspections" button below. If you are looking for a previously requested complaint, click the "Complaints" button below.
         </p>
         <%= link_to "Inspections", all_inspections_path, class: "btn btn-secondary" %>
         <%= link_to "Complaints", all_complaints_path, class: "btn btn-secondary" %>
-        <%= link_to "New Complaint", new_complaint_path, class: "btn btn-secondary", data: { turbo: false } %>
+        <%= link_to "New Complaint", new_complaint_path, class: "btn btn-danger", data: { turbo: false } %>
       </div>
     </div>
   </div>

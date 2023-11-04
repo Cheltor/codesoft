@@ -23,6 +23,48 @@
     <strong><label>Contact</label></strong>
     <%= f.collection_select(:contact_id, Contact.all, :id, :full_name_and_email, { prompt: 'Select a contact' }, class: 'form-control selectpicker', data: { style: 'btn-primary' }) %>
   </div>
+
+    <!-- Fields for creating a new contact -->
+
+  <div class="accordion accordion-flush" id="accordionFlushExample">
+    <div class="accordion-item">
+      <h2 class="accordion-header" id="flush-headingOne">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+          Or create a new contact
+        </button>
+      </h2>
+      <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+        <div class="accordion-body">
+          <div class="field mt-3">
+            <%= f.label :new_contact_name %>
+            <%= f.text_field :new_contact_name, class: "form-control" %>
+          </div>
+
+          <div class="field mt-3">
+            <%= f.label :new_contact_email %>
+            <%= f.text_field :new_contact_email, class: "form-control" %>
+          </div>
+
+          <div class="field mt-3">
+            <%= f.label :new_contact_phone %>
+            <%= f.text_field :new_contact_phone, class: "form-control" %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <div class="form-group mt-3">
+    <% if current_user.role == "ons" %>
+        <%= f.label :inspector_id %>
+      <strong><%= current_user.name %></strong>
+      <%= f.hidden_field :inspector_id, value: current_user.id %>
+    <% elsif current_user.role == "admin" %>
+        <%= f.label :inspector_id %>
+      <%= f.select :inspector_id, options_for_select([["Unassigned", nil]] + User.ons.map { |user| [user.email, user.id] }), {}, class: "form-select" %>
+      <% else %>
+    <% end %>
+  </div>
   
   <%= f.submit "Create Complaint", class: "btn btn-primary mt-3" %>
 <% end %>
