@@ -148,7 +148,7 @@
         New Code
       </button></p></em> -->
 
-      <select id="code-select" multiple name="inspection[code_ids][]" class="choices-select">
+      <select id="code-select" multiple name="inspection[code_ids][]" class="choices-select" placeholder="Select codes...">
         <% Code.all.each do |code| %>
           <% selected = @inspection.code_ids.include?(code.id) ? 'selected' : '' %>
           <option value="<%= code.id %>" <%= selected %>>
