@@ -6,6 +6,8 @@ class ViolationsController < ApplicationController
 
   def new
     @violation = @address.violations.new
+
+    @violation.code_ids = params[:code_ids].split(',') if params[:code_ids].present?
   end
 
   def update
@@ -39,7 +41,8 @@ class ViolationsController < ApplicationController
     if params[:start_date].present? && params[:end_date].present?
       start_date = Date.parse(params[:start_date])
       end_date = Date.parse(params[:end_date])
-      @complaint_responses = Inspection.where(created_at: start_date..end_date, source: "Complaint")
+      @complaints_made = Inspection.where(created_at: start_date..end_date, source: "Complaint")
+      @complaint_responses = Inspection.where(created_at: start_date..end_date, source: "Complaint").where.not(status: nil)
       @warnings = Violation.where(created_at: start_date..end_date, violation_type: "Doorhanger")
       @violations = Violation.where(created_at: start_date..end_date, violation_type: "Formal Notice")
       @citations = Citation.where(created_at: start_date..end_date)
@@ -66,7 +69,8 @@ class ViolationsController < ApplicationController
       # Permit Inspections updated in the date range
       @permit_inspections_updated = Inspection.where(updated_at: start_date..end_date, source: "Building/Dumpster/POD permit")
     else
-      @complaint_responses = Inspection.where("created_at >= ? AND source = ?", 2.weeks.ago, "Complaint")
+      @complaints_made = Inspection.where("created_at >= ? AND source = ?", 2.weeks.ago, "Complaint")
+      @complaint_responses = Inspection.where("created_at >= ? AND source = ?", 2.weeks.ago, "Complaint").where.not(status: nil)
       @warnings = Violation.where("created_at >= ? AND violation_type = ?", 2.weeks.ago, "Doorhanger")
       @violations = Violation.where("created_at >= ? AND violation_type = ?", 2.weeks.ago, "Formal Notice")
       @citations = Citation.where("created_at >= ?", 2.weeks.ago)

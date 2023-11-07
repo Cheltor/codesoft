@@ -1,25 +1,21 @@
 <!-- list all inspections -->
-<% if current_user.admin? %>
-  <%= link_to "Unassigned", all_inspections_path(inspector: "Unassigned"), class:"btn btn-secondary" %>
-<% end %>
 <div class="row">
   <div class="col">
     <div class="table-responsive">
       <div class="card">
         <div class="card-header">
-          <h3 class="card-title">Inspections</h3>
+          <h3 class="card-title">Unassigned Inspections</h3>
         </div>
         <!-- /.card-header -->
         <div class="card-body">
           <table id="example2" class="table table-bordered table-hover">
             <thead>
               <tr>
+              <th scope="col">Created date</th>
+              <th scope="col">Type</th>
               <th scope="col">Address</th>
-              <th scope="col">Source</th>
-              <th scope="col">Status</th>
               <th scope="col">Scheduled Date</th>
               <th scope="col">Inspector</th>
-              <th scope="col"></th>
               </tr>
             </thead>
             <tbody>

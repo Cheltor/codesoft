@@ -282,9 +282,14 @@ class InspectionsController < ApplicationController
     end
 
     if @inspection.update(inspection_params)
-      redirect_to address_inspection_path(@address, @inspection), notice: 'Inspection was successfully updated.'
+      if @inspection.source == "Complaint" && @inspection.status == "Unsatisfactory"
+        flash[:code_ids] = @inspection.code_ids
+        redirect_to new_address_violation_path(@address, @inspection, code_ids: @inspection.code_ids.join(',')), notice: 'Inspection was successfully updated.'
+      else
+        redirect_to address_inspection_path(@address, @inspection), notice: 'Inspection was successfully updated.'
+      end
     else
-      render :edit, notice: 'Inspection was not successfully updated.'
+      render :conduct, notice: 'Inspection was not successfully updated.'
     end
   end
 

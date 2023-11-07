@@ -6,14 +6,7 @@
   <%# end %>
   <td><%= inspection.created_at.strftime("%B %d, %Y %I:%M %p") %></td>
   <td><%= inspection.source %></td>
-  <% if inspection.status.present? %>
-        <% if inspection.status == "Satisfactory" %>
-          <td><span class="badge bg-success"><%= inspection.status %></span></td>
-        <% else %>
-          <td><span class="badge bg-danger"><%= inspection.status %></span></td>
-        <% end %>  <% else %>
-    <td><span class="badge bg-secondary">Pending</span></td>
-  <% end %>
+  <td><%= link_to inspection.address.combadd, address_inspection_path(inspection.address, inspection) %></td>
   <% if inspection.scheduled_datetime.present? %>
     <td><%= inspection.scheduled_datetime.strftime("%B %d, %Y %I:%M %p") %></td>
   <% else %>
@@ -21,11 +14,6 @@
       <%= link_to "Schedule inspection", schedule_address_inspection_path(inspection.address, inspection), class: "btn btn-outline-primary" %>
     </td>
   <% end %>
-  <% if inspection.inspector.present? %>
-    <td><%= inspection.inspector.email %></td>
-  <% else %>
-    <td>Unassigned</td>
-  <% end %> 
 
   <td>
     <%= link_to "Assign", assign_inspection_path(inspection), class: "btn btn-outline-primary" %>

@@ -50,9 +50,19 @@
       <div class="form-group">
       <strong><%= form.label :codes %></strong>
       <em><p>If you don't see the code you're looking for, add the code using this button: <%= link_to "New code", new_code_path, class:"btn btn-outline-primary" %></p></em>
+  <% if @violation.codes.any? %>
+    <div class="form-group">
+      <%= form.collection_check_boxes :code_ids, @violation.codes, :id, :name, class: "form-control" do |cb| %>
+        <%= cb.label class: "form-check-label" do %>
+          <%= cb.check_box class: "form-check-input" %>
+          <%= cb.text %>
+        <% end %>
+      <% end %>
+    </div>
+  <% end %>
 
     <select id="code-select" multiple name="violation[code_ids][]">
-      <% Code.all.each do |code| %>
+      <% Code.not_associated_with_violation(@violation).each do |code| %>
         <option value="<%= code.id %>"><%= code.chapter %>-<%= code.section.split("-").last %> <%= code.name %></option>
       <% end %>
     </select>

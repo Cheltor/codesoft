@@ -134,11 +134,20 @@
       </div>
     <br>
     <% else %>
-      <div class="field mt-3">
-        <label><strong>Outcome</strong></label>
-        <%= form.select :status, options_for_select(["Satisfactory", "Unsatisfactory", "Missed"], @inspection.status), {}, class: "form-select" %>
-      </div>
-      <br>
+
+      <% if @inspection.status = "Complaint" %>
+        <div class="field mt-3">
+          <label><strong>Outcome</strong></label>
+          <%= form.select :status, options_for_select([["No violations", "Satisfactory"], ["Violations", "Unsatisfactory"], ["Missed", "Missed"]], @inspection.status), {}, class: "form-select" %>
+        </div>
+        <br>
+      <% else %>
+        <div class="field mt-3">
+          <label><strong>Outcome</strong></label>
+          <%= form.select :status, options_for_select(["Satisfactory", "Unsatisfactory", "Missed"], @inspection.status), {}, class: "form-select" %>
+        </div>
+        <br>
+      <% end %>
     <% end %>
 
 

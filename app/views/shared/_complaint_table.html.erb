@@ -7,7 +7,13 @@
   <td><%= inspection.created_at.strftime("%B %d, %Y %I:%M %p") %></td>
   <td><%= link_to inspection.address.combadd, address_path(inspection.address) %></td>
   <td><%= inspection.source %></td>
-  <% if inspection.status.present? %>
+  <% if inspection.status.present? && inspection.source = "Complaint" %>
+        <% if inspection.status == "Satisfactory" %>
+          <td><span class="badge bg-success">No Violation Found</span></td>
+        <% else %>
+          <td><span class="badge bg-danger">Violation found</span></td>
+        <% end %>
+  <% elsif inspection.status.present? && inspection.source != "Complaint" %>
         <% if inspection.status == "Satisfactory" %>
           <td><span class="badge bg-success"><%= inspection.status %></span></td>
         <% else %>

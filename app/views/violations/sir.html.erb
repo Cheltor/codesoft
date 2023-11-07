@@ -5,15 +5,15 @@
       <h1 style="text-align:center">SIR Stats</h1>
       <div class="row mx-auto">
         <div class="col-4">
-            <%= form_tag sir_path, method: :get do %>
-              <label for="start_date">Start date:</label>
-              <%= date_field_tag "start_date", params[:start_date], class: "form-control" %>
+          <%= form_tag sir_path, method: :get do %>
+            <label for="start_date">Start date:</label>
+            <%= date_field_tag "start_date", params[:start_date], class: "form-control" %>
 
-              <label for="end_date">End date:</label>
-              <%= date_field_tag "end_date", params[:end_date], class: "form-control" %>
+            <label for="end_date">End date:</label>
+            <%= date_field_tag "end_date", params[:end_date], class: "form-control" %>
 
-              <%= submit_tag "Filter", class: "btn btn-primary mt-3" %>
-            <% end %>
+            <%= submit_tag "Filter", class: "btn btn-primary mt-3" %>
+          <% end %>
         </div>
       </div>
       <br>
@@ -25,6 +25,17 @@
       <% end %>
 
       <br>
+    </div>
+    <div class="col-3">
+      <div class="card">
+        <div class="card-body">
+          <% if @complaints_made.present? %>
+            <%= pluralize(@complaints_made.count, "Complaint") %> Made
+          <% else %>
+            <p>No Complaints Made</p>
+          <% end %>
+        </div>
+      </div>
     </div>
     <!-- complaint_responses card -->
     <div class="col-3">
@@ -43,9 +54,9 @@
       <div class="card">
         <div class="card-body">
           <% if @warnings.present? %>
-            <%= pluralize(@warnings.count, "Doorhanger") %>
+            <%= pluralize(@warnings.count, "Warning") %>
           <% else %>
-            <p>No Doorhangers</p>
+            <p>No Warning</p>
           <% end %>
         </div>
       </div>
