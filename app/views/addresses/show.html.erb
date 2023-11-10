@@ -272,7 +272,7 @@
               </tr>
             </thead>
             <tbody>
-              <% @address_citations.each do |citation| %>
+              <% @address_citations.order("deadline DESC").each do |citation| %>
                 <%= render partial: "shared/citation_table", locals: {citation: citation} %>
               <% end %>
             </tbody>
