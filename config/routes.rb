@@ -10,11 +10,14 @@ Rails.application.routes.draw do
   devise_for :users
   resources :addresses do
     resources :violations, shallow: true do
-      resources :citations, shallow: true
+      resources :citations, shallow: true do
+        resources :citation_comments
+      end
       patch :resolve, on: :member
       patch :extender, on: :member
       patch :update, on: :member
       get :generate_report, on: :member
+      resources :violation_comments
     end
     resources :comments
     resources :concerns, only: [:create, :edit, :update]
@@ -23,9 +26,10 @@ Rails.application.routes.draw do
       member do
         get 'conduct'
         get 'schedule'
-        post 'save_and_redirect_to_area_new' # Add this line for the new method
+        post 'save_and_redirect_to_area_new'
       end
       resources :areas
+      resources :inspection_comments
     end
     resources :businesses, except: [:index, :new_business]
     member do

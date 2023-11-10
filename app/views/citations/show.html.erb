@@ -125,3 +125,45 @@
       <% end %>
     </div></div></div>
 </div>
+<div class="row">
+  <div class="col">
+    <div class="card">
+      <div class="card-body">
+        <h3>New Comment</h3>
+
+        <% if user_signed_in? %>
+          <%= form_for([@citation, @citation.citation_comments.build]) do |f| %>
+            <%= f.text_area :content, class: "form-control" %>
+            <br>
+            <%= f.submit class: "btn btn-primary" %>
+          <% end %>
+        <% end %>
+
+        <!-- show any associated comments -->
+        <% if @citation.citation_comments.exists? %>
+        <br>
+          <h3>Comments (<%= @citation.citation_comments.count %>)</h3>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Comment</th>
+                <th>Comment Date</th>
+                <th>Commenter</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <% @citation.citation_comments.order(created_at: :desc).each do |comment| %>
+                <tr>
+                  <td><%= comment.content %></td>
+                  <td><%= comment.created_at&.in_time_zone("Eastern Time (US & Canada)")&.strftime("%B %d, %Y %I:%M %p") %></td>
+                  <td><%= comment.user.email %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        <% end %>      
+      </div>  
+    </div>
+  </div>
+</div>

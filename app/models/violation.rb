@@ -8,6 +8,8 @@ class Violation < ApplicationRecord
   validates :violation_type, presence: true
   has_many :citations
   belongs_to :unit, optional: true
+  has_many :violation_comments, dependent: :destroy
+
 
   def at_least_one_code_selected
     errors.add(:base, "Please select at least one code") if codes.none?

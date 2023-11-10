@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_30_205334) do
+ActiveRecord::Schema[7.0].define(version: 2023_11_10_171614) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -111,6 +111,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_30_205334) do
     t.index ["unit_id"], name: "index_businesses_on_unit_id"
   end
 
+  create_table "citation_comments", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "citation_id", null: false
+    t.text "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["citation_id"], name: "index_citation_comments_on_citation_id"
+    t.index ["user_id"], name: "index_citation_comments_on_user_id"
+  end
+
   create_table "citations", force: :cascade do |t|
     t.integer "fine"
     t.date "deadline"
@@ -193,6 +203,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_30_205334) do
     t.index ["inspection_id"], name: "index_inspection_codes_on_inspection_id"
   end
 
+  create_table "inspection_comments", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.integer "inspection_id", null: false
+    t.text "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["inspection_id"], name: "index_inspection_comments_on_inspection_id"
+    t.index ["user_id"], name: "index_inspection_comments_on_user_id"
+  end
+
   create_table "inspections", force: :cascade do |t|
     t.string "source"
     t.string "status"
@@ -266,6 +286,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_30_205334) do
     t.index ["violation_id"], name: "index_violation_codes_on_violation_id"
   end
 
+  create_table "violation_comments", force: :cascade do |t|
+    t.integer "violation_id", null: false
+    t.text "content"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.index ["user_id"], name: "index_violation_comments_on_user_id"
+    t.index ["violation_id"], name: "index_violation_comments_on_violation_id"
+  end
+
   create_table "violations", force: :cascade do |t|
     t.string "description"
     t.integer "status"
@@ -295,6 +325,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_30_205334) do
   add_foreign_key "business_contacts", "contacts"
   add_foreign_key "businesses", "addresses"
   add_foreign_key "businesses", "units"
+  add_foreign_key "citation_comments", "citations"
+  add_foreign_key "citation_comments", "users"
   add_foreign_key "citations", "codes"
   add_foreign_key "citations", "units"
   add_foreign_key "citations", "users"
@@ -307,6 +339,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_30_205334) do
   add_foreign_key "contact_comments", "users"
   add_foreign_key "inspection_codes", "codes"
   add_foreign_key "inspection_codes", "inspections"
+  add_foreign_key "inspection_comments", "inspections"
+  add_foreign_key "inspection_comments", "users"
   add_foreign_key "inspections", "addresses"
   add_foreign_key "inspections", "businesses"
   add_foreign_key "inspections", "contacts"
@@ -315,6 +349,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_30_205334) do
   add_foreign_key "units", "addresses"
   add_foreign_key "violation_codes", "codes"
   add_foreign_key "violation_codes", "violations"
+  add_foreign_key "violation_comments", "users"
+  add_foreign_key "violation_comments", "violations"
   add_foreign_key "violations", "addresses"
   add_foreign_key "violations", "inspections"
   add_foreign_key "violations", "units"

@@ -14,6 +14,7 @@ class Inspection < ApplicationRecord
   belongs_to :contact, optional: true
   has_many :areas, dependent: :destroy
   belongs_to :business, optional: true
+  has_many :inspection_comments, dependent: :destroy
 
 
   private

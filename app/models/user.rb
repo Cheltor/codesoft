@@ -9,6 +9,10 @@ class User < ApplicationRecord
         
     has_many :comments
     has_many :addresses, through: :comments
+    has_many :violation_comments, dependent: :destroy
+    has_many :citation_comments, dependent: :destroy
+    has_many :contact_comments, dependent: :destroy
+    has_many :inspection_comments, dependent: :destroy
 
     has_many :violations
     has_many :citations, through: :violations

@@ -1,7 +1,5 @@
-# app/controllers/contact_comments_controller.rb
-
 class ContactCommentsController < ApplicationController
-  before_action :authenticate_user! # Add authentication as needed
+  before_action :authenticate_user! 
 
   def create
     @contact = Contact.find(params[:contact_id])

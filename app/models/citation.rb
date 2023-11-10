@@ -4,6 +4,7 @@ class Citation < ApplicationRecord
   belongs_to :code
   has_many_attached :photos
   belongs_to :unit, optional: true
+  has_many :citation_comments, dependent: :destroy
 
 
   validates :fine, presence: true
