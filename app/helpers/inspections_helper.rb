@@ -64,16 +64,21 @@ module InspectionsHelper
     subject = "Inspection Result for #{inspection.source.titleize}"
     body = "
     Hello,
-  
-    We are writing to inform you that the annual inspection for #{inspection.address.combadd} has been completed. The inspection was conducted on #{inspection.scheduled_datetime.strftime('%m/%d/%Y')}.
-  
+
+    We are writing to inform you that the annual inspection for #{inspection.address.combadd} has been completed#{'. The inspection was conducted on ' if inspection.scheduled_datetime.present?}#{inspection.scheduled_datetime.strftime('%m/%d/%Y') if inspection.scheduled_datetime.present?}.
+
     Inspection Status: #{inspection.status}
     #{'Congratulations, your property has passed the inspection. We appreciate your cooperation and thank you for your role in ensuring life and safety in Riverdale Park.' if inspection.status == 'Satisfactory'}
     #{'Unfortunately, your property did not pass the inspection. Please see the attached report for details on the areas that require attention. For a detailed report, please refer to the attached inspection document. For more information on the Town’s codes and ordinances, please visit the Town’s website at www.riverdaleparkmd.gov.' if inspection.status == 'Unsatisfactory'}
+    #{'' if inspection.status == 'Unsatisfactory'}
+
+    #{'Inspection Codes: ' + inspection.code_ids.join(', ') if inspection.code_ids.present?}
+
+
     Should you have questions or concerns, please reply to this email.
-  
+
     Best Regards,
-  
+
     #{current_user.name}
     #{current_user.phone}
     #{current_user.email}

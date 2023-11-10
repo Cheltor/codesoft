@@ -34,6 +34,8 @@ class AddressesController < ApplicationController
     # Combine these checks
     @is_priority_address = (@address_violations ||@address_citations_count ||@address_inspections ) && not_updated_today
 
+    # Address complaints
+    @complaints = @address.inspections.where(source: "Complaint")
   end
 
   def violist

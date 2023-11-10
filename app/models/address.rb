@@ -15,6 +15,7 @@ class Address < ApplicationRecord
     before_save :upcase_owneraddress
     before_save :upcase_ownercity
     before_save :upcase_ownerstate
+
     
 
     def self.ransackable_attributes(auth_object = nil)

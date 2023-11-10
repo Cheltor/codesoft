@@ -159,7 +159,7 @@
       <% end %>
 
       <li class="sidebar-item">
-        <%= link_to(new_complaint_path, class: "sidebar-link") do %>
+        <%= link_to(new_complaint_path, class: "sidebar-link", data: { turbo: false }) do %>
           <i class="align-middle" data-feather="plus-circle"></i>
           <span class="align-middle">New Complaint</span>
         <% end %>
