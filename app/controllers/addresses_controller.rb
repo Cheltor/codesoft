@@ -38,6 +38,10 @@ class AddressesController < ApplicationController
     @complaints = @address.inspections.where(source: "Complaint")
   end
 
+  def address_name
+    @address = Address.find(params[:id])
+  end
+
   def violist
       @status = params[:status]
       @violations = Violation.all
@@ -166,7 +170,7 @@ class AddressesController < ApplicationController
   private
 
   def address_params
-      params.require(:address).permit(:pid, :ownername, :owneraddress, :ownercity, :ownerstate, :ownerzip, :streetnumb, :streetname, :streettype, :landusecode, :zoning, :owneroccupiedin, :vacant, :absent, :premisezip, :combadd, :outstanding, contact_ids: [])
+      params.require(:address).permit(:pid, :ownername, :owneraddress, :ownercity, :ownerstate, :ownerzip, :streetnumb, :streetname, :streettype, :landusecode, :zoning, :owneroccupiedin, :vacant, :absent, :premisezip, :combadd, :outstanding, :property_name, contact_ids: [])
   end
   
 end

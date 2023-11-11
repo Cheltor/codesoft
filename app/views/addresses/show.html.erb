@@ -15,7 +15,13 @@
   <div class="col-sm-4">
     <div class="card">
       <div class="card-body">
-        <h2><%= @address.combadd %>            <a href="https://www.google.com/maps/search/?api=1&query=<%= @address.combadd %>+MD+<%= @address.premisezip %>" target="_blank" class="btn btn-secondary">
+        <h2>
+        <% if @address.property_name.present? %>
+          <%= @address.property_name %> <%= @address.combadd %>
+        <% else %>
+          <%= @address.combadd %>
+        <% end %>
+        <a href="https://www.google.com/maps/search/?api=1&query=<%= @address.combadd %>+MD+<%= @address.premisezip %>" target="_blank" class="btn btn-secondary">
         <i class="bi bi-geo-alt-fill"></i></a></h2>
         <br>
             <h4>Owner:</h4>
@@ -27,6 +33,8 @@
     <button type="button" class="btn btn-secondary mt-2 mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
       Update Owner/Address
     </button>
+
+    <%= link_to "Add property name", address_name_address_path(@address), class: "btn btn-secondary mt-2 mb-3", data: { turbo: false } %>
 
     <!-- link to create a new business -->
     <%= link_to "Add Business", new_address_business_path(@address), class: "btn btn-info mt-2 mb-3", data: { turbo: false } %>

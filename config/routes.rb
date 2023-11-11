@@ -38,6 +38,7 @@ Rails.application.routes.draw do
     member do
       get 'manage_contacts'
       post 'manage_contacts'
+      get 'address_name'
     end
   end
 
