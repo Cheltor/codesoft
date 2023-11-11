@@ -111,7 +111,11 @@ class ViolationsController < ApplicationController
     end
   end
 
-  def extender
+  def extend_deadline
+    @violation = Violation.find(params[:id])
+  end
+
+  def update_deadline
     days = params[:days].to_i
     @violation.extend += days
     if @violation.save

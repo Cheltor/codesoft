@@ -13,8 +13,11 @@ Rails.application.routes.draw do
       resources :citations, shallow: true do
         resources :citation_comments
       end
+      member do
+        get :extend_deadline
+        patch :update_deadline
+      end
       patch :resolve, on: :member
-      patch :extender, on: :member
       patch :update, on: :member
       get :generate_report, on: :member
       resources :violation_comments

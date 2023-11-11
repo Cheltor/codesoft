@@ -1,0 +1,18 @@
+<div class="row">
+  <div class="col-sm-4">
+    <%= form_for @violation, url: update_deadline_violation_path(@violation), method: :patch do |f| %>
+
+      <div>
+        <p>Current Deadline: <%= @violation.deadline_date.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></p>
+      </div>
+      <div class="field">
+        <%= label_tag :days, "Extend Deadline By (days)" %>
+        <%= number_field_tag :days, nil, min: 0, class: "form-control" %>
+      </div>
+      
+      <%= f.submit "Extend Deadline", class: "btn btn-primary" %>
+    <% end %>  
+  </div>
+</div>
+
+

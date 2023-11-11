@@ -27,10 +27,11 @@ class Violation < ApplicationRecord
     "3 days",
     "7 days",
     "14 days",
-    "30 days"
+    "30 days",
+    "Custom"
   ]
 
-  DEADLINE_VALUES = [0, 1, 3, 7, 14, 30]
+  DEADLINE_VALUES = [0, 1, 3, 7, 14, 30, nil]
 
   def deadline_passed?
     deadline_index = DEADLINE_OPTIONS.index(deadline)
