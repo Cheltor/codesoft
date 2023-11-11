@@ -44,8 +44,30 @@ class StaticController < ApplicationController
       @priority_addresses << address
     end
   
-      @priority_addresses = @priority_addresses.uniq.select { |address| !address.updated_at.today? }.sort_by(&:streetnumb)  
+    @priority_addresses = @priority_addresses.uniq.select { |address| !address.updated_at.today? }.sort_by(&:streetnumb)
+    
+    start_of_week = Date.today.beginning_of_week
+    end_of_week = Date.today.end_of_week
+  
+    # Create a hash to hold inspections for each day of the week
+    @inspections_by_day = {
+      'Sunday' => [],
+      'Monday' => [],
+      'Tuesday' => [],
+      'Wednesday' => [],
+      'Thursday' => [],
+      'Friday' => [],
+      'Saturday' => []
+    }
+  
+    # Iterate over all inspections and add them to the correct day if they are in the current week
+    Inspection.where(inspector: @user, status: nil)
+              .where(scheduled_datetime: start_of_week..end_of_week)
+              .each do |inspection|
+      day_of_week = inspection.scheduled_datetime.strftime('%A') if inspection.scheduled_datetime
+      @inspections_by_day[day_of_week] << inspection if day_of_week
     end
+  end
   
 
   def issue
