@@ -49,36 +49,37 @@
   <div class="col-md-6">
     <div class="card">
       <div class="card-body">
-        <% if @contact.businesses.any? %>
-          <h3>Businesses (<%= @contact.businesses.count %>)</h3>
-          <!-- for loop to show all businesses associated with this contact -->
+        <% if @businesses.any? %>
+          <h3>Businesses (<%= @businesses.count %>)</h3>
           <ul>
-          <% @contact.businesses.each do |business| %>
-            <li>
-            <%= link_to business.name, address_business_path(business.address, business) %> 
-
-            <% if business.address.present? %>
-              - <%= link_to business.address.combadd, business.address %>
+            <% @businesses.each do |business| %>
+              <li>
+                <%= link_to business.name, address_business_path(business.address, business) %>
+                <% if business.address.present? %>
+                  - <%= link_to business.address.combadd, business.address %>
+                <% end %>
+              </li>
             <% end %>
-            </li>
-          <% end %>
           </ul>
-          <% else %>
-            <h3>No businesses associated with this contact</h3>
+          <%= will_paginate @businesses, param_name: 'business_page' %>
+        <% else %>
+          <h3>No businesses associated with this contact</h3>
         <% end %>
-        <% if @contact.addresses.any? %>
-          <h3>Addresses (<%= @contact.addresses.count %>)</h3>
-          <!-- for loop to show all addresses associated with this contact -->
+
+        <% if @addresses.any? %>
+          <h3>Addresses (<%= @addresses.count %>)</h3>
           <ul>
-          <% @contact.addresses.each do |address| %>
-            <li>
-            <%= link_to address.property_name_with_combadd, address %> 
-            </li>
-          <% end %>
+            <% @addresses.each do |address| %>
+              <li>
+                <%= link_to address.property_name_with_combadd, address %> 
+              </li>
+            <% end %>
           </ul>
-          <% else %>
-            <h3>No addresses associated with this contact</h3>
+          <%= will_paginate @addresses, param_name: 'address_page' %>
+        <% else %>
+          <h3>No addresses associated with this contact</h3>
         <% end %>
+
       </div>
     </div>
 
@@ -101,28 +102,31 @@
         <% end %>
 
         <!-- show any associated comments -->
-        <% if @contact.contact_comments.exists? %>
+        <% if @contact_comments.any? %>
         <br>
-          <h3>Comments (<%= @contact.contact_comments.count %>)</h3>
-          <table class="table table-striped">
-            <thead>
-              <tr>
-                <th>Comment</th>
-                <th>Comment Date</th>
-                <th>Commenter</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              <% @contact.contact_comments.order(created_at: :desc).each do |comment| %>
+          <h3>Comments (<%= @contact_comments.count %>)</h3>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
                 <tr>
-                  <td><%= comment.comment %></td>
-                  <td><%= comment.created_at&.in_time_zone("Eastern Time (US & Canada)")&.strftime("%B %d, %Y %I:%M %p") %></td>
-                  <td><%= comment.user.email %></td>
+                  <th>Comment</th>
+                  <th>Comment Date</th>
+                  <th>Commenter</th>
                 </tr>
-              <% end %>
-            </tbody>
-          </table>
+              </thead>
+
+              <tbody>
+                <% @contact_comments.order(created_at: :desc).each do |comment| %>
+                  <tr>
+                    <td><%= comment.comment %></td>
+                    <td><%= comment.created_at&.in_time_zone("Eastern Time (US & Canada)")&.strftime("%B %d, %Y %I:%M %p") %></td>
+                    <td><%= comment.user.email %></td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+            <%= will_paginate @contact_comments, param_name: 'comment_page' %>
         <% end %>      
       </div>  
     </div>
@@ -132,39 +136,42 @@
     <div class="card">
       <div class="card-body">
         <!-- show any associated inspections -->
-        <% if @contact.inspections.any? %>
-          <h3>Inspections (<%= @contact.inspections.count %>)</h3>
-          <table class="table table-striped">
-            <thead>
-              <tr>
-                <th>Inspection Date</th>
-                <th>Inspection Type</th>
-                <th>Status</th>
-                <th colspan="1"></th>
-              </tr>
-            </thead>
-
-            <tbody>
-                <% @contact.inspections.order(created_at: :desc).each do |inspection| %>
+        <% if @inspections.any? %>
+            <h3>Inspections (<%= @inspections.count %>)</h3>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <thead>
                 <tr>
-                <% if inspection.scheduled_datetime == nil %>
-                  <td><%= link_to "Not scheduled", address_inspection_path(inspection.address, inspection) %></td>
-                <% else %>
-                  <td><%= inspection.scheduled_datetime.strftime("%B %d, %Y %I:%M %p") %></td>
-                <% end %>
-                  <td><%= inspection.source %></td>
-                  <td>
-                    <% if inspection.status == nil %>
-                      Pending
-                    <% elsif inspection.status != nil %>
-                      <%= inspection.status %>
-                    <% end %>
-                  </td>
-                  <td><%= link_to "Show", address_inspection_path(inspection.address, inspection), class: "btn btn-secondary" %></td>
+                  <th>Inspection Date</th>
+                  <th>Inspection Type</th>
+                  <th>Status</th>
+                  <th colspan="1"></th>
                 </tr>
-              <% end %>
-            </tbody>
-          </table>
+              </thead>
+
+              <tbody>
+                  <% @contact.inspections.order(created_at: :desc).each do |inspection| %>
+                  <tr>
+                  <% if inspection.scheduled_datetime == nil %>
+                    <td><%= link_to "Not scheduled", address_inspection_path(inspection.address, inspection) %></td>
+                  <% else %>
+                    <td><%= inspection.scheduled_datetime.strftime("%B %d, %Y %I:%M %p") %></td>
+                  <% end %>
+                    <td><%= inspection.source %></td>
+                    <td>
+                      <% if inspection.status == nil %>
+                        Pending
+                      <% elsif inspection.status != nil %>
+                        <%= inspection.status %>
+                      <% end %>
+                    </td>
+                    <td><%= link_to "Show", address_inspection_path(inspection.address, inspection), class: "btn btn-secondary" %></td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+          <%= will_paginate @inspections, param_name: 'inspection_page' %>
         <% else %>
           <h3>No inspections associated with this contact</h3>
         <% end %>        

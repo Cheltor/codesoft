@@ -17,8 +17,12 @@ class ContactsController < ApplicationController
 
   def show
     @contact = Contact.find(params[:id])
-    @businesses = @contact.businesses
+    @businesses = @contact.businesses.paginate(page: params[:business_page], per_page: 5)
+    @addresses = @contact.addresses.paginate(page: params[:address_page], per_page: 5)
+    @contact_comments = @contact.contact_comments.order(created_at: :desc).paginate(page: params[:comment_page], per_page: 5)
+    @inspections = @contact.inspections.order(created_at: :desc).paginate(page: params[:inspection_page], per_page: 5)
   end
+  
 
   def edit
     @contact = Contact.find(params[:id])
