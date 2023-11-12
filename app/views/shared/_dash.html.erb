@@ -1,5 +1,8 @@
 <% if current_user.ons? || current_user.admin? %>
 <div class="row">
+  <div>
+    <h3>Inspections this week</h3>
+  </div>
   <% %w[Monday Tuesday Wednesday Thursday Friday Saturday].each do |day| %>
     <div class="col">
       <div class="card">

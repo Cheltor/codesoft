@@ -27,7 +27,7 @@ class Address < ApplicationRecord
 
     def property_name_with_combadd
       if property_name.present?
-        "#{property_name} - #{combadd}"
+        "#{property_name.titleize} - #{combadd}"
       else
         combadd
       end
