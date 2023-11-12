@@ -2,7 +2,7 @@
 <%= form_for @inspection, url: new_permit_inspection_path, method: :post do |f| %>
   <div class="form-group">
     <strong><label>Address</label></strong><label> (If complaint is for a specific unit, please visit the address page, then unit's page)</label>
-    <%= f.collection_select(:address_id, Address.all, :id, :combadd, { prompt: 'Select an address' }, class: 'form-control selectpicker', data: { style: 'btn-primary' }) %>
+    <%= f.collection_select(:address_id, Address.all, :id, :property_name_with_combadd, { prompt: 'Select an address' }, class: 'form-control selectpicker', data: { style: 'btn-primary' }) %>
   </div>
 
   <%= f.hidden_field :source, value: "Building/Dumpster/POD permit" %>

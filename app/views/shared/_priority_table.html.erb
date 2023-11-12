@@ -13,7 +13,7 @@
   <tbody>
     <% @priority_addresses.each do |address| %>
       <tr style="text-align: center">
-        <td><%= link_to address.combadd, address_path(address), class:"btn btn-secondary" %></td>
+        <td><%= link_to address.property_name_with_combadd, address_path(address), class:"btn btn-secondary" %></td>
         <!-- <td><%= link_to "Mark Reviewed", mark_outstanding_address_path(address), method: :patch, class: "btn btn-secondary", remote: true %></td> -->
         <td><%= pluralize(address.violations.current.where(user_id: current_user.id).count, 'Active Violations') %></td>
         <td><%= pluralize(address.violations.map { |violation| violation.citations.where(status: ["unpaid"], user_id: current_user.id).count }.sum, 'Unpaid Citations') %></td>

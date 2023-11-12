@@ -4,7 +4,7 @@
       <%= link_to "Home", root_path %>
     </a></li>
     <li class="breadcrumb-item"><a href="#">
-    <%= link_to @address.combadd.titleize, address_path(@address) %>
+    <%= link_to @address.property_name_with_combadd, address_path(@address) %>
     </a></li>
 
     <% if @inspection.unit_id.present? %>
@@ -17,7 +17,7 @@
 
 
 <h2>Create New Inspection Request</h2>
-<h4><%= @address.combadd.titleize %></h4>
+<h4><%= @address.property_name_with_combadd %></h4>
 <p>* fields are mandatory</p>
 
 <%= form_with(model: [@address, @inspection]) do |form| %>

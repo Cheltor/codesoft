@@ -1,4 +1,4 @@
-<% content_for :title, @address.combadd %>
+<% content_for :title, @address.property_name_with_combadd %>
 
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
@@ -6,7 +6,7 @@
       <%= link_to "Home", root_path %>
     </a></li>
     <li class="breadcrumb-item active"><a href="#">
-    <%= link_to @address.combadd, address_path(@address) %>
+    <%= link_to @address.property_name_with_combadd, address_path(@address) %>
     </a></li>
   </ol>
 </nav>
@@ -17,7 +17,7 @@
       <div class="card-body">
         <h2>
         <% if @address.property_name.present? %>
-          <%= @address.property_name %> <%= @address.combadd %>
+          <%= @address.property_name_with_combadd %>
         <% else %>
           <%= @address.combadd %>
         <% end %>
@@ -33,9 +33,12 @@
     <button type="button" class="btn btn-secondary mt-2 mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
       Update Owner/Address
     </button>
-
-    <%= link_to "Add property name", address_name_address_path(@address), class: "btn btn-secondary mt-2 mb-3", data: { turbo: false } %>
-
+    <% if @address.property_name.present? %>
+      <p><strong>Property Name:</strong> <%= @address.property_name %></p>
+      <%= link_to "Edit Property Name", address_name_address_path(@address), class: "btn btn-secondary mt-2 mb-3", data: { turbo: false } %>
+    <% else %>
+      <%= link_to "Add property name", address_name_address_path(@address), class: "btn btn-secondary mt-2 mb-3", data: { turbo: false } %>
+    <% end %>
     <!-- link to create a new business -->
     <%= link_to "Add Business", new_address_business_path(@address), class: "btn btn-info mt-2 mb-3", data: { turbo: false } %>
 

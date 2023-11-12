@@ -2,7 +2,7 @@
 <!-- show the address -->
 <p>
   <strong>Address:</strong>
-  <%= link_to @address.combadd.titleize, address_path(@address), class: "btn" %>
+  <%= link_to @address.property_name_with_combadd, address_path(@address), class: "btn" %>
 </p>
 
 <%= form_with(model: [@address, Unit.new]) do |form| %>

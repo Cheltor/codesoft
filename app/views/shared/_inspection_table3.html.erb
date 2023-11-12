@@ -6,7 +6,7 @@
   <%# end %>
   <td><%= inspection.created_at.strftime("%B %d, %Y %I:%M %p") %></td>
   <td><%= inspection.source %></td>
-  <td><%= link_to inspection.address.combadd, address_inspection_path(inspection.address, inspection) %></td>
+  <td><%= link_to inspection.address.property_name_with_combadd, address_inspection_path(inspection.address, inspection) %></td>
   <% if inspection.scheduled_datetime.present? %>
     <td><%= inspection.scheduled_datetime.strftime("%B %d, %Y %I:%M %p") %></td>
   <% else %>

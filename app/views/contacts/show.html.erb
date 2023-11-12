@@ -72,7 +72,7 @@
           <ul>
           <% @contact.addresses.each do |address| %>
             <li>
-            <%= link_to address.combadd, address %> 
+            <%= link_to address.property_name_with_combadd, address %> 
             </li>
           <% end %>
           </ul>

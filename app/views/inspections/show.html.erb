@@ -1,5 +1,5 @@
 <%# inspection show page %>
-<% content_for :title, @address.combadd.titleize + " Inspection # " + @inspection.id.to_s %>
+<% content_for :title, @address.property_name_with_combadd + " Inspection # " + @inspection.id.to_s %>
 
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
@@ -27,7 +27,7 @@
     <div class="card">
       <div class="card-body">
         <%# address information %>
-        <h2><%= @inspection.address.combadd %>
+        <h2><%= @inspection.address.property_name_with_combadd %>
         <% if @inspection.unit.present? %>
           <small>Unit <%= @inspection.unit.number.upcase %></small>
         <% end %>

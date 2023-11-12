@@ -11,9 +11,9 @@
 <tr class="<%= 'table-danger' if violation.deadline_passed? && violation.status == "current" %> <%= 'table-warning' if violation.status == "current" %> <%= 'table-secondary' if violation.status == "resolved" %>">
   <td>
     <% if violation.unit.present? %>
-      <%= link_to "#{violation.address.combadd.titleize} - Unit #{violation.unit.number.upcase}", address_unit_path(violation.address, violation.unit), class: "btn" %>
+      <%= link_to "#{violation.address.property_name_with_combadd} - Unit #{violation.unit.number.upcase}", address_unit_path(violation.address, violation.unit), class: "btn" %>
     <% else %>
-      <%= link_to violation.address.combadd.titleize, address_path(violation.address), class: "btn" %>
+      <%= link_to violation.address.property_name_with_combadd, address_path(violation.address), class: "btn" %>
     <% end %>
   </td>
   <td><%= violation.user.name %></td>

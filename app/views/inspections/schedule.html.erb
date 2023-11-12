@@ -5,7 +5,7 @@
       <%= link_to "Home", root_path %>
     </a></li>
     <li class="breadcrumb-item"><a href="#">
-    <%= link_to @address.combadd.titleize, address_path(@address) %>
+    <%= link_to @address.property_name_with_combadd, address_path(@address) %>
     </a></li>
 
     <% if @inspection.unit_id.present? %>
@@ -65,7 +65,7 @@
               <tbody>
                 <% @scheduled_inspections.each do |inspection| %>
                   <tr>
-                    <td><%= inspection.address.combadd %></td>
+                    <td><%= inspection.address.property_name_with_combadd %></td>
                     <td><%= inspection.scheduled_datetime.strftime("%m/%d/%Y") %></td>
                     <td><%= inspection.scheduled_datetime.strftime("%I:%M %p") %></td>
                   </tr>

@@ -4,7 +4,7 @@
       <%= link_to "Home", root_path %>
     </a></li>
     <li class="breadcrumb-item active"><a href="#">
-    <%= link_to @address.combadd.titleize, address_path(@address) %>
+    <%= link_to @address.property_name_with_combadd, address_path(@address) %>
     </a></li>
   </ol>
 </nav>
@@ -12,6 +12,6 @@
 <!-- app/views/units/edit.html.erb -->
 <p>
   <strong>Address:</strong>
-  <%= link_to @address.combadd.titleize, address_path(@address), class: "btn btn-primary" %>
+  <%= link_to @address.property_name_with_combadd, address_path(@address), class: "btn btn-primary" %>
 </p>
 <%= render 'form', unit: @unit %>
