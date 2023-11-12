@@ -12,159 +12,10 @@
 </nav>
 
 <div class="row">
-  <div class="col-sm-4">
-    <div class="card">
-      <div class="card-body">
-        <h2>
-        <% if @address.property_name.present? %>
-          <%= @address.property_name_with_combadd %>
-        <% else %>
-          <%= @address.combadd %>
-        <% end %>
-        <a href="https://www.google.com/maps/search/?api=1&query=<%= @address.combadd %>+MD+<%= @address.premisezip %>" target="_blank" class="btn btn-secondary">
-        <i class="bi bi-geo-alt-fill"></i></a></h2>
-        <br>
-            <h4>Owner:</h4>
-    <p><%= @address.ownername.titleize %></p>
-    <h4>Owner Address:</h4>
-    <p><%= @address.owneraddress %> <%= @address.ownercity %>, <%= @address.ownerstate %> <%= @address.ownerzip %></p>
-
-    <!-- Button trigger modal -->
-    <button type="button" class="btn btn-secondary mt-2 mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
-      Update Owner/Address
-    </button>
-    <% if @address.property_name.present? %>
-      <p><strong>Property Name:</strong> <%= @address.property_name %></p>
-      <%= link_to "Edit Property Name", address_name_address_path(@address), class: "btn btn-secondary mt-2 mb-3", data: { turbo: false } %>
-    <% else %>
-      <%= link_to "Add property name", address_name_address_path(@address), class: "btn btn-secondary mt-2 mb-3", data: { turbo: false } %>
-    <% end %>
-    <!-- link to create a new business -->
-    <%= link_to "Add Business", new_address_business_path(@address), class: "btn btn-info mt-2 mb-3", data: { turbo: false } %>
-
-    <!-- show any associated businesses -->
-    <% if @address.businesses.present? %>
-    <div class="accordion mt-2 mb-2" id="accordionExample">
-      <div class="accordion-item">
-        <h2 class="accordion-header" id="headingOne">
-          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseBusiness" aria-expanded="false" aria-controls="collapseOne">
-            <i class="bi bi-chevron-down"></i>  Show <%= pluralize(@address.businesses.count, "Business") %>
-          </button>
-        </h2>
-        <div id="collapseBusiness" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-          <div class="accordion-body">
-            <% @address.businesses.each do |business| %>
-              <%= link_to business.name, address_business_path(@address, business) %>
-              <br>
-            <% end %>
-          </div>
-        </div>
-      </div>
-    </div>
-    <% end %>
-
-
-    <!-- add associated contacts -->
-    <%= link_to 'Manage Contacts', manage_contacts_address_path(@address), class: "btn btn-secondary mt-2 mb-3", data: { turbo: false } %>
-
-        <% if @address.contacts.present? %>
-        <div class="accordion mt-2 mb-2" id="accordionExample">
-          <div class="accordion-item">
-            <h2 class="accordion-header" id="headingOne">
-              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseContact" aria-expanded="false" aria-controls="collapseOne">
-                <i class="bi bi-chevron-down"></i>  Show <%= pluralize(@address.contacts.count, "Contact") %>
-              </button>
-            </h2>
-            <div id="collapseContact" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-              <div class="accordion-body">
-                <% @address.contacts.each do |contact| %>
-                  <p><%= link_to contact.name, contact_path(contact) %> - <a href="tel:<%= contact.phone %>"><%= format_phone_number(contact.phone) %></a> - <%= link_to contact.email, "mailto:#{contact.email}" %></p>
-                <% end %>
-              </div>
-            </div>
-          </div>
-        </div>
-        <% end %>
-
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Are you sure?</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            Be careful when updating the address information.
-            
-          </div>
-          <div class="modal-footer">
-            <%= link_to "Update", edit_address_path(@address), class: "btn btn-primary" %>
-          </div>
-        </div>
-      </div>
-    </div>
-      </div>
-    </div>
-  </div>
-  <div class="col-sm-4">
-    <div class="card shadow" style="background-color: #e3f2fd;">
-      <div class="card-body">
-        <%= render 'comments/form' %>
-      </div>
-    </div>
-  </div>
-  <div class="col-sm-4 text-center">
-    <div class="card">
-      <div class="card-body">
-          <% if @address_photos.any? %>
-          <button type="button" class="btn btn-outline-secondary btn-lg" data-bs-toggle="modal" data-bs-target="#allphotoModal">
-            <i class="bi bi-paperclip"></i>
-            All Photos and Attachments
-          </button>
-          <% end %>
-          <% if current_user.ons? %>
-            <% if @is_priority_address %>
-              <%= button_to mark_reviewed_path(@address.id), method: :patch, class: "btn btn-outline-primary mt-2", data: { turbolinks: false } do %>
-                Mark as Reviewed <i class="bi bi-check-lg"></i>
-              <% end %>
-            <% else %>
-              <p>This is not a priority address.</p>
-            <% end %>
-          <% end %>
-            <%= link_to "Create a Violation Notice/Doorhanger", new_address_violation_path(@address), class: "btn btn-outline-danger btn-lg mt-2", data: { turbo: false } %>
-            <br>
-            <%= link_to "Create New Inspection Request", new_address_inspection_path(@address), class: "btn btn-outline-info btn-lg mt-2", data: { turbo: false } %>
-            <br>
-            <%= link_to "Add Units", new_address_unit_path(@address), class: "btn btn-outline-secondary btn-lg mt-2" %>
-            <br>
-            <!-- add contacts -->
-
-        <!-- bootstrap collapse listing a link to all units -->
-
-        <% if @address.units.present? %>
-        <div class="accordion mt-2 mb-2" id="accordionExample">
-          <div class="accordion-item">
-            <h2 class="accordion-header" id="headingOne">
-              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                <i class="bi bi-chevron-down"></i>  Show <%= pluralize(@address.units.count, "Unit") %>
-              </button>
-            </h2>
-            <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-              <div class="accordion-body">
-                <% @address.units.each do |unit| %>
-                  <%= link_to unit.number.upcase, address_unit_path(@address, unit) %>
-                  <br>
-                <% end %>
-              </div>
-            </div>
-          </div>
-        </div>
-        <% end %>
-      </div>
-    </div>  
-  </div>
+  <%= render 'shared/address_info' %>
+  <%= render 'addresses/timeline' %>
 </div>
+
 <div class="row">
   <div class="col-sm-4">
 
@@ -283,7 +134,7 @@
               </tr>
             </thead>
             <tbody>
-              <% @address_citations.order("deadline DESC").each do |citation| %>
+              <% @address_citations.each do |citation| %>
                 <%= render partial: "shared/citation_table", locals: {citation: citation} %>
               <% end %>
             </tbody>

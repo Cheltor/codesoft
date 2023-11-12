@@ -1,75 +1,86 @@
-  <div class="col-sm-4">
-    <%# address information %>
-    <h2><%= @address.property_name_with_combadd %></h2>
-    <%# link to google maps from icon %>
-    <a href="https://www.google.com/maps/search/?api=1&query=<%= @address.combadd %>+MD+<%= @address.premisezip %>" target="_blank" class="btn btn-secondary">
-    <i class="bi bi-geo-alt-fill"></i> Search on Google Maps</a>
-    <br>
-    <% if @address_photos.any? %>
-    <button type="button" class="btn btn-primary mt-2 mb-2" data-bs-toggle="modal" data-bs-target="#allphotoModal">
-      <i class="bi bi-paperclip"></i>
-      All Photos and Attachments
-    </button>
-    <% end %>
-    <!--
-    <br>
-    <a href="https://sdat.dat.maryland.gov/RealProperty/Pages" target="_blank" class="btn btn-secondary">
-      <i class="bi bi-building"></i> SDAT Property Search
-    </a> -->
-
-    <!-- Modal -->
-    <div class="modal fade custom-modal-lg" id="allphotoModal">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            All Attachments
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <% @address_photos.each do |photo| %>
-              <%= render partial: "shared/show_image", locals: { photo: photo } %>
-            <% end %>
-          </div>
+<div class="col-md-5 col-xl-4">
+  <div class="card mb-3">
+    <div class="card-header">
+      <h5 class="card-title mb-0">Address Details</h5>
+    </div>
+    <div class="card-body text-center">
+      <h3 class="mb-0">
+        <%= @address.property_name_with_combadd %>
+      </h3>
+      <div>
+        <% if @address.property_name.present? %>
+          <p><strong>Property Name:</strong> <%= @address.property_name.titleize %></p>
+          <%= link_to "Edit Property Name", address_name_address_path(@address), class: "btn btn-outline-primary btn-sm mt-2", data: { turbo: false } %>
+        <% else %>
+          <%= link_to "Add property name", address_name_address_path(@address), class: "btn btn-outline-primary btn-sm mt-2", data: { turbo: false } %>
+        <% end %>
+        <a class="btn btn-outline-primary btn-sm mt-2" href="https://www.google.com/maps/search/?api=1&query=<%= @address.combadd %>+MD+<%= @address.premisezip %>" target="_blank">Google Map</a>
+      </div>
+    </div>
+    <!-- Owner info -->
+    <hr class="my-0">
+    <div class="card-body">
+      <h5 class="h6 card-title">Owner Information</h5>
+      <p><strong>Owner Name:</strong> <%= @address.ownername.titleize %></p>
+      <p><strong>Owner Address:</strong><%= @address.owneraddress %> <%= @address.ownercity %>, <%= @address.ownerstate %> <%= @address.ownerzip %></p>
+      <div class="text-center">
+        <%= link_to "Update Owner Info", edit_address_path(@address), class: "btn btn-outline-primary btn-sm mt-2" %>
+      </div>
+    </div>
+    <!-- contacts -->
+    <hr class="my-0">
+    <div class="card-body">
+      <h5 class="h6 card-title">Associated Contacts</h5>
+      <% if @address.contacts.present? %>
+        <% @address.contacts.each do |c| %>
+          <%= link_to c.name, contact_path(c), class: "btn btn-outline-info btn-sm mt-2" %>
+        <% end %>
+      <% end %>
+      <div class="text-center">
+        <%= link_to "Add Contact", manage_contacts_address_path(@address), class: "btn btn-outline-primary btn-sm mt-2", data: { turbo: false } %>
+      </div>
+    </div>
+    <!-- units -->
+    <hr class="my-0">
+    <div class="card-body">
+      <h5 class="h6 card-title">Units</h5>
+      <div class="">
+        <% for unit in @address.units %>
+          <%= link_to unit.number, address_unit_path(@address, unit), class: "btn btn-outline-info btn-sm mt-2" %>
+        <% end %>
+        <div class="text-center">
+          <%= link_to "Add Units", new_address_unit_path(@address), class: "btn btn-outline-secondary btn-sm mt-2" %>
         </div>
       </div>
     </div>
-
-
-  </div>
-  <div class="col-sm-4">
-    <h4>Owner:</h4>
-    <p><%= @address.ownername %></p>
-    <h4>Owner Address:</h4>
-    <p><%= @address.owneraddress %> <%= @address.ownercity %>, <%= @address.ownerstate %> <%= @address.ownerzip %></p>
-
-    <!-- Button trigger modal -->
-    <button type="button" class="btn btn-secondary mt-2 mb-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
-      Update Owner/Address
-    </button>
-
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Are you sure?</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            Be careful when updating the address information.
-            
-          </div>
-          <div class="modal-footer">
-            <%= link_to "Update", edit_address_path(@address), class: "btn btn-primary" %>
-          </div>
-        </div>
+    <!-- businesses -->
+    <hr class="my-0">
+    <div class="card-body">
+      <h5 class="h6 card-title">Business</h5>
+        <% if @address.businesses.present? %>
+          <% @address.businesses.each do |b| %>
+            <%= link_to b.name, address_business_path(b.address, b), class: "btn btn-outline-info btn-sm mt-2" %>
+          <% end %>
+        <% end %>
+      <div class="text-center">
+        <%= link_to "Add Business", new_address_business_path(@address), class: "btn btn-outline-primary btn-sm mt-2", data: { turbo: false } %>
+      </div>
+    </div>
+    <!-- violations -->
+    <hr class="my-0">
+    <div class="card-body">
+      <h5 class="h6 card-title">Property Violation</h5>
+      <div class="text-center">
+        <%= link_to "Create a Violation Notice/Doorhanger", new_address_violation_path(@address), class: "btn btn-outline-danger btn-sm mt-2", data: { turbo: false } %>
+      </div>
+    </div>
+    <!-- inspections -->
+    <hr class="my-0">
+    <div class="card-body">
+      <h5 class="h6 card-title">New Complaint or Inspection Request</h5>
+      <div class="text-center">
+        <%= link_to "Create New Inspection Request", new_address_inspection_path(@address), class: "btn btn-outline-info btn-sm mt-2", data: { turbo: false } %>
       </div>
     </div>
   </div>
-  <div class="col-sm-4">
-    <div class="card shadow" style="background-color: #e3f2fd;">
-      <div class="card-body">
-        <%= render 'comments/form' %>
-      </div>
-    </div>
-  </div>
+</div>

@@ -19,6 +19,10 @@ class User < ApplicationRecord
     has_many :inspections, foreign_key: :assignee_id
     has_many :inspections, foreign_key: "inspector_id"
 
+    def email_without_domain
+      email.split("@").first.titleize
+    end
+
 
     enum role: { guest: 0, ons: 1, oas: 2, admin: 3 }
   end

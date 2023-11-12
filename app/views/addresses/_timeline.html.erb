@@ -1,0 +1,53 @@
+<div class="col-md-7 col-xl-8">
+  <% if current_user.ons? && @is_priority_address %>
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title mb-0">
+        <h5 class="card-title mb-0">ONS Actions</h5>
+      </div>
+      <div class="card-body text-center">
+        <% if @is_priority_address %>
+          <%= button_to mark_reviewed_path(@address.id), method: :patch, class: "btn btn-outline-primary mt-2", data: { turbolinks: false } do %>
+            Mark as Reviewed <i class="bi bi-check-lg"></i>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+  <% end %>
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title mb-0">
+        <h5 class="card-title mb-0">New Comment</h5>
+      </div>
+      <div class="card-body">
+        <%= render 'comments/form' %>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header">
+      <h5 class="card-title mb-0">Activities</h5>
+      <div class="text-end">
+        <% if @address_photos.any? %>
+        <button type="button" class="btn btn-sm btn-outline-secondary btn-lg" data-bs-toggle="modal" data-bs-target="#allphotoModal">
+          <i class="bi bi-paperclip"></i>
+          All Photos and Attachments
+        </button>
+        <% end %>
+      </div>
+    </div>
+    <div class="card-body h-100">
+      <% if @timeline_items.any? %>
+        <% @timeline_items.each do |item| %>
+          <%= render partial: "addresses/timeline_item", locals: { item: item } %>
+        <% end %>
+      <% else %>
+        <p class="text-muted">No activities yet.</p>
+      <% end %>
+      <div class="d-grid">
+        <a href="#" class="btn btn-primary">Load more</a>
+      </div>
+    </div>
+  </div>
+</div>

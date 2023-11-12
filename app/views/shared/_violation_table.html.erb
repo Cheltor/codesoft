@@ -27,7 +27,7 @@
   <td><%= violation.deadline_date.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></td>
     <td>
       <% if violation.deadline_passed? && violation.violation_type == "Formal Notice" %>
-<%= link_to violation.citations.count, violation_path(violation), class: "btn #{button_class}" %>
+        <%= link_to violation.citations.count, violation_path(violation), class: "btn #{button_class}" %>
       <% end %>
   </td>
 </tr>

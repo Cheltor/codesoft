@@ -9,7 +9,9 @@ class AddressesController < ApplicationController
   
   def show
     @address = Address.find(params[:id])
-    @address_citations = @address.violations.map(&:citations).flatten
+    @address_citations = @address.violations.map(&:citations).flatten.sort_by(&:deadline).reverse
+    tl_address_citations = @address.violations.flat_map(&:citations).sort_by(&:deadline).reverse
+
     @address_photos = (
                         @address.violations.map(&:photos) + 
                         @address.comments.map(&:photos) + 
@@ -22,8 +24,10 @@ class AddressesController < ApplicationController
                                               .select { |violation| violation.deadline_date <= Date.tomorrow }
                                               .reject { |violation| violation.citations.where(citations: { status: [:unpaid, "pending trial"] }).any? { |citation| citation.deadline >= Date.tomorrow }}
                                               .any?
+    tl_address_violations = @address.violations
 
-    @address_inspections = @address.inspections.where(status: nil).any?
+    @address_inspections = @address.inspections.where(status: nil).where.not(source: "Complaint").any?
+    tl_address_inspections = @address.inspections
 
     # Check if the address has any citations
     @address_citations_count = @address.violations.map(&:citations).flatten.select { |citation| citation.status.in?([:unpaid, "pending trial"]) }.count > 0
@@ -36,8 +40,25 @@ class AddressesController < ApplicationController
 
     # Address complaints
     @complaints = @address.inspections.where(source: "Complaint")
-  end
+    
+    # fetching all comments
+    violation_comments = @address.violations.flat_map(&:violation_comments)
+    citation_comments = @address.violations.flat_map { |violation| violation.citations.flat_map(&:citation_comments) }
+    address_comments = @address.comments
 
+    # Combine all comments
+    tl_comments = (violation_comments + citation_comments + address_comments).sort_by(&:created_at).reverse
+
+    # Timeline
+    @timeline_items = (
+      tl_address_violations.to_a + 
+      tl_comments.to_a + 
+      tl_address_citations + 
+      tl_address_inspections.to_a
+    ).sort_by(&:created_at).reverse
+  
+  end
+  
   def address_name
     @address = Address.find(params[:id])
   end
@@ -171,6 +192,14 @@ class AddressesController < ApplicationController
 
   def address_params
       params.require(:address).permit(:pid, :ownername, :owneraddress, :ownercity, :ownerstate, :ownerzip, :streetnumb, :streetname, :streettype, :landusecode, :zoning, :owneroccupiedin, :vacant, :absent, :premisezip, :combadd, :outstanding, :property_name, contact_ids: [])
+  end
+
+  def current_page
+    params[:page] || 1
+  end
+  
+  def per_page
+    10 # or any other number of items you want to display per page
   end
   
 end

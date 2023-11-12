@@ -105,9 +105,9 @@ class ViolationsController < ApplicationController
 
   def resolve
     if @violation.update(status: :resolved)
-      redirect_to @violation, notice: "Violation resolved successfully."
+      redirect_to @violation.address, notice: "Violation resolved successfully."
     else
-      redirect_to @violation, alert: "Failed to resolve violation."
+      redirect_to @violation.address, alert: "Failed to resolve violation."
     end
   end
 

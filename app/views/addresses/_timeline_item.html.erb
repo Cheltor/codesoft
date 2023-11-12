@@ -1,0 +1,128 @@
+<% if item.is_a?(Comment) %>
+  <div class="d-flex align-items-start">
+    <div class="flex-grow-1">
+      <small class="float-end text-navy">
+        <%= time_ago_in_words(item.created_at) %> ago
+      </small>
+      <strong><%= item.user.email_without_domain %></strong> commented:<br>
+      <p>"<%= item.content %>"</p>
+      <% if item.photos.attached? %>
+        <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#comment-<%= item.id %>">
+          Attachments
+        </button>
+        <br>
+      <% end %>
+      <small class="text-muted">
+        <%= item.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y %l:%M %p") %>
+      </small>
+    </div>
+  </div>
+
+  <hr>
+<% elsif item.is_a?(ViolationComment) %>
+  <div class="d-flex align-items-start">
+    <div class="flex-grow-1">
+      <small class="float-end text-navy">
+        <%= time_ago_in_words(item.created_at) %> ago
+      </small>
+      <strong><%= item.user.email_without_domain %></strong> commented on <%= link_to item.violation.violation_type, violation_path(item.violation), class: "btn btn-outline-secondary btn-sm" %><% if item.violation.unit.present? %> for Unit <%= item.violation.unit.number.upcase %><% end %>:<br>
+      <p>"<%= item.content %>"</p>
+      <small class="text-muted">
+        <%= item.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y %l:%M %p") %>
+      </small>
+    </div>
+  </div>
+
+  <hr>
+<% elsif item.is_a?(CitationComment) %>
+  <div class="d-flex align-items-start">
+    <div class="flex-grow-1">
+      <small class="float-end text-navy">
+        <%= time_ago_in_words(item.created_at) %> ago
+      </small>
+      <strong><%= item.user.email_without_domain %></strong> commented on <%= link_to "Citation", citation_path(item.citation), class: "btn btn-sm btn-outline-secondary" %>: <br>
+      <p>"<%= item.content %>"</p>
+      <small class="text-muted">
+        <%= item.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y %l:%M %p") %>
+      </small>
+    </div>
+  </div>
+
+  <hr>
+<% elsif item.is_a?(Violation) %>
+  <div class="d-flex align-items-start">
+    <div class="flex-grow-1">
+      <small class="float-end text-navy">
+        <%= time_ago_in_words(item.created_at) %> ago
+      </small>
+      <strong><%= item.user.email_without_domain %></strong> created a <%= link_to item.violation_type, violation_path(item), class: "btn btn-outline-secondary btn-sm" %><% if item.unit.present? %> for Unit <%= item.unit.number.upcase %><% end %> for:<br>
+        <div class="mt-2 mb-2 text-center">
+        <% item.codes.each do |code| %>
+          <%= render partial: 'shared/code_def_show', locals: { code: code } %>
+        <% end %>
+        </div>
+        <p>
+          <% if item.status == "current" %>
+            <strong>Deadline Date:</strong> <%= item.deadline_date.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %>
+          <% else %>
+            <strong>Status:</strong> <%= item.status.titleize %>
+          <% end %>
+        </p>
+      <small class="text-muted">
+        <%= item.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y %l:%M %p") %>
+      </small>
+    </div>
+  </div>
+
+  <hr>
+<% elsif item.is_a?(Citation) %>
+  <div class="d-flex align-items-start">
+    <div class="flex-grow-1">
+      <small class="float-end text-navy">
+        <%= time_ago_in_words(item.created_at) %> ago
+      </small>
+      <strong><%= item.user.email_without_domain %></strong> created a <%= link_to "Citation", citation_path(item), class: "btn btn-sm btn-outline-secondary" %> for <strong>Christina Mason</strong><br>
+      <p>
+        <% if item.status == "paid" %> Due: <%= item.deadline.strftime("%B %d, %Y") %> <% end %>
+        <br>
+        <strong>Status:</strong> <%= item.status %>
+      </p>
+      <small class="text-muted">
+        <%= item.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y %l:%M %p") %>
+      </small>
+    </div>
+  </div>
+
+  <hr>  
+<% elsif item.is_a?(Inspection) %>
+  <div class="d-flex align-items-start">
+    <div class="flex-grow-1">
+      <small class="float-end text-navy">
+        <%= time_ago_in_words(item.created_at) %> ago
+      </small>
+      <% if item.source == "Complaint" %>
+        <p><%= link_to "Complaint", address_inspection_path(item.address, item), class: "btn btn-sm btn-outline-secondary" %> was made:</p>
+        <% if item.description.present? %>
+          <p>"<%= item.description %>"</p>
+        <% end %>
+        <% if item.status.present? %>
+          <p><strong>Result:</strong> 
+            <% if item.status == "Satisfactory" %>
+              No Violation Found
+            <% else %>
+              Violation Found
+            <% end %>
+          </p>
+        <% end %>
+      <% else %>
+        <p><%= link_to "Inspection", address_inspection_path(item.address, item), class: "btn btn-sm btn-outline-secondary" %> was requested for <strong><%= item.source %></strong>.</p>
+      <% end %>
+      <small class="text-muted">
+        <%= item.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y %l:%M %p") %>
+      </small>
+    </div>
+  </div>
+
+  <hr>
+<% end %>
+
