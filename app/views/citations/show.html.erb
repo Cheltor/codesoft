@@ -1,113 +1,43 @@
 <% content_for :title, @citation.violation.address.property_name_with_combadd %>
 
-<div class="row">
-  <div class="col-sm-4 d-none d-sm-block">
-    <%# address information %>
-    <h2><%= @address.property_name_with_combadd %></h2>
-    <%# link to google maps from icon %>
-    <a href="https://www.google.com/maps/search/?api=1&query=<%= @address.combadd %>+MD+<%= @address.premisezip %>" target="_blank" class="btn btn-secondary mb-2">
-    <i class="bi bi-geo-alt-fill"></i> Search on Google Maps</a>
-    <br>
-    <% if @address_photos.any? %>
-    <button type="button" class="btn btn-primary mt-2 mb-2" data-bs-toggle="modal" data-bs-target="#allphotoModal">
-      <i class="bi bi-paperclip"></i>
-      All Photos and Attachments
-    </button>
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">
+      <%= link_to "Home", root_path %>
+    </a></li>
+    <li class="breadcrumb-item"><a href="#">
+    <% if @citation.violation.unit.present? %>
+      <%= link_to @citation.violation.unit.number, address_unit_path(@address, @unit) %>
     <% end %>
-
-        <!-- Modal -->
-    <div class="modal fade custom-modal-lg" id="allphotoModal">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-              All Attachments
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-            <% @address_photos.each do |photo| %>
-              <%= render partial: 'shared/show_image', locals: { photo: photo } %>
-            <% end %>
-        </div>
-      </div>
-    </div>
-
-  </div>
-  <div class="col-sm-4">
-  <div class="card shadow mb-2">
-  <div class="card-body">
-  <h1>Violation #<%= @violation.id %>
-  </h1>
-  <p><strong>Violation Type: <%= link_to @violation.violation_type, violation_path(@violation), class: "btn btn-secondary" %>
-  </strong></p>
-  <p><strong>Violation Date:</strong> <%= @violation.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></p>
-  <p><strong>Deadline:</strong> <%= @violation.deadline_date.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></p>
-<%= link_to 'Extend Deadline', extend_deadline_violation_path(@violation), class: 'btn btn-secondary' %>
-
-  </div>
-  </div>
-  </div>
-    <div class="col-sm-4">
-      <div class="card shadow">
-      <div class="card-body">
-      
-      <h1>Citation #
-      <% if @citation.citationid.blank? %>
-        <%= @citation.id %>
-      <% else %>
-        <%= @citation.citationid %>
-      <% end %>
-      </h1>
-      <p><strong>Amount:</strong> <%= number_to_currency(@citation.fine) %></p>
-      <p><strong>Deadline:</strong> <%= @citation.deadline.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></p>
-      <p><strong>Status:</strong>
-        <% if @citation.status == "unpaid" && @citation.deadline <= Date.today %>
-          <%= link_to "Unpaid", edit_citation_path(@citation), class:"btn btn-danger" %>
-        <% elsif @citation.status == "unpaid" && @citation.deadline > Date.today %>
-          <%= link_to "Unpaid", edit_citation_path(@citation), class:"btn btn-warning" %>
-        <% elsif @citation.status == "paid" %>
-          <%= link_to "Paid", edit_citation_path(@citation), class:"btn btn-success" %> on <%= @citation.updated_at.in_time_zone("Eastern Time (US & Canada)").strftime("%m/%d/%Y") %>
-        <% elsif @citation.status == "dismissed" %>
-          <%= link_to "Dismissed", edit_citation_path(@citation), class:"btn btn-secondary" %>
-        <% elsif @citation.status == "pending trial" && @citation.trial_date.present? %> 
-          <%= link_to "Pending Trial", edit_citation_path(@citation), class:"btn btn-info" %> on <%= @citation.trial_date.strftime("%m/%d/%Y") %>
-        <% elsif @citation.status == "pending trial" && @citation.trial_date.nil? %>
-          <%= link_to "Pending Trial", edit_citation_path(@citation), class:"btn btn-info" %>
-        <% end %>
-      </p>
-      <% if @citation.trial_date.present? %>
-      <p><strong>Trial Date:</strong> <%= @citation.trial_date.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></p>
-      <% end %>
-      <% if @citation.photos.attached? %>
-      <p><strong>Attachment:</strong></p>
-
-      <!-- Button trigger modal -->
-      <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-        Attachments
-      </button>
-
-      <!-- Modal -->
-      <div class="modal fade custom-modal-lg" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Attachments</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              <% @citation.photos.each do |photo| %>
-               <%= render partial: "shared/show_image", locals: {photo: photo} %>
-              <% end %>
-            </div>
-          </div>
-        </div>
-      </div>
-      <% end %>
-    </div></div></div>
-</div>
+    <%= link_to @address.property_name_with_combadd, address_path(@address) %>
+    </a></li>
+    <li class="breadcrumb-item active">
+      <%= "Violation ##{params[:id]}" %>
+    </li>
+  </ol>
+</nav>
 <div class="row">
-  <div class="col">
+  <%= render 'shared/address_info' %>
+  <div class="col-md-7 col-xl-8">
     <div class="card">
       <div class="card-body">
-        <h3>New Comment</h3>
+        <!-- citation information -->
+        <h3>Citation #<%= @citation.citationid %></h3>
+        <p><strong>From Violation:</strong> <%= link_to @citation.violation.id, violation_path(@citation.violation), class: "btn btn-sm btn-outline-secondary" %></p>
+        <p><strong>Created At:</strong> <%= @citation.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y %I:%M %p") %></p>
+        <p><strong>Fine:</strong> $<%= @citation.fine %></p>
+        <p><strong>Status:</strong> <%= link_to "#{@citation.status.titleize}", edit_citation_path(@citation), class:"btn btn-success" %></p>
+                                        
+
+        <p><strong>Code:</strong>    <%= render partial: 'shared/code_def_show', locals: { code: @citation.code } %>
+ </p>
+        <p><strong>Deadline:</strong> <%= @citation.deadline.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></p>
+
+      </div>
+    </div>
+    <div class="card shadow mb-3">
+      <div class="card-body">
+        <h3>New Comment on Citation</h3>
 
         <% if user_signed_in? %>
           <%= form_for([@citation, @citation.citation_comments.build]) do |f| %>
@@ -141,7 +71,9 @@
             </tbody>
           </table>
         <% end %>      
-      </div>  
+    
+      </div>
     </div>
+
   </div>
 </div>

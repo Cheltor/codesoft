@@ -79,14 +79,21 @@ class AddressesController < ApplicationController
     # Combine all comments
     tl_comments = (violation_comments + citation_comments + address_comments).sort_by(&:created_at).reverse
 
-    # Timeline
-    @timeline_items = (
+    # Combine all items for timeline
+    combined_timeline_items = (
       tl_address_violations.to_a + 
       tl_comments.to_a + 
       tl_address_citations + 
       tl_address_inspections.to_a
     ).sort_by(&:created_at).reverse
-  
+
+    # Paginate @timeline_items
+    page = params[:page] || 1
+    per_page = 10 # Adjust as needed
+    @timeline_items = WillPaginate::Collection.create(page, per_page, combined_timeline_items.size) do |pager|
+      start_index = pager.offset
+      pager.replace(combined_timeline_items[start_index, per_page])
+    end
   end
   
   def address_name
@@ -108,7 +115,7 @@ class AddressesController < ApplicationController
         @status = "all"
       end
     
-      @violations = @violations.order(created_at: :desc)
+      @violations = @violations.order(created_at: :desc).paginate(page: params[:violation_page], per_page: 15)
   end
 
   def mark_outstanding
@@ -230,6 +237,9 @@ class AddressesController < ApplicationController
   
   def per_page
     10 # or any other number of items you want to display per page
+  end
+
+  def address_links
   end
   
 end

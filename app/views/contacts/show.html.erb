@@ -61,7 +61,7 @@
               </li>
             <% end %>
           </ul>
-          <%= will_paginate @businesses, param_name: 'business_page' %>
+          <%= will_paginate @businesses, param_name: 'business_page', class:"text-center" %>
         <% else %>
           <h3>No businesses associated with this contact</h3>
         <% end %>
@@ -75,7 +75,7 @@
               </li>
             <% end %>
           </ul>
-          <%= will_paginate @addresses, param_name: 'address_page' %>
+          <%= will_paginate @addresses, param_name: 'address_page', class:"text-center" %>
         <% else %>
           <h3>No addresses associated with this contact</h3>
         <% end %>
@@ -126,7 +126,7 @@
               </tbody>
             </table>
           </div>
-            <%= will_paginate @contact_comments, param_name: 'comment_page' %>
+            <%= will_paginate @contact_comments, param_name: 'comment_page', class:"text-center" %>
         <% end %>      
       </div>  
     </div>
@@ -171,7 +171,7 @@
               </tbody>
             </table>
           </div>
-          <%= will_paginate @inspections, param_name: 'inspection_page' %>
+          <%= will_paginate @inspections, param_name: 'inspection_page', class:"text-center" %>
         <% else %>
           <h3>No inspections associated with this contact</h3>
         <% end %>        

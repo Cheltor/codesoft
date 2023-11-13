@@ -4,6 +4,7 @@ class ContactsController < ApplicationController
   def index
     @contact_q = Contact.ransack(params[:q])
     @contacts = @contact_q.result(distinct: true).where(hidden: false).order(created_at: :desc)
+    @contacts = @contacts.paginate(page: params[:page], per_page: 15)
   end
 
   def new

@@ -31,7 +31,7 @@
         <p class="text-muted">No activities yet.</p>
       <% end %>
       <div class="d-grid">
-        <a href="#" class="btn btn-primary">Load more</a>
+        <%= will_paginate @timeline_items, class:"text-center" %>
       </div>
     </div>
   </div>

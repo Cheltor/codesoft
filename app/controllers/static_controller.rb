@@ -4,7 +4,16 @@ class StaticController < ApplicationController
   def dashboard
     @user = current_user
     @comments = @user.comments.order(created_at: :desc)
-    @comments_last_week = @user.comments.where(created_at: 1.week.ago..Time.now).order(created_at: :desc)
+
+    # fetch all comments
+    violation_comments = @user.violations.flat_map(&:violation_comments)
+    citation_comments = @user.violations.flat_map { |violation| violation.citations.flat_map(&:citation_comments) }
+    address_comments = @user.comments
+    
+    # Combine all comments
+    dash_comments = (violation_comments + citation_comments + address_comments).sort_by(&:created_at).reverse
+
+    @comments_last_week = dash_comments.select { |comment| comment.created_at > 1.week.ago }.sort_by(&:created_at).reverse
     @comments_two_weeks_ago = @user.comments.where(created_at: 2.weeks.ago..1.week.ago).order(created_at: :desc)
     @active_violations = @user.violations.where(violations: { status: :current })
     @violations = @user.violations.where(violations: { status: :current })

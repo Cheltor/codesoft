@@ -9,6 +9,8 @@ class InspectionsController < ApplicationController
     when "Unassigned"
       @inspections = @inspections.where(inspector_id: nil)
     end
+    @inspections = @inspections.paginate(page: params[:page], per_page: 10)
+
   end
 
   def all_complaints
@@ -37,6 +39,8 @@ class InspectionsController < ApplicationController
     when "Single Family License"
       @inspections = @inspections.where(source: "Single Family License")
     end
+    @inspections = @inspections.paginate(page: params[:page], per_page: 10)
+
   end
 
   def my_inspections
@@ -51,6 +55,8 @@ class InspectionsController < ApplicationController
     else
       @scheduled_datetime = "all"
     end
+
+    @inspections = @inspections.paginate(page: params[:page], per_page: 10)
   end
 
   def show

@@ -20,7 +20,7 @@
             <th scope="col">Type</th>
             <th scope="col">Status</th>
             <th scope="col">Scheduled</th>
-            <th scope="col">Status</th>
+            <th scope="col">Inspector</th>
             <th scope="col">Notes</th>
           </tr>
         </thead>
@@ -30,6 +30,7 @@
           <% end %>
         </tbody>
       </table>
+      <%= will_paginate @inspections, class:"text-center" %>
     </div>
   </div>
 </div>

@@ -41,7 +41,7 @@
             <% end %>
           </td>
           <td>
-            <% if business.website.present? %>
+            <% if business.website.present? && business.website != "http://" %>
                 <a href="<%= business.website %>" target="_blank"><%= business.website %></a>
             <% end %>
           </td>

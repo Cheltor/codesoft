@@ -1,5 +1,5 @@
 <% if current_user.ons? || current_user.admin? %>
-<div class="row">
+<!-- <div class="row">
   <div>
     <h3>Inspections this week</h3>
   </div>
@@ -8,16 +8,20 @@
       <div class="card">
         <div class="card-body">
           <h5 class="card-title"><%= day %></h5>
+          <% if day.present? %>
+            <p>No inspections scheduled for <%= day %>.</p>
+          <% else %>
           <ul>
             <% @inspections_by_day[day].sort_by(&:scheduled_datetime).each do |inspection| %>
               <li><%= link_to inspection.address.property_name_with_combadd, address_inspection_path(inspection.address, inspection) %> - <%= inspection.scheduled_datetime.strftime('%H:%M') %></li>
             <% end %>
           </ul>
+          <% end %>
         </div>
       </div>
     </div>
   <% end %>
-</div>
+</div> -->
 <div class="row">
   <div class="col-xl-6 col-xxl-5 d-flex">
     <div class="w-100">
@@ -65,13 +69,13 @@
         <div class="col-sm-6">
           <% if @complaints.empty? %>
           <div class="card d-none d-lg-block shadow mb-3" onclick="window.location='<%= my_complaints_path(status: 'current') %>';" style="cursor: pointer;">
-          <% else %>
+          <% else %>          
           <div class="card shadow mb-3" onclick="window.location='<%= my_complaints_path(status: 'current') %>';" style="cursor: pointer;">
           <% end %>
             <div class="card-body">
               <div class="row">
                 <div class="col mt-0">
-                  <h5 class="card-title">Property Complaints</h5>
+                  <h5 class="card-title">Active Property Complaints</h5>
                 </div> 
                 <div class="col-auto">
                   <div class="stat text-primary">
