@@ -1,0 +1,47 @@
+<% content_for :title, @address.property_name_with_combadd %>
+
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">
+      <%= link_to "Home", root_path %>
+    </a></li>
+    <li class="breadcrumb-item active"><a href="#">
+    <%= link_to @address.property_name_with_combadd, address_path(@address) %>
+    </a></li>
+  </ol>
+</nav>
+
+<div class="row">
+  <%= render 'shared/address_info' %>
+  <div class="col-md-7 col-xl-8">
+    <%= render 'shared/address_links' %>
+    <div class="card">
+      <div class="card-body">
+        <% if @address.inspections.where(source: "Complaint").any? %>
+        <div class="table-responsive" style="text-align: center">
+          <table class="table table-striped table-hover">
+            <thead>
+              <tr>
+                <th scope="col">Created At</th>
+                <th scope="col">Type</th>
+                <th scope="col">Status</th>
+                <th scope="col">Inspector</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @address.inspections.where(source: "Complaint").order("updated_at DESC").each do |inspection| %>
+                <%= render partial: "shared/complaint_table", locals: {inspection: inspection} %>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+        <% else %>
+        <p style="text-align: center">No complaints have been created for this address.</p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+

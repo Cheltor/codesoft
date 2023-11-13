@@ -4,7 +4,11 @@
       <small class="float-end text-navy">
         <%= time_ago_in_words(item.created_at) %> ago
       </small>
-      <strong><%= item.user.email_without_domain %></strong> commented:<br>
+      <% if item.user == current_user %>
+        <strong><%= item.user.email_without_domain %></strong> <%= link_to "commented", edit_address_comment_path(item.address, item), class: "btn btn-outline-secondary btn-sm" %>:
+      <% else %>
+        <strong><%= item.user.email_without_domain %></strong> commented:<br>
+      <% end %>
       <p>"<%= item.content %>"</p>
       <% if item.photos.attached? %>
         <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#comment-<%= item.id %>">

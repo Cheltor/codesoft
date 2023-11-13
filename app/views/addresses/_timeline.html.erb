@@ -1,31 +1,16 @@
-<div class="col-md-7 col-xl-8">
-  <% if current_user.ons? && @is_priority_address %>
-  <div class="card">
-    <div class="card-header">
-      <div class="card-title mb-0">
-        <h5 class="card-title mb-0">ONS Actions</h5>
-      </div>
-      <div class="card-body text-center">
-        <% if @is_priority_address %>
-          <%= button_to mark_reviewed_path(@address.id), method: :patch, class: "btn btn-outline-primary mt-2", data: { turbolinks: false } do %>
-            Mark as Reviewed <i class="bi bi-check-lg"></i>
-          <% end %>
-        <% end %>
-      </div>
-    </div>
-  </div>
-  <% end %>
+<div class="col-md-8 col-xl-9">
+  <%= render 'shared/address_links' %>
   <div class="card">
     <div class="card-header">
       <div class="card-title mb-0">
         <h5 class="card-title mb-0">New Comment</h5>
       </div>
-      <div class="card-body">
+      <div id="commentDiv" class="card-body">
         <%= render 'comments/form' %>
       </div>
     </div>
   </div>
-  <div class="card">
+  <div id="activities" class="card">
     <div class="card-header">
       <h5 class="card-title mb-0">Activities</h5>
       <div class="text-end">

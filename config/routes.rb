@@ -39,6 +39,11 @@ Rails.application.routes.draw do
       get 'manage_contacts'
       post 'manage_contacts'
       get 'address_name'
+      get 'all_address_violations'
+      get 'all_address_comments'
+      get 'all_address_citations'
+      get 'all_address_inspections'
+      get 'all_address_complaints'
     end
   end
 

@@ -1,0 +1,39 @@
+<%# if the citation is past due, and unpaid, make the row red %>
+<% if citation.deadline_passed? && citation.status == "unpaid" %>
+<tr class="table-danger">
+<% elsif citation.deadline > Date.today && citation.status == "unpaid" %>
+<tr class="table-warning">
+<% elsif citation.status == "paid" %>
+<tr class="table-success">
+<% elsif citation.status == "pending trial" %>
+<tr class="table-info">
+<% else %>
+<tr class="table-secondary">
+<% end %>
+  <% if citation.citationid.blank? %>
+  <td><%= link_to citation.id , citation_path(citation), class: "btn btn-secondary" %></td>
+  <% else %>
+  <td><%= link_to citation.citationid , citation_path(citation), class: "btn btn-secondary" %></td>
+  <% end %>
+  <td>
+  <% if citation.status == "unpaid" && citation.deadline <= Date.today %>
+    <%= link_to "Unpaid", edit_citation_path(citation), class:"btn btn-danger" %>
+  <% elsif citation.status == "unpaid" && citation.deadline > Date.today %>
+    <%= link_to "Unpaid", edit_citation_path(citation), class:"btn btn-warning" %>
+  <% elsif citation.status == "paid" %>
+    <%= link_to "Paid", edit_citation_path(citation), class:"btn btn-success" %> on <%= citation.updated_at.in_time_zone("Eastern Time (US & Canada)").strftime("%m/%d/%Y") %>
+  <% elsif citation.status == "dismissed" %>
+    <%= link_to "Dismissed", edit_citation_path(citation), class:"btn btn-secondary" %>
+  <% elsif citation.status == "pending trial" && citation.trial_date.nil? %>
+    <%= link_to "Pending Trial", edit_citation_path(citation), class:"btn btn-info" %>
+  <% elsif citation.status == "pending trial" && citation.trial_date.present? %> 
+    <%= link_to "Pending Trial", edit_citation_path(citation), class:"btn btn-info" %> on <%= citation.trial_date.strftime("%m/%d/%Y") %>
+  <% end %>
+  </td>
+  <td>
+    <%= render partial: 'shared/code_def_show', locals: { code: citation.code } %>
+  </td>
+  <td>
+    <%= citation.deadline.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %>
+  </td>
+</tr>

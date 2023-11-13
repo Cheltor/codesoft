@@ -6,7 +6,37 @@ class AddressesController < ApplicationController
       @violations = Violation.recent
       @comments = Comment.recent
   end
-  
+
+  def all_address_violations
+    @address = Address.find(params[:id])
+    @violations = @address.violations
+  end
+
+  def all_address_comments
+    @address = Address.find(params[:id])
+    violation_comments = @address.violations.flat_map(&:violation_comments)
+    citation_comments = @address.violations.flat_map { |violation| violation.citations.flat_map(&:citation_comments) }
+    address_comments = @address.comments
+
+    @comments = (violation_comments + citation_comments + address_comments).sort_by(&:created_at).reverse
+  end
+
+  def all_address_citations
+    @address = Address.find(params[:id])
+    @address_citations = @address.violations.map(&:citations).flatten.sort_by(&:deadline).reverse
+    @address_citations_count = @address.violations.map(&:citations).flatten.select { |citation| citation.status.in?([:unpaid, "pending trial"]) }.count > 0
+  end
+
+  def all_address_inspections
+    @address = Address.find(params[:id])
+    @inspections = @address.inspections.where.not(source: "Complaint")
+  end
+
+  def all_address_complaints
+    @address = Address.find(params[:id])
+    @complaints = @address.inspections.where(source: "Complaint")
+  end
+
   def show
     @address = Address.find(params[:id])
     @address_citations = @address.violations.map(&:citations).flatten.sort_by(&:deadline).reverse
