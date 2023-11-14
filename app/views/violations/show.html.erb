@@ -64,6 +64,8 @@
           <%= form_for([@violation, @violation.violation_comments.build]) do |f| %>
             <%= f.text_area :content, class: "form-control" %>
             <br>
+            <%= f.file_field :photos, multiple: true, class: "form-control" %>
+            <br>
             <%= f.submit class: "btn btn-primary" %>
           <% end %>
         <% end %>
@@ -72,25 +74,9 @@
         <% if @violation.violation_comments.exists? %>
         <br>
           <h3>Comments (<%= @violation.violation_comments.count %>)</h3>
-          <table class="table table-striped">
-            <thead>
-              <tr>
-                <th>Comment</th>
-                <th>Comment Date</th>
-                <th>Commenter</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              <% @violation.violation_comments.order(created_at: :desc).each do |comment| %>
-                <tr>
-                  <td><%= comment.content %></td>
-                  <td><%= comment.created_at&.in_time_zone("Eastern Time (US & Canada)")&.strftime("%B %d, %Y %I:%M %p") %></td>
-                  <td><%= comment.user.email %></td>
-                </tr>
-              <% end %>
-            </tbody>
-          </table>
+          <% @violation.violation_comments.order(created_at: :desc).each do |comment| %>
+            <%= render 'comments/comments2', comment: comment, show_address_info: false, show_edit_link: true, show_unit_info: false %>
+          <% end %>
         <% end %>      
       </div>  
     </div>

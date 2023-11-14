@@ -70,7 +70,6 @@ Rails.application.routes.draw do
   get 'assign_inspection/:id' => 'inspections#assign_inspection', as: 'assign_inspection'
   patch 'update_inspector/:id' => 'inspections#update_inspector', as: 'update_inspector'
 
-
   resources :users, only: [:index, :show, :edit, :update]
 
   authenticated :user, ->(u) { u.admin? } do

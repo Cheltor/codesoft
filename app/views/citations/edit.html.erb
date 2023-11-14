@@ -1,143 +1,97 @@
-<div class="row">
-  <div class="col-sm-4">
-    <%# address information %>
-    <h2><%= @address.combadd.titleize %></h2>
-    <%# link to google maps from icon %>
-    <a href="https://www.google.com/maps/search/?api=1&query=<%= @address.combadd %>+MD+<%= @address.premisezip %>" target="_blank" class="btn btn-secondary">
-    <i class="bi bi-geo-alt-fill"></i> Search on Google Maps</a>
-    <br>
-    <% if @address_photos.any? %>
-    <button type="button" class="btn btn-primary mt-2 mb-2" data-bs-toggle="modal" data-bs-target="#allphotoModal">
-      <i class="bi bi-paperclip"></i>
-      All Photos and Attachments
-    </button>
+<% content_for :title, @citation.violation.address.property_name_with_combadd %>
+
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">
+      <%= link_to "Home", root_path %>
+    </a></li>
+    <li class="breadcrumb-item"><a href="#">
+    <%= link_to @address.property_name_with_combadd, address_path(@address) %>
+    <% if @citation.unit.present? %>
+      - <%= link_to @citation.unit.number.upcase, address_unit_path(@address, @citation.unit) %>
     <% end %>
-
-        <!-- Modal -->
-    <div class="modal fade custom-modal-lg" id="allphotoModal">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-              All Attachments
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-            <% @address_photos.each do |photo| %>
-              <%= render partial: 'shared/show_image', locals: { photo: photo } %>
-            <% end %>
-        </div>
-      </div>
-    </div>
-
-  </div>
-  <div class="col-sm-4 d-none d-sm-block">
-  <div class="card shadow">
-  <div class="card-body">
-  <h1>Violation #<%= @violation.id %>
-  </h1>
-  <p><strong>Violation Type: <%= link_to @violation.violation_type, violation_path(@violation), class: "btn btn-secondary" %>
-  </strong></p>
-  <p><strong>Violation Date:</strong> <%= @violation.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></p>
-  <p><strong>Deadline:</strong> <%= @violation.deadline_date.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></p>
-  <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#violation-extend-<%= @violation.id %>">
-    Extend
-  </button>
-  <br>
-  <br>
-  <!-- Violation Extend Modal -->
-    <div class="modal fade" role="dialog" id="violation-extend-<%= @violation.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">
-              Extend
-            </h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <%= button_to "Extend one day", extender_violation_path(@violation, days: 1), method: :patch, class: "btn btn-success mt-3" %>
-            <%= button_to "Extend one week", extender_violation_path(@violation, days: 7), method: :patch, class: "btn btn-success mt-3" %>
-            <%= button_to "Extend two weeks", extender_violation_path(@violation, days: 14), method: :patch, class: "btn btn-success mt-3" %>
-            <%= button_to "Extend one month", extender_violation_path(@violation, days: 30), method: :patch, class: "btn btn-success mt-3" %>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  </div>
-  </div>
-    <div class="col-sm-4">
-      <div class="card shadow">
+    </a></li>
+    <li class="breadcrumb-item active">
+      <%= "Violation ##{params[:id]}" %>
+    </li>
+  </ol>
+</nav>
+<div class="row">
+  <%= render 'shared/address_info' %>
+  <div class="col-md-7 col-xl-8">
+    <div class="card shadow">
       <div class="card-body">
-      
-      <h1>Citation #
-      <!-- if citation.citationid is blank, then show citation.id -->
-      <% if @citation.citationid.blank? %>
-        <%= @citation.id %>
-      <% else %>
-        <%= @citation.citationid %>
-      <% end %>
-      </h1>
-      <p><strong>Amount:</strong> <%= number_to_currency(@citation.fine) %></p>
-      <p><strong>Deadline:</strong> <%= @citation.deadline.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></p>
-      <p><strong>Status:</strong>
-        <% if @citation.status == "unpaid" && @citation.deadline <= Date.today %>
-          <%= link_to "Unpaid", edit_citation_path(@citation), class:"btn btn-danger" %>
-        <% elsif @citation.status == "unpaid" && @citation.deadline > Date.today %>
-          <%= link_to "Unpaid", edit_citation_path(@citation), class:"btn btn-warning" %>
-        <% elsif @citation.status == "paid" %>
-          <%= link_to "Paid", edit_citation_path(@citation), class:"btn btn-success" %> on <%= @citation.updated_at.in_time_zone("Eastern Time (US & Canada)").strftime("%m/%d/%Y") %>
-        <% elsif @citation.status == "dismissed" %>
-          <%= link_to "Dismissed", edit_citation_path(@citation), class:"btn btn-secondary" %>
-        <% elsif @citation.status == "pending trial" && @citation.trial_date.present? %> 
-          <%= link_to "Pending Trial", edit_citation_path(@citation), class:"btn btn-info" %> on <%= @citation.trial_date.strftime("%m/%d/%Y") %>
-        <% elsif @citation.status == "pending trial" && @citation.trial_date.nil? %>
-          <%= link_to "Pending Trial", edit_citation_path(@citation), class:"btn btn-info" %>
+        
+        <h3>Citation #
+        <!-- if citation.citationid is blank, then show citation.id -->
+        <% if @citation.citationid.blank? %>
+          <%= @citation.id %>
+        <% else %>
+          <%= @citation.citationid %>
         <% end %>
-      </p>
-      <% if @citation.trial_date.present? %>
-      <p><strong>Trial Date:</strong> <%= @citation.trial_date.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></p>
-      <% end %>
-      <% if @citation.photos.attached? %>
-      <p><strong>Attachment:</strong></p>
+        </h3>
+        <p><strong>Amount:</strong> <%= number_to_currency(@citation.fine) %></p>
+        <p><strong>Deadline:</strong> <%= @citation.deadline.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></p>
+        <p><strong>Status:</strong>
+          <% if @citation.status == "unpaid" && @citation.deadline <= Date.today %>
+            <span class="badge bg-danger">Unpaid</span>
+          <% elsif @citation.status == "unpaid" && @citation.deadline > Date.today %>
+            <span class="badge bg-warning text-dark">Unpaid</span>
+          <% elsif @citation.status == "paid" %>
+            <span class="badge bg-success">Paid</span> on <%= @citation.updated_at.in_time_zone("Eastern Time (US & Canada)").strftime("%m/%d/%Y") %>
+          <% elsif @citation.status == "dismissed" %>
+            <span class="badge bg-secondary">Dismissed</span>
+          <% elsif @citation.status == "pending trial" && @citation.trial_date.present? %> 
+            <span class="badge bg-info">Pending Trial</span> on <%= @citation.trial_date.strftime("%m/%d/%Y") %>
+          <% elsif @citation.status == "pending trial" && @citation.trial_date.nil? %>
+            <span class="badge bg-info">Pending Trial</span>
+          <% end %>
+        </p>
+        <% if @citation.trial_date.present? %>
+        <p><strong>Trial Date:</strong> <%= @citation.trial_date.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></p>
+        <% end %>
+        <% if @citation.photos.attached? %>
+        <p><strong>Attachment:</strong></p>
 
-      <!-- Button trigger modal -->
-      <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-        Attachments
-      </button>
-
-      <!-- Modal -->
-      <div class="modal fade custom-modal-lg" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Attachments</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              <% @citation.photos.each do |photo| %>
-                <%= render partial: 'shared/show_image', locals: { photo: photo } %>
-              <% end %>
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+          Attachments
+        </button>
+        <!-- Modal -->
+        <div class="modal fade custom-modal-lg" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Attachments</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <% @citation.photos.each do |photo| %>
+                  <%= render partial: 'shared/show_image', locals: { photo: photo } %>
+                <% end %>
+              </div>
             </div>
           </div>
         </div>
+        <% end %>
       </div>
-      <% end %>
-    </div></div></div>
-</div>
-<div class="row mt-3">
-  <div class="col">
-    <h1>Update Citation</h1>
-      <%= form_for @citation do |f| %>
-        <div class="form-group">
-          <strong>Status</strong>
-          <%= f.select :status, [["Unpaid", "unpaid"], ["Paid", "paid"], ["Pending Trial", "pending trial"], ["Dismissed", "dismissed"]], {}, class: "form-control" %>
-        </div>
-        <div class="form-group mt-2">
-          <strong>If going to trial, add the trial date:</strong>
-          <%= f.date_field :trial_date, class: "form-control" %>
-        </div>
-        <%= f.submit "Update Citation", class: "btn btn-primary mt-5" %>
-      <% end %>
+    </div>
+    <div class="card">
+      <div class="card-body">
+        <h3>Update Citation</h3>
+        <%= form_for @citation do |f| %>
+          <div class="form-group">
+            <strong>Status</strong>
+            <%= f.select :status, [["Unpaid", "unpaid"], ["Paid", "paid"], ["Pending Trial", "pending trial"], ["Dismissed", "dismissed"]], {}, class: "form-control" %>
+          </div>
+          <div class="form-group mt-2">
+            <strong>If going to trial, add the trial date:</strong>
+            <%= f.date_field :trial_date, class: "form-control" %>
+          </div>
+          <%= f.submit "Update Citation", class: "btn btn-primary mt-5" %>
+        <% end %>
+      </div>
+    </div>
   </div>
 </div>
 

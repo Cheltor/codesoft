@@ -14,6 +14,7 @@ class ViolationCommentsController < ApplicationController
   end
 
   def edit
+    @violation_comment = ViolationComment.find(params[:id])
     @comment = ViolationComment.find(params[:id])
     @violation = @comment.violation
   end
@@ -39,6 +40,6 @@ class ViolationCommentsController < ApplicationController
   private
 
   def comment_params
-    params.require(:violation_comment).permit(:content, :violation_id, :user_id)
+    params.require(:violation_comment).permit(:content, :violation_id, :user_id, photos: [])
   end
 end

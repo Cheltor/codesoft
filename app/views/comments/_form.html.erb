@@ -7,8 +7,11 @@
     <br>
     <!-- if address has units, show unit select -->
     <% if @address.units.any? %>
-    <%= f.select :unit_id, options_for_select(unit_options(@address.units), nil), {prompt: "Select Unit or Building"}, class: "form-select" %>
-
+      <% if @unit.present? %>
+        <%= f.hidden_field :unit_id, value: @unit.id %>
+      <% else %>
+        <%= f.select :unit_id, options_for_select(unit_options(@address.units), nil), {prompt: "Select Unit or Building"}, class: "form-select" %>
+      <% end %>
     <br>
     <br>
     <% end %>

@@ -39,6 +39,6 @@ class CitationCommentsController < ApplicationController
   private
 
   def comment_params
-    params.require(:citation_comment).permit(:content, :citation_id, :user_id)
+    params.require(:citation_comment).permit(:content, :citation_id, :user_id, photos: [])
   end
 end

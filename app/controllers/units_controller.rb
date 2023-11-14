@@ -8,10 +8,29 @@ class UnitsController < ApplicationController
     @address = Address.find(params[:address_id])
     @unit = @address.units.find(params[:id])
     @violations = @unit.violations
-    @comments = @unit.comments
     @address_citations = @unit.citations
-    @inspections = @unit.inspections
+    @inspections = @unit.inspections.where.not(source: "Complaint")
+    @complaints = @inspections.where(source: "Complaint")
+  
+    violation_comments = @violations.flat_map(&:violation_comments)
+    citation_comments = @violations.flat_map { |violation| violation.citations.flat_map(&:citation_comments) }
+    @comments = []
+    unit_comments = @unit.comments
+  
+    @comments = (violation_comments + citation_comments + unit_comments).sort_by(&:created_at).reverse
+  
+    @unit_photos = (@violations.map(&:photos) + @comments.map(&:photos) + @address_citations.map(&:photos)).flatten.sort_by(&:created_at).reverse
+    timeline_items = (@violations + @comments + @address_citations + @inspections).sort_by(&:created_at).reverse
+  
+    # Paginate timeline_items
+    page = params[:page] || 1
+    per_page = 10 # or any number you prefer
+    total_items = timeline_items.length
+    @timeline_items = WillPaginate::Collection.create(page, per_page, total_items) do |pager|
+      pager.replace timeline_items[pager.offset, pager.per_page].to_a
+    end
   end
+  
   
   def new
     @address = Address.find(params[:address_id])

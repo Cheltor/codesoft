@@ -5,9 +5,12 @@
         <%= time_ago_in_words(item.created_at) %> ago
       </small>
       <% if item.user == current_user %>
-        <strong><%= item.user.email_without_domain %></strong> <%= link_to "commented", edit_address_comment_path(item.address, item), class: "btn btn-outline-secondary btn-sm" %>:
+        <strong><%= item.user.email_without_domain %></strong> <%= link_to "commented", edit_address_comment_path(item.address, item), class: "btn btn-outline-secondary btn-sm" %><%= " on " if item.unit.present? %><%= link_to "#{item.unit.number.upcase}", address_unit_path(item.address, item.unit), class: "btn btn-outline-info btn-sm" if item.unit.present? %>:
+      
       <% else %>
-        <strong><%= item.user.email_without_domain %></strong> commented:<br>
+        <strong><%= item.user.email_without_domain %></strong> commented<%= " on " if item.unit.present? %><%= link_to "#{item.unit.number.upcase}", address_unit_path(item.address, item.unit), class: "btn btn-outline-info btn-sm" if item.unit.present? %>:<br>
+                    
+
       <% end %>
       <p>"<%= item.content %>"</p>
       <% if item.photos.attached? %>
@@ -29,7 +32,7 @@
       <small class="float-end text-navy">
         <%= time_ago_in_words(item.created_at) %> ago
       </small>
-      <strong><%= item.user.email_without_domain %></strong> commented on <%= link_to item.violation.violation_type, violation_path(item.violation), class: "btn btn-outline-secondary btn-sm" %><% if item.violation.unit.present? %> for Unit <%= item.violation.unit.number.upcase %><% end %>:<br>
+      <strong><%= item.user.email_without_domain %></strong> commented on <%= link_to item.violation.violation_type, violation_path(item.violation), class: "btn btn-outline-secondary btn-sm" %><%= " on " if item.violation.unit.present? %><%= link_to "#{item.violation.unit.number.upcase}", address_unit_path(item.violation.address, item.violation.unit), class: "btn btn-outline-info btn-sm" if item.violation.unit.present? %>:<br>
       <p>"<%= item.content %>"</p>
       <small class="text-muted">
         <%= item.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y %l:%M %p") %>
@@ -44,7 +47,7 @@
       <small class="float-end text-navy">
         <%= time_ago_in_words(item.created_at) %> ago
       </small>
-      <strong><%= item.user.email_without_domain %></strong> commented on <%= link_to "Citation", citation_path(item.citation), class: "btn btn-sm btn-outline-secondary" %>: <br>
+      <strong><%= item.user.email_without_domain %></strong> commented on <%= link_to "Citation", citation_path(item.citation), class: "btn btn-sm btn-outline-secondary" %><%= " on " if item.citation.unit.present? %><%= link_to "#{item.citation.unit.number.upcase}", address_unit_path(item.citation.unit.address, item.citation.unit), class: "btn btn-outline-info btn-sm" if item.citation.unit.present? %>: <br>
       <p>"<%= item.content %>"</p>
       <small class="text-muted">
         <%= item.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y %l:%M %p") %>
@@ -59,7 +62,7 @@
       <small class="float-end text-navy">
         <%= time_ago_in_words(item.created_at) %> ago
       </small>
-      <strong><%= item.user.email_without_domain %></strong> created a <%= link_to item.violation_type, violation_path(item), class: "btn btn-outline-secondary btn-sm" %><% if item.unit.present? %> for Unit <%= item.unit.number.upcase %><% end %> for:<br>
+      <strong><%= item.user.email_without_domain %></strong> created a <%= link_to item.violation_type, violation_path(item), class: "btn btn-outline-secondary btn-sm" %><%= " on " if item.unit.present? %><%= link_to "#{item.unit.number.upcase}", address_unit_path(item.address, item.unit), class: "btn btn-outline-info btn-sm" if item.unit.present? %> for:<br>
         <div class="mt-2 mb-2 text-center">
         <% item.codes.each do |code| %>
           <%= render partial: 'shared/code_def_show', locals: { code: code } %>
@@ -85,7 +88,7 @@
       <small class="float-end text-navy">
         <%= time_ago_in_words(item.created_at) %> ago
       </small>
-      <strong><%= item.user.email_without_domain %></strong> created a <%= link_to "Citation", citation_path(item), class: "btn btn-sm btn-outline-secondary" %> for <strong>Christina Mason</strong><br>
+      <strong><%= item.user.email_without_domain %></strong> created a <%= link_to "Citation", citation_path(item), class: "btn btn-sm btn-outline-secondary" %><%= " on " if item.unit.present? %><%= link_to "#{item.unit.number.upcase}", address_unit_path(item.unit.address, item.unit), class: "btn btn-outline-info btn-sm" if item.unit.present? %> for <strong><%= item.code.name %></strong>:<br>
       <p>
         <% if item.status == "paid" %> Due: <%= item.deadline.strftime("%B %d, %Y") %> <% end %>
         <br>
@@ -119,7 +122,7 @@
           </p>
         <% end %>
       <% else %>
-        <p><%= link_to "Inspection", address_inspection_path(item.address, item), class: "btn btn-sm btn-outline-secondary" %> was requested for <strong><%= item.source %></strong>.</p>
+        <p><%= link_to "Inspection", address_inspection_path(item.address, item), class: "btn btn-sm btn-outline-secondary" %> was requested for <strong><%= item.source %></strong><%= " for " if item.unit.present? %><%= link_to "#{item.unit.number.upcase}", address_unit_path(item.address, item.unit), class: "btn btn-outline-info btn-sm" if item.unit.present? %>.</p>
       <% end %>
       <small class="text-muted">
         <%= item.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y %l:%M %p") %>

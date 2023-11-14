@@ -1,0 +1,38 @@
+<div class="col-md-8 col-xl-9">
+  <%= render 'shared/address_links' %>
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title mb-0">
+        <h5 class="card-title mb-0">New Comment</h5>
+      </div>
+      <div id="commentDiv" class="card-body">
+        <%= render 'comments/form' %>
+      </div>
+    </div>
+  </div>
+  <div id="activities" class="card">
+    <div class="card-header">
+      <h5 class="card-title mb-0">Activities</h5>
+      <div class="text-end">
+        <% if @unit_photos.any? %>
+        <button type="button" class="btn btn-sm btn-outline-secondary btn-lg" data-bs-toggle="modal" data-bs-target="#allphotoModal">
+          <i class="bi bi-paperclip"></i>
+          All Photos and Attachments
+        </button>
+        <% end %>
+      </div>
+    </div>
+    <div class="card-body h-100">
+      <% if @timeline_items.any? %>
+        <% @timeline_items.each do |item| %>
+          <%= render partial: "addresses/timeline_item", locals: { item: item } %>
+        <% end %>
+      <% else %>
+        <p class="text-muted">No activities yet.</p>
+      <% end %>
+      <div class="d-grid">
+        <%= will_paginate @timeline_items, class:"text-center" %>
+      </div>
+    </div>
+  </div>
+</div>

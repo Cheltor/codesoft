@@ -1,0 +1,34 @@
+<h1>Edit Violation Comment</h1>
+
+<%= form_with(model: @violation_comment, url: violation_comment_path(@violation_comment), local: true, method: :patch) do |form| %>
+
+  <% if @comment.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@comment.errors.count, "error") %> prohibited this comment from being saved:</h2>
+
+      <ul>
+        <% @comment.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+    <div class="field">
+    <strong><label>Original Comment:</label></strong>
+    <div class="original-comment">
+      <%= @comment.content %>
+    </div>
+  </div>
+
+  <div class="field">
+    <strong><label>Updated Comment:</label></strong>
+    <%= form.text_area :content, class: "form-control" %>
+  </div>
+
+  <div class="actions mt-3">
+    <%= form.submit "Save", class: "btn btn-primary" %>
+  </div>
+<% end %>
+
+<%= link_to 'Back', violation_path(@violation), class: "btn btn-secondary mt-3" %>

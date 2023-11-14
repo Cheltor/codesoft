@@ -6,10 +6,10 @@
       <%= link_to "Home", root_path %>
     </a></li>
     <li class="breadcrumb-item"><a href="#">
-    <% if @citation.violation.unit.present? %>
-      <%= link_to @citation.violation.unit.number, address_unit_path(@address, @unit) %>
-    <% end %>
     <%= link_to @address.property_name_with_combadd, address_path(@address) %>
+    <% if @citation.unit.present? %>
+      - <%= link_to @citation.unit.number.upcase, address_unit_path(@address, @citation.unit) %>
+    <% end %>
     </a></li>
     <li class="breadcrumb-item active">
       <%= "Violation ##{params[:id]}" %>
@@ -42,6 +42,8 @@
         <% if user_signed_in? %>
           <%= form_for([@citation, @citation.citation_comments.build]) do |f| %>
             <%= f.text_area :content, class: "form-control" %>
+            <br>
+            <%= f.file_field :photos, multiple: true, class: "form-control" %>
             <br>
             <%= f.submit class: "btn btn-primary" %>
           <% end %>
