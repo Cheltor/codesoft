@@ -24,7 +24,15 @@ Rails.application.routes.draw do
     end
     resources :comments
     resources :concerns, only: [:create, :edit, :update]
-    resources :units, only: [:new, :create, :edit, :update, :destroy, :index, :show]
+    resources :units, only: [:new, :create, :edit, :update, :destroy, :index, :show] do
+      member do
+        get 'all_unit_comments'
+        get 'all_unit_violations'
+        get 'all_unit_citations'
+        get 'all_unit_inspections'
+        get 'all_unit_complaints'
+      end
+    end
     resources :inspections do
       member do
         get 'conduct'

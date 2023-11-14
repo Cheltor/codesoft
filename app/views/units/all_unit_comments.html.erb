@@ -1,0 +1,33 @@
+<% content_for :title, @address.property_name_with_combadd %>
+
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">
+      <%= link_to "Home", root_path %>
+    </a></li>
+    <li class="breadcrumb-item"><a href="#">
+    <%= link_to @address.property_name_with_combadd, address_path(@address) %>
+    </a></li>
+    <li class="breadcrumb-item active"><a href="#">
+    <%= link_to "Unit " + @unit.number, address_unit_path(@address, @unit) %>
+    </a></li>
+  </ol>
+</nav>
+
+<div class="row">
+  <%= render 'shared/unit_info' %>
+  <div class="col-md-7 col-xl-8">
+    <%= render 'shared/unit_links' %>
+    <div class="card">
+      <div class="card-body">
+        <% if @unit.comments.any? %>
+          <% @unit.comments.order("created_at DESC").each do |comment| %>
+            <%= render 'comments/comments', comment: comment, show_address_info: false, show_edit_link: true, show_unit_info: false %>
+          <% end %>
+        <% else %>
+        <p style="text-align: center">No comments have been created for this address.</p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

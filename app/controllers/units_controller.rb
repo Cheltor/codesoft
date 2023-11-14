@@ -31,6 +31,50 @@ class UnitsController < ApplicationController
     end
   end
   
+  def all_unit_comments
+    @address = Address.find(params[:address_id])
+    @unit = @address.units.find(params[:id])
+    @comments = @unit.comments
+    @violations = @unit.violations
+    @address_citations = @unit.citations
+    @inspections = @unit.inspections.where.not(source: "Complaint")
+    @complaints = @inspections.where(source: "Complaint")
+
+    violation_comments = @violations.flat_map(&:violation_comments)
+    citation_comments = @violations.flat_map { |violation| violation.citations.flat_map(&:citation_comments) }
+    @comments = []
+    unit_comments = @unit.comments
+
+    @comments = (violation_comments + citation_comments + unit_comments).sort_by(&:created_at).reverse
+
+    @unit_photos = (@violations.map(&:photos) + @comments.map(&:photos) + @address_citations.map(&:photos)).flatten.sort_by(&:created_at).reverse
+
+    
+  end
+
+  def all_unit_violations
+    @address = Address.find(params[:address_id])
+    @unit = @address.units.find(params[:id])
+    @violations = @unit.violations
+  end
+
+  def all_unit_citations
+    @address = Address.find(params[:address_id])
+    @unit = @address.units.find(params[:id])
+    @citations = @unit.citations
+  end
+
+  def all_unit_inspections
+    @address = Address.find(params[:address_id])
+    @unit = @address.units.find(params[:id])
+    @inspections = @unit.inspections.where.not(source: "Complaint")
+  end
+
+  def all_unit_complaints
+    @address = Address.find(params[:address_id])
+    @unit = @address.units.find(params[:id])
+    @inspections = @unit.inspections.where(source: "Complaint")
+  end
   
   def new
     @address = Address.find(params[:address_id])
