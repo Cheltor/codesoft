@@ -75,9 +75,10 @@ class AddressesController < ApplicationController
     violation_comments = @address.violations.flat_map(&:violation_comments)
     citation_comments = @address.violations.flat_map { |violation| violation.citations.flat_map(&:citation_comments) }
     address_comments = @address.comments
+    inspection_comments = @address.inspections.flat_map(&:inspection_comments)
 
     # Combine all comments
-    tl_comments = (violation_comments + citation_comments + address_comments).sort_by(&:created_at).reverse
+    tl_comments = (violation_comments + citation_comments + address_comments + inspection_comments).sort_by(&:created_at).reverse
 
     # Combine all items for timeline
     combined_timeline_items = (

@@ -10,7 +10,7 @@
           <% end %>
         <% end %>
         <%= link_to "All Comments", all_address_comments_address_path(@address), class: "btn btn-outline-secondary mt-2", data: { turbolinks: false } %>
-        <%= link_to "All Violations", all_address_violations_address_path(@address), class: "btn btn-outline-danger mt-2", data: { turbolinks: false } %>
+        <%= link_to "All Violations (#{@address.violations.where(status: :current).count} Active)", all_address_violations_address_path(@address), class: "btn btn-outline-danger mt-2", data: { turbolinks: false } %>
         <%= link_to "All Inspections", all_address_inspections_address_path(@address), class: "btn btn-outline-info mt-2", data: { turbolinks: false } %>
         <%= link_to "All Citations", all_address_citations_address_path(@address), class: "btn btn-outline-warning mt-2", data: { turbolinks: false } %>
         <%= link_to "All Complaints", all_address_complaints_address_path(@address), class: "btn btn-outline-success mt-2", data: { turbolinks: false } %>

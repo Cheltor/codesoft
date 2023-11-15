@@ -17,6 +17,26 @@
 <br>
 
 <div class="row">
+  <%= render 'shared/address_info' %>
+  <div class="col-md-7 col-xl-8">
+  <div class="card">
+    <div class="card-body">
+      <h4>Current Violations</h4>
+        <ol>
+        <% @address.violations.where(status: :current).each do |v| %>
+          <li>
+            <%= link_to v.violation_type, violation_path(v) %> - <%= v.codes.map(&:name).join(", ") %>
+            <br>
+            <small class="text-muted">
+              <%= v.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y %l:%M %p") %>
+            </small>
+          </li>
+        <% end %>
+        </ol>
+    </div>
+  </div>
+    <div class="card">
+      <div class="card-body">
   <h1>Create a Violation</h1>
 
   <%= form_with(model: [@address, @violation], local: true) do |form| %>
@@ -37,7 +57,7 @@
     <strong><%= form.label :violation_type %></strong>
     <%= form.select :violation_type, options_for_select(['Doorhanger', 'Formal Notice']), {}, class: "form-select" %>
   </div>
-<br>
+    <br>
     <div class="field">
       <strong><%= form.label :deadline %></strong>
       <%= form.select :deadline, Violation::DEADLINE_OPTIONS, {}, class: "form-select" %>
@@ -86,6 +106,9 @@
       <%= form.submit "Create Violation", class: "btn btn-primary" %>
     </div>
   <% end %>
+      </div>
+    </div>
+  </div>
 </div>
 </div>
 

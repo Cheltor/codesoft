@@ -12,8 +12,8 @@
           <table id="example2" class="table table-bordered table-hover">
             <thead>
               <tr>
-              <th scope="col">Created At</th>
               <th scope="col">Address</th>
+              <th scope="col">Created At</th>
               <th scope="col">Source</th>
               <th scope="col">Status</th>
               <th scope="col">Inspector</th>
@@ -22,7 +22,7 @@
             </thead>
             <tbody>
             <% @inspections.order("created_at DESC").each do |inspection| %>
-              <%= render partial: "shared/complaint_table", locals: {inspection: inspection} %>
+              <%= render partial: "shared/complaint_table2", locals: {inspection: inspection} %>
             <% end %>
             </tbody>
           </table>

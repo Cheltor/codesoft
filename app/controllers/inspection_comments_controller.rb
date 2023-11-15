@@ -39,6 +39,6 @@ class InspectionCommentsController < ApplicationController
   private
 
   def comment_params
-    params.require(:inspection_comment).permit(:content, :inspection_id, :user_id)
+    params.require(:inspection_comment).permit(:content, :inspection_id, :user_id, photos: [])
   end
 end

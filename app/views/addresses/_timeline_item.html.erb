@@ -14,7 +14,7 @@
       <% end %>
       <p>"<%= item.content %>"</p>
       <% if item.photos.attached? %>
-        <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#comment-<%= item.id %>">
+        <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#item-<%= item.id %>">
           Attachments
         </button>
         <br>
@@ -34,6 +34,12 @@
       </small>
       <strong><%= item.user.email_without_domain %></strong> commented on <%= link_to item.violation.violation_type, violation_path(item.violation), class: "btn btn-outline-secondary btn-sm" %><%= " on " if item.violation.unit.present? %><%= link_to "#{item.violation.unit.number.upcase}", address_unit_path(item.violation.address, item.violation.unit), class: "btn btn-outline-info btn-sm" if item.violation.unit.present? %>:<br>
       <p>"<%= item.content %>"</p>
+      <% if item.photos.attached? %>
+        <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#item-<%= item.id %>">
+          Attachments
+        </button>
+        <br>
+      <% end %>
       <small class="text-muted">
         <%= item.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y %l:%M %p") %>
       </small>
@@ -49,6 +55,12 @@
       </small>
       <strong><%= item.user.email_without_domain %></strong> commented on <%= link_to "Citation", citation_path(item.citation), class: "btn btn-sm btn-outline-secondary" %><%= " on " if item.citation.unit.present? %><%= link_to "#{item.citation.unit.number.upcase}", address_unit_path(item.citation.unit.address, item.citation.unit), class: "btn btn-outline-info btn-sm" if item.citation.unit.present? %>: <br>
       <p>"<%= item.content %>"</p>
+      <% if item.photos.attached? %>
+        <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#item-<%= item.id %>">
+          Attachments
+        </button>
+        <br>
+      <% end %>
       <small class="text-muted">
         <%= item.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y %l:%M %p") %>
       </small>
@@ -133,3 +145,18 @@
   <hr>
 <% end %>
 
+<!-- Modal -->
+<div class="modal fade custom-modal-lg" id="item-<%= item.id %>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <% item.photos.each do |photo| %>
+          <%= render partial: 'shared/show_image', locals: { photo: photo } %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

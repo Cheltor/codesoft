@@ -221,25 +221,9 @@
         <% if @inspection.inspection_comments.exists? %>
         <br>
           <h3>Comments (<%= @inspection.inspection_comments.count %>)</h3>
-          <table class="table table-striped">
-            <thead>
-              <tr>
-                <th>Comment</th>
-                <th>Comment Date</th>
-                <th>Commenter</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              <% @inspection.inspection_comments.order(created_at: :desc).each do |comment| %>
-                <tr>
-                  <td><%= comment.content %></td>
-                  <td><%= comment.created_at&.in_time_zone("Eastern Time (US & Canada)")&.strftime("%B %d, %Y %I:%M %p") %></td>
-                  <td><%= comment.user.email %></td>
-                </tr>
-              <% end %>
-            </tbody>
-          </table>
+                    <% @inspection.inspection_comments.order(created_at: :desc).each do |comment| %>
+            <%= render 'comments/comments2', comment: comment, show_address_info: false, show_edit_link: false, show_unit_info: false %>
+          <% end %>
         <% end %>      
       </div>  
     </div>
