@@ -5,7 +5,9 @@ class Contact < ApplicationRecord
   has_many :contact_comments, dependent: :destroy
   has_many :business_contacts
   has_many :businesses, through: :business_contacts
-
+  has_many :unit_contacts
+  has_many :units, through: :unit_contacts
+  default_scope { where(hidden: false) }
   scope :hidden, -> { where(hidden: true) }
   scope :visible, -> { where(hidden: false) }
 

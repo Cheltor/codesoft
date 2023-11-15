@@ -1,12 +1,12 @@
-<h1>Manage Contacts for <%= @address.property_name_with_combadd %></h1>
+<h1>Manage Contacts for <%= @unit.address.property_name_with_combadd %> - <%= @unit.number.upcase %></h1>
 
 <!-- Display existing contacts associated with the address -->
 <h2>Associated Contacts:</h2>
-<% if @address.contacts.empty? %>
+<% if @unit.contacts.empty? %>
   <p>No contacts associated with this address.</p>
 <% else %>
 <ul>
-  <% @address.contacts.each do |contact| %>
+  <% @unit.contacts.each do |contact| %>
     <li><%= contact.name %> (<%= contact.email %>)</li>
   <% end %>
 </ul>
@@ -14,11 +14,11 @@
 
 
 <!-- Form for selecting or creating new contacts -->
-<%= form_with(model: @address, url: manage_contacts_address_path(@address), method: :post) do |form| %>
+<%= form_with(model: @unit, url: manage_contacts_address_unit_path(@unit.address, @unit), method: :post) do |form| %>
   <h2>Select Existing Contact:</h2>
-  <select id="contact-select" multiple name="address[contact_ids][]">
+  <select id="contact-select" multiple name="unit[contact_ids][]">
     <% Contact.all.each do |contact| %>
-      <% selected = @address.contact_ids.include?(contact.id) ? 'selected' : '' %>
+      <% selected = @unit.contact_ids.include?(contact.id) ? 'selected' : '' %>
       <option value="<%= contact.id %>" <%= selected %>>
         <%= contact.name %> - <%= contact.email %>
       </option>

@@ -31,6 +31,9 @@ Rails.application.routes.draw do
         get 'all_unit_citations'
         get 'all_unit_inspections'
         get 'all_unit_complaints'
+        get 'manage_contacts'
+        post 'manage_contacts'
+        delete :remove_unit_contact
       end
     end
     resources :inspections do

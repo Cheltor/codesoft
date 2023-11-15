@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_11_11_160853) do
+ActiveRecord::Schema[7.0].define(version: 2023_11_14_230108) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -256,6 +256,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_11_160853) do
     t.index ["unit_id"], name: "index_inspections_on_unit_id"
   end
 
+  create_table "unit_contacts", force: :cascade do |t|
+    t.integer "unit_id", null: false
+    t.integer "contact_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["contact_id"], name: "index_unit_contacts_on_contact_id"
+    t.index ["unit_id"], name: "index_unit_contacts_on_unit_id"
+  end
+
   create_table "units", force: :cascade do |t|
     t.string "number"
     t.integer "address_id", null: false
@@ -348,6 +357,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_11_160853) do
   add_foreign_key "inspections", "contacts"
   add_foreign_key "inspections", "units"
   add_foreign_key "inspections", "users", column: "inspector_id"
+  add_foreign_key "unit_contacts", "contacts"
+  add_foreign_key "unit_contacts", "units"
   add_foreign_key "units", "addresses"
   add_foreign_key "violation_codes", "codes"
   add_foreign_key "violation_codes", "violations"

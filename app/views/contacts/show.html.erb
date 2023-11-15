@@ -66,7 +66,7 @@
           <h3>No businesses associated with this contact</h3>
         <% end %>
 
-        <% if @addresses.any? %>
+        <% if @addresses.present? %>
           <h3>Addresses (<%= @addresses.count %>)</h3>
           <ul>
             <% @addresses.each do |address| %>
@@ -77,9 +77,22 @@
           </ul>
           <%= will_paginate @addresses, param_name: 'address_page', class:"text-center" %>
         <% else %>
-          <h3>No addresses associated with this contact</h3>
+          <!-- <h3>No addresses associated with this contact</h3> -->
         <% end %>
-
+        <% if @units.present? %>
+          <h3>Units (<%= @units.count %>)</h3>
+          <ul>
+            <% @units.each do |unit| %>
+              <li>
+                <%= link_to "#{unit.address.property_name_with_combadd} - #{unit.number.upcase}", address_unit_path(unit.address, unit) %>
+                <!-- <%= button_to 'Remove Unit', remove_unit_contact_address_unit_path(unit.address, unit, @contact), method: :delete, data: { confirm: 'Are you sure?' } %> -->
+              </li>
+            <% end %>
+          </ul>
+          <%= will_paginate @units, param_name: 'unit_page', class:"text-center" %>
+        <% else %>
+          <!-- <h3>No addresses associated with this contact</h3> -->
+        <% end %>
       </div>
     </div>
 

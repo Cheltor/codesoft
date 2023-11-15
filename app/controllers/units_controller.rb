@@ -1,4 +1,6 @@
 class UnitsController < ApplicationController
+  layout 'choices', only: [:manage_contacts]
+
   def index
     @address = Address.find(params[:address_id])
     @units = @address.units
@@ -75,6 +77,66 @@ class UnitsController < ApplicationController
     @unit = @address.units.find(params[:id])
     @inspections = @unit.inspections.where(source: "Complaint")
   end
+
+  def manage_contacts
+    @unit = Unit.find(params[:id])
+    @existing_contacts = Contact.all # This fetches all existing contacts for the dropdown
+  
+    if request.post?
+      Rails.logger.debug("Received a POST request to manage_contacts")
+      
+      if params[:unit][:contact_ids].present?
+        params[:unit][:contact_ids].each do |contact_id|
+          selected_contact = Contact.find(contact_id)
+          unless @unit.contacts.include?(selected_contact)
+            @unit.contacts << selected_contact
+            Rails.logger.debug("Added selected_contact with ID #{contact_id} to the unit")
+          end
+        end
+      elsif !params[:unit][:new_contact_name].blank?
+        # If a new contact is being created, check if it already exists
+        existing_contact = Contact.find_by(
+          name: params[:unit][:new_contact_name],
+          email: params[:unit][:new_contact_email]
+        )
+  
+        if existing_contact
+          @unit.contacts << existing_contact
+          Rails.logger.debug("Added existing_contact to the unit")
+        else
+          # Create a new contact and associate it with the unit
+          @contact = Contact.create(
+            name: params[:unit][:new_contact_name],
+            email: params[:unit][:new_contact_email],
+            phone: params[:unit][:new_contact_phone]
+          )
+          @unit.contacts << @contact
+          Rails.logger.debug("Created and added a new contact to the unit")
+        end
+      else
+        Rails.logger.debug("No contact information provided in the form")
+      end
+  
+      redirect_to address_unit_path(@unit.address, @unit), notice: 'Contacts were successfully added to the unit.'
+    end
+  end
+
+  def remove_unit_contact
+    @unit = Unit.find(params[:id])
+    contact_id = params[:contact_id]
+  
+    # Find the UnitContact record and delete it
+    unit_contact = UnitContact.find_by(unit_id: @unit.id, contact_id: contact_id)
+    if unit_contact
+      unit_contact.destroy
+      Rails.logger.debug("Removed contact with ID #{contact_id} from unit")
+      redirect_to unit_path(@unit), notice: 'Contact was successfully removed from the unit.'
+    else
+      Rails.logger.debug("UnitContact record not found")
+      redirect_to contacts_path, alert: 'Unable to find the specified contact for removal.'
+    end
+  end
+
   
   def new
     @address = Address.find(params[:address_id])

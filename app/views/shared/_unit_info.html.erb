@@ -112,19 +112,20 @@
       <hr class="my-0">
       <div class="card-body">
         <h5 class="h6 card-title">Associated Contacts</h5>
-        <% if @address.contacts.present? %>
-          <% @address.contacts.each do |c| %>
+        <% if @unit.contacts.present? %>
+          <% @unit.contacts.each do |c| %>
             <%= link_to c.name, contact_path(c), class: "btn btn-outline-info btn-sm mt-2" %>
           <% end %>
         <% end %>
         <div class="text-center">
-          <%= link_to "Add Contact", manage_contacts_address_path(@address), class: "btn btn-outline-secondary btn-sm mt-2", data: { turbo: false } %>
+          <%= link_to "Add Contact", manage_contacts_address_unit_path(@unit.address, @unit), class: "btn btn-outline-secondary btn-sm mt-2", data: { turbo: false } %>
+          <!-- remove contact from unit -->
         </div>
       </div>
       <!-- units -->
       <hr class="my-0">
       <div class="card-body">
-        <h5 class="h6 card-title">Units</h5>
+        <h5 class="h6 card-title">All Units</h5>
         <div class="">
           <% for unit in @address.units %>
             <%= link_to unit.number, address_unit_path(@address, unit), class: "btn btn-outline-info btn-sm mt-2" %>
