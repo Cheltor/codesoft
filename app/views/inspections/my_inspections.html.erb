@@ -4,33 +4,37 @@
 <%= link_to "Unscheduled", my_inspections_path(scheduled_datetime: "unscheduled"), class:"btn btn-success" %>
 <div class="row">
   <div class="col">
-    <div class="table-responsive mt-5" style="text-align: center">
-      <h1>My 
-      <% if params[:scheduled_datetime] == "scheduled" %>
-        Scheduled
-      <% elsif params[:scheduled_datetime] == "unscheduled" %>
-        Unscheduled
-      <% else %>
-      <% end %>
-      Inspections</h1>
-      <table class="table table-striped">
-        <thead>
-          <tr>
-            <th scope="col">Address</th>
-            <th scope="col">Type</th>
-            <th scope="col">Status</th>
-            <th scope="col">Scheduled</th>
-            <th scope="col">Inspector</th>
-            <th scope="col">Notes</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% @inspections.each do |inspection| %>
-            <%= render partial: 'shared/inspection_table', locals: { inspection: inspection }, show_address_info: true %>
+    <div class="card">
+      <div class="card-body">
+        <div class="table-responsive mt-5" style="text-align: center">
+          <h1>My 
+          <% if params[:scheduled_datetime] == "scheduled" %>
+            Scheduled
+          <% elsif params[:scheduled_datetime] == "unscheduled" %>
+            Unscheduled
+          <% else %>
           <% end %>
-        </tbody>
-      </table>
-      <%= will_paginate @inspections, class:"text-center" %>
+          Inspections</h1>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">Address</th>
+                <th scope="col">Type</th>
+                <th scope="col">Status</th>
+                <th scope="col">Scheduled</th>
+                <th scope="col">Inspector</th>
+                <th scope="col">Notes</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @inspections.each do |inspection| %>
+                <%= render partial: 'shared/inspection_table', locals: { inspection: inspection }, show_address_info: true %>
+              <% end %>
+            </tbody>
+          </table>
+          <%= will_paginate @inspections, class:"text-center" %>
+        </div>
+      </div>
     </div>
   </div>
 </div>

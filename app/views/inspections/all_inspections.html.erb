@@ -1,13 +1,13 @@
 <!-- list all inspections -->
 <div class="row">
   <div class="col">
-    <div class="table-responsive">
       <div class="card">
         <div class="card-header">
           <h3 class="card-title">Inspections</h3>
         </div>
         <!-- /.card-header -->
         <div class="card-body">
+        <div class="table-responsive">
           <table id="example2" class="table table-bordered table-hover">
             <thead>
               <tr>
@@ -26,10 +26,10 @@
             </tbody>
           </table>
           <%= will_paginate @inspections, class:"text-center" %>
+    </div>
         </div>
         <!-- /.card-body -->
       </div>
-    </div>
     <!-- /.card -->
   </div>
   <!-- /.col -->
