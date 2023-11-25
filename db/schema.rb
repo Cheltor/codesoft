@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_11_14_230108) do
+ActiveRecord::Schema[7.0].define(version: 2023_11_24_193909) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -70,6 +70,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_14_230108) do
     t.boolean "outstanding", default: false
     t.string "property_type"
     t.string "property_name"
+    t.index ["combadd"], name: "index_addresses_on_combadd"
+    t.index ["property_name"], name: "index_addresses_on_property_name"
   end
 
   create_table "area_codes", force: :cascade do |t|

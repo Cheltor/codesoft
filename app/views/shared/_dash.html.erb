@@ -88,23 +88,28 @@
               </h1>
             </div>
           </div>
-          <div class="card d-none d-lg-block shadow mb-3" onclick="window.location='<%= my_inspections_path(scheduled_datetime: 'unscheduled') %>';" style="cursor: pointer;">
-            <div class="card-body">
-              <div class="row">
-                <div class="col mt-0">
-                  <h5 class="card-title">Inspections to be scheduled</h5>
-                </div>
-                <div class="col-auto">
-                  <div class="stat text-primary">
-                    I
+          <% if @unscheduled_inspections.present? %>
+              <%# A different colored card for unscheduled inspections %>
+              <div class="card d-none d-lg-block shadow mb-3" onclick="window.location='<%= my_inspections_path(scheduled_datetime: 'unscheduled') %>';" style="cursor: pointer;">
+            <% else %>
+            <div class="card d-none d-lg-block shadow mb-3" onclick="window.location='<%= my_inspections_path(scheduled_datetime: 'unscheduled') %>';" style="cursor: pointer;">
+          <% end %>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col mt-0">
+                    <h5 class="card-title">Inspections to be scheduled</h5>
+                  </div>
+                  <div class="col-auto">
+                    <div class="stat text-primary">
+                      I
+                    </div>
                   </div>
                 </div>
+                <h1 class="mt-1 mb-3">
+                  <%= @unscheduled_inspections.count %>
+                </h1>
               </div>
-              <h1 class="mt-1 mb-3">
-                <%= @unscheduled_inspections.count %>
-              </h1>
             </div>
-          </div>
         </div>
       </div>
     </div>

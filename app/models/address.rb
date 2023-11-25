@@ -16,7 +16,8 @@ class Address < ApplicationRecord
     before_save :upcase_ownercity
     before_save :upcase_ownerstate
 
-    
+    default_scope { where.not(streetnumb: nil) }
+
 
     def self.ransackable_attributes(auth_object = nil)
         ["property_name", "absent", "combadd", "created_at", "id", "landusecode", "outstanding", "owneraddress", "ownercity", "ownername", "owneroccupiedin", "ownerstate", "ownerzip", "pid", "premisezip", "streetname", "streetnumb", "streettype", "updated_at", "vacant", "zoning"]

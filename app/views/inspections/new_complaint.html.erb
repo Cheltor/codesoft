@@ -20,7 +20,7 @@
   </div>
 
   <div class="form-group mt-3">
-    <strong><label>Contact</label></strong>
+    <strong><label>Contact</label></strong><label>(Who should ONS respond to with the results?)</label>
     <%= f.collection_select(:contact_id, Contact.all, :id, :full_name_and_email, { prompt: 'Select a contact' }, class: 'form-control selectpicker', data: { style: 'btn-primary' }) %>
   </div>
 
