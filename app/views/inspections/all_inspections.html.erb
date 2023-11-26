@@ -1,35 +1,63 @@
 <!-- list all inspections -->
 <div class="row">
   <div class="col">
-      <div class="card">
-        <div class="card-header">
-          <h3 class="card-title">Inspections</h3>
-        </div>
-        <!-- /.card-header -->
-        <div class="card-body">
+    <div class="card">
+      <div class="text-center mt-3 mb-3">
+        <h2>Inspections</h2>
+          <a class="btn dropdown-toggle d-sm-inline-block" href="#" data-bs-toggle="dropdown">
+            <span class="text-dark">Filter</span>
+            </span>
+          </a>
+          <div class="dropdown-menu">
+            <%= link_to "All Inspections", all_inspections_path, class:"dropdown-item" %>
+            <% if current_user.admin? %>
+              <%= link_to "Unassigned Inspections", all_inspections_path(inspector: "Unassigned"), class: "dropdown-item" %>
+            <% else %>
+              <%= link_to "My Inspections", all_inspections_path(inspector: "My Inspections"), class: "dropdown-item" %>
+              <%= link_to "My Unscheduled", all_inspections_path(inspector: "My Unscheduled"), class: "dropdown-item" %>
+            <% end %>
+            <div class="dropdown-divider"></div>
+            <%= link_to "Multifamily License Inspections", all_inspections_path(source: "Multifamily License"), class: "dropdown-item" %>
+            <%= link_to "Business License Inspections", all_inspections_path(source: "Business License"), class: "dropdown-item" %>
+            <%= link_to "Building/Dumpster/POD Permit Inspections", all_inspections_path(source: "Building/Dumpster/POD permit"), class: "dropdown-item" %>
+            <%= link_to "Donation Bin Inspections", all_inspections_path(source: "Donation Bin"), class: "dropdown-item" %>
+            <%= link_to "Single Family License Inspections", all_inspections_path(source: "Single Family License"), class: "dropdown-item" %>
+            <div class="dropdown-divider"></div>
+            <%= link_to "Unsatisfactory Inspections", all_inspections_path(status: "Unsatisfactory"), class: "dropdown-item" %>
+            <%= link_to "Satisfactory Inspections", all_inspections_path(status: "Satisfactory"), class: "dropdown-item" %>
+            <%= link_to "Pending Inspections", all_inspections_path(status: "Pending"), class: "dropdown-item" %>
+          </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">Inspections (<%= @inspections.count %>)</h3>
+      </div>
+      <!-- /.card-header -->
+      <div class="card-body">
         <div class="table-responsive">
           <table id="example2" class="table table-bordered table-hover">
             <thead>
               <tr>
-              <th scope="col">Address</th>
-              <th scope="col">Source</th>
-              <th scope="col">Status</th>
-              <th scope="col">Scheduled Date</th>
-              <th scope="col">Inspector</th>
-              <th scope="col"></th>
+                <th scope="col">Address</th>
+                <th scope="col">Source</th>
+                <th scope="col">Status</th>
+                <th scope="col">Scheduled Date</th>
+                <th scope="col">Inspector</th>
+                <th scope="col"></th>
               </tr>
             </thead>
             <tbody>
-            <% @inspections.order("created_at DESC").each do |inspection| %>
-              <%= render partial: "shared/inspection_table", locals: {inspection: inspection} %>
-            <% end %>
+              <% @inspections.order("created_at DESC").each do |inspection| %>
+                <%= render partial: "shared/inspection_table", locals: {inspection: inspection} %>
+              <% end %>
             </tbody>
           </table>
           <%= will_paginate @inspections, class:"text-center" %>
-    </div>
         </div>
-        <!-- /.card-body -->
       </div>
+      <!-- /.card-body -->
+    </div>
     <!-- /.card -->
   </div>
   <!-- /.col -->

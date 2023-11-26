@@ -63,7 +63,7 @@ Rails.application.routes.draw do
   get 'my_unscheduled_inspections' => 'inspections#my_unscheduled_inspections'
   get 'all_complaints' => 'inspections#all_complaints'
   get 'my_complaints' => 'inspections#my_complaints'
-  get 'all_violations' => 'addresses#violist'
+  get 'all_violations' => 'violations#violist'
   get 'my_violations' => 'addresses#my_violations'
   get 'helpful' => 'static#helpful'
   get 'businesses' => 'businesses#index'
@@ -80,6 +80,7 @@ Rails.application.routes.draw do
   get 'unassigned_inspections' => 'inspections#unassigned_inspections'
   get 'assign_inspection/:id' => 'inspections#assign_inspection', as: 'assign_inspection'
   patch 'update_inspector/:id' => 'inspections#update_inspector', as: 'update_inspector'
+  get 'new_biz' => 'businesses#new_biz'
 
   resources :users, only: [:index, :show, :edit, :update]
 

@@ -1,4 +1,3 @@
-<%# if the citation is past due, and unpaid, make the row red %>
 <% if citation.deadline_passed? && citation.status == "unpaid" %>
 <tr class="table-danger">
 <% elsif citation.deadline > Date.today && citation.status == "unpaid" %>
@@ -11,11 +10,11 @@
 <tr class="table-secondary">
 <% end %>
   <% if citation.citationid.blank? %>
-  <td><%= link_to citation.id , citation_path(citation), class: "btn btn-secondary" %></td>
+  <td><%= link_to citation.id , citation_path(citation), class: "btn btn-outline-secondary" %></td>
   <% else %>
-  <td><%= link_to citation.citationid , citation_path(citation), class: "btn btn-secondary" %></td>
+  <td><%= link_to citation.citationid , citation_path(citation), class: "btn btn-outline-secondary" %></td>
   <% end %>
-  <td><%= link_to citation.violation.address.property_name_with_combadd, address_path(citation.violation.address), class: "btn btn-secondary" %></td>
+  <td><%= link_to citation.violation.address.property_name_with_combadd, address_path(citation.violation.address), class: "btn btn-outline-secondary" %></td>
   <td><%= citation.violation.user.name %></td>
   <td><%= citation.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></td>
   <td><%= number_to_currency(citation.fine) %></td>

@@ -5,17 +5,68 @@ class InspectionsController < ApplicationController
 
   def all_inspections
     @inspections = Inspection.all.where.not(source: "Complaint").order(created_at: :desc)
+    @inspector = params[:inspector]
+    @status = params[:status]
+    @source = params[:source]
+
     case @inspector
     when "Unassigned"
       @inspections = @inspections.where(inspector_id: nil)
+    when "My Inspections"
+      @inspections = @inspections.where(inspector: current_user)
+    when "My Unscheduled"
+      @inspections = @inspections.where(inspector: current_user, scheduled_datetime: nil)
     end
-    @inspections = @inspections.paginate(page: params[:page], per_page: 10)
 
+    case @status
+    when "Unsatisfactory"
+      @inspections = @inspections.where(status: "Unsatisfactory")
+    when "Satisfactory"
+      @inspections = @inspections.where(status: "Satisfactory")
+    when "Pending" # Make sure this matches the string passed in the link
+      @inspections = @inspections.where(status: nil)
+    end
+
+    case @source
+    when "Multifamily License"
+      @inspections = @inspections.where(source: "Multifamily License")
+    when "Business License"
+      @inspections = @inspections.where(source: "Business License")
+    when "Building/Dumpster/POD permit"
+      @inspections = @inspections.where(source: "Building/Dumpster/POD permit")
+    when "Donation Bin"
+      @inspections = @inspections.where(source: "Donation Bin")
+    when "Single Family License"
+      @inspections = @inspections.where(source: "Single Family License")
+    end
+
+    @inspections = @inspections.paginate(page: params[:page], per_page: 10)
   end
 
   def all_complaints
     @inspections = Inspection.where(source: "Complaint").order(created_at: :desc)
+    @inspector = params[:inspector]
+    @status = params[:status]
+  
+    case @inspector
+    when "My Complaints"
+      @inspections = @inspections.where(inspector: current_user)
+    when "Unassigned"
+      @inspections = @inspections.where(inspector_id: nil)
+    end
+  
+    case @status
+    when "Unsatisfactory"
+      @inspections = @inspections.where(status: "Unsatisfactory")
+    when "Satisfactory"
+      @inspections = @inspections.where(status: "Satisfactory")
+    when "Pending" # Make sure this matches the string passed in the link
+      @inspections = @inspections.where(status: nil)
+    end
+  
+    @inspections = @inspections.paginate(page: params[:page], per_page: 10)
   end
+  
 
   def my_complaints
     @inspections = Inspection.where(inspector: current_user, source: "Complaint").order(created_at: :desc)

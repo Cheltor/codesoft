@@ -10,6 +10,8 @@ class Citation < ApplicationRecord
   validates :fine, presence: true
   validates :deadline, presence: true
   validates :code_id, presence: true
+  validates :citationid, uniqueness: true
+
 
   def deadline_passed?
     deadline < Date.today

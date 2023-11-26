@@ -1,33 +1,51 @@
-<div class="container mt-5">
-  <div class="row">
-    <div class="col">
-      <h1 style="text-align: center">All Citations</h1>
-      <br>
-        <%= link_to "All Citations", all_citations_path, class:"btn btn-secondary" %>
-        <%= link_to "Unpaid", all_citations_path(status: "current"), class:"btn btn-warning" %>
-        <%= link_to "Pending Trial", all_citations_path(status: "pending"), class:"btn btn-info" %>
-        <%= link_to "Resolved", all_citations_path(status: "resolved"), class:"btn btn-success" %>
-      <br>
-      <div class="table-responsive">
-        <table class="table table-striped">
-        <thead>
-          <tr>
-            <th scope="col">Citation ID</th>
-            <th scope="col">Address</th>
-            <th scope="col">Created By</th>
-            <th scope="col">Created At</th>
-            <th scope="col">Fine</th>
-            <th scope="col">Status</th>
-            <th scope="col">Code</th>
-            <th scope="col">Deadline Date</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% @citations.each do |citation| %>
-            <%= render partial: "shared/citation_table", locals: {citation: citation} %>
-          <% end %>
-        </tbody>
-      </table>
+<div class="row">
+  <div class="col">
+    <div class="card">
+      <div class="text-center mt-3 mb-3">
+        <h2>Citations</h2>
+        <a class="btn dropdown-toggle d-sm-inline-block" href="#" data-bs-toggle="dropdown">
+          <span class="text-dark">Filter</span>
+          </span>
+        </a>
+        <div class="dropdown-menu">
+          <%= link_to "All Citations", all_citations_path, class:"dropdown-item" %>
+          <%= link_to "Unpaid", all_citations_path(status: "current"), class:"dropdown-item" %>
+          <%= link_to "Pending Trial", all_citations_path(status: "pending"), class:"dropdown-item" %>
+          <%= link_to "Resolved", all_citations_path(status: "resolved"), class:"dropdown-item" %>
+          <div class="dropdown-divider"></div>
+          <%= link_to "My Citations", all_citations_path(user: "current_user"), class:"dropdown-item" %>
+          <%= link_to "My Unpaid", all_citations_path(user: "current_user", status: "current"), class:"dropdown-item" %>
+          <%= link_to "My Pending Trial", all_citations_path(user: "current_user", status: "pending"), class:"dropdown-item" %>
+          <%= link_to "My Resolved", all_citations_path(user: "current_user", status: "resolved"), class:"dropdown-item" %>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">Citations (<%= @citations.count %>)</h3>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover">
+            <thead>
+              <tr>
+                <th scope="col">Citation ID</th>
+                <th scope="col">Address</th>
+                <th scope="col">Created By</th>
+                <th scope="col">Created At</th>
+                <th scope="col">Fine</th>
+                <th scope="col">Status</th>
+                <th scope="col">Code</th>
+                <th scope="col">Deadline Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @citations.each do |citation| %>
+                <%= render partial: "shared/citation_table", locals: {citation: citation} %>
+              <% end %>
+            </tbody>
+          </table>
+        </div>        
       </div>
     </div>
   </div>

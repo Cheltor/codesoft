@@ -1,54 +1,59 @@
 <!-- app/views/contacts/index.html.erb -->
 
 
-  <div class="card" style="background-color: #e3f2fd;">
-    <div class="card-body">
-      <%= search_form_for @contact_q, url: contacts_path, method: :get do |f| %>
+<div class="card" style="background-color: #e3f2fd;">
+  <div class="card-body">
+    <%= search_form_for @contact_q, url: contacts_path, method: :get do |f| %>
       <%= f.search_field :name_or_email_or_phone_cont, class:"form-control form-control-lg", placeholder: "Search contacts" %>
-      <br><div style="text-align:center"><%= f.submit "Search", class:"btn btn-primary" %></div>
-      <% end %>
-    </div>
+      <br>
+      <div style="text-align:center">
+        <%= f.submit "Search", class:"btn btn-primary" %>
+      </div>
+    <% end %>
   </div>
-  <br>
-<div class="text-center">
-<h1>Contacts</h1>
-
-<%= link_to 'New Contact', new_contact_path, class: 'btn btn-secondary mb-3' %>
+</div>
+<br>
+<div class="card">
+  <div class="text-center mt-3">
+    <h1>Contacts</h1>
+    <%= link_to 'New Contact', new_contact_path, class: 'btn btn-outline-secondary mb-3' %>
+  </div>
 </div>
 <% if @contact_q.result.count == 0 %>
-  <p>No contacts found.</p>
+<div class="card text-center">
+  <h4 class="mt-3 mb-3">No contacts found.</h4>
+</div>
 <% else %>
-<div class="card">
-  <div class="card-body">
-    <div class="table-responsive">
-      <table class="table table-striped">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th>Notes</th>
-            <th colspan="1"></th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <% @contacts.each do |contact| %>
+  <div class="card">
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
             <tr>
-              <td><%= link_to contact.name, contact_path(contact) %></td>
-              <td><%= link_to contact.email, "mailto:#{contact.email}" %></td>
-              <td><a href="tel:<%= contact.phone %>"><%= format_phone_number(contact.phone) %></a></td>
-              <td><%= contact.notes %></td>
-              <td><%= link_to 'Edit', edit_contact_path(contact), class: 'btn btn-secondary' %></td>
-              <!-- <td><%= link_to "Hide", hide_contact_path(contact), method: :patch, class: "btn btn-danger", data: { confirm: 'Are you sure?' } %></td> -->
+              <th>Name</th>
+              <th>Email</th>
+              <th>Phone</th>
+              <th>Notes</th>
+              <th colspan="1"></th>
             </tr>
-          <% end %>
-        </tbody>
-      </table>
-      <%= will_paginate @contacts, class:"text-center" %>
+          </thead>
+
+          <tbody>
+            <% @contacts.each do |contact| %>
+              <tr>
+                <td><%= link_to contact.name, contact_path(contact), class: 'btn' %></td>
+                <td><%= link_to contact.email, "mailto:#{contact.email}" %></td>
+                <td><a href="tel:<%= contact.phone %>"><%= format_phone_number(contact.phone) %></a></td>
+                <td><%= contact.notes %></td>
+                <td><%= link_to 'Edit', edit_contact_path(contact), class: 'btn btn-secondary' %></td>
+                <!-- <td><%= link_to "Hide", hide_contact_path(contact), method: :patch, class: "btn btn-danger", data: { confirm: 'Are you sure?' } %></td> -->
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+        <%= will_paginate @contacts, class:"text-center" %>
+      </div>
     </div>
   </div>
-</div>
 
 <% end %>
-

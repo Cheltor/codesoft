@@ -1,0 +1,51 @@
+
+  <div class="row">
+    <div class="col-12">
+      <div class="card">
+        <div class="text-center mt-3 mb-3">
+          <h2>Violations</h2>
+          <a class="btn dropdown-toggle d-sm-inline-block" href="#" data-bs-toggle="dropdown">
+            <span class="text-dark">Filter</span>
+            </span>
+          </a>
+          <div class="dropdown-menu">
+            <%= link_to "All Violations", all_violations_path, class:"dropdown-item" %>
+            <%= link_to "Current", all_violations_path(status: "current"), class:"dropdown-item" %>
+            <%= link_to "Closed", all_violations_path(status: "resolved"), class:"dropdown-item" %>
+            <div class="dropdown-divider"></div>
+            <%= link_to "My Citations", all_citations_path(user: "current_user"), class: "dropdown-item" %>
+            <%= link_to "My Unpaid", all_citations_path(user: "current_user", status: "current"), class: "dropdown-item" %>
+            <%= link_to "My Pending Trial", all_citations_path(user: "current_user", status: "pending"), class: "dropdown-item" %>
+            <%= link_to "My Resolved", all_citations_path(user: "current_user", status: "resolved"), class: "dropdown-item" %>
+          </div>
+        </div>
+      </div>
+    
+    <div class="card">
+      <div class="card-header">
+        <h3 class="card-title">Violations (<%= @violations.count %>)</h3>
+      </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table id="example2" class="table table-striped table-hover">
+          <thead>
+            <tr>
+              <th scope="col">Address</th>
+              <th scope="col">Created By</th>
+              <th scope="col">Created At</th>
+              <th scope="col">Violation Type</th>
+              <th scope="col">Code</th>
+              <th scope="col">Deadline Date</th>
+              <th scope="col">Citations</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @violations.each do |violation| %>
+              <%= render partial: 'shared/violation_table', locals: { violation: violation } %>
+            <% end %>
+          </tbody>
+        </table>
+        <%= will_paginate @violations, class:"text-center" %>
+    </div>
+    </div>
+  </div>

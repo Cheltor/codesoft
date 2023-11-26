@@ -54,24 +54,34 @@ class CitationsController < ApplicationController
 
   def all_citations
     @status = params[:status]
+    @user = params[:user]
     @citations = Citation.all.order(created_at: :desc)
-
+  
+    # Filter by status
     case @status
     when "current"
-      #status is unpaid or pending trial
-      @citations = @citations.where(status: [:unpaid])
+      @citations = @citations.where(status: [:unpaid]) # status is unpaid
     when "resolved"
-      #status is paid or dismissed
-      @citations = @citations.where(status: [:paid, :dismissed])
+      @citations = @citations.where(status: [:paid, :dismissed]) # status is paid or dismissed
     when "pending"
-      #status is pending trial
-      @citations = @citations.where(status: "pending trial")
-    else
-      @status = "all"
+      @citations = @citations.where(status: "pending trial") # status is pending trial
     end
-
+  
+    # Filter by user
+    if @user == "current_user"
+      @citations = @citations.where(user: current_user)
+      # Additional filtering based on status
+      case @status
+      when "resolved"
+        @citations = @citations.where(status: [:paid, :dismissed])
+      when "pending"
+        @citations = @citations.where(status: "pending trial")
+      end
+    end
+  
     @citations = @citations.order(created_at: :desc)
   end
+  
 
   def show
     @citation = Citation.find(params[:id])

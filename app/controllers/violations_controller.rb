@@ -22,6 +22,30 @@ class ViolationsController < ApplicationController
     end
   end
 
+  def violist
+      @status = params[:status]
+      @user = params[:user]
+      @violations = Violation.all
+    
+      case @status
+      when "current"
+        @violations = @violations.where(status: :current)
+      when "resolved"
+        @violations = @violations.where(status: :resolved)
+      end
+
+      case @user
+      when "current_user"
+        @violations = @violations.where(user: current_user)
+      when "current_user_current"
+        @violations = @violations.where(user: current_user, status: :current)
+      when "current_user_resolved"
+        @violations = @violations.where(user: current_user, status: :resolved)
+      end
+    
+      @violations = @violations.order(created_at: :desc).paginate(page: params[:violation_page], per_page: 15)
+  end
+
   def edit
   end
 

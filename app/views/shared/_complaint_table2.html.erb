@@ -2,7 +2,7 @@
 
 <tr class="">
   <%# if show_address_info %>
-  <td><%= link_to inspection.address.combadd.titleize, address_path(inspection.address), class:"btn btn-secondary" %></td>
+  <td><%= link_to inspection.address.combadd.titleize, address_path(inspection.address), class:"btn btn-outline-secondary" %></td>
   <%# end %>
   <td><%= inspection.created_at.strftime("%B %d, %Y %I:%M %p") %></td>
   <td><%= inspection.source %></td>
@@ -22,7 +22,7 @@
     <td>Pending</td>
   <% end %>
   <% if inspection.inspector.present? %>
-    <td><%= inspection.inspector.email %></td>
+    <td><%= inspection.inspector.name %></td>
   <% else %>
     <td>Unassigned</td>
   <% end %> 

@@ -68,9 +68,9 @@
         </div>
         <div class="col-sm-6">
           <% if @complaints.empty? %>
-          <div class="card d-none d-lg-block shadow mb-3" onclick="window.location='<%= my_complaints_path(status: 'current') %>';" style="cursor: pointer;">
+          <div class="card d-none d-lg-block shadow mb-3" onclick="window.location='<%= all_complaints_path(inspector: 'My Complaints') %>';" style="cursor: pointer;">
           <% else %>          
-          <div class="card shadow mb-3" onclick="window.location='<%= my_complaints_path(status: 'current') %>';" style="cursor: pointer;">
+          <div class="card shadow mb-3" onclick="window.location='<%= all_complaints_path(inspector: 'My Complaints', status: 'Pending') %>';" style="cursor: pointer;">
           <% end %>
             <div class="card-body">
               <div class="row">
@@ -90,9 +90,9 @@
           </div>
           <% if @unscheduled_inspections.present? %>
               <%# A different colored card for unscheduled inspections %>
-              <div class="card d-none d-lg-block shadow mb-3" onclick="window.location='<%= my_inspections_path(scheduled_datetime: 'unscheduled') %>';" style="cursor: pointer;">
+              <div class="card d-none d-lg-block shadow mb-3" onclick="window.location='<%= all_inspections_path(inspector: 'My Unscheduled') %>';" style="cursor: pointer;">
             <% else %>
-            <div class="card d-none d-lg-block shadow mb-3" onclick="window.location='<%= my_inspections_path(scheduled_datetime: 'unscheduled') %>';" style="cursor: pointer;">
+            <div class="card d-none d-lg-block shadow mb-3" onclick="window.location='<%= all_inspections_path(inspector: 'My Inspections') %>';" style="cursor: pointer;">
           <% end %>
               <div class="card-body">
                 <div class="row">

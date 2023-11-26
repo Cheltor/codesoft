@@ -3,29 +3,45 @@
 <div class="row">
   <div class="col">
     <div class="card">
+      <div class="text-center mt-3 mb-3">
+        <h2>Complaints</h2>
+        <a class="btn dropdown-toggle d-sm-inline-block" href="#" data-bs-toggle="dropdown">
+          <span class="text-dark">Filter</span>
+          </span>
+        </a>
+        <div class="dropdown-menu">
+          <%= link_to "All Complaints", all_complaints_path, class:"dropdown-item" %>
+          <%= link_to "My Complaints", all_complaints_path(inspector: "My Complaints"), class:"dropdown-item" %>      
+          <%= link_to "My Pending Complaints", all_complaints_path(inspector: "My Complaints", status: "Pending"), class: "dropdown-item" %>
+        </div>
+      </div>
+    </div>
+    <div class="card">
       <div class="card-header">
-        <h3 class="card-title">Complaints</h3>
+        <h3 class="card-title">Complaints (<%= @inspections.count %>)</h3>
       </div>
       <!-- /.card-header -->
       <div class="card-body">
-      <div class="table-responsive">
-        <table id="example2" class="table table-bordered table-hover">
-          <thead>
-            <tr>
-            <th scope="col">Address</th>
-            <th scope="col">Created At</th>
-            <th scope="col">Source</th>
-            <th scope="col">Status</th>
-            <th scope="col">Inspector</th>
-            <th scope="col"></th>
-            </tr>
-          </thead>
-          <tbody>
-          <% @inspections.order("created_at DESC").each do |inspection| %>
-            <%= render partial: "shared/complaint_table2", locals: {inspection: inspection} %>
-          <% end %>
-          </tbody>
-        </table></div>
+        <div class="table-responsive">
+          <table id="example2" class="table table-striped table-hover">
+            <thead>
+              <tr>
+                <th scope="col">Address</th>
+                <th scope="col">Created At</th>
+                <th scope="col">Source</th>
+                <th scope="col">Status</th>
+                <th scope="col">Inspector</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <% @inspections.order("created_at DESC").each do |inspection| %>
+                <%= render partial: "shared/complaint_table2", locals: {inspection: inspection} %>
+              <% end %>
+            </tbody>
+          </table>
+          <%= will_paginate @inspections, class:"text-center" %>
+        </div>
       </div>
       <!-- /.card-body -->
     </div>

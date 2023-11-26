@@ -2,9 +2,9 @@ class AddressesController < ApplicationController
   layout 'choices', only: [:manage_contacts]
 
   def index
-      @addresses = @q.result.where.not(streetnumb: nil)
-      @violations = Violation.recent
-      @comments = Comment.recent
+    @addresses = @q.result.where.not(streetnumb: nil)
+    @violations = Violation.recent
+    @comments = Comment.recent
   end
 
   def all_address_violations
@@ -101,23 +101,6 @@ class AddressesController < ApplicationController
     @address = Address.find(params[:id])
   end
 
-  def violist
-      @status = params[:status]
-      @violations = Violation.all
-    
-      case @status
-      when "current"
-        @violations = @violations.where(status: :current)
-      when "resolved"
-        @violations = @violations.where(status: :resolved)
-      when "closed"
-        @violations = @violations.where(status: :closed)
-      else
-        @status = "all"
-      end
-    
-      @violations = @violations.order(created_at: :desc).paginate(page: params[:violation_page], per_page: 15)
-  end
 
   def mark_outstanding
     @address = Address.find(params[:id])
