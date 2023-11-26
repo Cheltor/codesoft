@@ -27,6 +27,7 @@ class Inspection < ApplicationRecord
                   .where.not(id: id) # Exclude the current inspection if it's being updated
                   .exists?
         errors.add(:scheduled_datetime, "Another inspection is scheduled within 1 hour of this time.")
+        throw :abort # Prevent saving if there is an error
       end
     end
   end
@@ -34,6 +35,18 @@ class Inspection < ApplicationRecord
   def scheduled_datetime_cannot_be_in_the_past
     if scheduled_datetime.present? && scheduled_datetime < DateTime.now
       errors.add(:scheduled_datetime, "can't be in the past")
+    end
+  end
+
+  def no_inspections_within_30_minutes
+    return unless scheduled_datetime
+
+    # Define the time range
+    time_range = (scheduled_datetime - 30.minutes)..(scheduled_datetime + 30.minutes)
+
+    # Check for any inspections within this range
+    if Inspection.where.not(id: id).where(scheduled_datetime: time_range).exists?
+      errors.add(:scheduled_datetime, 'is too close to another inspection')
     end
   end
 end

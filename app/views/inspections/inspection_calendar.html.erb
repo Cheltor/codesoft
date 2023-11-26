@@ -1,0 +1,55 @@
+<div class="row">
+  <div class="col">
+    <div class="card text-center">
+      <div class="card-body">
+        <h2>
+            <%= pluralize(@inspections_this_week, 'Pending inspection') %> for the week of <%= Date.today.beginning_of_week.strftime("%m/%d/%Y") %> - <%= Date.today.end_of_week.strftime("%m/%d/%Y") %>
+        </h2>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col">
+    <div class="card">
+      <div class="card-body">
+        <nav class="nav nav-pills nav-fill">
+          <% today = Date.today.strftime('%A') %>
+          <% @inspections_by_day.keys.each do |day| %>
+            <a class="nav-item nav-link <%= 'active' if day == today %>" href="#" data-bs-toggle="tab" data-bs-target="#<%= day.downcase %>">
+              <%= day %> - <strong>(<%= @inspections_by_day[day].count %>)</strong>
+            </a>
+          <% end %>
+        </nav>
+      </div>
+    </div>
+
+    <div class="tab-content">
+      <% @inspections_by_day.each do |day, inspections| %>
+        <div class="tab-pane mt-3 <%= 'show active' if day == today %>" id="<%= day.downcase %>" role="tabpanel">
+          <div class="card">
+            <div class="card-body">
+              <% if inspections.empty? %>
+                <p>No inspections scheduled for this day.</p>
+              <% else %>
+                <ul>
+                  <% inspections.each do |inspection| %>
+                    <li>
+                      <%= link_to inspection.source, address_inspection_path(inspection.address, inspection), class: 'btn btn-outline-secondary' %> - <%= inspection.scheduled_datetime.strftime("%I:%M %p") %>
+                      <!-- Add more inspection details here as needed -->
+                    </li>
+                    <br>
+                  <% end %>
+                </ul>
+              <% end %>            
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+
+
+

@@ -12,6 +12,13 @@
         <% end %>
       </li>
 
+      <li class="sidebar-item">
+        <%= link_to(inspection_calendar_path, class: "sidebar-link") do %>
+          <i class="align-middle" data-feather="calendar"></i>
+          <span class="align-middle">Inspections this week</span>
+        <% end %>
+      </li>
+
       <%# CONTACTS %>
       <% if current_user.admin? || current_user.ons? || current_user.oas? %>
 
@@ -65,6 +72,7 @@
       <li class="sidebar-header">
         Inspections
       </li>
+
       <li class="sidebar-item">
         <%= link_to(new_complaint_path, class: "sidebar-link", data: { turbo: false }) do %>
           <i class="align-middle" data-feather="plus-circle"></i>

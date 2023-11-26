@@ -9,9 +9,10 @@ class StaticController < ApplicationController
     violation_comments = @user.violations.flat_map(&:violation_comments)
     citation_comments = @user.violations.flat_map { |violation| violation.citations.flat_map(&:citation_comments) }
     address_comments = @user.comments
+    inspeciton_comments = @user.inspections.flat_map(&:inspection_comments)
     
     # Combine all comments
-    dash_comments = (violation_comments + citation_comments + address_comments).sort_by(&:created_at).reverse
+    dash_comments = (violation_comments + citation_comments + address_comments + inspeciton_comments).sort_by(&:created_at).reverse
 
     @comments_last_week = dash_comments.select { |comment| comment.created_at > 1.week.ago }.sort_by(&:created_at).reverse
     @comments_two_weeks_ago = @user.comments.where(created_at: 2.weeks.ago..1.week.ago).order(created_at: :desc)
@@ -55,26 +56,35 @@ class StaticController < ApplicationController
   
     @priority_addresses = @priority_addresses.uniq.select { |address| !address.updated_at.today? }.sort_by(&:streetnumb)
     
-    start_of_week = Date.today.beginning_of_week
-    end_of_week = Date.today.end_of_week
-  
-    # Create a hash to hold inspections for each day of the week
-    @inspections_by_day = {
-      'Sunday' => [],
-      'Monday' => [],
-      'Tuesday' => [],
-      'Wednesday' => [],
-      'Thursday' => [],
-      'Friday' => [],
-      'Saturday' => []
-    }
-  
-    # Iterate over all inspections and add them to the correct day if they are in the current week
-    Inspection.where(inspector: @user, status: nil)
-              .where(scheduled_datetime: start_of_week..end_of_week)
-              .each do |inspection|
-      day_of_week = inspection.scheduled_datetime.strftime('%A') if inspection.scheduled_datetime
-      @inspections_by_day[day_of_week] << inspection if day_of_week
+    # Timeline
+    user = current_user  # Assuming you have a method to fetch the current user
+
+    # Fetch user-related records
+    user_violations = user.violations
+    user_comments = user.comments  # Adjust based on your associations
+    user_inspections = user.inspections
+    user_violation_comments = user.violation_comments
+    user_citation_comments = user.citation_comments
+    user_inspection_comments = user.inspection_comments
+    # ... fetch other records as needed ...
+
+    # Combine and sort records for the timeline
+    @timeline_items = (
+      user_violations.to_a + 
+      user_comments.to_a + 
+      user_inspections.to_a +
+      user_violation_comments.to_a +
+      user_citation_comments.to_a +
+      user_inspection_comments.to_a
+      # ... include other records here ...
+    ).sort_by(&:created_at).reverse
+
+    # Pagination (optional)
+    page = params[:page] || 1
+    per_page = 10  # Adjust as needed
+    @timeline_items = WillPaginate::Collection.create(page, per_page, @timeline_items.size) do |pager|
+      start_index = pager.offset
+      pager.replace(@timeline_items[start_index, per_page])
     end
   end
   

@@ -73,7 +73,10 @@
         <% else %>
           <%= link_to "Schedule inspection", schedule_address_inspection_path(@address, @inspection), class: "btn btn-outline-primary mt-3" %>
         <% end %>
-                <br>
+        <% if current_user.email.start_with?("rr") %>
+          <br>
+          <!-- Your code here -->
+
                 <% if @inspection.confirmed == true && @inspection.scheduled_datetime.present? %>
                   <br>
                   <p>Inspection time confirmed with owner or tenant</p>
@@ -82,7 +85,7 @@
                   <p>Inspection time not yet confirmed with owner or tenant</p>
                 <% else %>
                 <% end %>
-
+        <% end %>
         <% if @attachments.any? %>
         <button type="button" class="btn btn-primary mt-2 mb-2" data-bs-toggle="modal" data-bs-target="#allAttachModal">
           <i class="bi bi-paperclip"></i>

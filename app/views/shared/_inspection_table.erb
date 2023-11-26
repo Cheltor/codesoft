@@ -5,9 +5,9 @@
   <!-- <td><%= link_to inspection.address.combadd.titleize, address_path(inspection.address), class:"btn btn-secondary" %></td> -->
   <%# end %>
   <% if inspection.unit.present? %>
-    <td><%= link_to "#{inspection.address.property_name_with_combadd} - #{inspection.unit.number}", address_unit_path(inspection.address, inspection.unit) %></td>
+    <td><%= link_to "#{inspection.address.property_name_with_combadd} - #{inspection.unit.number}", address_unit_path(inspection.address, inspection.unit), class: "btn" %></td>
     <% else %>
-  <td><%= link_to inspection.address.property_name_with_combadd, address_path(inspection.address) %></td>
+  <td><%= link_to inspection.address.property_name_with_combadd, address_path(inspection.address), class: "btn" %></td>
   <% end %>
   <td><%= inspection.source %></td>
   <% if inspection.status.present? %>
@@ -20,10 +20,12 @@
   <% end %>
   <% if inspection.scheduled_datetime.present? %>
     <td><%= inspection.scheduled_datetime.strftime("%B %d, %Y %I:%M %p") %></td>
-  <% else %>
+  <% elsif inspection.inspector == current_user %>
     <td>
       <%= link_to "Schedule inspection", schedule_address_inspection_path(inspection.address, inspection), class: "btn btn-outline-primary" %>
     </td>
+  <% else %>
+    <td>Unscheduled</td>
   <% end %>
   <% if inspection.inspector.present? %>
     <td><%= inspection.inspector.email %></td>

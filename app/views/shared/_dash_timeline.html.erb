@@ -1,0 +1,14 @@
+  <div id="activities" class="card">
+    <div class="card-body h-100">
+      <% if @timeline_items.any? %>
+        <% @timeline_items.each do |item| %>
+          <%= render partial: "addresses/timeline_item", locals: { item: item } %>
+        <% end %>
+      <% else %>
+        <p class="text-muted">No activities yet.</p>
+      <% end %>
+      <div class="d-grid">
+        <%= will_paginate @timeline_items, class:"text-center" %>
+      </div>
+    </div>
+  </div>

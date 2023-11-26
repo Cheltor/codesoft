@@ -1,3 +1,13 @@
+<% if @inspection.errors.any? %>
+  <div id="error_explanation">
+    <h2><%= pluralize(@inspection.errors.count, "error") %> prohibited this inspection from being saved:</h2>
+    <ul>
+      <% @inspection.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
 
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
@@ -31,7 +41,8 @@
           <p class="text-danger"><%= @inspection.errors[:scheduled_datetime].join(', ') %></p>
         <% end %>
       </div>
-      
+
+      <% if current_user.email.start_with?("rr") %>
       <div class="field mt-3">
         <label>Inspection time confirmed with owner or tenant?</label>
         <br>
@@ -42,6 +53,7 @@
           <p class="text-danger"><%= @inspection.errors[:confirmed].join(', ') %></p>
         <% end %>
       </div>
+      <% end %>
 
       <div class="actions mt-3">
         <%= form.submit "Submit", class: "btn btn-primary" %>

@@ -80,7 +80,7 @@ Rails.application.routes.draw do
   get 'unassigned_inspections' => 'inspections#unassigned_inspections'
   get 'assign_inspection/:id' => 'inspections#assign_inspection', as: 'assign_inspection'
   patch 'update_inspector/:id' => 'inspections#update_inspector', as: 'update_inspector'
-  get 'new_biz' => 'businesses#new_biz'
+  get 'inspection_calendar' => 'inspections#inspection_calendar'
 
   resources :users, only: [:index, :show, :edit, :update]
 

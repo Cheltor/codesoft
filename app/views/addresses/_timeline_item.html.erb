@@ -143,6 +143,27 @@
   </div>
 
   <hr>
+<% elsif item.is_a?(InspectionComment) %>
+  <div class="d-flex align-items-start">
+    <div class="flex-grow-1">
+      <small class="float-end text-navy">
+        <%= time_ago_in_words(item.created_at) %> ago
+      </small>
+      <strong><%= item.user.email_without_domain %></strong> commented on <%= link_to "Inspection", address_inspection_path(item.inspection.address, item.inspection), class: "btn btn-sm btn-outline-secondary" %><%= " on " if item.inspection.unit.present? %><%= link_to "#{item.inspection.unit.number.upcase}", address_unit_path(item.inspection.address, item.inspection.unit), class: "btn btn-outline-info btn-sm" if item.inspection.unit.present? %>:<br>
+      <p>"<%= item.content %>"</p>
+      <% if item.photos.attached? %>
+        <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#item-<%= item.id %>">
+          Attachments
+        </button>
+        <br>
+      <% end %>
+      <small class="text-muted">
+        <%= item.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y %l:%M %p") %>
+      </small>
+    </div>
+  </div>
+
+  <hr>
 <% end %>
 
 <!-- Modal -->

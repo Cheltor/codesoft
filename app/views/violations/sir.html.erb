@@ -2,27 +2,36 @@
 <div class="container mt-5">
   <div class="row">
     <div class="col-12">
-      <h1 style="text-align:center">SIR Stats</h1>
-      <div class="row mx-auto">
-        <div class="col-4">
-          <%= form_tag sir_path, method: :get do %>
-            <label for="start_date">Start date:</label>
-            <%= date_field_tag "start_date", params[:start_date], class: "form-control" %>
+      <div class="card">
+        <div class="card-body">
+        <h1 style="text-align:center">SIR Stats</h1>
+          <div class="row mx-auto">
+            <div class="col-4">
+              <%= form_tag sir_path, method: :get do %>
+                <label for="start_date">Start date:</label>
+                <%= date_field_tag "start_date", params[:start_date], class: "form-control" %>
 
-            <label for="end_date">End date:</label>
-            <%= date_field_tag "end_date", params[:end_date], class: "form-control" %>
+                <label for="end_date">End date:</label>
+                <%= date_field_tag "end_date", params[:end_date], class: "form-control" %>
 
-            <%= submit_tag "Filter", class: "btn btn-primary mt-3" %>
+                <%= submit_tag "Filter", class: "btn btn-primary mt-3" %>
+              <% end %>
+            </div>
+          </div>        
+        </div>
+      </div>
+
+      <br>
+
+      <div class="card text-center">
+        <div class="card-body">
+          <% if params[:start_date].present? && params[:end_date].present? %>
+            <h2>Stats between <%= params[:start_date] %> and <%= params[:end_date] %></h2>
+          <% else %>
+            <h2>Stats within the last 2 weeks</h2>
           <% end %>
         </div>
       </div>
-      <br>
-
-      <% if params[:start_date].present? && params[:end_date].present? %>
-        <h2>Stats between <%= params[:start_date] %> and <%= params[:end_date] %></h2>
-      <% else %>
-        <h2>Stats within the last 2 weeks</h2>
-      <% end %>
 
       <br>
     </div>

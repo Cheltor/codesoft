@@ -1,5 +1,5 @@
 class InspectionsController < ApplicationController
-  before_action :set_address, except: [:all_inspections, :my_inspections, :my_unscheduled_inspections, :all_complaints, :my_complaints, :assign_inspector, :update_inspector, :create_complaint, :new_complaint, :create_permit_inspection, :new_permit_inspection, :create_license_inspection, :new_license_inspection, :unassigned_inspections, :assign_inspection]
+  before_action :set_address, except: [:all_inspections, :my_inspections, :my_unscheduled_inspections, :all_complaints, :my_complaints, :assign_inspector, :update_inspector, :create_complaint, :new_complaint, :create_permit_inspection, :new_permit_inspection, :create_license_inspection, :new_license_inspection, :unassigned_inspections, :assign_inspection, :inspection_calendar]
   before_action :set_inspection, only: [:show, :edit, :update, :destroy]
   layout 'choices', only: [:new, :conduct, :new_complaint, :new_permit_inspection, :new_license_inspection]
 
@@ -67,6 +67,40 @@ class InspectionsController < ApplicationController
     @inspections = @inspections.paginate(page: params[:page], per_page: 10)
   end
   
+  def inspection_calendar
+    @user = current_user
+    start_of_week = Date.today.beginning_of_week
+    end_of_week = Date.today.end_of_week
+  
+    # Initialize @inspections_by_day with each day of the week as keys and empty arrays as values
+    @inspections_by_day = {
+      'Monday'    => [],
+      'Tuesday'   => [],
+      'Wednesday' => [],
+      'Thursday'  => [],
+      'Friday'    => [],
+      'Saturday'  => [],
+      'Sunday'    => []
+    }
+  
+    # Initialize @inspections_this_week to count the number of inspections
+    @inspections_this_week = 0
+  
+    # Fetch inspections for the current user within the current week
+    Inspection.where(inspector: @user, status: nil)
+              .where(scheduled_datetime: start_of_week..end_of_week)
+              .each do |inspection|
+      if inspection.scheduled_datetime
+        day_of_week = inspection.scheduled_datetime.strftime('%A')
+        @inspections_by_day[day_of_week] << inspection
+        @inspections_this_week += 1
+      end
+    end
+
+    @inspections_by_day.each do |day, inspections|
+      @inspections_by_day[day] = inspections.sort_by(&:scheduled_datetime)
+    end
+  end
 
   def my_complaints
     @inspections = Inspection.where(inspector: current_user, source: "Complaint").order(created_at: :desc)
