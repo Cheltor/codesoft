@@ -101,6 +101,11 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :addresses
       resources :businesses
+      resources :complaints
+      resources :inspections
+      resources :violations
+      resources :codes
+      resources :contacts
     end
   end
   mount ServiceWorker::Engine => "/service-worker.js"
