@@ -146,7 +146,38 @@ class StaticController < ApplicationController
         @priority_addresses << address
       end
     
-      @priority_addresses = @priority_addresses.uniq.select { |address| !address.updated_at.today? }.sort_by(&:streetnumb)  
+      @priority_addresses = @priority_addresses.uniq.select { |address| !address.updated_at.today? }.sort_by(&:streetnumb)
+
+      # Timeline
+      user = @user  # Assuming you have a method to fetch the current user
+
+      # Fetch user-related records
+      user_violations = user.violations
+      user_comments = user.comments  # Adjust based on your associations
+      user_inspections = user.inspections
+      user_violation_comments = user.violation_comments
+      user_citation_comments = user.citation_comments
+      user_inspection_comments = user.inspection_comments
+      # ... fetch other records as needed ...
+
+      # Combine and sort records for the timeline
+      @timeline_items = (
+        user_violations.to_a +
+        user_comments.to_a +
+        user_inspections.to_a +
+        user_violation_comments.to_a +
+        user_citation_comments.to_a +
+        user_inspection_comments.to_a
+        # ... include other records here ...
+      ).sort_by(&:created_at).reverse
+
+      # Pagination (optional)
+      page = params[:page] || 1
+      per_page = 10  # Adjust as needed
+      @timeline_items = WillPaginate::Collection.create(page, per_page, @timeline_items.size) do |pager|
+        start_index = pager.offset
+        pager.replace(@timeline_items[start_index, per_page])
+      end
     else
       @comments = Comment.order(created_at: :desc)
       @comments_last_week = Comment.where(created_at: 1.week.ago..Time.now).order(created_at: :desc)
@@ -190,6 +221,35 @@ class StaticController < ApplicationController
       end
     
       @priority_addresses = @priority_addresses.uniq.select { |address| !address.updated_at.today? }.sort_by(&:streetnumb)  
+
+      # Timeline for all users
+      # Fetch user-related records
+      user_violations = Violation.all
+      user_comments = Comment.all  # Adjust based on your associations
+      user_inspections = Inspection.all
+      user_violation_comments = ViolationComment.all
+      user_citation_comments = CitationComment.all
+      user_inspection_comments = InspectionComment.all
+      # ... fetch other records as needed ...
+
+      # Combine and sort records for the timeline
+      @timeline_items = (
+        user_violations.to_a +
+        user_comments.to_a +
+        user_inspections.to_a +
+        user_violation_comments.to_a +
+        user_citation_comments.to_a +
+        user_inspection_comments.to_a
+        # ... include other records here ...
+      ).sort_by(&:created_at).reverse
+
+      # Pagination (optional)
+      page = params[:page] || 1
+      per_page = 10  # Adjust as needed
+      @timeline_items = WillPaginate::Collection.create(page, per_page, @timeline_items.size) do |pager|
+        start_index = pager.offset
+        pager.replace(@timeline_items[start_index, per_page])
+      end
 
     end
   end
