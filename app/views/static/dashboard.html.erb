@@ -11,7 +11,11 @@
   <% if !params[:q].present? %>
   <div class="row">
     <div class="col">
-      <h1 style="text-align:center">Welcome to the Dashboard. It's currently <%= Time.now.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %>. </h1>
+      <div class="card">
+        <div class="card-body">
+          <h1 style="text-align:center">Welcome to the Dashboard. It's currently <%= Time.now.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %>. </h1>
+        </div>
+      </div>
       <br>
     </div>
   </div>
