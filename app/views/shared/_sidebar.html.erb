@@ -12,12 +12,14 @@
         <% end %>
       </li>
 
-      <li class="sidebar-item">
-        <%= link_to(inspection_calendar_path, class: "sidebar-link") do %>
-          <i class="align-middle" data-feather="calendar"></i>
-          <span class="align-middle">Inspections this week</span>
-        <% end %>
-      </li>
+      <% if current_user.ons? %>
+        <li class="sidebar-item">
+          <%= link_to(inspection_calendar_path, class: "sidebar-link") do %>
+            <i class="align-middle" data-feather="calendar"></i>
+            <span class="align-middle">Inspections this week</span>
+          <% end %>
+        </li>
+      <% end %>
 
       <%# CONTACTS %>
       <% if current_user.admin? || current_user.ons? || current_user.oas? %>

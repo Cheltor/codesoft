@@ -13,8 +13,10 @@
             <% if current_user.admin? %>
               <%= link_to "Unassigned Inspections", all_inspections_path(inspector: "Unassigned"), class: "dropdown-item" %>
             <% else %>
-              <%= link_to "My Inspections", all_inspections_path(inspector: "My Inspections"), class: "dropdown-item" %>
-              <%= link_to "My Unscheduled", all_inspections_path(inspector: "My Unscheduled"), class: "dropdown-item" %>
+              <% if current_user.ons? %>
+                <%= link_to "My Inspections", all_inspections_path(inspector: "My Inspections"), class: "dropdown-item" %>
+                <%= link_to "My Unscheduled", all_inspections_path(inspector: "My Unscheduled"), class: "dropdown-item" %>
+              <% end %>
             <% end %>
             <div class="dropdown-divider"></div>
             <%= link_to "Multifamily License Inspections", all_inspections_path(source: "Multifamily License"), class: "dropdown-item" %>

@@ -12,11 +12,13 @@
           <%= link_to "Unpaid", all_citations_path(status: "current"), class:"dropdown-item" %>
           <%= link_to "Pending Trial", all_citations_path(status: "pending"), class:"dropdown-item" %>
           <%= link_to "Resolved", all_citations_path(status: "resolved"), class:"dropdown-item" %>
-          <div class="dropdown-divider"></div>
-          <%= link_to "My Citations", all_citations_path(user: "current_user"), class:"dropdown-item" %>
-          <%= link_to "My Unpaid", all_citations_path(user: "current_user", status: "current"), class:"dropdown-item" %>
-          <%= link_to "My Pending Trial", all_citations_path(user: "current_user", status: "pending"), class:"dropdown-item" %>
-          <%= link_to "My Resolved", all_citations_path(user: "current_user", status: "resolved"), class:"dropdown-item" %>
+          <% if current_user.ons? %>
+            <div class="dropdown-divider"></div>
+            <%= link_to "My Citations", all_citations_path(user: "current_user"), class:"dropdown-item" %>
+            <%= link_to "My Unpaid", all_citations_path(user: "current_user", status: "current"), class:"dropdown-item" %>
+            <%= link_to "My Pending Trial", all_citations_path(user: "current_user", status: "pending"), class:"dropdown-item" %>
+            <%= link_to "My Resolved", all_citations_path(user: "current_user", status: "resolved"), class:"dropdown-item" %>
+          <% end %>
         </div>
       </div>
     </div>

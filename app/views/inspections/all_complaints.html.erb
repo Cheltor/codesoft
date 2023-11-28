@@ -11,8 +11,10 @@
         </a>
         <div class="dropdown-menu">
           <%= link_to "All Complaints", all_complaints_path, class:"dropdown-item" %>
-          <%= link_to "My Complaints", all_complaints_path(inspector: "My Complaints"), class:"dropdown-item" %>      
-          <%= link_to "My Pending Complaints", all_complaints_path(inspector: "My Complaints", status: "Pending"), class: "dropdown-item" %>
+          <% if current_user.ons? %>
+            <%= link_to "My Complaints", all_complaints_path(inspector: "My Complaints"), class:"dropdown-item" %>      
+            <%= link_to "My Pending Complaints", all_complaints_path(inspector: "My Complaints", status: "Pending"), class: "dropdown-item" %>
+          <% end %>
         </div>
       </div>
     </div>
