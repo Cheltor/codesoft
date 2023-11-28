@@ -1,14 +1,14 @@
-<% if item.is_a?(Comment) %>
+<% if item.is_a?(Comment) %> 
   <div class="d-flex align-items-start">
     <div class="flex-grow-1">
       <small class="float-end text-navy">
         <%= time_ago_in_words(item.created_at) %> ago
       </small>
       <% if item.user == current_user %>
-        <strong><%= item.user.email_without_domain %></strong> <%= link_to "commented", edit_address_comment_path(item.address, item), class: "btn btn-outline-secondary btn-sm" %><%= " on " if item.unit.present? %><%= link_to "#{item.unit.number.upcase}", address_unit_path(item.address, item.unit), class: "btn btn-outline-info btn-sm" if item.unit.present? %>:
+        <strong><%= item.user.email_without_domain %></strong> <%= link_to "commented", edit_address_comment_path(item.address, item), class: "btn btn-outline-secondary btn-sm" %><%= " on " if item.unit.present? %><%= link_to "#{item.unit.number.upcase}", address_unit_path(item.address, item.unit), class: "btn btn-outline-info btn-sm" if item.unit.present? %><% if local_assigns[:show_address] %> at <%= link_to item.address.property_name_with_combadd, item.address, class: "btn btn-outline-secondary btn-sm" %><% end %>:
       
       <% else %>
-        <strong><%= item.user.email_without_domain %></strong> commented<%= " on " if item.unit.present? %><%= link_to "#{item.unit.number.upcase}", address_unit_path(item.address, item.unit), class: "btn btn-outline-info btn-sm" if item.unit.present? %>:<br>
+        <strong><%= item.user.email_without_domain %></strong> commented<%= " on " if item.unit.present? %><%= link_to "#{item.unit.number.upcase}", address_unit_path(item.address, item.unit), class: "btn btn-outline-info btn-sm" if item.unit.present? %><% if local_assigns[:show_address] %> on <%= link_to item.address.property_name_with_combadd, item.address, class: "btn btn-outline-secondary btn-sm" %><% end %>:<br>
                     
 
       <% end %>
@@ -32,7 +32,7 @@
       <small class="float-end text-navy">
         <%= time_ago_in_words(item.created_at) %> ago
       </small>
-      <strong><%= item.user.email_without_domain %></strong> commented on <%= link_to item.violation.violation_type, violation_path(item.violation), class: "btn btn-outline-secondary btn-sm" %><%= " on " if item.violation.unit.present? %><%= link_to "#{item.violation.unit.number.upcase}", address_unit_path(item.violation.address, item.violation.unit), class: "btn btn-outline-info btn-sm" if item.violation.unit.present? %>:<br>
+      <strong><%= item.user.email_without_domain %></strong> commented on <%= link_to item.violation.violation_type, violation_path(item.violation), class: "btn btn-outline-secondary btn-sm" %><%= " on " if item.violation.unit.present? %><%= link_to "#{item.violation.unit.number.upcase}", address_unit_path(item.violation.address, item.violation.unit), class: "btn btn-outline-info btn-sm" if item.violation.unit.present? %><% if local_assigns[:show_address] %> at <%= link_to item.violation.address.property_name_with_combadd, item.violation.address, class: "btn btn-outline-secondary btn-sm" %><% end %>:<br>
       <p>"<%= item.content %>"</p>
       <% if item.photos.attached? %>
         <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#item-<%= item.id %>">
@@ -53,7 +53,7 @@
       <small class="float-end text-navy">
         <%= time_ago_in_words(item.created_at) %> ago
       </small>
-      <strong><%= item.user.email_without_domain %></strong> commented on <%= link_to "Citation", citation_path(item.citation), class: "btn btn-sm btn-outline-secondary" %><%= " on " if item.citation.unit.present? %><%= link_to "#{item.citation.unit.number.upcase}", address_unit_path(item.citation.unit.address, item.citation.unit), class: "btn btn-outline-info btn-sm" if item.citation.unit.present? %>: <br>
+      <strong><%= item.user.email_without_domain %></strong> commented on <%= link_to "Citation", citation_path(item.citation), class: "btn btn-sm btn-outline-secondary" %><%= " on " if item.citation.unit.present? %><%= link_to "#{item.citation.unit.number.upcase}", address_unit_path(item.citation.unit.address, item.citation.unit), class: "btn btn-outline-info btn-sm" if item.citation.unit.present? %><% if local_assigns[:show_address] %> at <%= link_to item.citation.violation.address.property_name_with_combadd, item.citation.violation.address, class: "btn btn-outline-secondary btn-sm" %><% end %>: <br>
       <p>"<%= item.content %>"</p>
       <% if item.photos.attached? %>
         <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#item-<%= item.id %>">
@@ -74,7 +74,7 @@
       <small class="float-end text-navy">
         <%= time_ago_in_words(item.created_at) %> ago
       </small>
-      <strong><%= item.user.email_without_domain %></strong> created a <%= link_to item.violation_type, violation_path(item), class: "btn btn-outline-secondary btn-sm" %><%= " on " if item.unit.present? %><%= link_to "#{item.unit.number.upcase}", address_unit_path(item.address, item.unit), class: "btn btn-outline-info btn-sm" if item.unit.present? %> for:<br>
+      <strong><%= item.user.email_without_domain %></strong> created a <%= link_to item.violation_type, violation_path(item), class: "btn btn-outline-secondary btn-sm" %><%= " on " if item.unit.present? %><%= link_to "#{item.unit.number.upcase}", address_unit_path(item.address, item.unit), class: "btn btn-outline-info btn-sm" if item.unit.present? %><% if local_assigns[:show_address] %> at <%= link_to item.address.property_name_with_combadd, item.address, class: "btn btn-outline-secondary btn-sm" %><% end %> for:<br>
         <div class="mt-2 mb-2 text-center">
         <% item.codes.each do |code| %>
           <%= render partial: 'shared/code_def_show', locals: { code: code } %>
@@ -100,7 +100,7 @@
       <small class="float-end text-navy">
         <%= time_ago_in_words(item.created_at) %> ago
       </small>
-      <strong><%= item.user.email_without_domain %></strong> created a <%= link_to "Citation", citation_path(item), class: "btn btn-sm btn-outline-secondary" %><%= " on " if item.unit.present? %><%= link_to "#{item.unit.number.upcase}", address_unit_path(item.unit.address, item.unit), class: "btn btn-outline-info btn-sm" if item.unit.present? %> for <strong><%= item.code.name %></strong>:<br>
+      <strong><%= item.user.email_without_domain %></strong> created a <%= link_to "Citation", citation_path(item), class: "btn btn-sm btn-outline-secondary" %><%= " on " if item.unit.present? %><%= link_to "#{item.unit.number.upcase}", address_unit_path(item.unit.address, item.unit), class: "btn btn-outline-info btn-sm" if item.unit.present? %> for <strong><%= item.code.name %></strong><% if local_assigns[:show_address] %> at <%= link_to item.violation.address.property_name_with_combadd, item.violation.address, class: "btn btn-outline-secondary btn-sm" %><% end %>:<br>
       <p>
         <% if item.status == "paid" %> Due: <%= item.deadline.strftime("%B %d, %Y") %> <% end %>
         <br>
@@ -120,7 +120,7 @@
         <%= time_ago_in_words(item.created_at) %> ago
       </small>
       <% if item.source == "Complaint" %>
-        <p><%= link_to "Complaint", address_inspection_path(item.address, item), class: "btn btn-sm btn-outline-secondary" %> was made:</p>
+        <p><%= link_to "Complaint", address_inspection_path(item.address, item), class: "btn btn-sm btn-outline-secondary" %> was made<% if local_assigns[:show_address] %> at <%= link_to item.address.property_name_with_combadd, item.address, class: "btn btn-outline-secondary btn-sm" %><% end %>:</p>
         <% if item.description.present? %>
           <p>"<%= item.description %>"</p>
         <% end %>
@@ -134,7 +134,7 @@
           </p>
         <% end %>
       <% else %>
-        <p><%= link_to "Inspection", address_inspection_path(item.address, item), class: "btn btn-sm btn-outline-secondary" %> was requested for <strong><%= item.source %></strong><%= " for " if item.unit.present? %><%= link_to "#{item.unit.number.upcase}", address_unit_path(item.address, item.unit), class: "btn btn-outline-info btn-sm" if item.unit.present? %>.</p>
+        <p><%= link_to "Inspection", address_inspection_path(item.address, item), class: "btn btn-sm btn-outline-secondary" %> was requested for <strong><%= item.source %></strong><%= " for " if item.unit.present? %><%= link_to "#{item.unit.number.upcase}", address_unit_path(item.address, item.unit), class: "btn btn-outline-info btn-sm" if item.unit.present? %><% if local_assigns[:show_address] %> at <%= link_to item.address.property_name_with_combadd, item.address, class: "btn btn-outline-secondary btn-sm" %><% end %>.</p>
       <% end %>
       <small class="text-muted">
         <%= item.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y %l:%M %p") %>
@@ -149,7 +149,7 @@
       <small class="float-end text-navy">
         <%= time_ago_in_words(item.created_at) %> ago
       </small>
-      <strong><%= item.user.email_without_domain %></strong> commented on <%= link_to "Inspection", address_inspection_path(item.inspection.address, item.inspection), class: "btn btn-sm btn-outline-secondary" %><%= " on " if item.inspection.unit.present? %><%= link_to "#{item.inspection.unit.number.upcase}", address_unit_path(item.inspection.address, item.inspection.unit), class: "btn btn-outline-info btn-sm" if item.inspection.unit.present? %>:<br>
+      <strong><%= item.user.email_without_domain %></strong> commented on <%= link_to "Inspection", address_inspection_path(item.inspection.address, item.inspection), class: "btn btn-sm btn-outline-secondary" %><%= " on " if item.inspection.unit.present? %><%= link_to "#{item.inspection.unit.number.upcase}", address_unit_path(item.inspection.address, item.inspection.unit), class: "btn btn-outline-info btn-sm" if item.inspection.unit.present? %><% if local_assigns[:show_address] %> at <%= link_to item.inspection.address.property_name_with_combadd, item.inspection.address, class: "btn btn-outline-secondary btn-sm" %><% end %>:<br>
       <p>"<%= item.content %>"</p>
       <% if item.photos.attached? %>
         <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#item-<%= item.id %>">

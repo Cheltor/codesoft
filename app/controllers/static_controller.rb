@@ -155,6 +155,7 @@ class StaticController < ApplicationController
       user_violations = user.violations
       user_comments = user.comments  # Adjust based on your associations
       user_inspections = user.inspections
+      user_citations = user.citations
       user_violation_comments = user.violation_comments
       user_citation_comments = user.citation_comments
       user_inspection_comments = user.inspection_comments
@@ -164,6 +165,7 @@ class StaticController < ApplicationController
       @timeline_items = (
         user_violations.to_a +
         user_comments.to_a +
+        user_citations.to_a +
         user_inspections.to_a +
         user_violation_comments.to_a +
         user_citation_comments.to_a +
@@ -226,6 +228,7 @@ class StaticController < ApplicationController
       # Fetch user-related records
       user_violations = Violation.all
       user_comments = Comment.all  # Adjust based on your associations
+      user_citations = Citation.all
       user_inspections = Inspection.all
       user_violation_comments = ViolationComment.all
       user_citation_comments = CitationComment.all
@@ -236,6 +239,7 @@ class StaticController < ApplicationController
       @timeline_items = (
         user_violations.to_a +
         user_comments.to_a +
+        user_citations.to_a +
         user_inspections.to_a +
         user_violation_comments.to_a +
         user_citation_comments.to_a +

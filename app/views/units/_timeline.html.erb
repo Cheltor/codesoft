@@ -25,7 +25,7 @@
     <div class="card-body h-100">
       <% if @timeline_items.any? %>
         <% @timeline_items.each do |item| %>
-          <%= render partial: "addresses/timeline_item", locals: { item: item } %>
+          <%= render partial: "addresses/timeline_item", locals: { item: item, show_address: false } %>
         <% end %>
       <% else %>
         <p class="text-muted">No activities yet.</p>
