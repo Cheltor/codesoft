@@ -8,8 +8,17 @@ class AddressesController < ApplicationController
   end
 
   def all_address_violations
+    @status = params[:status]
     @address = Address.find(params[:id])
-    @violations = @address.violations
+    @violations = Violation.all.where(address: @address).order(created_at: :desc)
+
+
+    case @status
+    when "current"
+      @violations = @violations.where(status: :current)
+    when "resolved"
+      @violations = @violations.where(status: :resolved)
+    end
   end
 
   def all_address_comments

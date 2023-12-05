@@ -134,7 +134,7 @@
           </p>
         <% end %>
       <% else %>
-        <p><%= link_to "Inspection", address_inspection_path(item.address, item), class: "btn btn-sm btn-outline-secondary" %> was requested for <strong><%= item.source %></strong><%= " for " if item.unit.present? %><%= link_to "#{item.unit.number.upcase}", address_unit_path(item.address, item.unit), class: "btn btn-outline-info btn-sm" if item.unit.present? %><% if local_assigns[:show_address] %> at <%= link_to item.address.property_name_with_combadd, item.address, class: "btn btn-outline-secondary btn-sm" %><% end %>.</p>
+        <p><%= link_to "Inspection", address_inspection_path(item.address, item), class: "btn btn-sm btn-outline-secondary" %> was created for <strong><%= item.source %></strong><%= " for " if item.unit.present? %><%= link_to "#{item.unit.number.upcase}", address_unit_path(item.address, item.unit), class: "btn btn-outline-info btn-sm" if item.unit.present? %><% if local_assigns[:show_address] %> at <%= link_to item.address.property_name_with_combadd, item.address, class: "btn btn-outline-secondary btn-sm" %><% end %>.</p>
       <% end %>
       <small class="text-muted">
         <%= item.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y %l:%M %p") %>

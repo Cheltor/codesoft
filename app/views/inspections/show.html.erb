@@ -107,6 +107,11 @@
     <% else %>
       <%= link_to "Conduct #{@inspection.source.titleize} inspection", conduct_address_inspection_path(@address, @inspection), class: "btn btn-outline-primary btn-lg mt-3", data: { turbo: false } %>
     <% end %>
+    <% if @inspection.inspector.present? %>
+      <br>
+      <br>
+      <h3>Inspector: <%= @inspection.inspector.name %></h3>
+    <% end %>
     <br>
     <% if @inspection.status.present? %>
     <br>

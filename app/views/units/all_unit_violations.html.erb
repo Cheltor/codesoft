@@ -20,6 +20,15 @@
     <%= render 'shared/unit_links' %>
     <div class="card">
       <div class="card-body">
+        <div class="text-center">
+          <div class="btn-group" role="group" aria-label="Violations">
+            <%= link_to "All Violations", all_unit_violations_address_unit_path(@address, @unit), class:"btn btn-outline-secondary" %>
+            <%= link_to "Current", all_unit_violations_address_unit_path(@address, @unit, status: "current"), class:"btn btn-outline-secondary" %>
+            <%= link_to "Closed", all_unit_violations_address_unit_path(@address, @unit, status: "resolved"), class:"btn btn-outline-secondary" %>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
         <% if @unit.violations.any? %>
         <div class="table-responsive" style="text-align: center">
           <table class="table table-striped table-hover">

@@ -57,7 +57,15 @@ class UnitsController < ApplicationController
   def all_unit_violations
     @address = Address.find(params[:address_id])
     @unit = @address.units.find(params[:id])
-    @violations = @unit.violations
+    @violations = @unit.violations.order(created_at: :desc)
+    @status = params[:status]
+
+    case @status
+    when "current"
+      @violations = @violations.where(status: :current)
+    when "resolved"
+      @violations = @violations.where(status: :resolved)
+    end
   end
 
   def all_unit_citations

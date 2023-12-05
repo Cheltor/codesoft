@@ -1,15 +1,15 @@
 <div class="col-md-4 col-xl-3">
   <div class="card mb-3">
     <div class="card-header">
-      <h5 class="card-title mb-0">Address Details</h5>
+      <h5 class="card-title mb-0">Unit Details</h5>
     </div>
     <div class="card-body text-center">
       <h3 class="mb-0">
         <%= @address.property_name_with_combadd %>
       </h3>
-      <h3>
+      <h1>
         <%= @unit.number.upcase %>
-      </h3>
+      </h1>
       <div>
         <% if @address.property_name.present? %>
           <p><strong>Property Name:</strong> <%= @address.property_name.titleize %></p>
@@ -32,7 +32,7 @@
         <!-- Owner info -->
         <hr class="my-0">
         <div class="card-body">
-          <h5 class="h6 card-title">Owner Information</h5>
+          <h5 class="h6 card-title">Property Owner Information</h5>
           <p><strong>Owner Name:</strong> <%= @address.ownername.titleize %></p>
           <p><strong>Owner Address:</strong><%= @address.owneraddress %> <%= @address.ownercity %>, <%= @address.ownerstate %> <%= @address.ownerzip %></p>
           <div class="text-center">
@@ -42,7 +42,7 @@
         <!-- contacts -->
         <hr class="my-0">
         <div class="card-body">
-          <h5 class="h6 card-title">Associated Contacts</h5>
+          <h5 class="h6 card-title">Contacts Associated With <%= @unit.number.upcase %></h5>
           <% if @unit.contacts.present? %>
             <% @unit.contacts.each do |c| %>
               <%= link_to c.name, contact_path(c), class: "btn btn-outline-info btn-sm mt-2" %>
@@ -55,7 +55,7 @@
         <!-- units -->
         <hr class="my-0">
         <div class="card-body">
-          <h5 class="h6 card-title">All Units</h5>
+          <h5 class="h6 card-title">All Property Units</h5>
           <div class="">
             <% for unit in @address.units %>
               <%= link_to unit.number, address_unit_path(@address, unit), class: "btn btn-outline-info btn-sm mt-2" %>
@@ -101,7 +101,7 @@
       <!-- Owner info -->
       <hr class="my-0">
       <div class="card-body">
-        <h5 class="h6 card-title">Owner Information</h5>
+        <h5 class="h6 card-title">Property Owner Information</h5>
         <p><strong>Owner Name:</strong> <%= @address.ownername.titleize %></p>
         <p><strong>Owner Address:</strong><%= @address.owneraddress %> <%= @address.ownercity %>, <%= @address.ownerstate %> <%= @address.ownerzip %></p>
         <div class="text-center">
@@ -111,7 +111,7 @@
       <!-- contacts -->
       <hr class="my-0">
       <div class="card-body">
-        <h5 class="h6 card-title">Associated Contacts</h5>
+        <h5 class="h6 card-title">Contacts Associated With <%= @unit.number.upcase %></h5>
         <% if @unit.contacts.present? %>
           <% @unit.contacts.each do |c| %>
             <%= link_to c.name, contact_path(c), class: "btn btn-outline-info btn-sm mt-2" %>
@@ -125,7 +125,7 @@
       <!-- units -->
       <hr class="my-0">
       <div class="card-body">
-        <h5 class="h6 card-title">All Units</h5>
+        <h5 class="h6 card-title">All Property Units</h5>
         <div class="">
           <% for unit in @address.units %>
             <%= link_to unit.number, address_unit_path(@address, unit), class: "btn btn-outline-info btn-sm mt-2" %>
@@ -138,7 +138,7 @@
       <!-- businesses -->
       <hr class="my-0">
       <div class="card-body">
-        <h5 class="h6 card-title">Business</h5>
+        <h5 class="h6 card-title">All Property Businesses</h5>
           <% if @address.businesses.present? %>
             <% @address.businesses.each do |b| %>
               <%= link_to b.name, address_business_path(b.address, b), class: "btn btn-outline-info btn-sm mt-2" %>

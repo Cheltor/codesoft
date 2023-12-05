@@ -17,6 +17,15 @@
     <%= render 'shared/address_links' %>
     <div class="card">
       <div class="card-body">
+        <div class="text-center">
+          <div class="btn-group" role="group" aria-label="Violations">
+            <%= link_to "All Violations", all_address_violations_address_path(@address), class:"btn btn-outline-secondary" %>
+            <%= link_to "Current", all_address_violations_address_path(@address, status: "current"), class:"btn btn-outline-secondary" %>
+            <%= link_to "Closed", all_address_violations_address_path(@address, status: "resolved"), class:"btn btn-outline-secondary" %>
+          </div>
+        </div>
+      </div>
+      <div class="card-body">
         <% if @address.violations.any? %>
         <div class="table-responsive" style="text-align: center">
           <table class="table table-striped table-hover">
@@ -32,7 +41,7 @@
               </tr>
             </thead>
             <tbody>
-              <% @address.violations.order("created_at DESC").each do |violation| %>
+              <% @violations.each do |violation| %>
                 <%= render partial: "shared/violation_table", locals: {violation: violation} %>
               <% end %>
             </tbody>

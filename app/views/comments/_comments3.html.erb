@@ -1,0 +1,14 @@
+<div class="card shadow"><div class="card-body">
+
+  <p><small style="text-align:right"><%= comment.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></small> 
+  <br>
+    <strong><%= comment.user.email.split("@").first %></strong> says: 
+  <br>
+
+    <%= comment.comment %></p>
+
+</div></div>
+
+
+
+
