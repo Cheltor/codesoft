@@ -15,9 +15,52 @@ class Inspection < ApplicationRecord
   has_many :areas, dependent: :destroy
   belongs_to :business, optional: true
   has_many :inspection_comments, dependent: :destroy
+  has_many :notifications, dependent: :destroy
 
+  attr_accessor :current_user
+
+  after_create :create_notification_if_complaint
+  after_update :create_notification_if_reassigned
 
   private
+
+  def create_notification_if_complaint
+    Rails.logger.info "Checking for complaint inspection..."
+    return unless source == 'Complaint' && inspector != current_user
+    Rails.logger.info "Inspection is a complaint."
+    Notification.create(
+      inspection: self,
+      user: inspector,
+      title: "New Complaint Inspection for #{address.property_name_with_combadd}",
+      body: "You have been assigned a new complaint inspection for #{address.property_name_with_combadd}."
+    )
+    Rails.logger.info "Notification created."
+    rescue => e
+      Rails.logger.error "Error in create_notification_if_complaint: #{e.message}"
+  end
+
+  def create_notification_if_reassigned
+    Rails.logger.info "Checking for inspection reassignment..."
+    if saved_change_to_inspector_id? && inspector != current_user
+      Rails.logger.info "Inspector has been reassigned."
+      notification = Notification.create(
+        inspection: self,
+        user: inspector,
+        title: "Inspection Assignment",
+        body: "You have been assigned to an inspection at #{address.property_name_with_combadd}."
+      )
+      if notification.persisted?
+        Rails.logger.info "Notification successfully created"
+      else
+        Rails.logger.error "Failed to create notification: #{notification.errors.full_messages}"
+      end
+      Rails.logger.info "Notification created."
+    else
+      Rails.logger.info "Inspector has not been reassigned."
+    end
+  rescue => e
+    Rails.logger.error "Error in create_notification_if_reassigned: #{e.message}"  
+  end
 
   def no_inspection_within_one_hour
     if scheduled_datetime.present?

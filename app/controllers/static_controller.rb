@@ -105,6 +105,7 @@ class StaticController < ApplicationController
 
     if params[:onsstaff].present?
       @user = User.find_by(email: params[:onsstaff])
+      @notifications = @user.notifications.order(created_at: :desc)
       @comments = @user.comments.order(created_at: :desc)
       @comments_last_week = @user.comments.where(created_at: 1.week.ago..Time.now).order(created_at: :desc)
       @comments_two_weeks_ago = @user.comments.where(created_at: 2.weeks.ago..1.week.ago).order(created_at: :desc)

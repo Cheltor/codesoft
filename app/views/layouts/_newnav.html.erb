@@ -13,6 +13,42 @@
 				<div class="navbar-collapse collapse">
 					<ul class="navbar-nav navbar-align">
 						<li class="nav-item dropdown">
+							<a class="nav-icon dropdown-toggle" href="#" id="alertsDropdown" data-bs-toggle="dropdown">
+								<div class="position-relative">
+									<i class="align-middle" data-feather="bell"></i>
+									<% if @notifications.present? %>
+									<span class="indicator"><%= @notifications.count %></span>
+									<% end %>
+								</div>
+							</a>
+							<div class="dropdown-menu dropdown-menu-lg dropdown-menu-end py-0" aria-labelledby="alertsDropdown">
+								<div class="dropdown-menu-header">
+									<%= pluralize(@notifications.count, "New Notification") %>
+								</div>
+								<div class="list-group">
+									<% if @notifications.present? %>
+										<% @notifications.each do |notification| %>
+											<%= link_to mark_as_read_notification_path(notification, redirect_url: address_inspection_path(notification.inspection.address, notification.inspection.id)), data: { turbo_method: :patch }, remote: true, class: 'list-group-item notification-link' do %>
+												<div class="row g-0 align-items-center">
+													<div class="col-12">
+														<div class="text-dark">
+															<%= notification.title %>
+														</div>
+														<div class="text-muted small mt-1">
+															<%= notification.body %><% if notification.inspection.description.present? %> - <%= notification.inspection.description.truncate(50) %><% end %>
+														</div>
+														<div class="text-muted small mt-1 text-end">
+															<%= time_ago_in_words(notification.created_at) %>
+														</div>
+													</div>
+												</div>
+											<% end %>
+										<% end %>
+									<% end %>
+								</div>
+							</div>
+						</li>
+						<li class="nav-item dropdown">
 							<a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#" data-bs-toggle="dropdown">
                 <i class="align-middle" data-feather="settings"></i>
               </a>

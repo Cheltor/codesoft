@@ -19,6 +19,8 @@ class User < ApplicationRecord
     has_many :inspections, foreign_key: :assignee_id
     has_many :inspections, foreign_key: "inspector_id"
 
+    has_many :notifications
+
     def email_without_domain
       email.split("@").first.titleize
     end

@@ -83,6 +83,11 @@ Rails.application.routes.draw do
   get 'inspection_calendar' => 'inspections#inspection_calendar'
 
   resources :users, only: [:index, :show, :edit, :update]
+  resources :notifications do
+    member do
+      patch :mark_as_read
+    end
+  end
 
   authenticated :user, ->(u) { u.admin? } do
     root 'static#admin', as: :admin_root

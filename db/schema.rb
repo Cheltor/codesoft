@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_11_24_193909) do
+ActiveRecord::Schema[7.0].define(version: 2023_12_07_001245) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -258,6 +258,18 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_24_193909) do
     t.index ["unit_id"], name: "index_inspections_on_unit_id"
   end
 
+  create_table "notifications", force: :cascade do |t|
+    t.string "title"
+    t.text "body"
+    t.integer "inspection_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.boolean "read", default: false
+    t.index ["inspection_id"], name: "index_notifications_on_inspection_id"
+    t.index ["user_id"], name: "index_notifications_on_user_id"
+  end
+
   create_table "unit_contacts", force: :cascade do |t|
     t.integer "unit_id", null: false
     t.integer "contact_id", null: false
@@ -359,6 +371,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_11_24_193909) do
   add_foreign_key "inspections", "contacts"
   add_foreign_key "inspections", "units"
   add_foreign_key "inspections", "users", column: "inspector_id"
+  add_foreign_key "notifications", "inspections"
+  add_foreign_key "notifications", "users"
   add_foreign_key "unit_contacts", "contacts"
   add_foreign_key "unit_contacts", "units"
   add_foreign_key "units", "addresses"

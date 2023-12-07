@@ -259,6 +259,7 @@ class InspectionsController < ApplicationController
 
   def create_complaint
     @inspection = Inspection.new(inspection_params)
+    @inspection.current_user = current_user
 
     if params[:inspection][:contact_id].present?
       # If a contact is selected from the dropdown, associate it with the inspection
@@ -351,6 +352,8 @@ class InspectionsController < ApplicationController
 
   def update
     @inspection = Inspection.find(params[:id])
+    @inspection.current_user = current_user
+
     puts "Params: #{params.inspect}"
     puts "Inspection Params: #{inspection_params.inspect}"
 
