@@ -35,7 +35,7 @@
             <tbody>
               <% @businesses.each do |business| %>
                 <tr>
-                  <td><%= link_to business.name, address_business_path(business.address, business), class: "btn" %></td>
+                  <td><%= link_to business.business_name_and_trading_name, address_business_path(business.address, business), class: "btn" %></td>
                   <td><%= link_to business.address.property_name_with_combadd, business.address, class: "btn" %></td>
                   <td>
                     <% if business.phone.present? %>

@@ -21,6 +21,10 @@ class AddressesController < ApplicationController
     end
   end
 
+  def add_aka
+    @address = Address.find(params[:id])
+  end
+
   def all_address_comments
     @address = Address.find(params[:id])
     violation_comments = @address.violations.flat_map(&:violation_comments)
@@ -221,7 +225,7 @@ class AddressesController < ApplicationController
   private
 
   def address_params
-      params.require(:address).permit(:pid, :ownername, :owneraddress, :ownercity, :ownerstate, :ownerzip, :streetnumb, :streetname, :streettype, :landusecode, :zoning, :owneroccupiedin, :vacant, :absent, :premisezip, :combadd, :outstanding, :property_name, contact_ids: [])
+      params.require(:address).permit(:aka, :pid, :ownername, :owneraddress, :ownercity, :ownerstate, :ownerzip, :streetnumb, :streetname, :streettype, :landusecode, :zoning, :owneroccupiedin, :vacant, :absent, :premisezip, :combadd, :outstanding, :property_name, contact_ids: [])
   end
 
   def current_page

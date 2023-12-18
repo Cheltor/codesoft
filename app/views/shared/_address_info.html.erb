@@ -7,6 +7,11 @@
       <h3 class="mb-0">
         <%= @address.property_name_with_combadd %>
       </h3>
+      <% if @address.aka.present? %>
+        <h5>
+          AKA: <%= @address.aka %>
+        </h5>
+      <% end %>
       <div>
         <% if @address.property_name.present? %>
           <p><strong>Property Name:</strong> <%= @address.property_name.titleize %></p>
@@ -15,6 +20,7 @@
           <%= link_to "Add property name", address_name_address_path(@address), class: "btn btn-outline-secondary btn-sm mt-2", data: { turbo: false } %>
         <% end %>
         <a class="btn btn-outline-secondary btn-sm mt-2" href="https://www.google.com/maps/search/?api=1&query=<%= @address.combadd %>+MD+<%= @address.premisezip %>" target="_blank">Google Map</a>
+        <%= link_to 'Add AKA', add_aka_address_path(@address), class: "btn btn-outline-secondary btn-sm mt-2", data: { turbo: false } %>
       </div>
     </div>
     <!-- only shows up when screen is small -->

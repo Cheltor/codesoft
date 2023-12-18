@@ -48,7 +48,7 @@
     <% if @complaints.empty? %>
     <div class="card d-none d-lg-block shadow mb-3" onclick="window.location='<%= all_complaints_path(inspector: 'My Complaints') %>';" style="cursor: pointer;">
     <% else %>          
-    <div class="card shadow mb-3" onclick="window.location='<%= all_complaints_path(inspector: 'My Complaints', status: 'Pending') %>';" style="cursor: pointer;">
+    <div class="card shadow mb-3" onclick="window.location='<%= all_complaints_path(inspector: 'My Complaints', status: 'Pending') %>';" style="cursor: pointer; background-color:#ffcccc">
     <% end %>
       <div class="card-body">
         <div class="row">

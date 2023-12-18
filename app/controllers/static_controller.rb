@@ -60,12 +60,12 @@ class StaticController < ApplicationController
     user = current_user  # Assuming you have a method to fetch the current user
 
     # Fetch user-related records
-    user_violations = user.violations
-    user_comments = user.comments  # Adjust based on your associations
-    user_inspections = user.inspections
-    user_violation_comments = user.violation_comments
-    user_citation_comments = user.citation_comments
-    user_inspection_comments = user.inspection_comments
+    user_violations = Violation.all
+    user_comments = Comment.all  
+    user_inspections = Inspection.all
+    user_violation_comments = ViolationComment.all
+    user_citation_comments = CitationComment.all
+    user_inspection_comments = InspectionComment.all
     # ... fetch other records as needed ...
 
     # Combine and sort records for the timeline

@@ -7,14 +7,14 @@
     <%= link_to @address.property_name_with_combadd, address_path(@address) %>
     </a></li>
     <li class="breadcrumb-item active" aria-current="page">
-      <%= @business.name %>
+      <%= @business.business_name_and_trading_name %>
     </li>
   </ol>
 </nav>
 <div class="card">
   <div class="card-body">
-    <h2>
-      <%= @business.name %>
+    <h2>  
+      <%= @business.business_name_and_trading_name %>
     </h2>
 
     <p>
@@ -48,9 +48,9 @@
     <br>
     <h3>License inspection</h3>
     <% if @business.contacts.present? %>
-      <%= link_to "Request an inspection", new_address_inspection_path(@address, source: 'Business license', description: @business.name, contact_ids: @business.contacts.first.id, business_id: @business.id), class: "btn btn-outline-primary", data: { turbo: false } %>
+      <%= link_to "Request an inspection", new_address_inspection_path(@address, source: 'Business license', description: @business.business_name_and_trading_name, contact_ids: @business.contacts.first.id, business_id: @business.id), class: "btn btn-outline-primary", data: { turbo: false } %>
     <% else %>
-      <%= link_to "Request an inspection", new_address_inspection_path(@address, source: 'Business license', description: @business.name, business_id: @business.id), class: "btn btn-outline-primary", data: { turbo: false } %>
+      <%= link_to "Request an inspection", new_address_inspection_path(@address, source: 'Business license', description: @business.business_name_and_trading_name, business_id: @business.id), class: "btn btn-outline-primary", data: { turbo: false } %>
     <% end %>
     <br>
     <!-- table of inspections for this business -->

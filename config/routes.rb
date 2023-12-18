@@ -55,6 +55,7 @@ Rails.application.routes.draw do
       get 'all_address_citations'
       get 'all_address_inspections'
       get 'all_address_complaints'
+      get 'add_aka'
     end
   end
 

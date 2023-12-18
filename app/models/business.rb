@@ -5,6 +5,16 @@ class Business < ApplicationRecord
   has_many :contacts, through: :business_contacts
   has_many :inspections
 
+  validates :name, presence: true
+  
+  def business_name_and_trading_name
+    if trading_as.present?
+      "#{name} (#{trading_as})"
+    else
+      name
+    end
+  end
+
   before_validation :normalize_website
 
   def self.ransackable_attributes(auth_object = nil)

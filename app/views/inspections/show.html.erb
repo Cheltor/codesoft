@@ -33,7 +33,7 @@
         <% end %>
         </h2>
         <% if @inspection.business.present? %>
-          <h3><%= link_to @inspection.business.name, address_business_path(@inspection.business.address, @inspection.business) %></h3>
+          <h3><%= link_to @inspection.business.business_name_and_trading_name, address_business_path(@inspection.business.address, @inspection.business) %></h3>
         <% end %>
         <%# link to google maps from icon %>
         <a href="https://www.google.com/maps/search/?api=1&query=<%= @inspection.address.combadd %>+MD+<%= @inspection.address.premisezip %>" target="_blank" class="btn btn-secondary">

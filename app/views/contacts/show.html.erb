@@ -54,7 +54,7 @@
           <ul>
             <% @businesses.each do |business| %>
               <li>
-                <%= link_to business.name, address_business_path(business.address, business) %>
+                <%= link_to business.business_name_and_trading_name, address_business_path(business.address, business) %>
                 <% if business.address.present? %>
                   - <%= link_to business.address.combadd, business.address %>
                 <% end %>
