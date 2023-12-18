@@ -42,7 +42,12 @@ class Violation < ApplicationRecord
   def deadline_date
     deadline_index = DEADLINE_OPTIONS.index(deadline)
     return false if deadline_index.nil?
-    created_at + DEADLINE_VALUES[deadline_index].days + extend.days
+    deadline_value = DEADLINE_VALUES[deadline_index]
+    if deadline_value.nil?
+      raise "Custom deadline value not supported"
+    else
+      created_at + deadline_value.days + extend.days
+    end
   end
 
   validates :deadline, presence: true, inclusion: { in: DEADLINE_OPTIONS }
