@@ -1,40 +1,48 @@
 <% if current_user.ons? || current_user.admin? %>
 <div class="row">
-  <div class="col-lg-8">
+<div class="col-lg-8">
   <!-- Today's inspections card -->
-    <% if @today_inspections.empty? %>
+  <% if @today_inspections.empty? %>
     <div class="card flex-fill w-100 d-none d-lg-block">
-    <% else %>
+  <% else %>
     <div class="card flex-fill w-100">
-    <% end %>
-      <div class="card-header">
-        <h5 class="card-title mb-0">Today's inspections</h5>
-      </div>
-      <div class="card-body py-3">
-        <% if @today_inspections.empty? %>
-          <p>No inspections scheduled for today.</p>
-          <%= link_to "Inspections this week", inspection_calendar_path, class: "btn btn-outline-primary" %>
-        <% else %>
-          <% @today_inspections.each do |inspection| %>
-          <div class="card mt-3" style="background-color: #c8e6c9;">
-            <div class="card-body">
-              <h5 class="card-title"><%= link_to inspection.address.property_name_with_combadd, address_inspection_path(inspection.address, inspection) %></h5>
-              <p class="card-text"><strong>Scheduled:</strong> <%= inspection.scheduled_datetime.strftime("%I:%M %p") %></p>
-            </div>
-          </div>
-          <% end %>
-        <% end %>
-      </div>
+  <% end %>
+    <div class="card-header">
+      <h5 class="card-title mb-0">Today's inspections</h5>
     </div>
-    <div class="card d-none d-lg-block">
-      <div class="card-header">
-      <h3 class='card-title'>My Timeline</h3>
-      </div>
-      <div class="card-body">
-        <%= render partial: 'shared/dash_timeline' %>      
-      </div>
+    <div class="card-body py-3">
+      <% if @today_inspections.empty? %>
+        <p>No inspections scheduled for today.</p>
+        <%= link_to "Inspections this week", inspection_calendar_path, class: "btn btn-outline-primary" %>
+      <% else %>
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Property</th>
+              <th>Scheduled Time</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @today_inspections.each do |inspection| %>
+              <tr>
+                <td><%= link_to inspection.address.property_name_with_combadd, address_inspection_path(inspection.address, inspection) %></td>
+                <td><%= inspection.scheduled_datetime.strftime("%I:%M %p") %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      <% end %>
     </div>
   </div>
+  <div class="card d-none d-lg-block">
+    <div class="card-header">
+      <h3 class='card-title'>My Timeline</h3>
+    </div>
+    <div class="card-body">
+      <%= render partial: 'shared/dash_timeline' %>      
+    </div>
+  </div>
+</div>
   <div class="col-lg-4">
     <!-- Complaints Card-->
     <% if @complaints.empty? %>

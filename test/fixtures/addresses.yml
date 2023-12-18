@@ -8,7 +8,6 @@ one:
   ownerstate: MyString
   ownerzip: MyString
   streetnumb: MyString
-  streetdirn: MyString
   streetname: MyString
   streettype: MyString
   landusecode: MyString
@@ -26,7 +25,6 @@ two:
   ownerstate: MyString
   ownerzip: MyString
   streetnumb: MyString
-  streetdirn: MyString
   streetname: MyString
   streettype: MyString
   landusecode: MyString

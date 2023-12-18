@@ -9,6 +9,10 @@ class Violation < ApplicationRecord
   has_many :citations
   belongs_to :unit, optional: true
   has_many :violation_comments, dependent: :destroy
+  scope :created_within, -> (range) { where(created_at: range) }
+  scope :warnings_created_within, -> (range) { created_within(range).where(violation_type: "Doorhanger") }
+  scope :violations_created_within, -> (range) { created_within(range).where(violation_type: "Formal Notice") }
+
 
 
   def at_least_one_code_selected

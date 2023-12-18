@@ -6,6 +6,9 @@ class Citation < ApplicationRecord
   belongs_to :unit, optional: true
   has_many :citation_comments, dependent: :destroy
 
+  scope :created_within, -> (range) { where(created_at: range) }
+
+
 
   validates :fine, presence: true
   validates :deadline, presence: true

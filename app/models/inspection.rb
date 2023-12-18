@@ -17,6 +17,19 @@ class Inspection < ApplicationRecord
   has_many :inspection_comments, dependent: :destroy
   has_many :notifications, dependent: :destroy
 
+  scope :created_within, -> (range) { where(created_at: range) }
+  scope :updated_within, -> (range) { where(updated_at: range) }
+  scope :complaints_created_within, -> (range) { created_within(range).where(source: "Complaint") }
+  scope :complaint_responses_created_within, -> (range) { complaints_created_within(range).where.not(status: nil) }
+  scope :sf_inspections_created_within, -> (range) { created_within(range).where(source: "Single Family License", status: ["Satisfactory", "Unsatisfactory"]) }
+  scope :sf_inspections_updated_within, -> (range) { updated_within(range).where(source: "Single Family License") }
+  scope :sf_inspections_approved_within, -> (range) { sf_inspections_updated_within(range).where(status: "Satisfactory") }
+  scope :mf_inspections_created_within, -> (range) { created_within(range).where(source: "Multifamily License") }
+  scope :mf_inspections_updated_within, -> (range) { updated_within(range).where(source: "Multifamily License") }
+  scope :mf_inspections_approved_within, -> (range) { mf_inspections_updated_within(range).where(status: "Satisfactory") }
+  scope :bl_inspections_created_within, -> (range) { created_within(range).where(source: "Business license") }
+  scope :bl_inspections_updated_within, -> (range) { updated_within(range).where(source: "Business license") }
+
   attr_accessor :current_user
 
   after_create :create_notification_if_complaint

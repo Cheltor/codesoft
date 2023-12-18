@@ -87,6 +87,9 @@ Rails.application.routes.draw do
     member do
       patch :mark_as_read
     end
+    collection do
+      patch :mark_all_as_read
+    end
   end
 
   authenticated :user, ->(u) { u.admin? } do
@@ -114,6 +117,4 @@ Rails.application.routes.draw do
     end
   end
   mount ServiceWorker::Engine => "/service-worker.js"
-
-
 end

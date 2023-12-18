@@ -10,59 +10,68 @@
   </div>
 <% end %>
 
-				<div class="navbar-collapse collapse">
-					<ul class="navbar-nav navbar-align">
-						<li class="nav-item dropdown">
-							<a class="nav-icon dropdown-toggle" href="#" id="alertsDropdown" data-bs-toggle="dropdown">
-								<div class="position-relative">
-									<i class="align-middle" data-feather="bell"></i>
-									<% if @notifications.present? %>
-									<span class="indicator"><%= @notifications.count %></span>
-									<% end %>
-								</div>
-							</a>
-							<div class="dropdown-menu dropdown-menu-lg dropdown-menu-end py-0" aria-labelledby="alertsDropdown">
-								<div class="dropdown-menu-header">
-									<%= pluralize(@notifications.count, "New Notification") %>
-								</div>
-								<div class="list-group">
-									<% if @notifications.present? %>
-										<% @notifications.each do |notification| %>
-											<%= link_to mark_as_read_notification_path(notification, redirect_url: address_inspection_path(notification.inspection.address, notification.inspection.id)), data: { turbo_method: :patch }, remote: true, class: 'list-group-item notification-link' do %>
-												<div class="row g-0 align-items-center">
-													<div class="col-12">
-														<div class="text-dark">
-															<%= notification.title %>
-														</div>
-														<div class="text-muted small mt-1">
-															<%= notification.body %><% if notification.inspection.description.present? %> - <%= notification.inspection.description.truncate(50) %><% end %>
-														</div>
-														<div class="text-muted small mt-1 text-end">
-															<%= time_ago_in_words(notification.created_at) %>
-														</div>
-													</div>
+								<div class="navbar-collapse collapse">
+									<ul class="navbar-nav navbar-align">
+										<li class="nav-item dropdown">
+											<a class="nav-icon dropdown-toggle" href="#" id="alertsDropdown" data-bs-toggle="dropdown">
+												<div class="position-relative">
+													<i class="align-middle" data-feather="bell"></i>
+													<% if @notifications.present? %>
+													<span class="indicator"><%= @notifications.count %></span>
+													<% end %>
 												</div>
-											<% end %>
-										<% end %>
-									<% end %>
-								</div>
-							</div>
-						</li>
-						<li class="nav-item dropdown">
-							<a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#" data-bs-toggle="dropdown">
-                <i class="align-middle" data-feather="settings"></i>
-              </a>
+											</a>
+											<div class="dropdown-menu dropdown-menu-lg dropdown-menu-end py-0" aria-labelledby="alertsDropdown">
+												<div class="dropdown-menu-header">
+													<%= pluralize(@notifications.count, "New Notification") %>
+												</div>
+												<div class="list-group">
+													<% if @notifications.present? %>
+														<% @notifications.each do |notification| %>
+															<%= link_to mark_as_read_notification_path(notification, redirect_url: address_inspection_path(notification.inspection.address, notification.inspection.id)), data: { turbo_method: :patch }, remote: true, class: 'list-group-item notification-link' do %>
+																<div class="row g-0 align-items-center">
+																	<div class="col-12">
+																		<div class="text-dark">
+																			<%= notification.title %>
+																		</div>
+																		<div class="text-muted small mt-1">
+																			<%= notification.body %><% if notification.inspection.description.present? %> - <%= notification.inspection.description.truncate(50) %><% end %>
+																		</div>
+																		<div class="text-muted small mt-1 text-end">
+																			<%= time_ago_in_words(notification.created_at) %>
+																		</div>
+																	</div>
+																</div>
+															<% end %>
+														<% end %>
+														<%= link_to mark_all_as_read_notifications_path, data: { turbo_method: :patch }, remote: true, class: 'list-group-item notification-link mark-all-as-read' do %>
+															<div class="row g-0 align-items-center">
+																<div class="col-12">
+																	<div class="text-dark">
+																		Mark All as Read
+																	</div>
+																</div>
+															</div>
+														<% end %>
+													<% end %>
+												</div>
+											</div>
+										</li>
+										<li class="nav-item dropdown">
+											<a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#" data-bs-toggle="dropdown">
+				                <i class="align-middle" data-feather="settings"></i>
+				              </a>
 
-							<a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-bs-toggle="dropdown">
-                <span class="text-dark"><%= current_user.email %></span>
-                </span>
-              </a>
-							<div class="dropdown-menu dropdown-menu-end">
-								<%= link_to "Change Password", edit_user_registration_path, class: "dropdown-item" %>
-								<div class="dropdown-divider"></div>
-								<%= link_to "Logout", destroy_user_session_path, data: { turbo_method: :delete }, class: "dropdown-item" %>
-							</div>
-						</li>
-					</ul>
-				</div>
+											<a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-bs-toggle="dropdown">
+				                <span class="text-dark"><%= current_user.email %></span>
+				                </span>
+				              </a>
+											<div class="dropdown-menu dropdown-menu-end">
+												<%= link_to "Change Password", edit_user_registration_path, class: "dropdown-item" %>
+												<div class="dropdown-divider"></div>
+												<%= link_to "Logout", destroy_user_session_path, data: { turbo_method: :delete }, class: "dropdown-item" %>
+											</div>
+										</li>
+									</ul>
+								</div>
 			</nav>
