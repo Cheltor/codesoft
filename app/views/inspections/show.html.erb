@@ -7,7 +7,7 @@
       <%= link_to "Home", root_path %>
     </a></li>
     <li class="breadcrumb-item"><a href="#">
-    <%= link_to @address.combadd.titleize, address_path(@address) %>
+    <%= link_to @address.property_name_with_combadd, address_path(@address) %>
     </a></li>
 
     <% if @inspection.unit_id.present? %>
@@ -36,7 +36,7 @@
           <h3><%= link_to @inspection.business.business_name_and_trading_name, address_business_path(@inspection.business.address, @inspection.business) %></h3>
         <% end %>
         <%# link to google maps from icon %>
-        <a href="https://www.google.com/maps/search/?api=1&query=<%= @inspection.address.combadd %>+MD+<%= @inspection.address.premisezip %>" target="_blank" class="btn btn-secondary">
+        <a href="https://www.google.com/maps/search/?api=1&query=<%= @inspection.address.property_name_with_combadd %>+MD+<%= @inspection.address.premisezip %>" target="_blank" class="btn btn-secondary">
         <i class="bi bi-geo-alt-fill"></i></a>
         <br>
         <% if @inspection.photos.attached? %>
@@ -111,6 +111,9 @@
       <br>
       <br>
       <h3>Inspector: <%= @inspection.inspector.name %></h3>
+      <% if current_user.admin? %>
+        <%= link_to "Reassign inspector", assign_inspection_path(@inspection), class: "btn btn-outline-primary btn-lg mt-3", data: { turbo: false } %>
+      <% end %>
     <% end %>
     <br>
     <% if @inspection.status.present? %>
@@ -138,6 +141,7 @@
       <% end %>
       <br>
       <% if @inspection.extphotos.attached? %>
+      <br>
         <button type="button" class="btn btn-primary mt-2 mb-2" data-bs-toggle="modal" data-bs-target="#allextphotoModal">
           <i class="bi bi-paperclip"></i>
           All Photos and Attachments from inspection

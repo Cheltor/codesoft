@@ -13,6 +13,10 @@
 
       <% end %>
       <p>"<%= item.content %>"</p>
+      <% if current_user == item.user %>
+        <%= link_to "Edit", edit_address_comment_path(item.address, item), class: "btn btn-outline-secondary btn-sm" %>
+        <br>
+      <% end %>
       <% if item.photos.attached? %>
         <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#item-<%= item.id %>">
           Attachments

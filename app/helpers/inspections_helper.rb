@@ -14,7 +14,7 @@ module InspectionsHelper
       
       This is a pre-inspection notification.
 
-      You are receiving this email to inform you #{@inspection.address.combadd} has been scheduled for its annual inspection on #{@inspection.scheduled_datetime.strftime('%m/%d/%Y')} between the hours of #{@inspection.scheduled_datetime.strftime('%I:%M%p')} - #{(@inspection.scheduled_datetime + 1.hour).strftime('%I:%M%p')}.      I look forward to our collaboration and thank you for your role in ensuring life and safety in Riverdale Park.
+      You are receiving this email to inform you #{@inspection.address.property_name_with_combadd} has been scheduled for its annual inspection on #{@inspection.scheduled_datetime.strftime('%m/%d/%Y')} between the hours of #{@inspection.scheduled_datetime.strftime('%I:%M%p')} - #{(@inspection.scheduled_datetime + 1.hour).strftime('%I:%M%p')}.      I look forward to our collaboration and thank you for your role in ensuring life and safety in Riverdale Park.
       
       During the inspection, the property will be evaluated for compliance with Town codes and ordinances. For more information on the Town’s codes and ordinances, please visit the Town’s website at www.riverdaleparkmd.gov.
 
@@ -36,7 +36,7 @@ module InspectionsHelper
       body = "Hello, 
       This is a pre-inspection notification.
       
-      You are receiving this email to inform you that #{@inspection.address.combadd} is pending an inspection for #{@inspection.source.titleize}. The inspection date and time have not yet been scheduled. We will notify you as soon as the inspection is scheduled.
+      You are receiving this email to inform you that #{@inspection.address.property_name_with_combadd} is pending an inspection for #{@inspection.source.titleize}. The inspection date and time have not yet been scheduled. We will notify you as soon as the inspection is scheduled.
       
       I look forward to our collaboration and thank you for your role in ensuring life and safety in Riverdale Park.
       
@@ -65,7 +65,7 @@ module InspectionsHelper
     body = "
     Hello,
 
-    We are writing to inform you that the annual inspection for #{inspection.address.combadd} has been completed#{'. The inspection was conducted on ' if inspection.scheduled_datetime.present?}#{inspection.scheduled_datetime.strftime('%m/%d/%Y') if inspection.scheduled_datetime.present?}.
+    We are writing to inform you that the annual inspection for #{inspection.address.property_name_with_combadd} has been completed#{'. The inspection was conducted on ' if inspection.scheduled_datetime.present?}#{inspection.scheduled_datetime.strftime('%m/%d/%Y') if inspection.scheduled_datetime.present?}.
 
     Inspection Status: #{inspection.status}
     #{'Congratulations, your property has passed the inspection. We appreciate your cooperation and thank you for your role in ensuring life and safety in Riverdale Park.' if inspection.status == 'Satisfactory'}

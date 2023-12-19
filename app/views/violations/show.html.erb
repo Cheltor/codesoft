@@ -38,6 +38,7 @@
           <%= render partial: 'shared/code_def_show', locals: { code: code } %>
         <% end %>
         <% if @violation.photos.attached? %>
+        <br>
         <button type="button" class="btn btn-outline-primary btn-lg mt-3" data-bs-toggle="modal" data-bs-target="#allphotoModal">
           Attachments
         </button>

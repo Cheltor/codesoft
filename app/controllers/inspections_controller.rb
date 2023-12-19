@@ -1,5 +1,5 @@
 class InspectionsController < ApplicationController
-  before_action :set_address, except: [:all_inspections, :my_inspections, :my_unscheduled_inspections, :all_complaints, :my_complaints, :assign_inspector, :update_inspector, :create_complaint, :new_complaint, :create_permit_inspection, :new_permit_inspection, :create_license_inspection, :new_license_inspection, :unassigned_inspections, :assign_inspection, :inspection_calendar]
+  before_action :set_address, except: [:all_inspections, :my_inspections, :my_unscheduled_inspections, :all_complaints, :my_complaints, :assign_inspector, :update_inspector, :create_complaint, :new_complaint, :create_permit_inspection, :new_permit_inspection, :create_license_inspection, :new_license_inspection, :unassigned_inspections, :assign_inspection, :inspection_calendar, :reassign_inspection]
   before_action :set_inspection, only: [:show, :edit, :update, :destroy]
   layout 'choices', only: [:new, :conduct, :new_complaint, :new_permit_inspection, :new_license_inspection]
 

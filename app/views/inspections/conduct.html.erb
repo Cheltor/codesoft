@@ -4,7 +4,7 @@
       <%= link_to "Home", root_path %>
     </a></li>
     <li class="breadcrumb-item"><a href="#">
-    <%= link_to @address.combadd.titleize, address_path(@address) %>
+    <%= link_to @address.property_name_with_combadd, address_path(@address) %>
     </a></li>
 
     <% if @inspection.unit_id.present? %>
