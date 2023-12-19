@@ -67,7 +67,11 @@
       </div>
     </div>
     <!-- Active Violations Card-->
+    <% if @active_violations.empty? %>
     <div class="card shadow mb-3 d-none d-lg-block" onclick="window.location='<%= all_violations_path(user: 'current_user_current') %>';" style="cursor: pointer;">
+    <% else %>
+    <div class="card shadow mb-3" onclick="window.location='<%= all_violations_path(user: 'current_user_current') %>';" style="cursor: pointer; background-color:#ffcccc">
+    <% end %>
       <div class="card-body">
         <div class="row">
           <div class="col mt-0">
@@ -94,7 +98,7 @@
     <!-- Inspections Card --> 
     <% if @unscheduled_inspections.present? %>
     <%# A different colored card for unscheduled inspections %>
-    <div class="card d-none d-lg-block shadow mb-3" onclick="window.location='<%= all_inspections_path(inspector: 'My Unscheduled') %>';" style="cursor: pointer;">
+    <div class="card d-none d-lg-block shadow mb-3" onclick="window.location='<%= all_inspections_path(inspector: 'My Unscheduled') %>';" style="cursor: pointer; background-color:#ffcccc">
       <div class="card-body">
         <div class="row">
           <div class="col mt-0">
