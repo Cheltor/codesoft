@@ -43,15 +43,23 @@
     <!-- if address has units, show unit select -->
     <% if @address.units.any? %>
     <p>Select if the inspection is for the unit or the entire building</p>
-    <%= form.select :unit_id, options_for_select(unit_options(@address.units), nil), {prompt: "Select Unit or Building"}, class: "form-select" %>
+    <%= form.select :unit_id, options_for_select(unit_options(@address.units).sort, nil), {prompt: "Select Unit or Building"}, class: "form-select" %>
     <% end %>
   </div>
 
-  <% if @address.businesses.exists? || @address.units.joins(:businesses).exists? %>
-  <div class="field mt-3">
-    <label>Select if the inspection is for a business in the building</label>
-    <%= form.select :business_id, options_for_select(business_options(@address.businesses), nil), {prompt: "Select Business"}, class: "form-select" %>
-  </div>
+  <% if @inspection.business.present? %>
+  <label>Business: </label>
+    <strong>
+      <%= @inspection.business.business_name_and_trading_name %>
+    </strong>
+    <%= form.hidden_field :business_id, value: @inspection.business.id %>
+  <% else %>
+    <% if @address.businesses.exists? || @address.units.joins(:businesses).exists? %>
+    <div class="field mt-3">
+      <label>Select if the inspection is for a business in the building</label>
+      <%= form.select :business_id, options_for_select(business_options(@address.businesses), nil), {prompt: "Select Business"}, class: "form-select" %>
+    </div>
+    <% end %>
   <% end %>
   
   <div class="field mt-3">

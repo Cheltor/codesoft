@@ -59,10 +59,11 @@ class StaticController < ApplicationController
     # Timeline
     user = current_user  # Assuming you have a method to fetch the current user
 
-    # Fetch user-related records
+    # This used to fetch user related records, but now collects all
     user_violations = Violation.all
     user_comments = Comment.all  
     user_inspections = Inspection.all
+    user_citations = Citation.all
     user_violation_comments = ViolationComment.all
     user_citation_comments = CitationComment.all
     user_inspection_comments = InspectionComment.all
@@ -73,6 +74,7 @@ class StaticController < ApplicationController
       user_violations.to_a + 
       user_comments.to_a + 
       user_inspections.to_a +
+      user_citations.to_a +
       user_violation_comments.to_a +
       user_citation_comments.to_a +
       user_inspection_comments.to_a

@@ -161,7 +161,6 @@ class AddressesController < ApplicationController
       end
   end
 
-  # app/controllers/addresses_controller.rb
   def manage_contacts
     @address = Address.find(params[:id])
     @existing_contacts = Contact.all # This fetches all existing contacts for the dropdown
@@ -205,7 +204,18 @@ class AddressesController < ApplicationController
     end
   end
   
+  # remove contacts
+  def remove_contact
+    @address = Address.find(params[:id])
+    @contact = Contact.find(params[:contact_id])
 
+    if @address.contacts.include?(@contact)
+      @address.contacts.delete(@contact)
+      redirect_to address_path(@address), notice: 'Contact was successfully removed.'
+    else
+      redirect_to address_path(@address), notice: 'Contact was not removed.'
+    end
+  end
 
 
   def new

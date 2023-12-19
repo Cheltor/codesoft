@@ -98,8 +98,7 @@
         <label for="unit_id">Unit</label>
       </strong>
       <em><p>You can leave blank or select "Building" for a building violation, or select a specific unit.</p></em>
-      <%= form.select :unit_id, options_for_select(unit_options(@address.units), @unit), {prompt: "Select Building or Unit"}, class: "form-select" %>
-    </div>
+      <%= form.select :unit_id, options_for_select(unit_options(@address.units).sort, @unit), {prompt: "Select Building or Unit"}, class: "form-select" %>    </div>
     <br>
     <br>
     <% end %>

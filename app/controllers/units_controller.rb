@@ -129,23 +129,18 @@ class UnitsController < ApplicationController
     end
   end
 
-  def remove_unit_contact
+  def remove_contact
     @unit = Unit.find(params[:id])
-    contact_id = params[:contact_id]
-  
-    # Find the UnitContact record and delete it
-    unit_contact = UnitContact.find_by(unit_id: @unit.id, contact_id: contact_id)
-    if unit_contact
-      unit_contact.destroy
-      Rails.logger.debug("Removed contact with ID #{contact_id} from unit")
-      redirect_to unit_path(@unit), notice: 'Contact was successfully removed from the unit.'
+    @contact = Contact.find(params[:contact_id])
+
+    if @unit.contacts.include?(@contact)
+      @unit.contacts.delete(@contact)
+      redirect_to address_unit_path(@unit.address, @unit), notice: 'Contact was successfully removed from the unit.'
     else
-      Rails.logger.debug("UnitContact record not found")
-      redirect_to contacts_path, alert: 'Unable to find the specified contact for removal.'
+      redirect_to address_unit_path(@unit.address, @unit), notice: 'Contact was not removed.'
     end
   end
 
-  
   def new
     @address = Address.find(params[:address_id])
   end
@@ -157,7 +152,7 @@ class UnitsController < ApplicationController
     if @unit.save
       redirect_to @address, notice: 'Unit was successfully added.'
     else
-      render :new
+      redirect_to address_path(@address), notice: 'The unit already exists.'
     end
   end
 

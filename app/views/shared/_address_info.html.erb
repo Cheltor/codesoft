@@ -52,8 +52,11 @@
             <% end %>
           <% end %>
           <div class="text-center">
+            <% if @address.contacts.present? %>
+            <%= link_to "Edit Contacts", manage_contacts_address_path(@address), class: "btn btn-outline-secondary btn-sm mt-2", data: { turbo: false } %>
+            <% else %>
             <%= link_to "Add Contact", manage_contacts_address_path(@address), class: "btn btn-outline-secondary btn-sm mt-2", data: { turbo: false } %>
-            <!-- remove contact -->
+            <% end %>
           </div>
         </div>
         <!-- units -->
@@ -121,9 +124,13 @@
             <%= link_to c.name, contact_path(c), class: "btn btn-outline-info btn-sm mt-2" %>
           <% end %>
         <% end %>
-        <div class="text-center">
-          <%= link_to "Add Contact", manage_contacts_address_path(@address), class: "btn btn-outline-secondary btn-sm mt-2", data: { turbo: false } %>
-        </div>
+          <div class="text-center">
+            <% if @address.contacts.present? %>
+            <%= link_to "Edit Contacts", manage_contacts_address_path(@address), class: "btn btn-outline-secondary btn-sm mt-2", data: { turbo: false } %>
+            <% else %>
+            <%= link_to "Add Contact", manage_contacts_address_path(@address), class: "btn btn-outline-secondary btn-sm mt-2", data: { turbo: false } %>
+            <% end %>
+          </div>
       </div>
       <!-- units -->
       <hr class="my-0">

@@ -87,6 +87,12 @@
             <strong>Status:</strong> <%= item.status.titleize %>
           <% end %>
         </p>
+        <% if item.photos.attached? %>
+        <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#item-<%= item.id %>">
+          Attachments
+        </button>
+        <br>
+      <% end %>
       <small class="text-muted">
         <%= item.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y %l:%M %p") %>
       </small>
@@ -106,6 +112,12 @@
         <br>
         <strong>Status:</strong> <%= item.status %>
       </p>
+      <% if item.photos.attached? %>
+        <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#item-<%= item.id %>">
+          Attachments
+        </button>
+        <br>
+      <% end %>
       <small class="text-muted">
         <%= item.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y %l:%M %p") %>
       </small>

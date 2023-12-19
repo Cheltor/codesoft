@@ -33,7 +33,7 @@ Rails.application.routes.draw do
         get 'all_unit_complaints'
         get 'manage_contacts'
         post 'manage_contacts'
-        delete :remove_unit_contact
+        delete 'remove_contact'
       end
     end
     resources :inspections do
@@ -49,6 +49,7 @@ Rails.application.routes.draw do
     member do
       get 'manage_contacts'
       post 'manage_contacts'
+      delete 'remove_contact'
       get 'address_name'
       get 'all_address_violations'
       get 'all_address_comments'

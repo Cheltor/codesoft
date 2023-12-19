@@ -159,6 +159,12 @@ class InspectionsController < ApplicationController
     @inspection.source = params[:source] if params[:source].present?
     @inspection.description = params[:description] if params[:description].present?
     @inspeciton.contact_id = params[:contact_id] if params[:contact_id].present?
+
+    if params[:business_id]
+      business = Business.find(params[:business_id])
+      @inspection.business_id = business.id
+      @inspection.description = business.business_name_and_trading_name
+    end
   end
 
   def conduct
