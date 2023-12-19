@@ -38,6 +38,10 @@
       </small>
       <strong><%= item.user.email_without_domain %></strong> commented on <%= link_to item.violation.violation_type, violation_path(item.violation), class: "btn btn-outline-secondary btn-sm" %><%= " on " if item.violation.unit.present? %><%= link_to "#{item.violation.unit.number.upcase}", address_unit_path(item.violation.address, item.violation.unit), class: "btn btn-outline-info btn-sm" if item.violation.unit.present? %><% if local_assigns[:show_address] %> at <%= link_to item.violation.address.property_name_with_combadd, item.violation.address, class: "btn btn-outline-secondary btn-sm" %><% end %>:<br>
       <p>"<%= item.content %>"</p>
+      <% if current_user == item.user %>
+        <%= link_to "Edit", edit_violation_comment_path(item), class: "btn btn-outline-secondary btn-sm" %>
+        <br>
+      <% end %>
       <% if item.photos.attached? %>
         <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#item-<%= item.id %>">
           Attachments
