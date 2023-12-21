@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_12_18_202830) do
+ActiveRecord::Schema[7.0].define(version: 2023_12_20_211246) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -335,6 +335,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_18_202830) do
     t.integer "extend", default: 0
     t.integer "unit_id"
     t.integer "inspection_id"
+    t.integer "business_id"
     t.index ["address_id"], name: "index_violations_on_address_id"
     t.index ["inspection_id"], name: "index_violations_on_inspection_id"
     t.index ["unit_id"], name: "index_violations_on_unit_id"

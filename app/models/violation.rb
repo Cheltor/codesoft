@@ -9,6 +9,8 @@ class Violation < ApplicationRecord
   has_many :citations
   belongs_to :unit, optional: true
   has_many :violation_comments, dependent: :destroy
+  belongs_to :business, optional: true
+
   scope :created_within, -> (range) { where(created_at: range) }
   scope :warnings_created_within, -> (range) { created_within(range).where(violation_type: "Doorhanger") }
   scope :violations_created_within, -> (range) { created_within(range).where(violation_type: "Formal Notice") }
@@ -34,7 +36,7 @@ class Violation < ApplicationRecord
     "30 days"
   ]
 
-  DEADLINE_VALUES = [0, 1, 3, 7, 14, 30, nil]
+  DEADLINE_VALUES = [0, 1, 3, 7, 14, 30]
 
   def deadline_passed?
     deadline_index = DEADLINE_OPTIONS.index(deadline)

@@ -82,7 +82,9 @@
       <small class="float-end text-navy">
         <%= time_ago_in_words(item.created_at) %> ago
       </small>
-      <strong><%= item.user.email_without_domain %></strong> created a <%= link_to item.violation_type, violation_path(item), class: "btn btn-outline-secondary btn-sm" %><%= " on " if item.unit.present? %><%= link_to "#{item.unit.number.upcase}", address_unit_path(item.address, item.unit), class: "btn btn-outline-info btn-sm" if item.unit.present? %><% if local_assigns[:show_address] %> at <%= link_to item.address.property_name_with_combadd, item.address, class: "btn btn-outline-secondary btn-sm" %><% end %> for:<br>
+      <strong>
+      <%= item.user.email_without_domain %></strong> created a <%= link_to item.violation_type, violation_path(item), class: "btn btn-outline-secondary btn-sm" %><%= " on " if item.unit.present? %>
+        <%= link_to "#{item.unit.number.upcase}", address_unit_path(item.address, item.unit), class: "btn btn-outline-info btn-sm" if item.unit.present? %><% if local_assigns[:show_address] %> at <%= link_to item.address.property_name_with_combadd, item.address, class: "btn btn-outline-secondary btn-sm" %><% end %> for<% if item.business.present? %> <%= link_to item.business.business_name_and_trading_name, address_business_path(item.address, item.business), class: "btn btn-outline-secondary btn-sm" %><% end %>:<br>
         <div class="mt-2 mb-2 text-center">
         <% item.codes.each do |code| %>
           <%= render partial: 'shared/code_def_show', locals: { code: code } %>

@@ -11,9 +11,17 @@
 <tr class="<%= 'table-danger' if violation.deadline_passed? && violation.status == "current" %> <%= 'table-warning' if violation.status == "current" %> <%= 'table-secondary' if violation.status == "resolved" %>">
   <td>
     <% if violation.unit.present? %>
-      <%= link_to "#{violation.address.property_name_with_combadd} - Unit #{violation.unit.number.upcase}", address_unit_path(violation.address, violation.unit), class: "btn" %>
+      <% if violation.business.present? %>
+        <%= link_to "#{violation.address.property_name_with_combadd} - Unit #{violation.unit.number.upcase} - #{violation.business.business_name_and_trading_name}", address_unit_business_path(violation.address, violation.unit, violation.business), class: "btn" %>
+      <% else %>
+        <%= link_to "#{violation.address.property_name_with_combadd} - Unit #{violation.unit.number.upcase}", address_unit_path(violation.address, violation.unit), class: "btn" %>
+      <% end %>
     <% else %>
-      <%= link_to violation.address.property_name_with_combadd, address_path(violation.address), class: "btn" %>
+      <% if violation.business.present? %>
+        <%= link_to "#{violation.address.property_name_with_combadd} - #{violation.business.business_name_and_trading_name}", address_business_path(violation.address, violation.business), class: "btn" %>
+      <% else %>
+        <%= link_to violation.address.property_name_with_combadd, address_path(violation.address), class: "btn" %>
+      <% end %>
     <% end %>
   </td>
   <td><%= violation.user.name %></td>

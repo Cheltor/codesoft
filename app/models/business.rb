@@ -4,8 +4,10 @@ class Business < ApplicationRecord
   has_many :business_contacts
   has_many :contacts, through: :business_contacts
   has_many :inspections
+  has_many :violations
 
   validates :name, presence: true
+  validates :address, presence: true
   
   def business_name_and_trading_name
     if trading_as.present?

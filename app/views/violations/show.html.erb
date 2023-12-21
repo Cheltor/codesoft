@@ -22,6 +22,12 @@
     <div class="card shadow mb-3">
       <div class="card-body">         
         <h1>Violation #<%= @violation.id %>
+        <% if @violation.business.present? %>
+          -
+          <%= link_to address_business_path(@address, @violation.business) do %>
+             <%= @violation.business.business_name_and_trading_name %>
+          <% end %>
+        <% end %>
         </h1>
         <p><strong>Violation Type:</strong> <%= @violation.violation_type %></p>
         <p><strong>Violation Date:</strong> <%= @violation.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></p>

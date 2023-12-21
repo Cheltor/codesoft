@@ -53,10 +53,52 @@
       <%= link_to "Request an inspection", new_address_inspection_path(@address, source: 'Business license', description: @business.business_name_and_trading_name, business_id: @business.id), class: "btn btn-outline-primary", data: { turbo: false } %>
     <% end %>
     <br>
+    <div class="mt-3">
+      <h3>Business Violations 
+      <% if @business.violations.any? %>
+        (<%= @business.violations.count %>)
+      <% end %>
+      </h3>
+      <div class="mt-3">
+        <%= link_to 'Add Violation', new_business_violation_path(@business), class: "btn btn-outline-danger" %>
+      </div>
+      <% if @business.violations.any? %>
+      <div class="table-responsive-sm">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Violation Type</th>
+              <th>Deadline</th>
+              <th>Codes</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @business.violations.each do |violation| %>
+              <tr>
+                <td><%= violation.violation_type %></td>
+                <td><%= violation.deadline %></td>
+                <td>
+                  <% violation.codes.each do |code| %>
+                    <%= render partial: 'shared/code_def_show', locals: { code: code } %>
+                  <% end %>
+                </td>
+                <td><%= link_to "View", violation_path(violation) %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+      <% end %>
     <!-- table of inspections for this business -->
     <% if @business.inspections.any? %>
     <br>
-      <h3>Inspections</h3>
+      <h3>
+      Inspections
+      <% if @business.inspections.any? %>
+        (<%= @business.inspections.count %>)
+      <% end %>
+      </h3>
       <table class="table table-striped">
         <thead>
           <tr>

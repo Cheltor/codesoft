@@ -1,13 +1,19 @@
 class ViolationsController < ApplicationController
   before_action :set_address, except: [:sir, :show, :edit, :update]
   before_action :set_violation, only: [:resolve, :extender, :update, :edit]
-  layout 'choices', only: [:new, :edit]
+  layout 'choices', only: [:new, :edit, :new_business_violation]
   before_action :require_ons_or_admin, except: [:sir, :violist]
 
   def new
     @violation = @address.violations.new
 
     @violation.code_ids = params[:code_ids].split(',') if params[:code_ids].present?
+  end
+
+  def new_business_violation
+    @business = Business.find(params[:business_id])
+    @address = @business.address
+    @violation = @business.violations.new
   end
 
   def update
@@ -181,7 +187,7 @@ class ViolationsController < ApplicationController
   end  
 
   def violation_params
-    params.require(:violation).permit(:description, :deadline, :status, :extend, :violation_type, :unit_id, photos: [], code_ids: [])
+    params.require(:violation).permit(:business_id, :description, :deadline, :status, :extend, :violation_type, :unit_id, photos: [], code_ids: [])
   end
 
   def set_violation

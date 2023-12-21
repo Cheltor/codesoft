@@ -83,6 +83,7 @@ Rails.application.routes.draw do
   get 'assign_inspection/:id' => 'inspections#assign_inspection', as: 'assign_inspection'
   patch 'update_inspector/:id' => 'inspections#update_inspector', as: 'update_inspector'
   get 'inspection_calendar' => 'inspections#inspection_calendar'
+  get 'new_business_violation/:business_id' => 'violations#new_business_violation', as: 'new_business_violation'
 
   resources :users, only: [:index, :show, :edit, :update]
   resources :notifications do
