@@ -3,6 +3,33 @@ class Area < ApplicationRecord
   has_many_attached :photos
   has_many :area_codes
   has_many :codes, through: :area_codes, class_name: 'Code'
+  validates :floor, presence: true, numericality: { only_integer: true }
+  validates :name, presence: true
+
+  def name
+    if floor.present? && floor != 0
+      "#{ordinalize(floor)} floor - #{super}"
+    else
+      super
+    end
+  end
+
+  private
+
+  def ordinalize(number)
+    if (11..13).include?(number % 100)
+      "#{number}th"
+    else
+      case number % 10
+      when 1 then "#{number}st"
+      when 2 then "#{number}nd"
+      when 3 then "#{number}rd"
+      else "#{number}th"
+      end
+    end
+  end
+  
+  
 
   attr_accessor :area_type
 

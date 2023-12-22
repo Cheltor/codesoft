@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_12_20_211246) do
+ActiveRecord::Schema[7.0].define(version: 2023_12_22_143705) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -91,6 +91,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_20_211246) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "inspection_id", null: false
+    t.integer "floor"
     t.index ["inspection_id"], name: "index_areas_on_inspection_id"
   end
 
@@ -253,6 +254,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_20_211246) do
     t.string "new_description"
     t.boolean "confirmed", default: false
     t.integer "business_id"
+    t.datetime "start_time"
     t.index ["address_id"], name: "index_inspections_on_address_id"
     t.index ["business_id"], name: "index_inspections_on_business_id"
     t.index ["contact_id"], name: "index_inspections_on_contact_id"

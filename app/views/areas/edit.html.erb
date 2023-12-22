@@ -19,40 +19,74 @@
   </ol>
 </nav>
 
-<%= form_with(model: [@inspection, @area], url: address_inspection_area_path(@address, @inspection, @area), method: :patch, local: true) do |form| %>
-  <div class="mb-3">
-    <label class="form-label">Area Name</label>
-    <%= form.text_field :name, class: "form-control" %>
+  <% if @inspection.areas.present? %>
+  <div class="row">
+    <div class="card">
+      <div class="card-body">
+      <h4>Completed Areas</h4>
+        <%= @inspection.areas.reject { |area| area.nil? || area.id.nil? }.map { |area| link_to area.name, edit_address_inspection_area_path(@address, @inspection, area) }.join(', ').html_safe %>
+      </div>
+    </div>
   </div>
+  <% end %>
 
-  <div class="mb-3">
-    <%= form.label :notes, class: "form-label" %>
-    <%= form.text_area :notes, class: "form-control", rows: 4 %>
-  </div>
+<div class="card">
+  <div class="card-body">
+    <%= form_with(model: [@inspection, @area], url: address_inspection_area_path(@address, @inspection, @area), method: :patch, local: true) do |form| %>
+      <div class="mb-3">
+        <label class="form-label">Area Name</label>
+        <%= form.text_field :name, class: "form-control" %>
+      </div>
 
-  <div class="mb-3">
-    <%= form.label :photos, class: "form-label" %>
-    <%= form.file_field :photos, multiple: true, class: "form-control" %>
-  </div>
+      <div class="mb-3">
+        <%= form.label :floor, class: "form-label" %>
+        <%= form.number_field :floor, class: "form-control" %>
+      </div>
 
-  <div class="mb-3">
-    <label class="form-label">Codes</label>
-    <select id="code-select" multiple name="area[code_ids][]">
-      <% Code.all.each do |code| %>
-        <% selected = @area.code_ids.include?(code.id) ? 'selected' : '' %>
-        <option value="<%= code.id %>" <%= selected %>>
-          <%= code.chapter %>-<%= code.section.split("-").last %> <%= code.name %>
-        </option>
+      <div class="mb-3">
+        <%= form.label :notes, class: "form-label" %>
+        <%= form.text_area :notes, class: "form-control", rows: 4 %>
+      </div>
+
+      <div class="mb-3">
+        <%= form.label :photos, class: "form-label" %>
+        <%= form.file_field :photos, multiple: true, class: "form-control" %>
+      </div>
+
+      <% if @area.photos.attached? %>
+        <div class="mb-3">
+          <label class="form-label">Current Photos</label>
+          <div class="row">
+            <% @area.photos.each do |photo| %>
+              <div class="col-3">
+                <%= image_tag photo, class: "img-fluid" %>
+              </div>
+            <% end %>
+          </div>
+        </div>
       <% end %>
-    </select>
-  </div>
 
-  <div class="">
-    <%= form.submit "Update Area", class: "btn btn-primary" %>
-  </div>
-<% end %>
+      <div class="mb-3">
+        <label class="form-label">Code Violations</label>
+        <select id="code-select" multiple name="area[code_ids][]">
+          <% Code.all.each do |code| %>
+            <% selected = @area.code_ids.include?(code.id) ? 'selected' : '' %>
+            <option value="<%= code.id %>" <%= selected %>>
+              <%= code.chapter %>-<%= code.section.split("-").last %> <%= code.name %>
+            </option>
+          <% end %>
+        </select>
+      </div>
 
-<%= link_to "Back to Inspection", conduct_address_inspection_path(@address, @inspection), class: "btn btn-secondary mt-3", data: { turbo: false } %>
+      <div class="">
+        <%= form.submit "Update Area", class: "btn btn-primary" %>
+      </div>
+    <% end %>
+
+    <%= link_to "Back to Inspection", conduct_address_inspection_path(@address, @inspection), class: "btn btn-secondary mt-3", data: { turbo: false } %>
+  
+  </div>
+</div>
 
 <script>
   // Function to initialize Choices.js

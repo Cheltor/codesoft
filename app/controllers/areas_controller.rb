@@ -6,12 +6,16 @@ class AreasController < ApplicationController
     @address = Address.find(params[:address_id])
     @inspection = @address.inspections.find(params[:inspection_id])
     @area = @inspection.areas.build(area_params)
-
+  
     if @area.save
-      # Redirect to the conduct action of the InspectionsController
-      redirect_to conduct_address_inspection_path(@address, @inspection)
+      if params[:create_and_new]
+        redirect_to new_address_inspection_area_path(@address, @inspection)
+      elsif params[:submit_and_redirect]
+        redirect_to conduct_address_inspection_path(@address, @inspection)
+      else
+        redirect_to conduct_address_inspection_path(@address, @inspection)
+      end
     else
-      # Handle errors if the area couldn't be saved
       render :new
     end
   end
@@ -63,6 +67,6 @@ class AreasController < ApplicationController
   private
 
   def area_params
-    params.require(:area).permit(:name, :notes, :inspection_id, code_ids: [], photos: [])
+    params.require(:area).permit(:floor, :name, :notes, :inspection_id, code_ids: [], photos: [])
   end
 end

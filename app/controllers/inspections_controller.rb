@@ -1,7 +1,7 @@
 class InspectionsController < ApplicationController
   before_action :set_address, except: [:all_inspections, :my_inspections, :my_unscheduled_inspections, :all_complaints, :my_complaints, :assign_inspector, :update_inspector, :create_complaint, :new_complaint, :create_permit_inspection, :new_permit_inspection, :create_license_inspection, :new_license_inspection, :unassigned_inspections, :assign_inspection, :inspection_calendar, :reassign_inspection]
   before_action :set_inspection, only: [:show, :edit, :update, :destroy]
-  layout 'choices', only: [:new, :conduct, :new_complaint, :new_permit_inspection, :new_license_inspection]
+  layout 'choices', only: [:new, :new_complaint, :new_permit_inspection, :new_license_inspection]
 
   def all_inspections
     @inspections = Inspection.all.where.not(source: "Complaint").order(created_at: :desc)
@@ -426,7 +426,7 @@ class InspectionsController < ApplicationController
   end
 
   def inspection_params
-    params.require(:inspection).permit(:address_id, :source, :business_id, :status, :result, :description, :thoughts, :originator, :unit_id, :assignee_id, :inspector_id, :scheduled_datetime, :name, :email, :phone, :notes_area_1, :notes_area_2, :notes_area_3, :contact_id,:new_contact_name, :new_contact_email, :new_contact_phone, :new_chapter, :new_section, :new_name, :new_description, :confirmed, code_ids: [], intphotos: [], extphotos: [], photos: [], attachments: []).reject { |key, value| value.blank? }
+    params.require(:inspection).permit(:start_time, :address_id, :source, :business_id, :status, :result, :description, :thoughts, :originator, :unit_id, :assignee_id, :inspector_id, :scheduled_datetime, :name, :email, :phone, :notes_area_1, :notes_area_2, :notes_area_3, :contact_id,:new_contact_name, :new_contact_email, :new_contact_phone, :new_chapter, :new_section, :new_name, :new_description, :confirmed, code_ids: [], intphotos: [], extphotos: [], photos: [], attachments: []).reject { |key, value| value.blank? }
   end
 
 end

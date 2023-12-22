@@ -19,51 +19,106 @@
   </ol>
 </nav>
 
-<%= form_with(model: [@inspection, @area], url: address_inspection_areas_path(@address, @inspection), local: true) do |form| %>
-  <div class="mb-3">
-    <label class="form-label">Area Name</label>
-    <%= form.text_field :name, class: "form-control", value: params[:area_type].titleize %>
+<div class="container">
+  <% if @inspection.areas.present? %>
+  <div class="row">
+    <div class="card">
+      <div class="card-body">
+      <h4>Completed Areas</h4>
+        <%= @inspection.areas.reject { |area| area.nil? || area.id.nil? }.map { |area| link_to area.name, edit_address_inspection_area_path(@address, @inspection, area) }.join(', ').html_safe %>
+      </div>
+    </div>
   </div>
-
-  <% if params[:area_type] == "bathroom" %>
-     Checklist for Bathroom 
-  <% elsif params[:area_type] == "bedroom" %>
-     Checklist for Bedroom 
-  <% elsif params[:area_type] == "common_area" %>
-    Checklist for Common Area 
-  <% # ... etc ... %>
   <% end %>
+  <div class="row">
+    <div class="col-xl-12">
+      <div class="card">
+        <div class="card-body">
+          <%= form_with(model: [@inspection, @area], url: address_inspection_areas_path(@address, @inspection), local: true, html: { id: 'new_area_form' }) do |form| %>
+            <div class="mb-3">
+              <label class="form-label">Area Name</label>
+              <%= form.text_field :name, class: "form-control" %>
+            </div>
+
+            <!-- select unit, if units exist -->
+            <% if @address.units.present? %>
+            <div class="mb-3">
+              <label class="form-label">Unit</label>
+              <select name="area[unit_id]" class="form-control">
+                <option value="">Select a unit</option>
+                <% @address.units.each do |unit| %>
+                  <option value="<%= unit.id %>"><%= unit.number %></option>
+                <% end %>
+              </select>
+            </div>
+            <% end %>
+            
+            <div class="mb-3">
+              <label class="form-label">Floor (Use 0 for basement or exterior)</label>
+              <%= form.number_field :floor, class: "form-control" %>
+            </div>
+
+            <div id="notes and photos">
+              <div class="mb-3">
+                <%= form.label :notes, class: "form-label" %>
+                <%= form.text_area :notes, id: "notes", class: "form-control", rows: 4 %>
+                <button id="timestamp-button" type="button" class="btn btn-secondary mt-3">Add Timestamp</button>
+              </div>
+
+              <script>
+                document.getElementById('timestamp-button').addEventListener('click', function() {
+                  var now = new Date();
+                  var timestamp = now.toLocaleString();
+                  var notes = document.getElementById('notes');
+                  // Check if notes are not blank before adding the first newline character
+                  notes.value += (notes.value ? "\n" : "") + timestamp + "\n";
+
+                  // Create a new label and file input field
+                  var newLabel = document.createElement('label');
+                    newLabel.textContent = "Photo for " + timestamp;
+                    newLabel.className = 'form-label';
+                  var newFileInput = document.createElement('input');
+                  newFileInput.type = 'file';
+                  newFileInput.multiple = true;
+                  newFileInput.className = 'form-control';
+
+                  // Append the new label and file input field to the parent div
+                  var parentDiv = document.getElementById('notes and photos');
+                  parentDiv.appendChild(newLabel);
+                  parentDiv.appendChild(newFileInput);
+                });
+              </script>
+
+              <div class="mb-3">
+                <%= form.label :photos, class: "form-label" %>
+                <%= form.file_field :photos, multiple: true, class: "form-control" %>
+
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Code Violations</label>
+              <select id="code-select" multiple name="area[code_ids][]">
+                <% Code.all.each do |code| %>
+                  <% selected = @area.code_ids.include?(code.id) ? 'selected' : '' %>
+                  <option value="<%= code.id %>" <%= selected %>>
+                    <%= code.chapter %>-<%= code.section.split("-").last %> <%= code.name %>
+                  </option>
+                <% end %>
+              </select>
+            </div>
 
 
-  <div class="mb-3">
-    <%= form.label :notes, class: "form-label" %>
-    <%= form.text_area :notes, class: "form-control", rows: 4 %>
+          <div class="">
+            <%= form.submit "Create Another Area", name: 'create_and_new', class: "btn btn-primary" %>
+            <%= form.submit "Submit and go back to Inspection", name: 'submit_and_redirect', class: "btn btn-primary" %>
+          </div>
+          <% end %>         
+        </div>
+      </div>
+    </div>
   </div>
-
-  <div class="mb-3">
-    <%= form.label :photos, class: "form-label" %>
-    <%= form.file_field :photos, multiple: true, class: "form-control" %>
-  </div>
-
-  <div class="mb-3">
-    <label class="form-label">Codes</label>
-    <select id="code-select" multiple name="area[code_ids][]">
-      <% Code.all.each do |code| %>
-        <% selected = @area.code_ids.include?(code.id) ? 'selected' : '' %>
-        <option value="<%= code.id %>" <%= selected %>>
-          <%= code.chapter %>-<%= code.section.split("-").last %> <%= code.name %>
-        </option>
-      <% end %>
-    </select>
-  </div>
-
-
-  <div class="">
-    <%= form.submit "Create Area", class: "btn btn-primary" %>
-  </div>
-<% end %>
-
-<%= link_to "Back to Inspection", conduct_address_inspection_path(@address, @inspection), class: "btn btn-secondary mt-3", data: { turbo: false } %>
+</div>
 
 <script>
   // Function to initialize Choices.js

@@ -19,6 +19,13 @@
 </div>
 
 <script>
+  /**
+   * Adds an event listener to the 'add-aka' element, which creates a new input field when clicked.
+   * Adds an event listener to the 'address-form' element, which prevents the default form submission behavior.
+   * Retrieves the values of all 'aka-field' elements and stores them in an array.
+   * Sets the value of the 'aka-hidden' element to a comma-separated string of the aka field values.
+   * Submits the form.
+   */
   document.getElementById('add-aka').addEventListener('click', function() {
     var newField = document.createElement('input');
     newField.type = 'text';
