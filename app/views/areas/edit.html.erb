@@ -23,7 +23,7 @@
   <div class="row">
     <div class="card">
       <div class="card-body">
-      <h4>Completed Areas</h4>
+      <h4>Areas</h4>
         <%= @inspection.areas.reject { |area| area.nil? || area.id.nil? }.map { |area| link_to area.name, edit_address_inspection_area_path(@address, @inspection, area) }.join(', ').html_safe %>
       </div>
     </div>
