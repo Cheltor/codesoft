@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_12_22_143705) do
+ActiveRecord::Schema[7.0].define(version: 2023_12_22_195608) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -274,6 +274,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_22_143705) do
     t.index ["user_id"], name: "index_notifications_on_user_id"
   end
 
+  create_table "observations", force: :cascade do |t|
+    t.text "content"
+    t.integer "area_id", null: false
+    t.string "photos"
+    t.boolean "potentialvio"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["area_id"], name: "index_observations_on_area_id"
+  end
+
   create_table "unit_contacts", force: :cascade do |t|
     t.integer "unit_id", null: false
     t.integer "contact_id", null: false
@@ -378,6 +388,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_22_143705) do
   add_foreign_key "inspections", "users", column: "inspector_id"
   add_foreign_key "notifications", "inspections"
   add_foreign_key "notifications", "users"
+  add_foreign_key "observations", "areas"
   add_foreign_key "unit_contacts", "contacts"
   add_foreign_key "unit_contacts", "units"
   add_foreign_key "units", "addresses"

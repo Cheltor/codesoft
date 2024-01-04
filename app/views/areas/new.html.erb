@@ -37,7 +37,7 @@
           <%= form_with(model: [@inspection, @area], url: address_inspection_areas_path(@address, @inspection), local: true, html: { id: 'new_area_form' }) do |form| %>
             <div class="mb-3">
               <label class="form-label">Area Name</label>
-              <%= form.text_field :name, class: "form-control" %>
+              <%= form.text_field :name, class: "form-control", placeholder: "Bathroom, Hallway, Bedroom, etc." %>
             </div>
 
             <!-- select unit, if units exist 
@@ -54,11 +54,11 @@
             <% end %>-->
             
             <div class="mb-3">
-              <label class="form-label">Floor (Use 0 for basement or exterior)</label>
-              <%= form.number_field :floor, class: "form-control" %>
+              <label class="form-label">Floor</label>
+              <%= form.number_field :floor, class: "form-control", placeholder: "Use 0 for basement or exterior" %>
             </div>
 
-            <div id="notes and photos">
+            <!-- <div id="notes and photos">
               <div class="mb-3">
                 <%= form.label :notes, class: "form-label" %>
                 <%= form.text_area :notes, id: "notes", class: "form-control", rows: 4 %>
@@ -106,12 +106,17 @@
                   </option>
                 <% end %>
               </select>
-            </div>
+            </div>-->
 
 
-          <div class="">
-            <%= form.submit "Create Another Area", name: 'create_and_new', class: "btn btn-primary" %>
-            <%= form.submit "Submit and go back to Inspection", name: 'submit_and_redirect', class: "btn btn-primary" %>
+          <div class="mb-3">
+            <%= form.submit "Move on to another Area", name: 'create_and_new', class: "btn btn-primary" %>
+          </div>
+          <div class="mb-3">
+            <%= form.submit "Create Observation", name: 'create_and_observation', class: "btn btn-danger" %>
+          </div>
+          <div class="mb-3">
+            <%= form.submit "Review the Inspection Summary", name: 'submit_and_redirect', class: "btn btn-secondary" %>
           </div>
           <% end %>         
         </div>

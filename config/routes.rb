@@ -42,7 +42,9 @@ Rails.application.routes.draw do
         get 'schedule'
         post 'save_and_redirect_to_area_new'
       end
-      resources :areas
+      resources :areas do
+        resources :observations, only: [:create, :edit, :update]
+      end
       resources :inspection_comments
     end
     resources :businesses, except: [:index, :new_business]

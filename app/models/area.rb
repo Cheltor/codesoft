@@ -6,9 +6,18 @@ class Area < ApplicationRecord
   validates :floor, presence: true, numericality: { only_integer: true }
   validates :name, presence: true
 
+  validates_uniqueness_of :name, scope: [:inspection_id, :floor]
+
+  has_many :observations, dependent: :destroy
+
   def name
     if floor.present? && floor != 0
-      "#{ordinalize(floor)} floor - #{super}"
+      ordinalized_floor = "#{ordinalize(floor)} floor"
+      unless super.include?(ordinalized_floor)
+        "#{ordinalized_floor} - #{super}"
+      else
+        super
+      end
     else
       super
     end

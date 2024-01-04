@@ -102,7 +102,7 @@
     <div class="card shadow mb-3">
       <div class="card-body">
 
-    <% if @inspection.status.present? %>
+    <% if @inspection.status.present? || @inspection.areas.present? %>
       <%= link_to "Edit inspection", conduct_address_inspection_path(@address, @inspection), class: "btn btn-outline-primary btn-lg mt-3", data: { turbo: false } %>
     <% else %>
       <%= link_to "Conduct #{@inspection.source.titleize} inspection", conduct_address_inspection_path(@address, @inspection), class: "btn btn-outline-primary btn-lg mt-3", data: { turbo: false } %>
@@ -114,6 +114,77 @@
       <% if current_user.admin? %>
         <%= link_to "Reassign inspector", assign_inspection_path(@inspection), class: "btn btn-outline-primary btn-lg mt-3", data: { turbo: false } %>
       <% end %>
+    <% end %>
+    <% if @inspection.areas.present? %>
+    <div class="card">
+      <div class="card-body">
+        <div class="">
+          <h3>Areas</h3>
+          <% @inspection.areas.order(:floor).each do |area| %>
+            <div class="accordion accordion-flush" id="accordionFlush<%= area.id %>">
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="flush-heading<%= area.id %>">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse<%= area.id %>" aria-expanded="false" aria-controls="flush-collapse<%= area.id %>" style="background-color: <%= area.observations.count > 0 ? '#f8d7da' : '#cce5ff' %>; color: #000;">
+                    <%= area.name %> - <%= pluralize(area.observations.count, 'observation') %>
+                  </button>
+                </h2>
+                <div id="flush-collapse<%= area.id %>" class="accordion-collapse collapse" aria-labelledby="flush-heading<%= area.id %>" data-bs-parent="#accordionFlush<%= area.id %>">
+                  <div class="accordion-body">
+                      <% if area.observations.present? %>
+                        <div class="list-group mt-3">
+                          <% area.observations.each do |observation| %>
+                            <li class="list-group-item">
+                              <%= observation.content %>
+                              <span class="float-end">
+                                <%= link_to edit_address_inspection_area_observation_path(@address, @inspection, area, observation) do %>
+                                  <i class="bi bi-pencil-square"></i>
+                                <% end %>
+                              </span>
+                              <br>
+                              <%= link_to "#", data: { bs_toggle: "modal", bs_target: "#allphotoModal#{observation.id}" } do %>
+                                <span class="badge bg-secondary">
+                                  Photos: <%= observation.photos.count %>
+                                </span>
+                              <% end %>
+                              <%# Time Zone EST %>
+                              <% Time.zone = "Eastern Time (US & Canada)" %>
+                              <div class="text-muted">
+                                <%= observation.created_at.in_time_zone.strftime("%m/%d/%Y %I:%M:%S %p") %>
+                              </div>
+
+
+<!-- Photo Modal -->
+<div class="modal fade custom-modal-lg" id="allphotoModal<%= observation.id %>">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        All photos
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Display the photos -->
+          <% observation.photos.each do |photo| %>
+            <%= render partial: "shared/show_image", locals: { photo: photo } %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+                            </li>
+                          <% end %>
+                        </div>
+                      <% end %>
+                      <br>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
     <% end %>
     <br>
     <% if @inspection.status.present? %>
@@ -223,7 +294,7 @@
 
         <% if user_signed_in? %>
           <%= form_for([@address, @inspection, @inspection.inspection_comments.build]) do |f| %>
-            <%= f.text_area :content, class: "form-control" %>
+            <%= f.text_area :content, class: "form-control", placeholder: "Leave a comment here if there was a reschedule or if the inspection was missed by the landlord/tenant" %>
             <br>
             <%= f.submit class: "btn btn-primary" %>
           <% end %>

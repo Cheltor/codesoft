@@ -44,46 +44,15 @@
       </div>
 
       <div class="mb-3">
-        <%= form.label :notes, class: "form-label" %>
-        <%= form.text_area :notes, class: "form-control", rows: 4 %>
-      </div>
-
-      <div class="mb-3">
-        <%= form.label :photos, class: "form-label" %>
-        <%= form.file_field :photos, multiple: true, class: "form-control" %>
-      </div>
-
-      <% if @area.photos.attached? %>
-        <div class="mb-3">
-          <label class="form-label">Current Photos</label>
-          <div class="row">
-            <% @area.photos.each do |photo| %>
-              <div class="col-3">
-                <%= image_tag photo, class: "img-fluid" %>
-              </div>
-            <% end %>
-          </div>
-        </div>
-      <% end %>
-
-      <div class="mb-3">
-        <label class="form-label">Code Violations</label>
-        <select id="code-select" multiple name="area[code_ids][]">
-          <% Code.all.each do |code| %>
-            <% selected = @area.code_ids.include?(code.id) ? 'selected' : '' %>
-            <option value="<%= code.id %>" <%= selected %>>
-              <%= code.chapter %>-<%= code.section.split("-").last %> <%= code.name %>
-            </option>
-          <% end %>
-        </select>
+        <%= form.submit "Update Area", class: "btn btn-primary" %>
       </div>
 
       <div class="">
-        <%= form.submit "Update Area", class: "btn btn-primary" %>
+        <%= form.submit "Create Observation", name: 'create_and_observation', class: "btn btn-danger" %>
       </div>
     <% end %>
 
-    <%= link_to "Back to Inspection", conduct_address_inspection_path(@address, @inspection), class: "btn btn-secondary mt-3", data: { turbo: false } %>
+    <%= link_to "Back to Inspection Summary", conduct_address_inspection_path(@address, @inspection), class: "btn btn-secondary mt-3", data: { turbo: false } %>
   
   </div>
 </div>

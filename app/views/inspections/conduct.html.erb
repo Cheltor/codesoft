@@ -24,17 +24,19 @@
   <div class="col-lg-8">
     <div class="card">
       <div class="card-body">
-        <% if @inspection.status.present? %>
+        <% if @inspection.status.present? || @inspection.areas.present? %>
           <h1>Edit Inspection</h1>
         <% else %>
-          <h1>Conduct Inspection for <%= @inspection.source %></h1>
+          <h1>Conduct Inspection for <%= @inspection.source %>
+          <% if @inspection.source == "Business license" && @inspection.business_id != nil %>
+          <br>
+            - <%= @inspection.business.business_name_and_trading_name %>
+          <% end %>
+          </h1>
         <% end %>
       </div>
     </div>
     <div class="card">
-      <div class="card-header">
-        <h3>Inspection</h3>
-      </div>
       <div class="card-body">
         <%= form_with(model: [@address, @inspection]) do |form| %>
           <!-- modal for @inspection.attachments -->
@@ -78,79 +80,87 @@
         </div>
       </div>
     </div>
+    <% if @inspection.areas.present? %>
     <div class="card">
       <div class="card-body">
-        <% if @inspection.areas.present? %>
-          <div class="">
-            <h3>Areas</h3>
-            <% @inspection.areas.each do |area| %>
-              <div class="accordion accordion-flush" id="accordionFlush<%= area.id %>">
-                <div class="accordion-item">
-                  <h2 class="accordion-header" id="flush-heading<%= area.id %>">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse<%= area.id %>" aria-expanded="false" aria-controls="flush-collapse<%= area.id %>">
-                      <%= area.name %>
-                    </button>
-                  </h2>
-                  <div id="flush-collapse<%= area.id %>" class="accordion-collapse collapse" aria-labelledby="flush-heading<%= area.id %>" data-bs-parent="#accordionFlush<%= area.id %>">
-                    <div class="accordion-body">
-<h5><strong>Notes: </strong><%= simple_format(area.notes) if area.notes.present? %></h5>
-                      <% if area.photos.attached? %>
-                        <div>
-                          <strong>Uploaded Files:</strong>
-                          <% area.photos.each do |attachment| %>
-                            <%= attachment.filename %><br>
-                          <% end %>
-                        </div>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#areaPhotosModal<%= area.id %>">
-                          View Photos
-                        </button>
+        <div class="">
+          <h3>Areas</h3>
+          <% @inspection.areas.order(:floor).each do |area| %>
+            <div class="accordion accordion-flush" id="accordionFlush<%= area.id %>">
+              <div class="accordion-item">
+                <h2 class="accordion-header" id="flush-heading<%= area.id %>">
+                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse<%= area.id %>" aria-expanded="false" aria-controls="flush-collapse<%= area.id %>" style="background-color: <%= area.observations.count > 0 ? '#f8d7da' : '#cce5ff' %>; color: #000;">
+                    <%= area.name %> - <%= pluralize(area.observations.count, 'observation') %>
+                  </button>
+                </h2>
+                <div id="flush-collapse<%= area.id %>" class="accordion-collapse collapse" aria-labelledby="flush-heading<%= area.id %>" data-bs-parent="#accordionFlush<%= area.id %>">
+                  <div class="accordion-body">
+                      <% if area.observations.present? %>
+                        <div class="list-group mt-3">
+                          <% area.observations.each do |observation| %>
+                            <li class="list-group-item">
+                              <%= observation.content %>
+                              <span class="float-end">
+                                <%= link_to edit_address_inspection_area_observation_path(@address, @inspection, area, observation) do %>
+                                  <i class="bi bi-pencil-square"></i>
+                                <% end %>
+                              </span>
+                              <br>
+                              <%= link_to "#", data: { bs_toggle: "modal", bs_target: "#allphotoModal#{observation.id}" } do %>
+                                <span class="badge bg-secondary">
+                                  Photos: <%= observation.photos.count %>
+                                </span>
+                              <% end %>
+                              <%# Time Zone EST %>
+                              <% Time.zone = "Eastern Time (US & Canada)" %>
+                              <div class="text-muted">
+                                <%= observation.created_at.in_time_zone.strftime("%m/%d/%Y %I:%M:%S %p") %>
+                              </div>
 
-                            <!-- Modal -->
-    <div class="modal fade" id="areaPhotosModal<%= area.id %>" tabindex="-1" aria-labelledby="areaPhotosModalLabel<%= area.id %>" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="areaPhotosModalLabel<%= area.id %>">Photos for <%= area.name %></h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <% if area.photos.attached? %>
-              <% area.photos.each do |photo| %>
-                <!-- Display the photo. Adjust this according to how you handle image attachments. -->
-                <%= image_tag photo, class: "img-fluid" %>
-              <% end %>
-            <% else %>
-              <p>No photos for this area.</p>
-            <% end %>
-          </div>
-        </div>
+
+<!-- Photo Modal -->
+<div class="modal fade custom-modal-lg" id="allphotoModal<%= observation.id %>">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        All photos
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Display the photos -->
+          <% observation.photos.each do |photo| %>
+            <%= render partial: "shared/show_image", locals: { photo: photo } %>
+        <% end %>
       </div>
     </div>
+  </div>
+</div>
+
+
+                            </li>
+                          <% end %>
+                        </div>
                       <% end %>
                       <br>
-                      <% if area.codes.present? %>
-                          
-                        <p><strong>Codes:</strong></p>
-                          <ul>
-                            <% area.codes.each do |code| %>
-                              <li><%= code.name %></li>
-                            <% end %>
-                          </ul>
-                        <% end %>
-                        <br>
-                        <%= link_to "Edit #{area.name}", edit_address_inspection_area_path(@address, @inspection, area), class: "btn btn-primary", data: { turbo: false } %>
+                      <div class="btn-group">
+                      <%= link_to "Add Observation", address_inspection_area_path(@address, @inspection, area), class: "btn btn-outline-primary btn-sm", data: { turbo: false } %>
+                      <%= link_to "Edit #{area.name}", edit_address_inspection_area_path(@address, @inspection, area), class: "btn btn-outline-primary btn-sm", data: { turbo: false } %>
                     </div>
                   </div>
                 </div>
               </div>
-            <% end %>
-          </div>
-        <% end %>
+            </div>
+          <% end %>
+        </div>
       </div>
     </div>
+    <% end %>
     <div class="card">
       <div class="card-header">
         <h3>General Notes</h3>
+        <p>
+          
+        </p>
       </div>
       <div class="card-body">
         <%= form_with(model: [@address, @inspection]) do |form| %>
@@ -168,7 +178,20 @@
                 <%= attachment.filename %><br>
               <% end %>
             </div>
+
+
           <% end %>
+        </div>
+        <div class="field mt-3">
+        <label>Code Violations</label>
+          <select id="code-select" multiple name="inspection[code_ids][]" class="choices-select" placeholder="Select codes...">
+            <% Code.all.each do |code| %>
+              <% selected = @inspection.code_ids.include?(code.id) ? 'selected' : '' %>
+              <option value="<%= code.id %>" <%= selected %>>
+                <%= code.chapter %>-<%= code.section.split("-").last %> <%= code.name %>
+              </option>
+            <% end %>
+          </select>
         </div>
         <% end %>
       </div>
@@ -233,7 +256,7 @@
 
           
           <div class="actions mb-3">
-            <%= form.submit "Submit", class: "btn btn-primary" %>
+            <%= form.submit "Save", class: "btn btn-primary" %>
           </div>
         <% end %>
         </div>
@@ -263,24 +286,18 @@
       </div>
     </div>
 
-    <!-- New Area Modal 
-    <div class="modal fade" role="dialog" id="new-area" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">
-              New Area
-            </h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <%= link_to "Bathroom", new_address_inspection_area_path(@address, @inspection, area_type: "bathroom"), class: "btn btn-primary mt-3" %>
-            <%= link_to "Bedroom", new_address_inspection_area_path(@address, @inspection, area_type: "bedroom"), class: "btn btn-primary mt-3" %>
-            <%= link_to "Common Area", new_address_inspection_area_path(@address, @inspection, area_type: "common_area"), class: "btn btn-primary mt-3" %>
-            <%= link_to "Exterior", new_address_inspection_area_path(@address, @inspection, area_type: "exterior"), class: "btn btn-primary mt-3" %>
-            <%= link_to "Kitchen", new_address_inspection_area_path(@address, @inspection, area_type: "kitchen"), class: "btn btn-primary mt-3" %>
-            <%= link_to "Other", new_address_inspection_area_path(@address, @inspection, area_type: "other"), class: "btn btn-primary mt-3" %>
-          </div>
-        </div>
-      </div>
-    </div>-->
+
+<script>
+  // Function to initialize Choices.js
+  function initializeChoices() {
+    const codeSelect = new Choices('#code-select', {
+      removeItemButton: true,
+      searchEnabled: true,
+      placeholder: true,
+      placeholderValue: 'Select codes',
+    });
+  }
+
+  // Initialize Choices.js on page load
+  document.addEventListener("turbo:load", initializeChoices);
+</script>

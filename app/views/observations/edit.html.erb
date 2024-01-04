@@ -1,0 +1,50 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">
+      <%= link_to "Home", root_path %>
+    </a></li>
+    <li class="breadcrumb-item"><a href="#">
+    <%= link_to @address.property_name_with_combadd, address_path(@address) %>
+    </a></li>
+
+    <% if @inspection.unit_id.present? %>
+      <li class="breadcrumb-item"><a href="#">
+      <%= link_to @inspection.unit.number, address_unit_path(@address, @inspection.unit) %>
+      </a></li>
+    <% end %>
+
+    <li class="breadcrumb-item"><a href="#">
+    <%= link_to "Inspection ##{@inspection.id}", conduct_address_inspection_path(@address, @inspection), data: { turbo: false } %>
+    </a></li>
+
+    <li class="breadcrumb-item active"><a href="#">
+    <%= link_to @area.name, address_inspection_area_path(@address, @inspection, @area) %>
+    </a></li>
+  </ol>
+</nav>
+
+<div class="card">
+  <div class="card-body">
+    <%= form_for([@address, @inspection, @area, @observation], url: address_inspection_area_observation_path(@address, @inspection, @area, @observation), method: :put, html: { multipart: true }) do |f| %>
+      <div class="field">
+        <label>Observation</label>
+        <%= f.text_area :content, class: "form-control" %>
+      </div>
+
+      <div class="field">
+        <label>Photo(s)</label>
+        <%= f.file_field :photos, multiple: true, class: "form-control" %>
+      </div>
+      <div class="actions mb-3">
+        <%= f.submit "Update Observation", class: "btn btn-primary mt-3" %>
+      </div>
+      <div>
+        <% if @observation.photos.attached? %>
+          <% @observation.photos.each do |photo| %>
+            <%= image_tag photo, class: "img-fluid" %>
+          <% end %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>

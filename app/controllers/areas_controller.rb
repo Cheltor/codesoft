@@ -12,6 +12,8 @@ class AreasController < ApplicationController
         redirect_to new_address_inspection_area_path(@address, @inspection)
       elsif params[:submit_and_redirect]
         redirect_to conduct_address_inspection_path(@address, @inspection)
+      elsif params[:create_and_observation]
+        redirect_to address_inspection_area_path(@address, @inspection, @area)
       else
         redirect_to conduct_address_inspection_path(@address, @inspection)
       end
@@ -21,7 +23,10 @@ class AreasController < ApplicationController
   end
 
   def show
-    
+    @address = Address.find(params[:address_id])
+    @inspection = @address.inspections.find(params[:inspection_id])
+    @area = @inspection.areas.find(params[:id])
+    @observation = @area.observations.build
   end
 
   def edit

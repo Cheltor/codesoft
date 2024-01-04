@@ -18,6 +18,7 @@
         <br>
       <% end %>
       <% if item.photos.attached? %>
+      <br>
         <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#item-<%= item.id %>">
           Attachments
         </button>
@@ -43,6 +44,7 @@
         <br>
       <% end %>
       <% if item.photos.attached? %>
+      <br>
         <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#item-<%= item.id %>">
           Attachments
         </button>
@@ -64,6 +66,7 @@
       <strong><%= item.user.email_without_domain %></strong> commented on <%= link_to "Citation", citation_path(item.citation), class: "btn btn-sm btn-outline-secondary" %><%= " on " if item.citation.unit.present? %><%= link_to "#{item.citation.unit.number.upcase}", address_unit_path(item.citation.unit.address, item.citation.unit), class: "btn btn-outline-info btn-sm" if item.citation.unit.present? %><% if local_assigns[:show_address] %> at <%= link_to item.citation.violation.address.property_name_with_combadd, item.citation.violation.address, class: "btn btn-outline-secondary btn-sm" %><% end %>: <br>
       <p>"<%= item.content %>"</p>
       <% if item.photos.attached? %>
+      <br>
         <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#item-<%= item.id %>">
           Attachments
         </button>
@@ -98,6 +101,7 @@
           <% end %>
         </p>
         <% if item.photos.attached? %>
+        <br>
         <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#item-<%= item.id %>">
           Attachments
         </button>
@@ -123,6 +127,7 @@
         <strong>Status:</strong> <%= item.status %>
       </p>
       <% if item.photos.attached? %>
+      <br>
         <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#item-<%= item.id %>">
           Attachments
         </button>
@@ -174,6 +179,7 @@
       <strong><%= item.user.email_without_domain %></strong> commented on <%= link_to "Inspection", address_inspection_path(item.inspection.address, item.inspection), class: "btn btn-sm btn-outline-secondary" %><%= " on " if item.inspection.unit.present? %><%= link_to "#{item.inspection.unit.number.upcase}", address_unit_path(item.inspection.address, item.inspection.unit), class: "btn btn-outline-info btn-sm" if item.inspection.unit.present? %><% if local_assigns[:show_address] %> at <%= link_to item.inspection.address.property_name_with_combadd, item.inspection.address, class: "btn btn-outline-secondary btn-sm" %><% end %>:<br>
       <p>"<%= item.content %>"</p>
       <% if item.photos.attached? %>
+      <br>
         <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#item-<%= item.id %>">
           Attachments
         </button>
