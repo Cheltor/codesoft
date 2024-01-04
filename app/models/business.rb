@@ -31,6 +31,10 @@ class Business < ApplicationRecord
     name
   end
 
+  def licensed
+    inspections.where(status: "Satisfactory").exists?
+  end
+
   private
 
   def normalize_website
