@@ -1,11 +1,18 @@
   <div class="card" style="background-color: #e3f2fd;">
     <div class="card-body">
       <%= search_form_for @business_q, url: businesses_path, method: :get do |f| %>
-      <%= f.search_field :name_cont, class:"form-control form-control-lg", placeholder: "Search businesses" %>
-      <br><div style="text-align:center"><%= f.submit "Search", class:"btn btn-primary" %></div>
+        <%= f.search_field :name_cont, class:"form-control form-control-lg", placeholder: "Search businesses" %>
+
+        <div class="form-group mt-3 mb-3">
+          <%= label_tag :licensed, 'Filter by license status' %>
+          <%= select_tag :licensed, options_for_select([['All', ''], ['Licensed', '1'], ['Not Licensed', '0']], params[:licensed]), class: "form-control" %>
+        </div>
+
+        <div style="text-align:center"><%= f.submit "Search", class:"btn btn-primary" %></div>
       <% end %>
     </div>
   </div>
+  
   <br>
 <div class="row">
   <div class="col">
@@ -54,15 +61,18 @@
                   </td>
                   <td>
                     <% if business.licensed %>
-    <span style="color: green;">Yes</span>
+                      <span style="color: green;">Yes</span>
                     <% else %>
-    <span style="color: red;">No</span>
+                      <span style="color: red;">No</span>
                     <% end %>
                 </td>
                 </tr>
               <% end %>
             </tbody>
           </table>
+          <div class="text-center">
+            <%= will_paginate @businesses, class: "pagination justify-content-center" %>
+          </div>
         </div>
         <% end %>
       </div>

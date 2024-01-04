@@ -6,7 +6,8 @@
   </div>
 
   <div class="field mt-3">
-    <%= f.label :source %>
+    <strong><%= f.label :source %></strong>
+    <label> (If business license, create the inspection from the business page)</label>
     <%= f.select :source, ["Single Family License", "Multifamily License", "Donation Bin"], {}, class: "form-select" %>
   </div>
 
@@ -24,7 +25,7 @@
 
   <div class="form-group mt-3">
     <strong><label>Contact</label></strong>
-    <%= f.collection_select(:contact_id, Contact.all, :id, :full_name_and_email, { prompt: 'Select a contact' }, class: 'form-control selectpicker', data: { style: 'btn-primary' }) %>
+    <%= f.collection_select(:contact_id, Contact.all, :id, :full_name_and_email, { prompt: 'Who should be contacted for this inspection?' }, class: 'form-control selectpicker', data: { style: 'btn-primary' }) %>
   </div>
 
     <!-- Fields for creating a new contact -->

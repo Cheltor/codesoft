@@ -5,6 +5,15 @@ class BusinessesController < ApplicationController
   def index
     @business_q = Business.ransack(params[:q])
     @businesses = @business_q.result(distinct: true).order(created_at: :desc)
+
+    case params[:licensed]
+    when '1'
+      @businesses = @businesses.joins(:inspections).where(inspections: { status: "Satisfactory" }).distinct
+    when '0'
+      @businesses = @businesses.left_outer_joins(:inspections).where(inspections: { id: nil }).or(@businesses.left_outer_joins(:inspections).where.not(inspections: { status: "Satisfactory" })).distinct
+    end
+
+    @businesses = @businesses.paginate(page: params[:page], per_page: 10)
   end
 
   def show
