@@ -11,6 +11,9 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[7.0].define(version: 2023_12_22_195608) do
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -40,8 +43,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_22_195608) do
   end
 
   create_table "address_contacts", force: :cascade do |t|
-    t.integer "address_id"
-    t.integer "contact_id"
+    t.bigint "address_id"
+    t.bigint "contact_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["address_id"], name: "index_address_contacts_on_address_id"
@@ -68,6 +71,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_22_195608) do
     t.datetime "updated_at", null: false
     t.string "combadd"
     t.boolean "outstanding", default: false
+    t.string "name"
+    t.integer "proptype", default: 1
     t.string "property_type"
     t.string "property_name"
     t.string "aka"
@@ -76,8 +81,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_22_195608) do
   end
 
   create_table "area_codes", force: :cascade do |t|
-    t.integer "area_id", null: false
-    t.integer "code_id", null: false
+    t.bigint "area_id", null: false
+    t.bigint "code_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["area_id"], name: "index_area_codes_on_area_id"
@@ -90,14 +95,14 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_22_195608) do
     t.string "photos"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "inspection_id", null: false
+    t.bigint "inspection_id", null: false
     t.integer "floor"
     t.index ["inspection_id"], name: "index_areas_on_inspection_id"
   end
 
   create_table "business_contacts", force: :cascade do |t|
-    t.integer "business_id", null: false
-    t.integer "contact_id", null: false
+    t.bigint "business_id", null: false
+    t.bigint "contact_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["business_id"], name: "index_business_contacts_on_business_id"
@@ -106,10 +111,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_22_195608) do
 
   create_table "businesses", force: :cascade do |t|
     t.string "name"
-    t.integer "address_id", null: false
+    t.bigint "address_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "unit_id"
+    t.bigint "unit_id"
     t.string "website"
     t.string "email"
     t.string "phone"
@@ -119,8 +124,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_22_195608) do
   end
 
   create_table "citation_comments", force: :cascade do |t|
-    t.integer "user_id", null: false
-    t.integer "citation_id", null: false
+    t.bigint "user_id", null: false
+    t.bigint "citation_id", null: false
     t.text "content"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -131,15 +136,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_22_195608) do
   create_table "citations", force: :cascade do |t|
     t.integer "fine"
     t.date "deadline"
-    t.integer "violation_id", null: false
+    t.bigint "violation_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "user_id", null: false
+    t.bigint "user_id", null: false
     t.integer "status"
     t.date "trial_date"
-    t.integer "code_id", null: false
+    t.bigint "code_id", null: false
     t.string "citationid"
-    t.integer "unit_id"
+    t.bigint "unit_id"
     t.index ["code_id"], name: "index_citations_on_code_id"
     t.index ["unit_id"], name: "index_citations_on_unit_id"
     t.index ["user_id"], name: "index_citations_on_user_id"
@@ -147,8 +152,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_22_195608) do
   end
 
   create_table "citations_codes", id: false, force: :cascade do |t|
-    t.integer "citation_id", null: false
-    t.integer "code_id", null: false
+    t.bigint "citation_id", null: false
+    t.bigint "code_id", null: false
   end
 
   create_table "codes", force: :cascade do |t|
@@ -162,18 +167,18 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_22_195608) do
 
   create_table "comments", force: :cascade do |t|
     t.text "content"
-    t.integer "address_id", null: false
-    t.integer "user_id", null: false
+    t.bigint "address_id", null: false
+    t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "unit_id"
+    t.bigint "unit_id"
     t.index ["address_id"], name: "index_comments_on_address_id"
     t.index ["unit_id"], name: "index_comments_on_unit_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
   create_table "concerns", force: :cascade do |t|
-    t.integer "address_id", null: false
+    t.bigint "address_id", null: false
     t.text "content"
     t.string "emailorphone"
     t.datetime "created_at", null: false
@@ -183,8 +188,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_22_195608) do
 
   create_table "contact_comments", force: :cascade do |t|
     t.text "comment"
-    t.integer "user_id", null: false
-    t.integer "contact_id", null: false
+    t.bigint "user_id", null: false
+    t.bigint "contact_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["contact_id"], name: "index_contact_comments_on_contact_id"
@@ -202,8 +207,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_22_195608) do
   end
 
   create_table "inspection_codes", force: :cascade do |t|
-    t.integer "inspection_id", null: false
-    t.integer "code_id", null: false
+    t.bigint "inspection_id", null: false
+    t.bigint "code_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["code_id"], name: "index_inspection_codes_on_code_id"
@@ -211,8 +216,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_22_195608) do
   end
 
   create_table "inspection_comments", force: :cascade do |t|
-    t.integer "user_id", null: false
-    t.integer "inspection_id", null: false
+    t.bigint "user_id", null: false
+    t.bigint "inspection_id", null: false
     t.text "content"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -228,12 +233,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_22_195608) do
     t.text "description"
     t.text "thoughts"
     t.string "originator"
-    t.integer "unit_id"
-    t.integer "address_id", null: false
+    t.bigint "unit_id"
+    t.bigint "address_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "assignee"
-    t.integer "inspector_id"
+    t.string "assignee"
+    t.bigint "inspector_id"
     t.string "name"
     t.string "email"
     t.string "phone"
@@ -244,7 +249,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_22_195608) do
     t.text "notes_area_3"
     t.string "intphotos"
     t.string "extphotos"
-    t.integer "contact_id"
+    t.bigint "contact_id"
     t.string "new_contact_name"
     t.string "new_contact_email"
     t.string "new_contact_phone"
@@ -253,7 +258,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_22_195608) do
     t.string "new_name"
     t.string "new_description"
     t.boolean "confirmed", default: false
-    t.integer "business_id"
+    t.bigint "business_id"
     t.datetime "start_time"
     t.index ["address_id"], name: "index_inspections_on_address_id"
     t.index ["business_id"], name: "index_inspections_on_business_id"
@@ -265,10 +270,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_22_195608) do
   create_table "notifications", force: :cascade do |t|
     t.string "title"
     t.text "body"
-    t.integer "inspection_id", null: false
+    t.bigint "inspection_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "user_id", null: false
+    t.bigint "user_id", null: false
     t.boolean "read", default: false
     t.index ["inspection_id"], name: "index_notifications_on_inspection_id"
     t.index ["user_id"], name: "index_notifications_on_user_id"
@@ -276,7 +281,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_22_195608) do
 
   create_table "observations", force: :cascade do |t|
     t.text "content"
-    t.integer "area_id", null: false
+    t.bigint "area_id", null: false
     t.string "photos"
     t.boolean "potentialvio"
     t.datetime "created_at", null: false
@@ -285,8 +290,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_22_195608) do
   end
 
   create_table "unit_contacts", force: :cascade do |t|
-    t.integer "unit_id", null: false
-    t.integer "contact_id", null: false
+    t.bigint "unit_id", null: false
+    t.bigint "contact_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["contact_id"], name: "index_unit_contacts_on_contact_id"
@@ -295,7 +300,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_22_195608) do
 
   create_table "units", force: :cascade do |t|
     t.string "number"
-    t.integer "address_id", null: false
+    t.bigint "address_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["address_id"], name: "index_units_on_address_id"
@@ -317,8 +322,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_22_195608) do
   end
 
   create_table "violation_codes", force: :cascade do |t|
-    t.integer "violation_id", null: false
-    t.integer "code_id", null: false
+    t.bigint "violation_id", null: false
+    t.bigint "code_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["code_id"], name: "index_violation_codes_on_code_id"
@@ -326,11 +331,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_22_195608) do
   end
 
   create_table "violation_comments", force: :cascade do |t|
-    t.integer "violation_id", null: false
+    t.bigint "violation_id", null: false
     t.text "content"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "user_id", null: false
+    t.bigint "user_id", null: false
     t.index ["user_id"], name: "index_violation_comments_on_user_id"
     t.index ["violation_id"], name: "index_violation_comments_on_violation_id"
   end
@@ -338,15 +343,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_22_195608) do
   create_table "violations", force: :cascade do |t|
     t.string "description"
     t.integer "status"
-    t.integer "address_id", null: false
+    t.bigint "address_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "user_id", null: false
+    t.bigint "user_id", null: false
     t.string "deadline"
     t.string "violation_type"
     t.integer "extend", default: 0
-    t.integer "unit_id"
-    t.integer "inspection_id"
+    t.bigint "unit_id"
+    t.bigint "inspection_id"
+    t.text "comment"
     t.integer "business_id"
     t.index ["address_id"], name: "index_violations_on_address_id"
     t.index ["inspection_id"], name: "index_violations_on_inspection_id"
