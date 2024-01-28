@@ -21,6 +21,13 @@
         <% end %>
         <a class="btn btn-outline-secondary btn-sm mt-2" href="https://www.google.com/maps/search/?api=1&query=<%= @address.combadd %>+MD+<%= @address.premisezip %>" target="_blank">Google Map</a>
         <%= link_to 'Add AKA', add_aka_address_path(@address), class: "btn btn-outline-secondary btn-sm mt-2", data: { turbo: false } %>
+        <% if @address.property_id.present? && @address.district.present? %>
+          <a class="btn btn-outline-secondary btn-sm mt-2" href="https://sdat.dat.maryland.gov/RealProperty/Pages/viewdetails.aspx?County=17&SearchType=ACCT&District=<%= @address.district %>&AccountNumber=<%= @address.property_id %>" target="_blank">SDAT</a>
+        <% else %>
+          <%= link_to 'Add Property ID', edit_address_path(@address), class: "btn btn-outline-secondary btn-sm mt-2", data: { turbo: false } %>
+          <%= link_to 'Add District', edit_address_path(@address), class: "btn btn-outline-secondary btn-sm mt-2", data: { turbo: false } %>
+        <% end %>
+        <!-- <a><%= @address.property_id %> <%= @address.district %></a> -->
       </div>
     </div>
     <!-- only shows up when screen is small -->
