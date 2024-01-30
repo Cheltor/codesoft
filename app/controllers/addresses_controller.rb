@@ -217,6 +217,31 @@ class AddressesController < ApplicationController
     end
   end
 
+  def set_potentially_vacant
+    @address = Address.find(params[:id])
+    @address.update(vacancy_status: 'potentially_vacant')
+    redirect_to @address, notice: 'Address was successfully marked as potentially vacant.'
+  end
+
+  def set_occupied
+    @address = Address.find(params[:id])
+    @address.update(vacancy_status: 'occupied')
+    redirect_to @address, notice: 'Address was successfully marked as occupied.'
+  end
+
+  def set_vacant
+    @address = Address.find(params[:id])
+    @address.update(vacancy_status: 'vacant')
+    redirect_to @address, notice: 'Address was successfully marked as vacant.'
+  end
+
+  def potentially_vacant
+    @addresses = Address.where(vacancy_status: 'potentially_vacant')
+  end
+
+  def vacant
+    @addresses = Address.where(vacancy_status: 'vacant')
+  end
 
   def new
       @address = Address.new(premisezip: "20737")
@@ -235,7 +260,7 @@ class AddressesController < ApplicationController
   private
 
   def address_params
-      params.require(:address).permit(:aka, :pid, :ownername, :owneraddress, :ownercity, :ownerstate, :ownerzip, :streetnumb, :streetname, :streettype, :landusecode, :zoning, :owneroccupiedin, :vacant, :absent, :premisezip, :combadd, :outstanding, :property_name, contact_ids: [])
+      params.require(:address).permit(:aka, :pid, :ownername, :owneraddress, :ownercity, :ownerstate, :ownerzip, :streetnumb, :streetname, :streettype, :landusecode, :zoning, :owneroccupiedin, :vacant, :absent, :premisezip, :combadd, :outstanding, :property_name, :district, :property_id, :vacancy_status, contact_ids: [])
   end
 
   def current_page

@@ -59,6 +59,13 @@ Rails.application.routes.draw do
       get 'all_address_inspections'
       get 'all_address_complaints'
       get 'add_aka'
+      get :set_potentially_vacant
+      get :set_vacant
+      get :set_occupied
+    end
+    collection do
+      get :potentially_vacant
+      get :vacant
     end
   end
 

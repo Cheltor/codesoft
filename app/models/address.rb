@@ -15,6 +15,7 @@ class Address < ApplicationRecord
     before_save :upcase_owneraddress
     before_save :upcase_ownercity
     before_save :upcase_ownerstate
+    after_initialize :set_default_vacancy_status, :if => :new_record?
 
     default_scope { where.not(streetnumb: nil) }
 
@@ -27,11 +28,11 @@ class Address < ApplicationRecord
     end
 
     def property_name_with_combadd
-      if property_name.present?
-        "#{property_name.titleize} - #{combadd}"
-      else
-        combadd
-      end
+        if property_name.present?
+            "#{property_name.titleize} - #{combadd}#{' (vacant)' if vacancy_status == 'vacant'}"
+        else
+            "#{combadd}#{' (vacant)' if vacancy_status == 'vacant'}"
+        end
     end
 
     private
@@ -56,5 +57,8 @@ class Address < ApplicationRecord
     end
     def upcase_ownerstate
         self.ownerstate = ownerstate.upcase if ownerstate.present?
+    end
+    def set_default_vacancy_status
+        self.vacancy_status ||= 'occupied'
     end
 end

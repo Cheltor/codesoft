@@ -7,6 +7,13 @@
         <div class="btn-group d-none d-md-block">
           <%= link_to "Create a Violation Notice/Doorhanger", new_address_violation_path(@address), class: "btn btn-danger mt-2", data: { turbo: false } %>
           <%= link_to "Create New Inspection Request", new_address_inspection_path(@address), class: "btn btn-info mt-2", data: { turbo: false } %>
+          <% if @address.vacancy_status == "vacant" %>
+            <%= link_to 'Mark as Occupied', set_occupied_address_path(@address), method: :get, class: 'btn btn-dark mt-2' %>
+          <% elsif @address.vacancy_status == "potentially_vacant" %>
+            <%= link_to 'Currently set as potentially vacant', potentially_vacant_addresses_path(@address), method: :get, class: 'btn btn-dark mt-2' %>
+          <% elsif @address.vacancy_status == "occupied" %>
+            <%= link_to 'Mark as Potentially Vacant', set_potentially_vacant_address_path(@address), method: :get, class: 'btn btn-dark mt-2' %>
+          <% end %>
         </div>
       </div>
       <div class="card-body text-center">

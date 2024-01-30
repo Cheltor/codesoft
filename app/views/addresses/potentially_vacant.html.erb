@@ -1,0 +1,41 @@
+<% content_for :title, 'Potentially Vacant' %>
+
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#">
+      <%= link_to "Home", root_path %>
+    </a></li>
+    <li class="breadcrumb-item active"><a href="#">
+      <%= link_to 'Potentially Vacant Addresses', potentially_vacant_addresses_path %>
+    </a></li>
+  </ol>
+</nav>
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col">
+      <h1 class="mt-4">Potentially Vacant Addresses</h1>
+
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead class="thead-dark">
+            <tr>
+              <th>Address</th>
+              <th>Mark as occupied</th>
+              <th>Mark as vacant</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @addresses.each do |address| %>
+              <tr>
+                <td><%= link_to address.property_name_with_combadd, address_path(address), class: 'btn btn-primary' %></td>
+                <td><%= link_to 'Mark as Occupied', set_occupied_address_path(address), method: :get, class: 'btn btn-outline-secondary' %></td>
+                <td><%= link_to 'Mark as Vacant', set_vacant_address_path(address), method: :get, class: 'btn btn-outline-secondary' %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>  
+  </div>
+</div>
