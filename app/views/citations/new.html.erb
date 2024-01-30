@@ -79,10 +79,10 @@
             </div>
           </div>
           <!-- if address has units, show unit select -->
-          <% if @address.units.any? %>
+          <% if @address.units.present? %>
           <br>
-            <label><strong>Unit:</strong></label> <%= @violation.unit.number.upcase %>
-            <%= f.hidden_field :unit_id, value: @violation.unit.id %>
+            <label><strong>Unit:</strong></label> <%= @violation.unit.number.upcase if @violation.unit %>
+            <%= f.hidden_field :unit_id, value: (@violation.unit.id if @violation.unit) %>
           <% end %>
           <div class="form-group mt-3">
             <div class="col-sm-offset-2 col-sm-10">
