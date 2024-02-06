@@ -22,7 +22,7 @@ class UnitsController < ApplicationController
     @comments = (violation_comments + citation_comments + unit_comments).sort_by(&:created_at).reverse
   
     @unit_photos = (@violations.map(&:photos) + @comments.map(&:photos) + @address_citations.map(&:photos)).flatten.sort_by(&:created_at).reverse
-    timeline_items = (@violations + @comments + @address_citations + @inspections).sort_by(&:created_at).reverse
+    timeline_items = (@violations + @comments + @address_citations + @inspections + @complaints).sort_by(&:created_at).reverse
   
     # Paginate timeline_items
     page = params[:page] || 1
@@ -179,9 +179,27 @@ class UnitsController < ApplicationController
     redirect_to @address, notice: 'Unit was successfully removed.'
   end
 
+  def set_potentially_vacant
+    @unit = Unit.find(params[:id])
+    @unit.update(vacancy_status: 'potentially_vacant')
+    redirect_to address_unit_path(@unit.address, @unit), notice: 'Unit was successfully marked as potentially vacant.'
+  end
+
+  def set_occupied
+    @unit = Unit.find(params[:id])
+    @unit.update(vacancy_status: 'occupied')
+    redirect_to address_unit_path(@unit.address, @unit), notice: 'Unit was successfully marked as occupied.'
+  end
+
+  def set_vacant
+    @unit = Unit.find(params[:id])
+    @unit.update(vacancy_status: 'vacant')
+    redirect_to address_unit_path(@unit.address, @unit), notice: 'Unit was successfully marked as vacant.'
+  end
+
   private
 
   def unit_params
-    params.require(:unit).permit(:number)
+    params.require(:unit).permit(:number, :vacancy_status)
   end
 end

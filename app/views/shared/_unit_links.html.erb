@@ -4,6 +4,19 @@
         <h5 class="card-title mb-0">Unit <%= @unit.number.upcase %> Information</h5>
       </div>
       <div class="card-body text-center">
+        <div class="btn-group d-none d-md-block">
+          <%= link_to "Create a Violation Notice/Doorhanger", new_address_violation_path(@address, unit_id: @unit), class: "btn btn-danger mt-2", data: { turbo: false } %>
+          <%= link_to "Create New Inspection Request", new_address_inspection_path(@address, unit_id: @unit), class: "btn btn-info mt-2", data: { turbo: false } %>
+          <% if @unit.vacancy_status == "vacant" %>
+            <%= link_to 'Mark as Occupied', set_occupied_address_unit_path(@address, @unit), method: :get, class: 'btn btn-dark mt-2' %>
+          <% elsif @unit.vacancy_status == "potentially_vacant" %>
+            <%= link_to 'Currently set as potentially vacant', potentially_vacant_addresses_path(@address), method: :get, class: 'btn btn-dark mt-2' %>
+          <% elsif @unit.vacancy_status == "occupied" %>
+            <%= link_to 'Mark as Potentially Vacant', set_potentially_vacant_address_unit_path(@address, @unit), method: :get, class: 'btn btn-dark mt-2' %>
+          <% end %>
+        </div>
+      </div>
+      <div class="card-body text-center">
         <% if current_user.ons? && @is_priority_address %>
           <%= button_to mark_reviewed_path(@address.id), method: :patch, class: "btn btn-outline-primary mt-2", data: { turbolinks: false } do %>
             Mark as Reviewed <i class="bi bi-check-lg"></i>

@@ -1,4 +1,6 @@
 class Unit < ApplicationRecord
+  after_initialize :set_default_vacancy_status, if: :new_record?
+  
   belongs_to :address
   has_many :violations
   has_many :comments
@@ -12,6 +14,16 @@ class Unit < ApplicationRecord
   validates :number, uniqueness: { scope: :address_id }
 
   def to_s
-    number
+    if vacancy_status == "vacant"
+      "#{number} (vacant)"
+    else
+      number
+    end
+  end
+
+  private
+
+  def set_default_vacancy_status
+    self.vacancy_status ||= "occupied"
   end
 end

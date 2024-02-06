@@ -25,10 +25,15 @@
             </tr>
           </thead>
           <tbody>
-            <% @addresses.each do |address| %>
+            <% @items.each do |address| %>
               <tr>
-                <td><%= link_to address.property_name_with_combadd, address_path(address), class: 'btn btn-primary' %></td>
-                <td><%= link_to 'Mark as Occupied', set_occupied_address_path(address), method: :get, class: 'btn btn-outline-secondary' %></td>
+                <% if address.is_a?(Address) %>
+                  <td><%= link_to address.property_name_with_combadd, address_path(address), class: 'btn btn-primary' %></td>
+                  <td><%= link_to 'Mark as Occupied', set_occupied_address_path(address), method: :get, class: 'btn btn-outline-secondary' %></td>
+                <% else %>
+                  <td><%= link_to "#{address.address.property_name_with_combadd} Unit #{address.number}", address_unit_path(address.address, address), class: 'btn btn-primary' %></td>
+                  <td><%= link_to 'Mark as Occupied', set_occupied_address_unit_path(address.address, address), method: :get, class: 'btn btn-outline-secondary' %></td>
+                <% end %>
               </tr>
             <% end %>
           </tbody>

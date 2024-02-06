@@ -147,7 +147,7 @@
         <%= time_ago_in_words(item.created_at) %> ago
       </small>
       <% if item.source == "Complaint" %>
-        <p><%= link_to "Complaint", address_inspection_path(item.address, item), class: "btn btn-sm btn-outline-secondary" %> was made<% if local_assigns[:show_address] %> at <%= link_to item.address.property_name_with_combadd, item.address, class: "btn btn-outline-secondary btn-sm" %><% end %>:</p>
+        <p><%= link_to "Complaint", address_inspection_path(item.address, item), class: "btn btn-sm btn-outline-secondary" %> was created for <strong><%= item.source %></strong><%= " for " if item.unit.present? %><%= link_to "#{item.unit.number.upcase}", address_unit_path(item.address, item.unit), class: "btn btn-outline-info btn-sm" if item.unit.present? %><% if local_assigns[:show_address] %> at <%= link_to item.address.property_name_with_combadd, item.address, class: "btn btn-outline-secondary btn-sm" %><% end %>.</p>
         <% if item.description.present? %>
           <p>"<%= item.description %>"</p>
         <% end %>

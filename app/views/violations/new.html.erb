@@ -55,6 +55,24 @@
     </div>
   <% end %>
 
+    <!-- if address has units, show unit select -->
+    <% if @address.units.any? && !params[:unit_id].present? %>
+    <div class="form-group">
+      <strong>
+        <label for="unit_id">Unit</label>
+      </strong>
+      <em><p>You can leave blank or select "Building" for a building violation, or select a specific unit.</p></em>
+      <%= form.select :unit_id, options_for_select(unit_options(@address.units).sort, @unit), {prompt: "Select Building or Unit"}, class: "form-select" %>    </div>
+    <br>
+    <br>
+    <% elsif @address.units.any? && params[:unit_id].present? %>
+          <strong>
+        <label for="unit_id">Unit</label>
+      </strong>
+      <%= form.hidden_field :unit_id, value: params[:unit_id] %>
+      <p><%= @unit.number %></p>
+    <% end %>
+
   <div class="form-group">
     <strong><%= form.label :violation_type %></strong>
     <%= form.select :violation_type, options_for_select(['Doorhanger', 'Formal Notice']), {}, class: "form-select" %>
@@ -91,17 +109,7 @@
 
     </div>
     <br>
-    <!-- if address has units, show unit select -->
-    <% if @address.units.any? %>
-    <div class="form-group">
-      <strong>
-        <label for="unit_id">Unit</label>
-      </strong>
-      <em><p>You can leave blank or select "Building" for a building violation, or select a specific unit.</p></em>
-      <%= form.select :unit_id, options_for_select(unit_options(@address.units).sort, @unit), {prompt: "Select Building or Unit"}, class: "form-select" %>    </div>
-    <br>
-    <br>
-    <% end %>
+ 
 
     <div class="form-group">
       <%= form.submit "Create Violation", class: "btn btn-primary" %>

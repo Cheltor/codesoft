@@ -34,6 +34,9 @@ Rails.application.routes.draw do
         get 'manage_contacts'
         post 'manage_contacts'
         delete 'remove_contact'
+        get :set_potentially_vacant
+        get :set_vacant
+        get :set_occupied
       end
     end
     resources :inspections do

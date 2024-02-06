@@ -8,6 +8,9 @@ class ViolationsController < ApplicationController
     @violation = @address.violations.new
 
     @violation.code_ids = params[:code_ids].split(',') if params[:code_ids].present?
+
+    # If the violation is for a unit
+    @unit = Unit.find(params[:unit_id]) if params[:unit_id].present?
   end
 
   def new_business_violation
@@ -94,7 +97,9 @@ class ViolationsController < ApplicationController
     @violation = @address.violations.new(violation_params)
     @violation.user = current_user
 
-    if @violation.save
+    if @violation.save && @violation.unit.present?
+      redirect_to address_unit_path(@violation.address, @violation.unit), notice: "Violation reported successfully."
+    elsif @violation.save
       redirect_to @address, notice: "Violation reported successfully."
     else
       render :new

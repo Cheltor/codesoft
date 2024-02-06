@@ -1,0 +1,13 @@
+<% if item.is_a?(Address) %>
+  <tr>
+    <td><%= link_to item.property_name_with_combadd, address_path(item), class: 'btn btn-primary' %></td>
+    <td><%= link_to 'Mark as Occupied', set_occupied_address_path(item), method: :get, class: 'btn btn-outline-secondary' %></td>
+    <td><%= link_to 'Mark as Vacant', set_vacant_address_path(item), method: :get, class: 'btn btn-outline-secondary' %></td>
+  </tr>
+<% else %>
+  <tr>
+    <td><%= link_to "#{item.address.property_name_with_combadd} Unit #{item.number}", address_unit_path(item.address, item), class: 'btn btn-primary' %></td>
+    <td><%= link_to 'Mark as Occupied', set_occupied_address_unit_path(item.address, item), method: :get, class: 'btn btn-outline-secondary' %></td>
+    <td><%= link_to 'Mark as Vacant', set_vacant_address_unit_path(item.address, item), method: :get, class: 'btn btn-outline-secondary' %></td>
+  </tr>
+<% end %>

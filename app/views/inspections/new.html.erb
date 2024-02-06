@@ -7,9 +7,9 @@
     <%= link_to @address.property_name_with_combadd, address_path(@address) %>
     </a></li>
 
-    <% if @inspection.unit_id.present? %>
+    <% if @unit.present? %>
       <li class="breadcrumb-item"><a href="#">
-      <%= link_to @inspection.unit.number, address_unit_path(@address, @inspection.unit) %>
+      <%= link_to @unit.number, address_unit_path(@address, @unit) %>
       </a></li>
     <% end %>
   </ol>
@@ -21,6 +21,25 @@
 <p>* fields are mandatory</p>
 
 <%= form_with(model: [@address, @inspection]) do |form| %>
+
+   <!-- if address has units, show unit select -->
+    <% if @address.units.any? && !params[:unit_id].present? %>
+    <div class="form-group">
+      <strong>
+        <label for="unit_id">Unit</label>
+      </strong>
+      <em><p>You can leave blank or select "Building" for a building violation, or select a specific unit.</p></em>
+      <%= form.select :unit_id, options_for_select(unit_options(@address.units).sort, @unit), {prompt: "Select Building or Unit"}, class: "form-select" %>    </div>
+    <br>
+    <br>
+    <% elsif @address.units.any? && params[:unit_id].present? %>
+          <strong>
+        <label for="unit_id">Unit</label>
+      </strong>
+      <%= form.hidden_field :unit_id, value: params[:unit_id] %>
+      <p><%= @unit.number %></p>
+    <% end %>
+
   <div class="field mt-3">
     <%= form.label :source %>*
     <%= form.select :source, ["Complaint", "Building/Dumpster/POD permit", "Business license", "Single Family License", "Multifamily License", "Donation Bin"], {}, class: "form-select" %>
@@ -39,13 +58,7 @@
   </div>
 
 
-  <div class="field mt-3">
-    <!-- if address has units, show unit select -->
-    <% if @address.units.any? %>
-    <p>Select if the inspection is for the unit or the entire building</p>
-    <%= form.select :unit_id, options_for_select(unit_options(@address.units).sort, nil), {prompt: "Select Unit or Building"}, class: "form-select" %>
-    <% end %>
-  </div>
+
 
   <% if @inspection.business.present? %>
   <label>Business: </label>

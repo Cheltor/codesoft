@@ -26,12 +26,8 @@
             </tr>
           </thead>
           <tbody>
-            <% @addresses.each do |address| %>
-              <tr>
-                <td><%= link_to address.property_name_with_combadd, address_path(address), class: 'btn btn-primary' %></td>
-                <td><%= link_to 'Mark as Occupied', set_occupied_address_path(address), method: :get, class: 'btn btn-outline-secondary' %></td>
-                <td><%= link_to 'Mark as Vacant', set_vacant_address_path(address), method: :get, class: 'btn btn-outline-secondary' %></td>
-              </tr>
+            <% @items.each do |item| %>
+              <%= render 'shared/potentially_vacant_rows', item: item %>
             <% end %>
           </tbody>
         </table>

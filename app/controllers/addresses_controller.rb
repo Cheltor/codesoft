@@ -237,10 +237,16 @@ class AddressesController < ApplicationController
 
   def potentially_vacant
     @addresses = Address.where(vacancy_status: 'potentially_vacant')
+    @units = Unit.where(vacancy_status: 'potentially_vacant')
+
+    @items = @addresses + @units
   end
 
   def vacant
     @addresses = Address.where(vacancy_status: 'vacant')
+    @units = Unit.where(vacancy_status: 'vacant')
+
+    @items = @addresses + @units
   end
 
   def new
