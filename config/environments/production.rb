@@ -64,6 +64,8 @@ Rails.application.configure do
 
   config.action_mailer.perform_caching = false
 
+  # Sendgrid configuration
+
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
   # config.action_mailer.raise_delivery_errors = false
@@ -81,6 +83,9 @@ Rails.application.configure do
   # Use a different logger for distributed setups.
   # require "syslog/logger"
   # config.logger = ActiveSupport::TaggedLogging.new(Syslog::Logger.new "app-name")
+
+  # action mailer configuration
+  config.action_mailer.default_url_options = { host: 'riverdaleparkcode.com' }
 
   if ENV["RAILS_LOG_TO_STDOUT"].present?
     logger           = ActiveSupport::Logger.new(STDOUT)

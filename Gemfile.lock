@@ -231,6 +231,7 @@ GEM
       railties (>= 5.2)
     rexml (3.2.6)
     ruby2_keywords (0.0.5)
+    ruby_http_client (3.5.5)
     rubyzip (2.3.2)
     sablon (0.3.2)
       nokogiri (>= 1.8.5)
@@ -239,6 +240,8 @@ GEM
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
+    sendgrid-ruby (6.7.0)
+      ruby_http_client (~> 3.4)
     serviceworker-rails (0.6.0)
       railties (>= 3.1)
     sprockets (4.2.0)
@@ -300,6 +303,7 @@ DEPENDENCIES
   ransack
   sablon
   selenium-webdriver
+  sendgrid-ruby
   serviceworker-rails
   sprockets-rails
   stimulus-rails

@@ -41,15 +41,16 @@ class Inspection < ApplicationRecord
     Rails.logger.info "Checking for complaint inspection..."
     return unless source == 'Complaint' && inspector != current_user
     Rails.logger.info "Inspection is a complaint."
-    Notification.create(
+    notification = Notification.create(
       inspection: self,
       user: inspector,
       title: "New Complaint Inspection for #{address.property_name_with_combadd}",
       body: "You have been assigned a new complaint inspection for #{address.property_name_with_combadd}."
     )
+    NotificationMailer.notify_inspector(notification).deliver_later if notification.persisted?
     Rails.logger.info "Notification created."
-    rescue => e
-      Rails.logger.error "Error in create_notification_if_complaint: #{e.message}"
+  rescue => e
+    Rails.logger.error "Error in create_notification_if_complaint: #{e.message}"
   end
 
   def create_notification_if_reassigned
@@ -63,11 +64,11 @@ class Inspection < ApplicationRecord
         body: "You have been assigned to an inspection at #{address.property_name_with_combadd}."
       )
       if notification.persisted?
+        NotificationMailer.notify_inspector(notification).deliver_later
         Rails.logger.info "Notification successfully created"
       else
         Rails.logger.error "Failed to create notification: #{notification.errors.full_messages}"
       end
-      Rails.logger.info "Notification created."
     else
       Rails.logger.info "Inspector has not been reassigned."
     end
