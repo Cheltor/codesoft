@@ -1,0 +1,39 @@
+<!-- Show the fiscal year, expdate, business name, address, license number, date issued, conditions -->
+<% if @inspection.present? %>
+  <h2>License Information</h2>
+  <table class="table table-striped">
+    <tr>
+      <th>Fiscal Year</th>
+      <td><%= @fiscal_year_output %></td>
+    </tr>
+    <tr>
+      <th>Expiration Date</th>
+      <td><%= @expiration_date %></td>
+    </tr>
+    <tr>
+      <th>Business Name</th>
+      <td><%= @business.business_name_and_trading_name %></td>
+    </tr>
+    <tr>
+      <th>Address</th>
+      <td><%= @inspection.address.combadd %></td>
+    </tr>
+    <tr>
+      <th>License Number</th>
+      <td><%= @license_number %></td>
+    </tr>
+    <tr>
+      <th>Date Issued</th>
+      <td><%= @inspection.updated_at %></td>
+    </tr>
+  </table>
+<% end %>
+
+<!-- form to add conditions -->
+<%= form_with(model: [@address, @inspection]) do |f| %>
+  <div class="form-group
+    <%= f.label :condition %>
+    <%= f.text_field :condition, class: 'form-control' %>
+  </div>
+  <%= f.submit 'Add Condition', class: 'btn btn-primary' %>
+<% end %>

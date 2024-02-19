@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_02_04_222838) do
+ActiveRecord::Schema[7.0].define(version: 2024_02_19_214701) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -270,6 +270,23 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_04_222838) do
     t.index ["unit_id"], name: "index_inspections_on_unit_id"
   end
 
+  create_table "licenses", force: :cascade do |t|
+    t.bigint "inspection_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "sent"
+    t.boolean "revoked"
+    t.string "fiscal_year"
+    t.date "expiration_date"
+    t.integer "license_type"
+    t.bigint "business_id"
+    t.string "license_number"
+    t.date "date_issued"
+    t.text "conditions"
+    t.index ["business_id"], name: "index_licenses_on_business_id"
+    t.index ["inspection_id"], name: "index_licenses_on_inspection_id"
+  end
+
   create_table "notifications", force: :cascade do |t|
     t.string "title"
     t.text "body"
@@ -396,6 +413,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_04_222838) do
   add_foreign_key "inspections", "contacts"
   add_foreign_key "inspections", "units"
   add_foreign_key "inspections", "users", column: "inspector_id"
+  add_foreign_key "licenses", "businesses"
+  add_foreign_key "licenses", "inspections"
   add_foreign_key "notifications", "inspections"
   add_foreign_key "notifications", "users"
   add_foreign_key "observations", "areas"

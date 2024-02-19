@@ -5,6 +5,7 @@ class Business < ApplicationRecord
   has_many :contacts, through: :business_contacts
   has_many :inspections
   has_many :violations
+  has_many :licenses
 
   validates :name, presence: true
   validates :address, presence: true

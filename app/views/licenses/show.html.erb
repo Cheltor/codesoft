@@ -1,0 +1,16 @@
+License Show
+<label>License Type:</label>
+<p><%= @license.license_type %></p>
+
+<% if @license.license_type = 0 %>
+  <label>Business Name:</label>
+  <p><%= @license.business.business_name_and_trading_name %></p>
+<% end %>
+<label>License Number:</label>
+<p><%= @license.license_number %></p>
+<label>License Expiration:</label>
+<p><%= @license.expiration_date %></p>
+
+<%= link_to 'Edit', edit_license_path(@license) %> 
+<%#= link_to 'Email', email_license_path(@license) %>
+<%#= link_to 'Download', download_license_path(@license) %>

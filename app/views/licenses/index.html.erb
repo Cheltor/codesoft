@@ -1,0 +1,14 @@
+<h1>
+  All Licenses
+</h1>
+
+<% @licenses.each do |license| %>
+  <div>
+    <h2>
+      <%= link_to license.inspection.source, address_inspection_path(license.inspection.address, license.inspection) %>
+    </h2>
+    <p>
+      <%= license.created_at %>
+    </p>
+  </div>
+<% end %>

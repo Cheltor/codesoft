@@ -416,6 +416,148 @@ class InspectionsController < ApplicationController
     end
   end  
 
+  def generate_sfr_license
+    @inspection = Inspection.find(params[:id])
+    @business = Business.find(@inspection.business_id)
+    @address = @business.address
+
+    template_path = "#{Rails.root}/lib/templates/sfr_license_inspection.docx"
+    template = Sablon.template(File.expand_path(template_path))
+
+    today = Time.zone.now.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y")
+
+    # Determine the fiscal year
+    fiscal_year = today.month >= 7 ? today.year + 1 : today.year
+    fiscal_year_output = "FY#{fiscal_year}"
+
+    # Expiration date is the last day of the fiscal year
+    expiration_date = Date.new(fiscal_year, 6, 30).in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y")
+
+    # Format the date string
+    formatted_date = @inspection.updated_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y")
+
+    # Replace the placeholders in the document with the data
+    rendered_template = template.render_to_string(
+      {
+        inspection: {
+          updated_at: formatted_date,
+          today: today,
+          inspector: @inspection.inspector.name,
+          fiscal_year: fiscal_year_output,
+          expiration_date: expiration_date,
+          address: @address.combadd
+        }
+      }
+    )
+
+    # Write the generated file to disk
+    output_path = "#{Rails.root}/tmp/sfr_license_inspection.docx"
+    File.open(output_path, 'wb') do |f|
+      f.write(rendered_template)
+    end
+
+    # Format the address and today's date for the filename
+    formatted_address = @address.combadd.gsub(/[^\w\s-]/, '').gsub(/[\s]/, '_')
+    formatted_date = Time.zone.now.strftime("%Y-%m-%d")
+    filename = "SFR_License_Inspection_#{formatted_address}_#{formatted_date}.docx"
+
+    # Send the file as a download with the custom filename
+    send_file output_path, filename: filename, type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+  end
+
+  def generate_business_license
+    @inspection = Inspection.find(params[:id])
+    @business = Business.find(@inspection.business_id)
+    @address = @business.address
+
+    template_path = "#{Rails.root}/lib/templates/business_license_inspection.docx"
+    template = Sablon.template(File.expand_path(template_path))
+
+    today = Time.zone.now.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y")
+
+    # Determine the fiscal year
+    fiscal_year = today.month >= 7 ? today.year + 1 : today.year
+    fiscal_year_output = "FY#{fiscal_year}"
+
+    # Expiration date is the last day of the fiscal year
+    expiration_date = Date.new(fiscal_year, 6, 30).in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y")
+
+    # Format the date string
+    formatted_date = @inspeciton.updated_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y")
+
+    # Replace the placeholders in the document with the data
+    rendered_template = template.render_to_string(
+      {
+        inspection: {
+          updated_at: formatted_date,
+          today: today,
+          inspector: @inspection.inspector.name,
+          fiscal_year: fiscal_year_output,
+          expiration_date: expiration_date
+        },
+        business: {
+          name: @business.business_name_and_trading_name,
+          address: @address.combadd,
+
+      }
+    }
+    )
+
+    # Write the generated file to disk
+    output_path = "#{Rails.root}/tmp/business_license_inspection.docx"
+    File.open(output_path, 'wb') do |f|
+      f.write(rendered_template)
+    end
+
+    # Format the address and today's date for the filename
+    formatted_address = @address.combadd.gsub(/[^\w\s-]/, '').gsub(/[\s]/, '_')
+    formatted_date = Time.zone.now.strftime("%Y-%m-%d")
+    filename = "Business_License_Inspection_#{formatted_address}_#{formatted_date}.docx"
+
+    # Send the file as a download with the custom filename
+    send_file output_path, filename: filename, type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+  end
+
+  def draft_business_license
+    @inspection = Inspection.find(params[:id])
+    @business = Business.find(@inspection.business_id)
+    @address = @business.address
+
+    today = Time.zone.now.in_time_zone("Eastern Time (US & Canada)")
+
+    # Determine the fiscal year
+    fiscal_year = today.month >= 7 ? today.year + 1 : today.year
+    @fiscal_year_output = "FY#{fiscal_year}"
+
+    # Expiration date is the last day of the fiscal year
+    @expiration_date = Date.new(fiscal_year, 6, 30).in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y")
+
+    # Format the date string
+    formatted_date = @inspection.updated_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y")
+  
+    # License number
+    @license_number = "L#{fiscal_year}#{rand(1000..9999)}"
+  end
+
+  def create_business_license
+    @inspection = Inspection.find(params[:id])
+    @business = Business.find(@inspection.business_id)
+    @address = @business.address
+
+    # Create a new license object
+    @license = License.new(inspection: @inspection, business: @business)
+
+    # Set the license type
+    @license.license_type = :business
+
+    if @license.save
+      redirect_to license_path(@license)
+    else
+      # Handle the case when license creation fails
+      # Redirect to an appropriate page or display an error message
+    end
+  end
+
   private
 
   def set_address

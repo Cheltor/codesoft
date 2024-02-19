@@ -16,6 +16,7 @@ class Inspection < ApplicationRecord
   belongs_to :business, optional: true
   has_many :inspection_comments, dependent: :destroy
   has_many :notifications, dependent: :destroy
+  has_one :license, dependent: :destroy
 
   scope :created_within, -> (range) { where(created_at: range) }
   scope :updated_within, -> (range) { where(updated_at: range) }

@@ -282,7 +282,7 @@
 <div class="row">
   <div class="col">
     <% if @inspection.status == "Satisfactory" && @inspection.source == "Business license" %>
-      <button>Print Business License</button>
+      <%= link_to "Print Business License", create_business_license_address_inspection_path(@address, @inspection), class: "btn btn-primary" %>
     <% end %>
   </div>
 </div>

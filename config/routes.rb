@@ -44,11 +44,15 @@ Rails.application.routes.draw do
         get 'conduct'
         get 'schedule'
         post 'save_and_redirect_to_area_new'
+        get 'generate_business_license'
+        get 'create_business_license'
+        get 'draft_sfr_license'
       end
       resources :areas do
         resources :observations, only: [:create, :edit, :update]
       end
       resources :inspection_comments
+      resources :licenses, except: [:index]
     end
     resources :businesses, except: [:index, :new_business]
     member do
@@ -70,6 +74,11 @@ Rails.application.routes.draw do
       get :potentially_vacant
       get :vacant
     end
+  end
+
+  resources :licenses do
+    get 'email_license' => 'licenses#email_license'
+    get 'download_license' => 'licenses#download_license'
   end
 
   get 'all_inspections' => 'inspections#all_inspections'
@@ -96,6 +105,7 @@ Rails.application.routes.draw do
   patch 'update_inspector/:id' => 'inspections#update_inspector', as: 'update_inspector'
   get 'inspection_calendar' => 'inspections#inspection_calendar'
   get 'new_business_violation/:business_id' => 'violations#new_business_violation', as: 'new_business_violation'
+  get 'all_licenses' => 'licenses#index'
 
   resources :users, only: [:index, :show, :edit, :update]
   resources :notifications do
