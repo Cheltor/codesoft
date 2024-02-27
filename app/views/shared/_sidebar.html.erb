@@ -69,6 +69,14 @@
         <% end %>
       </li>
 
+      <%# LICENSES %>
+      <li class="sidebar-item">
+        <%= link_to(licenses_path, class: "sidebar-link") do %>
+          <i class="align-middle" data-feather="file-text"></i>
+          <span class="align-middle">Licenses</span>
+        <% end %>
+      </li>
+
       <%# INSPECTIONS %>
       <% if current_user.admin? || current_user.ons? || current_user.oas? %>
       <li class="sidebar-header">

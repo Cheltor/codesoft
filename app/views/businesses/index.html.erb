@@ -60,11 +60,9 @@
                     <% end %>
                   </td>
                   <td>
-                    <% if business.licensed %>
-                      <span style="color: green;">Yes</span>
-                    <% else %>
-                      <span style="color: red;">No</span>
-                    <% end %>
+                    <span style="color: <%= business.licensed ? (business.licenses.last.sent? ? 'green' : 'red') : 'red' %>;">
+                      <%= business.licensed ? (business.licenses.last.sent? ? 'Yes' : 'Yes (not sent)') : 'No' %>
+                    </span>
                 </td>
                 </tr>
               <% end %>

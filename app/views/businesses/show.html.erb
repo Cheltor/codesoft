@@ -128,5 +128,37 @@
         </tbody>
       </table>
     <% end %>
+
+    <% if @business.licenses.any? %>
+  <br>
+  <h3>
+    Licenses
+    (<%= @business.licenses.count %>)
+  </h3>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Fiscal Year</th>
+        <th>Expiration Date</th>
+        <th>Sent?</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @business.licenses.each do |license| %>
+        <tr>
+          <td><%= link_to license.fiscal_year, license_path(license) %></td>
+          <td><%= license.expiration_date.strftime("%m/%d/%Y") %></td>
+          <td>
+            <% if license.sent == true %>
+              <p class="text-success">Yes</p>
+            <% else %>
+              <p class="text-danger">No</p>
+            <% end %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>
   </div>
 </div>

@@ -33,7 +33,7 @@ class Business < ApplicationRecord
   end
 
   def licensed
-    inspections.where(status: "Satisfactory").exists?
+    licenses.where('expiration_date > ?', Date.today).exists?
   end
 
   private

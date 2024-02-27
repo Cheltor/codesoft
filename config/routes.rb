@@ -79,6 +79,11 @@ Rails.application.routes.draw do
   resources :licenses do
     get 'email_license' => 'licenses#email_license'
     get 'download_license' => 'licenses#download_license'
+    member do
+      put 'sent_today' => 'licenses#sent_today' 
+      put 'not_sent' => 'licenses#not_sent'
+      get 'generate_business'
+    end
   end
 
   get 'all_inspections' => 'inspections#all_inspections'

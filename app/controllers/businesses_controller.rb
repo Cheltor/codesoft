@@ -8,9 +8,9 @@ class BusinessesController < ApplicationController
 
     case params[:licensed]
     when '1'
-      @businesses = @businesses.joins(:inspections).where(inspections: { status: "Satisfactory" }).distinct
+      @businesses = @businesses.joins(:licenses).where('licenses.expiration_date > ?', Date.today).distinct
     when '0'
-      @businesses = @businesses.left_outer_joins(:inspections).where(inspections: { id: nil }).or(@businesses.left_outer_joins(:inspections).where.not(inspections: { status: "Satisfactory" })).distinct
+      @businesses = @businesses.left_outer_joins(:licenses).where('licenses.expiration_date <= ? OR licenses.expiration_date IS NULL', Date.today).distinct
     end
 
     @businesses = @businesses.paginate(page: params[:page], per_page: 10)
