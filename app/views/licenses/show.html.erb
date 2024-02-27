@@ -18,7 +18,11 @@
     </a></li>
 
     <li class="breadcrumb-item active" aria-current="page">
-      <%= link_to "#{@license.fiscal_year} #{@license.license_type.capitalize} License for #{@license.business}", license_path(@license) %>
+      <% if @license.business.present? %>
+        <%= link_to "#{@license.fiscal_year} #{@license.license_type.capitalize} License for #{@license.business}", license_path(@license) %>
+      <% else %>
+        <%= link_to "#{@license.fiscal_year} #{@license.license_type} License", license_path(@license) %>
+      <% end %>
     </li>
 
   </ol>
@@ -77,7 +81,11 @@
     <% end %>
 
     <%= link_to 'Edit the license', edit_license_path(@license), class: "btn btn-primary" %> 
-    <%= link_to 'Download license as Word Document', generate_business_license_path(@license), class: "btn btn-primary" %>
+    <% if @license.license_type == 'business' %>
+      <%= link_to 'Download license as Word Document', generate_business_license_path(@license), class: "btn btn-primary" %>
+    <% elsif @license.license_type == 'single_family' %>
+      <%= link_to 'Download license as Word Document', generate_single_family_license_path(@license), class: "btn btn-primary" %>
+    <% end %>
   </div>
 </div>
 

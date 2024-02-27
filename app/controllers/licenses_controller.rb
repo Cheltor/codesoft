@@ -9,8 +9,7 @@ class LicensesController < ApplicationController
   def show
     @license = License.find(params[:id])
     @inspection = Inspection.find(@license.inspection_id)
-    @business = Business.find(@inspection.business_id)
-    @address = @business.address
+    @address = Address.find(@inspection.address_id)
   end
 
   def new
@@ -87,6 +86,51 @@ class LicensesController < ApplicationController
     formatted_address = @address.combadd.gsub(/[^\w\s-]/, '').gsub(/[\s]/, '_')
     formatted_date = Time.zone.now.strftime("%Y-%m-%d")
     filename = "Business_License_#{@business.business_name_and_trading_name}_#{formatted_date}.docx"
+
+    # Send the file as a download with the custom filename
+    send_file output_path, filename: filename, type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+  end
+
+  def generate_single_family
+    @license = License.find(params[:id])
+    @inspection = Inspection.find(@license.inspection_id)
+    @address = Address.find(@inspection.address_id)
+
+    template_path = "#{Rails.root}/lib/templates/SingleFamilyRentalLicenseTemplate.docx"
+    template = Sablon.template(File.expand_path(template_path))
+
+    today = Time.zone.now.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y")
+
+    # Replace the placeholders in the document with the data
+    rendered_template = template.render_to_string(
+      {
+        address: {
+          combadd: @address.combadd,
+          owner: @address.ownername,
+        },
+        license: {
+          conditions: @license.conditions.blank? ? "None" : @license.conditions,
+          fiscal_year: @license.fiscal_year,
+          today: today,
+          license_number: @license.license_number,
+          expiration_date: @license.expiration_date.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y"),
+      },
+      inspection: {
+        bedrooms: 0,
+      }
+    }
+    )
+
+    # Write the generated file to disk
+    output_path = "#{Rails.root}/tmp/single_family_license_inspection.docx"
+    File.open(output_path, 'wb') do |f|
+      f.write(rendered_template)
+    end
+
+    # Format the address and today's date for the filename
+    formatted_address = @address.combadd.gsub(/[^\w\s-]/, '').gsub(/[\s]/, '_')
+    formatted_date = Time.zone.now.strftime("%Y-%m-%d")
+    filename = "Single_Family_Rental_License_#{@address.combadd}_#{formatted_date}.docx"
 
     # Send the file as a download with the custom filename
     send_file output_path, filename: filename, type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document"

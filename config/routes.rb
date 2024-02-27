@@ -44,9 +44,8 @@ Rails.application.routes.draw do
         get 'conduct'
         get 'schedule'
         post 'save_and_redirect_to_area_new'
-        get 'generate_business_license'
         get 'create_business_license'
-        get 'draft_sfr_license'
+        get 'create_single_family_license'
       end
       resources :areas do
         resources :observations, only: [:create, :edit, :update]
@@ -83,6 +82,7 @@ Rails.application.routes.draw do
       put 'sent_today' => 'licenses#sent_today' 
       put 'not_sent' => 'licenses#not_sent'
       get 'generate_business'
+      get 'generate_single_family'
     end
   end
 

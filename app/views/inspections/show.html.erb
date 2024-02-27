@@ -281,10 +281,14 @@
 </div> 
 <div class="row">
   <div class="col">
-    <% if @inspection.status == "Satisfactory" && @inspection.source == "Business license" && @inspection.license.present? %>
-      <%= link_to "Show License", license_path(@inspection.license), class: "btn btn-primary" %>
-    <% else %>
-      <%= link_to "Generate Business License", create_business_license_address_inspection_path(@address, @inspection), class: "btn btn-primary" %>
+    <% if @inspection.status == "Satisfactory" %>
+      <% if @inspection.license.present? %>
+        <%= link_to "Show License", license_path(@inspection.license), class: "btn btn-primary" %>
+      <% elsif @inspection.source == "Business license" %>
+        <%= link_to "Generate Business License", create_business_license_address_inspection_path(@address, @inspection), class: "btn btn-primary" %>
+      <% elsif @inspection.source == "Single Family License" %>
+        <%= link_to "Generate Single Family License", create_single_family_license_address_inspection_path(@address, @inspection), class: "btn btn-primary" %>
+      <% end %>
     <% end %>
   </div>
 </div>
