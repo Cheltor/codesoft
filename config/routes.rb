@@ -111,6 +111,7 @@ Rails.application.routes.draw do
   get 'inspection_calendar' => 'inspections#inspection_calendar'
   get 'new_business_violation/:business_id' => 'violations#new_business_violation', as: 'new_business_violation'
   get 'all_licenses' => 'licenses#index'
+  get 'map' => 'static#map'
 
   resources :users, only: [:index, :show, :edit, :update]
   resources :notifications do

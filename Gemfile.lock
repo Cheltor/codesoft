@@ -133,6 +133,7 @@ GEM
     faraday-retry (1.0.3)
     faraday_middleware (1.2.0)
       faraday (~> 1.0)
+    geocoder (1.8.2)
     globalid (1.1.0)
       activesupport (>= 5.0)
     i18n (1.14.1)
@@ -293,6 +294,7 @@ DEPENDENCIES
   debug
   devise
   dockerfile-rails (>= 1.0)
+  geocoder
   jbuilder
   jsbundling-rails
   pg (~> 1.1)

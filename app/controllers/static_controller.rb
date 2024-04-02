@@ -1,5 +1,9 @@
 class StaticController < ApplicationController
-  skip_before_action :authenticate_user!, only: [:issue, :dashboard, :helpful]
+  skip_before_action :authenticate_user!, only: [:issue, :dashboard, :helpful, :map]
+
+  def map
+    @addresses = Address.joins(:violations).where(violations: { status: :current })
+  end
 
   def dashboard
     @user = current_user

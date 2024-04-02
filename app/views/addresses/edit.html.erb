@@ -84,6 +84,16 @@
     <%= f.text_field :property_id, class: "form-control" %>
   </div>
 
+  <div class="form-group">
+    <%= f.label :latitude %>
+    <%= f.text_field :latitude, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :longitude %>
+    <%= f.text_field :longitude, class: "form-control" %>
+  </div>
+
     <%= f.submit "Update Address", class: "btn btn-primary mt-3" %>
 <% end %>
 </div>

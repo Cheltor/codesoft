@@ -12,6 +12,16 @@
         <% end %>
       </li>
 
+      <%# MAP %>
+      <% if current_user.admin? || current_user.ons? || current_user.oas? %>
+      <li class="sidebar-item">
+        <%= link_to(map_path, class: "sidebar-link") do %>
+          <i class="align-middle" data-feather="map"></i>
+          <span class="align-middle">Map</span>
+        <% end %>
+      </li>
+      <% end %>
+
       <% if current_user.ons? %>
         <li class="sidebar-item">
           <%= link_to(inspection_calendar_path, class: "sidebar-link") do %>

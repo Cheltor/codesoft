@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_02_19_214701) do
+ActiveRecord::Schema[7.0].define(version: 2024_03_12_191913) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -79,6 +79,8 @@ ActiveRecord::Schema[7.0].define(version: 2024_02_19_214701) do
     t.string "district"
     t.string "property_id"
     t.string "vacancy_status"
+    t.float "latitude"
+    t.float "longitude"
     t.index ["combadd"], name: "index_addresses_on_combadd"
     t.index ["property_name"], name: "index_addresses_on_property_name"
   end

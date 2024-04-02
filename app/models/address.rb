@@ -17,7 +17,14 @@ class Address < ApplicationRecord
     before_save :upcase_ownerstate
     after_initialize :set_default_vacancy_status, :if => :new_record?
 
+    geocoded_by :full_street_address
+    after_validation :geocode, if: ->(obj){ obj.full_street_address.present? and obj.streetnumb_changed? and obj.streetname_changed? and obj.streettype_changed? }
+
     default_scope { where.not(streetnumb: nil) }
+
+    def full_street_address
+        "#{streetnumb} #{streetname} #{streettype}, Maryland, 20737"
+    end
 
 
     def self.ransackable_attributes(auth_object = nil)
