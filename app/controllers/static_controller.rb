@@ -1,8 +1,23 @@
 class StaticController < ApplicationController
-  skip_before_action :authenticate_user!, only: [:issue, :dashboard, :helpful, :map]
+  skip_before_action :authenticate_user!, only: [:issue, :dashboard, :helpful]
 
   def map
-    @addresses = Address.joins(:violations).where(violations: { status: :current })
+    if params[:show] == 'all'
+      @addresses = Address.all
+    elsif params[:show] == 'violations'
+      # Add the addresses with violations to the address.units with violations
+      @addresses = Address.left_joins(:violations, units: :violations)
+      .where(violations: { status: :current })
+      .or(Address.left_joins(:violations, units: :violations)
+      .where(units: { violations: { status: :current } }))
+    else
+      @addresses = Address.joins(:violations).where(violations: { status: :current })
+    end
+  
+    if params[:qmap].present?
+      @search = Address.ransack(combadd_or_property_name_cont: params[:qmap])
+      @addresses = @search.result
+    end
   end
 
   def dashboard
