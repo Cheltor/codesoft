@@ -73,24 +73,27 @@ class ViolationsController < ApplicationController
 
   def sir 
     if params[:start_date].present? && params[:end_date].present?
-      start_date = Date.parse(params[:start_date])
-      end_date = Date.parse(params[:end_date])
+      start_date = Date.parse(params[:start_date]).beginning_of_day
+      end_date = Date.parse(params[:end_date]).end_of_day
       range = start_date..end_date
-  
-      @complaints_made = Inspection.complaints_created_within(range)
-      @complaint_responses = Inspection.complaint_responses_created_within(range)
-      @warnings = Violation.warnings_created_within(range)
-      @violations = Violation.violations_created_within(range)
-      @citations = Citation.created_within(range)
-      @sf_inspections = Inspection.sf_inspections_created_within(range)
-      @sf_inspections_updated = Inspection.sf_inspections_updated_within(range)
-      @sf_inspections_approved = Inspection.sf_inspections_approved_within(range)
-      @mf_inspections = Inspection.mf_inspections_created_within(range)
-      @mf_inspections_updated = Inspection.mf_inspections_updated_within(range)
-      @mf_inspections_approved = Inspection.mf_inspections_approved_within(range)
-      @bl_inspections = Inspection.bl_inspections_created_within(range)
-      @bl_inspections_updated = Inspection.bl_inspections_updated_within(range)
+    else
+      # Default to the last 2 weeks
+      range = 2.weeks.ago.beginning_of_day..Time.zone.now.end_of_day
     end
+  
+    @complaints_made = Inspection.complaints_created_within(range)
+    @complaint_responses = Inspection.complaint_responses_created_within(range)
+    @warnings = Violation.warnings_created_within(range)
+    @violations = Violation.violations_created_within(range)
+    @citations = Citation.created_within(range)
+    @sf_inspections = Inspection.sf_inspections_created_within(range)
+    @sf_inspections_updated = Inspection.sf_inspections_updated_within(range)
+    @sf_inspections_approved = Inspection.sf_inspections_approved_within(range)
+    @mf_inspections = Inspection.mf_inspections_created_within(range)
+    @mf_inspections_updated = Inspection.mf_inspections_updated_within(range)
+    @mf_inspections_approved = Inspection.mf_inspections_approved_within(range)
+    @bl_inspections = Inspection.bl_inspections_created_within(range)
+    @bl_inspections_updated = Inspection.bl_inspections_updated_within(range)
   end
 
   def create
