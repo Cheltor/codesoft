@@ -40,7 +40,7 @@ class Inspection < ApplicationRecord
 
   def create_notification_if_complaint
     Rails.logger.info "Checking for complaint inspection..."
-    return unless source == 'Complaint' && inspector != current_user
+    return unless source == 'Complaint' && inspector.id != current_user.id
     Rails.logger.info "Inspection is a complaint."
     notification = Notification.create(
       inspection: self,
