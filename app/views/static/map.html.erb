@@ -118,5 +118,8 @@
   }
 </script>
 
-
-<script async defer src="https://maps.googleapis.com/maps/api/js?key=<%= Rails.application.credentials.google[:api_key] %>&callback=initMap"></script>
+<% if Rails.env.development? %>
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=<%= Rails.application.credentials.google[:api_key] %>&callback=initMap"></script>
+<% else %>
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=<%= ENV['GOOGLE_API_KEY'] %>&callback=initMap"></script>
+<% end %>
