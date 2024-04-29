@@ -266,7 +266,7 @@ class AddressesController < ApplicationController
   private
 
   def address_params
-      params.require(:address).permit(:aka, :pid, :ownername, :owneraddress, :ownercity, :ownerstate, :ownerzip, :streetnumb, :streetname, :streettype, :landusecode, :zoning, :owneroccupiedin, :vacant, :absent, :premisezip, :combadd, :outstanding, :property_name, :district, :property_id, :vacancy_status, contact_ids: [])
+      params.require(:address).permit(:latitude, :longitude, :aka, :pid, :ownername, :owneraddress, :ownercity, :ownerstate, :ownerzip, :streetnumb, :streetname, :streettype, :landusecode, :zoning, :owneroccupiedin, :vacant, :absent, :premisezip, :combadd, :outstanding, :property_name, :district, :property_id, :vacancy_status, contact_ids: [])
   end
 
   def current_page
