@@ -104,6 +104,19 @@
         var title = '<%= j address.combadd %>';
         var content = '<a href="/addresses/' + <%= address.id %> + '">' + '<%= j address.property_name_with_combadd %>' + '</a>';
 
+        <% current_violations = address.violations.where(status: 'current') %>
+        <% if current_violations.any? %>
+          content += '<br/><br><strong>Current Violations:</strong><ul>';
+          <% current_violations.each do |violation| %>
+            <% violation.codes.each do |code| %>
+              content += '<li><a href="/violations/' + <%= violation.id %> + '">' + '<%= j code.name %>' + '</a></li>';
+            <% end %>
+          <% end %>
+          content += '</ul>';
+        <% end %>
+
+
+
         var marker = createMarkerWithInfoWindow(map, position, title, content);
 
         // Extend the bounds to include the position of the marker
