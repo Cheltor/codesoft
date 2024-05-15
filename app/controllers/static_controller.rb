@@ -15,7 +15,7 @@ class StaticController < ApplicationController
     end
   
     if params[:qmap].present?
-      @search = Address.ransack(combadd_or_property_name_cont: params[:qmap])
+      @search = Address.ransack(combadd_or_property_name_or_ownername_cont: params[:qmap])
       @addresses = @search.result
     end
   end
