@@ -54,7 +54,17 @@ class ViolationsController < ApplicationController
   
     @violations = @violations.order(created_at: :desc)
   
-    @violations = @violations.paginate(page: params[:page], per_page: 15)  end
+    @violations = @violations.paginate(page: params[:page], per_page: 15)
+  end
+
+  # For the MPIA request
+  def export_csv
+    @violations = Violation.where('created_at >= ?', 6.months.ago)
+
+    respond_to do |format|
+      format.csv { send_data generate_csv(@violations), filename: "violations-#{Date.today}.csv" }
+    end
+  end
 
   def edit
   end
@@ -208,6 +218,17 @@ class ViolationsController < ApplicationController
     unless current_user&.ons? || current_user&.admin?
       flash[:alert] = 'You do not have permission to perform this action.'
       redirect_to root_path
+    end
+  end
+
+  def generate_csv(violations)
+    CSV.generate(headers: true) do |csv|
+      csv << ["ID", "User", "Status", "Created At", "Updated At"]
+
+      violations.each do |violation|
+        codes = violation.codes.pluck(:name).join(", ")
+        csv << [violation.address.property_name_with_combadd, violation.created_at, codes]
+      end
     end
   end
   

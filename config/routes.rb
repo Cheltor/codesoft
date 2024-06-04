@@ -21,6 +21,9 @@ Rails.application.routes.draw do
       patch :update, on: :member
       get :generate_report, on: :member
       resources :violation_comments
+      collection do
+        get :export_csv
+      end
     end
     resources :comments
     resources :concerns, only: [:create, :edit, :update]
@@ -112,6 +115,7 @@ Rails.application.routes.draw do
   get 'new_business_violation/:business_id' => 'violations#new_business_violation', as: 'new_business_violation'
   get 'all_licenses' => 'licenses#index'
   get 'map' => 'static#map'
+  get 'export_violations' => 'violations#export_csv'
 
   resources :users, only: [:index, :show, :edit, :update]
   resources :notifications do

@@ -12,6 +12,8 @@
             <%= link_to "All Violations", all_violations_path, class:"dropdown-item" %>
             <%= link_to "Current", all_violations_path(status: "current"), class:"dropdown-item" %>
             <%= link_to "Closed", all_violations_path(status: "resolved"), class:"dropdown-item" %>
+            <%= link_to 'Export CSV', export_violations_path(format: :csv), class:"dropdown-item" %>
+
             <% if current_user.ons? %>
               <div class="dropdown-divider"></div>
               <%= link_to "My Violations", all_violations_path(user: 'current_user'), class:"dropdown-item" %>
