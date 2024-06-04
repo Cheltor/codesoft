@@ -223,7 +223,7 @@ class ViolationsController < ApplicationController
 
   def generate_csv(violations)
     CSV.generate(headers: true) do |csv|
-      csv << ["ID", "User", "Status", "Created At", "Updated At"]
+      csv << ["Address", "Created At", "Codes"]
 
       violations.each do |violation|
         codes = violation.codes.pluck(:name).join(", ")
