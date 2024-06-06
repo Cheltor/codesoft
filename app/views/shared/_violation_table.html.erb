@@ -8,6 +8,7 @@
                  end
 %>
 
+
 <tr class="<%= 'table-danger' if violation.deadline_passed? && violation.status == "current" %> <%= 'table-warning' if violation.status == "current" %> <%= 'table-secondary' if violation.status == "resolved" %>">
   <td>
     <% if violation.unit.present? %>

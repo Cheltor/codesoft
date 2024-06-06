@@ -27,6 +27,7 @@
         <%= link_to "All Inspections", all_address_inspections_address_path(@address), class: "btn btn-outline-info mt-2", data: { turbolinks: false } %>
         <%= link_to "All Citations", all_address_citations_address_path(@address), class: "btn btn-outline-warning mt-2", data: { turbolinks: false } %>
         <%= link_to "All Complaints", all_address_complaints_address_path(@address), class: "btn btn-outline-success mt-2", data: { turbolinks: false } %>
-      </div>
+        <!-- button for export_property_csv -->
+            <%= link_to 'Export CSV', export_property_csv_path(address_id: @address.id, format: :csv), class:"btn btn-outline-dark mt-2", data: { turbolinks: false } %>
     </div>
   </div>

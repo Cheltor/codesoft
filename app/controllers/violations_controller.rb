@@ -66,6 +66,21 @@ class ViolationsController < ApplicationController
     end
   end
 
+  def export_property_csv
+    # Ensure @address is set correctly
+    puts "@address: #{@address.inspect}"
+
+    # Get all violations for the address
+    @violations = @address.violations
+
+    # Debug output to check if violations are fetched correctly
+    puts "@violations: #{@violations.inspect}"
+
+    respond_to do |format|
+      format.csv { send_data generate_property_csv(@violations), filename: "#{@address.property_name_with_combadd} violations-#{Date.today}.csv" }
+    end
+  end
+
   def edit
   end
 
@@ -228,6 +243,21 @@ class ViolationsController < ApplicationController
       violations.each do |violation|
         codes = violation.codes.pluck(:name).join(", ")
         csv << [violation.address.property_name_with_combadd, violation.created_at, codes]
+      end
+    end
+  end
+
+  def generate_property_csv(violations)
+    CSV.generate(headers: true) do |csv|
+      csv << ["Property/unit", "Created At", "Codes"]
+
+      violations.each do |violation|
+        codes = violation.codes.pluck(:name).join(", ")
+        csv << [
+          violation.unit.present? ? violation.unit : violation.property_name_with_combadd, 
+          violation.created_at, 
+          codes
+        ]
       end
     end
   end

@@ -116,6 +116,7 @@ Rails.application.routes.draw do
   get 'all_licenses' => 'licenses#index'
   get 'map' => 'static#map'
   get 'export_violations' => 'violations#export_csv'
+  get 'export_property_csv' => 'violations#export_property_csv'
 
   resources :users, only: [:index, :show, :edit, :update]
   resources :notifications do
