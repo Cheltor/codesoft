@@ -254,7 +254,7 @@ class ViolationsController < ApplicationController
       violations.each do |violation|
         codes = violation.codes.pluck(:name).join(", ")
         csv << [
-          violation.unit.present? ? violation.unit : violation.property_name_with_combadd, 
+          violation.unit.present? ? violation.unit : violation.address.property_name_with_combadd, 
           violation.created_at, 
           codes
         ]
