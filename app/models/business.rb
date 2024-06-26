@@ -9,6 +9,8 @@ class Business < ApplicationRecord
 
   validates :name, presence: true
   validates :address, presence: true
+
+  validates :name, uniqueness: { scope: [:address_id, :email, :phone] }
   
   def business_name_and_trading_name
     if trading_as.present?
@@ -39,6 +41,8 @@ class Business < ApplicationRecord
   private
 
   def normalize_website
-    self.website = "http://#{website}" unless website[/\Ahttp:\/\//] || website[/\Ahttps:\/\//]
+    if website.present?
+      self.website = "http://#{website}" unless website[/\Ahttp:\/\//] || website[/\Ahttps:\/\//]
+    end
   end
 end
