@@ -148,6 +148,17 @@ class LicensesController < ApplicationController
     redirect_to @license, notice: 'License was updated to show it was not sent.'
   end
 
+  def paid
+    @license = License.find(params[:id])
+    @license.update(paid: true)
+    redirect_to @license, notice: 'License was updated to show it was paid.'
+  end
+  def not_paid
+    @license = License.find(params[:id])
+    @license.update(paid: false)
+    redirect_to @license, notice: 'License was updated to show it was not paid.'
+  end
+  
   private
 
   def license_params

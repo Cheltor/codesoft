@@ -57,6 +57,19 @@
 </div></div>
   </div>
   <div class="card-body">
+
+    <label class="font-weight-bold">License paid?</label>
+    <% if @license.paid == true %>
+      <p class="text-success">Yes</p>
+    <% else %>
+      <p class="text-danger">No</p>
+    <% end %>
+    <% if @license.paid == true %>
+      <%= button_to 'Mark as Not Paid', not_paid_license_path(@license), method: :put, class: "btn btn-outline-danger" %>
+    <% else %>
+      <%= button_to 'Mark as Paid', paid_license_path(@license), method: :put, class: "btn btn-outline-primary" %>
+    <% end %>
+    <br>
     <label class="font-weight-bold">License sent?</label>
     <% if @license.sent == true %>
       <p class="text-success">Yes</p>

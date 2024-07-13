@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_03_12_191913) do
+ActiveRecord::Schema[7.0].define(version: 2024_07_13_160203) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -285,6 +285,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_12_191913) do
     t.string "license_number"
     t.date "date_issued"
     t.text "conditions"
+    t.boolean "paid", default: false, null: false
     t.index ["business_id"], name: "index_licenses_on_business_id"
     t.index ["inspection_id"], name: "index_licenses_on_inspection_id"
   end

@@ -84,6 +84,8 @@ Rails.application.routes.draw do
     member do
       put 'sent_today' => 'licenses#sent_today' 
       put 'not_sent' => 'licenses#not_sent'
+      put 'paid' => 'licenses#paid'
+      put 'not_paid' => 'licenses#not_paid'
       get 'generate_business'
       get 'generate_single_family'
     end
