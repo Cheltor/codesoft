@@ -13,6 +13,14 @@ class License < ApplicationRecord
     vacant_property: 4
   }
 
+  def self.ransackable_attributes(auth_object = nil)
+    %w[sent paid]
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    %w[address business]
+  end
+
   private
 
   def set_fiscal_year_and_expiration_date

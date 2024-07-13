@@ -1,8 +1,18 @@
 class LicensesController < ApplicationController
   def index
-    @licenses = License.paginate(page: params[:page], per_page: 10)
+    current_year = Time.zone.now.year
+    fiscal_year_start = Date.new(current_year, 7, 1)
+    fiscal_year_end = Date.new(current_year + 1, 6, 30)
+
+    @licenses = License.where("created_at >= ? AND created_at <= ?", fiscal_year_start, fiscal_year_end).order(created_at: :desc).paginate(page: params[:page], per_page: 10)
     if params[:sent].present?
       @licenses = @licenses.where(sent: params[:sent] == 'true')
+    end
+    if params[:paid].present?
+      @licenses = @licenses.where(paid: params[:paid] == 'true')
+    end
+    if params[:license_type].present?
+      @licenses = @licenses.where(license_type: params[:license_type])
     end
   end
 

@@ -49,6 +49,13 @@
           <br>
           <p><strong>Inspection Description:</strong> <%= @inspection.description %></p>
           <% end %>
+                  <% if @attachments.any? %>
+        <button type="button" class="btn btn-primary mt-2 mb-2" data-bs-toggle="modal" data-bs-target="#allAttachModal">
+          <i class="bi bi-paperclip"></i>
+          Application/photos
+        </button>
+        <br>
+        <% end %>
           <br>
         <p><strong>Inspection Request Was Created:</strong> <%= @inspection.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></p>
         <% if @inspection.contact.present? %>
@@ -86,12 +93,7 @@
                 <% else %>
                 <% end %>
         <% end %>
-        <% if @attachments.any? %>
-        <button type="button" class="btn btn-primary mt-2 mb-2" data-bs-toggle="modal" data-bs-target="#allAttachModal">
-          <i class="bi bi-paperclip"></i>
-          Application/photos
-        </button>
-        <% end %>
+
   <br>
   <br>
 
@@ -279,19 +281,6 @@
     </div>
   </div>
 </div> 
-<div class="row">
-  <div class="col">
-    <% if @inspection.status == "Satisfactory" %>
-      <% if @inspection.license.present? %>
-        <%= link_to "Show License", license_path(@inspection.license), class: "btn btn-primary" %>
-      <% elsif @inspection.source == "Business license" %>
-        <%= link_to "Generate Business License", create_business_license_address_inspection_path(@address, @inspection), class: "btn btn-primary" %>
-      <% elsif @inspection.source == "Single Family License" %>
-        <%= link_to "Generate Single Family License", create_single_family_license_address_inspection_path(@address, @inspection), class: "btn btn-primary" %>
-      <% end %>
-    <% end %>
-  </div>
-</div>
 <div class="row">
   <div class="col">
     <div class="card">

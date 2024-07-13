@@ -54,6 +54,9 @@
     <label class="font-weight-bold">License Number:</label>
     <p><%= @license.license_number %></p>      <br><label class="font-weight-bold">License Expiration:</label>
     <p><%= @license.expiration_date %></p>
+    <br>
+    <%= link_to 'Edit the license', edit_license_path(@license), class: "btn btn-primary" %> 
+
 </div></div>
   </div>
   <div class="card-body">
@@ -93,7 +96,6 @@
       <p>None</p>
     <% end %>
 
-    <%= link_to 'Edit the license', edit_license_path(@license), class: "btn btn-primary" %> 
     <% if @license.license_type == 'business' %>
       <%= link_to 'Download license as Word Document', generate_business_license_path(@license), class: "btn btn-primary" %>
     <% elsif @license.license_type == 'single_family' %>

@@ -386,6 +386,12 @@ class InspectionsController < ApplicationController
       if @inspection.source == "Complaint" && @inspection.status == "Unsatisfactory"
         flash[:code_ids] = @inspection.code_ids
         redirect_to new_address_violation_path(@address, @inspection, code_ids: @inspection.code_ids.join(',')), notice: 'Inspection was successfully updated.'
+      elsif @inspection.source == "Business license" && @inspection.status == "Satisfactory"
+        redirect_to create_business_license_address_inspection_path(@address, @inspection)
+      elsif @inspection.source == "Single Family License" && @inspection.status == "Satisfactory"
+        redirect_to create_single_family_license_address_inspection_path(@address, @inspection)
+      elsif @inspection.source == "Multifamily License" && @inspection.status == "Satisfactory"
+        redirect_to create_multifamily_license_address_inspection_path(@address, @inspection)
       else
         redirect_to address_inspection_path(@address, @inspection), notice: 'Inspection was successfully updated.'
       end
@@ -421,6 +427,7 @@ class InspectionsController < ApplicationController
     @address = Address.find(@inspection.address_id)
 
     # Check if a license already exists for this inspection
+    
     if @inspection.license
       # Redirect to the license page or display an appropriate message
       return
@@ -456,6 +463,30 @@ class InspectionsController < ApplicationController
 
     # Set the license type
     @license.license_type = :business
+
+    if @license.save
+      redirect_to license_path(@license)
+    else
+      # Handle the case when license creation fails
+      # Redirect to an appropriate page or display an error message
+    end
+  end
+
+  def create_multifamily_license
+    @inspection = Inspection.find(params[:id])
+    @address = Address.find(@inspection.address_id)
+
+    # Check if a license already exists for this inspection
+    if @inspection.license
+      # Redirect to the license page or display an appropriate message
+      return
+    end
+
+    # Create a new license object
+    @license = License.new(inspection: @inspection)
+
+    # Set the license type
+    @license.license_type = :multifamily
 
     if @license.save
       redirect_to license_path(@license)

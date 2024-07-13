@@ -1,12 +1,15 @@
 <h1>
-  Licenses
+  Current FY Licenses
 </h1>
 
 <div class="card" style="background-color: #e3f2fd;">
   <div class="card-body">
     <%= form_with(url: licenses_path, method: :get, local: true, html: { class: 'form-inline' }) do %>
-      <%= select_tag :sent, options_for_select([['All', ''], ['Sent', 'true'], ['Not Sent', 'false']], selected: params[:sent]), class: 'form-control' %>
-
+      <%= select_tag :sent, options_for_select([['Both Sent and Not Sent', ''], ['Sent', 'true'], ['Not Sent', 'false']], selected: params[:sent]), class: 'form-control' %>
+      <br>
+      <%= select_tag :paid, options_for_select([['Both Paid and Not Paid', ''], ['Paid', 'true'], ['Not Paid', 'false']], selected: params[:paid]), class: 'form-control' %>
+      <br>
+      <%= select_tag :license_type, options_for_select([['All license types', ''], ['Business', 'business'], ['Multifamily', 'multifamily'],['Single Family', 'single_family']], selected: params[:license_type]), class: 'form-control' %>
       <div style="text-align:center">
         <%= submit_tag 'Filter', class: 'btn btn-primary mb-2 mt-2 text-middle' %>
       </div>
@@ -19,8 +22,9 @@
     <thead>
       <tr>
         <th>Property Name/Business</th>
-        <th>Created At</th>
+        <th>Passed Inspection</th>
         <th>Sent?</th>
+        <th>Paid?</th>
       </tr>
     </thead>
     <tbody>
@@ -36,6 +40,13 @@
           <td><%= license.created_at.strftime("%B %d, %Y") %></td>
           <td>
             <% if license.sent == true %>
+              <p class="text-success">Yes</p>
+            <% else %>
+              <p class="text-danger">No</p>
+            <% end %>
+          </td>
+          <td>
+            <% if license.paid == true %>
               <p class="text-success">Yes</p>
             <% else %>
               <p class="text-danger">No</p>

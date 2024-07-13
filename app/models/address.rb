@@ -26,7 +26,6 @@ class Address < ApplicationRecord
         "#{streetnumb} #{streetname} #{streettype}, Maryland, 20737"
     end
 
-
     def self.ransackable_attributes(auth_object = nil)
         ["property_name", "absent", "combadd", "created_at", "id", "landusecode", "outstanding", "owneraddress", "ownercity", "ownername", "owneroccupiedin", "ownerstate", "ownerzip", "pid", "premisezip", "streetname", "streetnumb", "streettype", "updated_at", "vacant", "zoning", "aka"]
     end

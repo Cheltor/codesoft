@@ -49,6 +49,7 @@ Rails.application.routes.draw do
         post 'save_and_redirect_to_area_new'
         get 'create_business_license'
         get 'create_single_family_license'
+        get 'create_multifamily_license'
       end
       resources :areas do
         resources :observations, only: [:create, :edit, :update]
