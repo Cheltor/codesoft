@@ -9,7 +9,8 @@ class License < ApplicationRecord
     business: 0,
     single_family: 1,
     multifamily: 2,
-    micromobility: 3
+    micromobility: 3,
+    vacant_property: 4
   }
 
   private
