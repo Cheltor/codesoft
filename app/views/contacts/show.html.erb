@@ -85,7 +85,7 @@
             <% @units.each do |unit| %>
               <li>
                 <%= link_to "#{unit.address.property_name_with_combadd} - #{unit.number.upcase}", address_unit_path(unit.address, unit) %>
-                <!-- <%= button_to 'Remove Unit', remove_unit_contact_address_unit_path(unit.address, unit, @contact), method: :delete, data: { confirm: 'Are you sure?' } %> -->
+                <!-- I need to add a way to remove the user from the unit from here -->
               </li>
             <% end %>
           </ul>
