@@ -72,6 +72,7 @@ Rails.application.routes.draw do
       get :set_potentially_vacant
       get :set_vacant
       get :set_occupied
+      get :set_registered
     end
     collection do
       get :potentially_vacant

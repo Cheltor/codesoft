@@ -35,9 +35,9 @@ class Address < ApplicationRecord
 
     def property_name_with_combadd
         if property_name.present?
-            "#{property_name.titleize} - #{combadd}#{' (vacant)' if vacancy_status == 'vacant'}"
+            "#{property_name.titleize} - #{combadd}#{' (vacant unregistered)' if vacancy_status == 'vacant'}#{' (vacant registered)' if vacancy_status == 'registered'}"
         else
-            "#{combadd}#{' (vacant)' if vacancy_status == 'vacant'}"
+            "#{combadd}#{' (vacant unregistered)' if vacancy_status == 'vacant'}#{' (vacant registered)' if vacancy_status == 'registered'}"
         end
     end
 

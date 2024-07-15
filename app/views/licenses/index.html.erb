@@ -22,6 +22,7 @@
     <thead>
       <tr>
         <th>Property Name/Business</th>
+        <th>Type</th>
         <th>Passed Inspection</th>
         <th>Sent?</th>
         <th>Paid?</th>
@@ -37,6 +38,7 @@
             <%= link_to license.inspection.address.property_name_with_combadd, license_path(license) %>
           <% end %>
           </td>
+          <td><%= license.license_type.titleize %></td>
           <td><%= license.created_at.strftime("%B %d, %Y") %></td>
           <td>
             <% if license.sent == true %>

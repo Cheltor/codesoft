@@ -229,6 +229,12 @@ class AddressesController < ApplicationController
     redirect_to @address, notice: 'Address was successfully marked as occupied.'
   end
 
+  def set_registered
+    @address = Address.find(params[:id])
+    @address.update(vacancy_status: 'registered')
+    redirect_to vacant_addresses_path, notice: 'Address was successfully marked as registered.'
+  end
+
   def set_vacant
     @address = Address.find(params[:id])
     @address.update(vacancy_status: 'vacant')
@@ -243,10 +249,17 @@ class AddressesController < ApplicationController
   end
 
   def vacant
-    @addresses = Address.where(vacancy_status: 'vacant')
-    @units = Unit.where(vacancy_status: 'vacant')
+    @addresses = Address.where(vacancy_status: ['vacant', 'registered'])
+    @units = Unit.where(vacancy_status: ['vacant', 'registered'])
 
     @items = @addresses + @units
+
+    page = params[:page] || 1
+    per_page = 10 # Adjust as needed
+    @items = WillPaginate::Collection.create(page, per_page, @items.size) do |pager|
+      start_index = pager.offset
+      pager.replace(@items[start_index, per_page])
+    end
   end
 
   def new

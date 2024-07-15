@@ -21,24 +21,33 @@
           <thead class="thead-dark">
             <tr>
               <th>Address</th>
-              <th>Mark as occupied</th>
+              <th>Mark as Occupied</th>
+              <th>Mark as Registered</th>
             </tr>
           </thead>
           <tbody>
             <% @items.each do |address| %>
               <tr>
                 <% if address.is_a?(Address) %>
-                  <td><%= link_to address.property_name_with_combadd, address_path(address), class: 'btn btn-primary' %></td>
+                  <% button_color = address.vacancy_status == 'vacant' ? 'btn btn-warning' : 'btn btn-primary' %>
+                  <td><%= link_to address.property_name_with_combadd, address_path(address), class: button_color %></td>
                   <td><%= link_to 'Mark as Occupied', set_occupied_address_path(address), method: :get, class: 'btn btn-outline-secondary' %></td>
+                  <% if address.vacancy_status == 'vacant' %>
+                    <td><%= link_to 'Mark as Registered', set_registered_address_path(address), method: :get, class: 'btn btn-outline-secondary' %></td>
+                  <% end %>
                 <% else %>
-                  <td><%= link_to "#{address.address.property_name_with_combadd} Unit #{address.number}", address_unit_path(address.address, address), class: 'btn btn-primary' %></td>
+                  <% button_color = address.vacancy_status == 'vacant' ? 'btn btn-warning' : 'btn btn-primary' %>
+                  <td><%= link_to "#{address.address.property_name_with_combadd} Unit #{address.number}", address_unit_path(address.address, address), class: button_color %></td>
                   <td><%= link_to 'Mark as Occupied', set_occupied_address_unit_path(address.address, address), method: :get, class: 'btn btn-outline-secondary' %></td>
+                  <% if address.vacancy_status == 'vacant' %>
+                    <td><%= link_to 'Mark as Registered', set_registered_address_unit_path(address.address, address), method: :get, class: 'btn btn-outline-secondary' %></td>
+                  <% end %>
                 <% end %>
               </tr>
             <% end %>
-          </tbody>
-        </table>
-      </div>
-    </div>  
-  </div>
-</div>
+              </tbody>
+            </table>
+            </div>
+          </div>
+          </div>
+        </div>
