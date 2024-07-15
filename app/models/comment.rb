@@ -7,4 +7,6 @@ class Comment < ApplicationRecord
   scope :recent, -> { order(created_at: :desc) }
 
   validates :content, presence: true
+
+  has_paper_trail
 end

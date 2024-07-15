@@ -6,6 +6,8 @@ class Area < ApplicationRecord
   validates :floor, presence: true, numericality: { only_integer: true }
   validates :name, presence: true
 
+  has_paper_trail
+
   validates_uniqueness_of :name, scope: [:inspection_id, :floor]
 
   has_many :observations, dependent: :destroy

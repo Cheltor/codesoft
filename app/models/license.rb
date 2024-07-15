@@ -4,6 +4,7 @@ class License < ApplicationRecord
 
   before_create :set_fiscal_year_and_expiration_date
   after_create :set_license_number
+  has_paper_trail
 
   enum license_type: {
     business: 0,

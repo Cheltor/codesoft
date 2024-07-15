@@ -10,6 +10,8 @@ class Unit < ApplicationRecord
   has_many :unit_contacts
   has_many :contacts, through: :unit_contacts
 
+  has_paper_trail
+
   # make sure that the unit number is unique for the address
   validates :number, uniqueness: { scope: :address_id }
 

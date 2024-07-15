@@ -13,6 +13,7 @@ class Code < ApplicationRecord
 
     scope :not_associated_with_violation, ->(violation) { where.not(id: violation.code_ids) }
     validate :section_without_hyphen
+    has_paper_trail
 
     def self.ransackable_attributes(auth_object = nil)
       ["chapter", "created_at", "description", "id", "name", "section", "updated_at"]

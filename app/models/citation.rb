@@ -8,7 +8,7 @@ class Citation < ApplicationRecord
 
   scope :created_within, -> (range) { where(created_at: range) }
 
-
+  has_paper_trail
 
   validates :fine, presence: true
   validates :deadline, presence: true

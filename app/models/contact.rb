@@ -10,6 +10,7 @@ class Contact < ApplicationRecord
   default_scope { where(hidden: false) }
   scope :hidden, -> { where(hidden: true) }
   scope :visible, -> { where(hidden: false) }
+  has_paper_trail
 
   def self.ransackable_attributes(auth_object = nil)
     ["name", "email", "phone", "notes", "created_at", "updated_at"]

@@ -17,6 +17,8 @@ class Address < ApplicationRecord
     before_save :upcase_ownerstate
     after_initialize :set_default_vacancy_status, :if => :new_record?
 
+    has_paper_trail
+
     geocoded_by :full_street_address
     after_validation :geocode, if: ->(obj){ obj.full_street_address.present? and obj.streetnumb_changed? and obj.streetname_changed? and obj.streettype_changed? }
 

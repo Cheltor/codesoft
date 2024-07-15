@@ -7,6 +7,8 @@ class Business < ApplicationRecord
   has_many :violations
   has_many :licenses
 
+  has_paper_trail
+
   validates :name, presence: true
   validates :address, presence: true
 
