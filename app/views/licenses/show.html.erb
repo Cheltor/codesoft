@@ -49,7 +49,20 @@
       <label class="font-weight-bold">Business Name:</label>
       <p><%= link_to @license.business.business_name_and_trading_name, address_business_path(@license.business.address, @license.business), class: "text-primary" %></p>
     <% end %>
-  </div>
+    <br>
+    <label class="font-weight-bold"><strong>License Contact:</strong></label>
+    <% if @license.inspection.contact.present? %>
+      <p style='margin-bottom: 0'><%= @license.inspection.contact.name %></p>
+      <% if @license.inspection.contact.email.present? %>
+      <p style='margin-bottom: 0'><%= link_to @license.inspection.contact.email, "mailto:#{@license.inspection.contact.email}" %></p>
+      <% end %>
+      <% if @license.inspection.contact.phone.present? %>
+      <a href="tel:<%= @license.inspection.contact.phone %>"><%= format_phone_number(@license.inspection.contact.phone) %></a>
+      <% end %>
+    <% else %>
+      <p>No contact information listed.</p>
+    <% end %>
+    </div>
   <div class="col text-end">
     <label class="font-weight-bold">License Number:</label>
     <p><%= @license.license_number %></p>      <br><label class="font-weight-bold">License Expiration:</label>

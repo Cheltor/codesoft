@@ -19,6 +19,8 @@ class Inspection < ApplicationRecord
   has_one :license, dependent: :destroy
   has_paper_trail
 
+  after_update :update_license_paid_status, if: :saved_change_to_paid?
+
   scope :created_within, -> (range) { where(created_at: range) }
   scope :updated_within, -> (range) { where(updated_at: range) }
   scope :complaints_created_within, -> (range) { created_within(range).where(source: "Complaint") }
@@ -107,5 +109,9 @@ class Inspection < ApplicationRecord
     if Inspection.where.not(id: id).where(scheduled_datetime: time_range).exists?
       errors.add(:scheduled_datetime, 'is too close to another inspection')
     end
+  end
+
+  def update_license_paid_status
+    license.update(paid: self.paid) if license && license.paid != self.paid
   end
 end

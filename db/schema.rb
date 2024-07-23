@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_07_15_135353) do
+ActiveRecord::Schema[7.0].define(version: 2024_07_19_162433) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -265,6 +265,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_15_135353) do
     t.boolean "confirmed", default: false
     t.bigint "business_id"
     t.datetime "start_time"
+    t.boolean "paid", default: false, null: false
     t.index ["address_id"], name: "index_inspections_on_address_id"
     t.index ["business_id"], name: "index_inspections_on_business_id"
     t.index ["contact_id"], name: "index_inspections_on_contact_id"

@@ -58,6 +58,13 @@
         <% end %>
           <br>
         <p><strong>Inspection Request Was Created:</strong> <%= @inspection.created_at.in_time_zone("Eastern Time (US & Canada)").strftime("%B %d, %Y") %></p>
+        <!-- link to mark inspection as paid -->
+        <p><%= @inspection.paid == true ? "Paid" : "Not Paid" %></p>
+        <% if @inspection.paid == false %>
+          <%= button_to "Mark as paid", mark_as_paid_path(@inspection), method: :patch, class: "btn btn-outline-primary" %>
+        <% else %>
+          <%= button_to "Mark as not paid", mark_as_not_paid_path(@inspection), method: :patch, class: "btn btn-outline-primary" %>
+        <% end %>
         <% if @inspection.contact.present? %>
           <p><strong>Contact:</strong> <%= link_to @inspection.contact.name, contact_path(@inspection.contact) %></p>
           <p><strong>Contact Notes:</strong> <%= @inspection.contact.notes %></p>

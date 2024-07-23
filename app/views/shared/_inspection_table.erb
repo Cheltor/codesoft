@@ -10,13 +10,15 @@
   <td><%= link_to inspection.address.property_name_with_combadd, address_path(inspection.address), class: "btn" %></td>
   <% end %>
   <td><%= inspection.source %></td>
+  <td><%= inspection.paid ? "Yes" : "No" %></td>
   <% if inspection.status.present? %>
-        <% if inspection.status == "Satisfactory" %>
-          <td><span class="badge bg-success"><%= inspection.status %></span></td>
-        <% else %>
-          <td><span class="badge bg-danger"><%= inspection.status %></span></td>
-        <% end %>  <% else %>
-    <td><span class="badge bg-secondary">Pending</span></td>
+      <% if inspection.status == "Satisfactory" %>
+        <td><span class="badge bg-success"><%= inspection.status %></span></td>
+      <% else %>
+        <td><span class="badge bg-danger"><%= inspection.status %></span></td>
+      <% end %>
+    <% else %>
+      <td><span class="badge bg-secondary">Pending</span></td>
   <% end %>
   <% if inspection.scheduled_datetime.present? %>
     <td><%= inspection.scheduled_datetime.strftime("%B %d, %Y %I:%M %p") %></td>
@@ -34,10 +36,10 @@
   <% end %> 
 
   <% if inspection.status.present? && inspection.status == "Satisfactory" %>
-    <td><%= link_to "Show", address_inspection_path(inspection.address, inspection), class: "btn" %></td>
+    <td><%= link_to "Show Inspection", address_inspection_path(inspection.address, inspection), class: "btn" %></td>
   <% elsif inspection.status.present? && inspection.status == "Unsatisfactory" %>
-    <td><%= link_to "Show", address_inspection_path(inspection.address, inspection), class: "btn" %></td>
+    <td><%= link_to "Show Inspection", address_inspection_path(inspection.address, inspection), class: "btn" %></td>
   <% else %>
-    <td><%= link_to "Show", address_inspection_path(inspection.address, inspection), class: "btn btn-secondary" %></td>
+    <td><%= link_to "Show Inspection", address_inspection_path(inspection.address, inspection), class: "btn btn-secondary" %></td>
   <% end %>
 </tr>

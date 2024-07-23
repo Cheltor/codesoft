@@ -121,6 +121,8 @@ Rails.application.routes.draw do
   get 'map' => 'static#map'
   get 'export_violations' => 'violations#export_csv'
   get 'export_property_csv' => 'violations#export_property_csv'
+  patch 'inspections/:id/mark_as_paid', to: 'inspections#mark_as_paid', as: :mark_as_paid
+  patch 'inspections/:id/mark_as_not_paid', to: 'inspections#mark_as_not_paid', as: :mark_as_not_paid
 
   resources :users, only: [:index, :show, :edit, :update]
   resources :notifications do
