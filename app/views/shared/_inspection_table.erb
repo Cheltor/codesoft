@@ -10,7 +10,11 @@
   <td><%= link_to inspection.address.property_name_with_combadd, address_path(inspection.address), class: "btn" %></td>
   <% end %>
   <td><%= inspection.source %></td>
-  <td><%= inspection.paid ? "Yes" : "No" %></td>
+  <% if inspection.source != "Complaint" %>
+    <td><%= inspection.paid ? "Yes" : "No" %></td>
+    <% else %>
+    <td></td>
+  <% end %>
   <% if inspection.status.present? %>
       <% if inspection.status == "Satisfactory" %>
         <td><span class="badge bg-success"><%= inspection.status %></span></td>
