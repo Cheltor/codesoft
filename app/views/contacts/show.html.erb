@@ -63,7 +63,6 @@
           </ul>
           <%= will_paginate @businesses, param_name: 'business_page', class:"text-center" %>
         <% else %>
-          <h3>No businesses associated with this contact</h3>
         <% end %>
 
         <% if @addresses.present? %>
