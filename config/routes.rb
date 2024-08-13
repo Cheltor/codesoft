@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
   resources :codes
+  resources :rooms do
+    resources :prompts
+  end
   resources :contacts do
     resources :contact_comments
     member do

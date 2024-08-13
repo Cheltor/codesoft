@@ -1,0 +1,20 @@
+<h1>
+    <%= @room.name %>
+</h1>
+
+<%= link_to 'Edit Room Name', edit_room_path(@room) %>
+
+<%= link_to 'Delete Room', room_path(@room), method: :delete, data: { confirm: 'Are you sure?' } %>
+
+<%= link_to 'Add Prompt', new_room_prompt_path(@room) %>
+
+<ul>
+  <% @prompts.each do |prompt| %>
+    <li><%= prompt.content %></li>
+    <%= link_to 'Edit', edit_room_prompt_path(@room, prompt) %>
+    <%= button_to 'Delete', room_prompt_path(@room, prompt), method: :delete, data: { confirm: 'Are you sure?' } %>
+  <% end %>
+</ul>
+
+<%= link_to 'Back to Rooms', rooms_path %>
+

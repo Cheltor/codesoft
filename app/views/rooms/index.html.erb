@@ -1,0 +1,14 @@
+<h1>
+    Rooms
+</h1>
+
+<%= link_to 'New Room', new_room_path %>
+
+<ul>
+  <% @rooms.each do |room| %>
+    <li>
+      <%= link_to room.name, room %>
+    </li>
+  <% end %>
+</ul>
+

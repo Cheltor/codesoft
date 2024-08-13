@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_07_15_135353) do
+ActiveRecord::Schema[7.0].define(version: 2024_08_13_133950) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -312,6 +312,20 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_15_135353) do
     t.index ["area_id"], name: "index_observations_on_area_id"
   end
 
+  create_table "prompts", force: :cascade do |t|
+    t.string "content"
+    t.bigint "room_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["room_id"], name: "index_prompts_on_room_id"
+  end
+
+  create_table "rooms", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "unit_contacts", force: :cascade do |t|
     t.bigint "unit_id", null: false
     t.bigint "contact_id", null: false
@@ -431,6 +445,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_15_135353) do
   add_foreign_key "notifications", "inspections"
   add_foreign_key "notifications", "users"
   add_foreign_key "observations", "areas"
+  add_foreign_key "prompts", "rooms"
   add_foreign_key "unit_contacts", "contacts"
   add_foreign_key "unit_contacts", "units"
   add_foreign_key "units", "addresses"
