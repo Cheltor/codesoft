@@ -28,10 +28,10 @@ class StaticController < ApplicationController
     violation_comments = @user.violations.flat_map(&:violation_comments)
     citation_comments = @user.violations.flat_map { |violation| violation.citations.flat_map(&:citation_comments) }
     address_comments = @user.comments
-    inspeciton_comments = @user.inspections.flat_map(&:inspection_comments)
+    inspection_comments = @user.inspections.flat_map(&:inspection_comments)
     
     # Combine all comments
-    dash_comments = (violation_comments + citation_comments + address_comments + inspeciton_comments).sort_by(&:created_at).reverse
+    dash_comments = (violation_comments + citation_comments + address_comments + inspection_comments).sort_by(&:created_at).reverse
 
     @comments_last_week = dash_comments.select { |comment| comment.created_at > 1.week.ago }.sort_by(&:created_at).reverse
     @comments_two_weeks_ago = @user.comments.where(created_at: 2.weeks.ago..1.week.ago).order(created_at: :desc)

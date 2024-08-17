@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_08_13_133950) do
+ActiveRecord::Schema[7.0].define(version: 2024_08_13_180301) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -102,7 +102,9 @@ ActiveRecord::Schema[7.0].define(version: 2024_08_13_133950) do
     t.datetime "updated_at", null: false
     t.bigint "inspection_id", null: false
     t.integer "floor"
+    t.bigint "unit_id"
     t.index ["inspection_id"], name: "index_areas_on_inspection_id"
+    t.index ["unit_id"], name: "index_areas_on_unit_id"
   end
 
   create_table "business_contacts", force: :cascade do |t|
@@ -415,6 +417,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_08_13_133950) do
   add_foreign_key "area_codes", "areas"
   add_foreign_key "area_codes", "codes"
   add_foreign_key "areas", "inspections"
+  add_foreign_key "areas", "units"
   add_foreign_key "business_contacts", "businesses"
   add_foreign_key "business_contacts", "contacts"
   add_foreign_key "businesses", "addresses"
