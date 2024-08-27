@@ -102,6 +102,7 @@
                           <%= unit.number %>
                         <% end %>
                       <% end %>
+                      <br>
                       <h3>Inspected Units</h3>
                       <% if @inspected_units.present? %>
                       <div class="list-group">
@@ -118,14 +119,14 @@
                       <%= form_with(model: @unit, url: create_unit_path, method: :post) do |form| %>
                         <div class="field">
                           <%= form.label :number %>
-                          <%= form.text_field :number %>
+                          <%= form.text_field :number, class:"form-control" %>
                         </div>
                       
                         <%= form.hidden_field :inspection_id, value: @inspection.id %>
                         <%= form.hidden_field :address_id, value: @inspection.address.id %>
                       
-                        <div class="actions">
-                          <%= form.submit 'Create Unit' %>
+                        <div class="actions mt-3 mb-3">
+                          <%= form.submit 'Create Unit', class: "btn btn-primary" %>
                         </div>
                       <% end %>
                       <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

@@ -42,7 +42,8 @@ class StaticController < ApplicationController
                                  .sort_by(&:deadline_date)
   
     @citations = @user.citations.where(citations: { status: [:unpaid, "pending trial"] }).sort_by(&:deadline)
-    @addresses = @q.result.where.not(streetnumb: nil)
+    @q = Address.ransack(params[:q])
+    @addresses = @q.result.includes(:businesses).where.not(streetnumb: nil)
     @inspections = Inspection.where(inspector: @user, status: nil).order(created_at: :desc)
     @today_inspections = Inspection.where(inspector: @user, status: nil, scheduled_datetime: Date.today.beginning_of_day..Date.today.end_of_day).order(scheduled_datetime: :desc)
     @future_inspections = Inspection

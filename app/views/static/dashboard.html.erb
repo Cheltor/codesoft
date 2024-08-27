@@ -50,6 +50,7 @@
           <thead class="thead-light">
             <tr>
               <th scope="col">Address</th>
+              <th scope="col">Owner</th>
             </tr>
           </thead>
           <% if @addresses.empty? %>
@@ -62,11 +63,12 @@
           <tbody>
             <% @addresses.each do |address| %>
             <tr>
-            <% if address.violations.current.exists? == true %>
-              <td><%= link_to address.property_name_with_combadd, address_path(address), class:"btn btn-warning" %></td>
-            <% else %>
-              <td><%= link_to address.property_name_with_combadd, address_path(address), class:"btn btn-primary" %></td>
-            <% end %>
+              <% if address.violations.current.exists? == true %>
+                <td><%= link_to address.property_name_with_combadd, address_path(address), class:"btn btn-warning" %></td>
+              <% else %>
+                <td><%= link_to address.property_name_with_combadd, address_path(address), class:"btn btn-primary" %></td>
+              <% end %>
+              <td><%= address.ownername %></td>
             </tr>
             <% end %>
           </tbody>

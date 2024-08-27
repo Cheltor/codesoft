@@ -29,18 +29,25 @@ class Address < ApplicationRecord
     end
 
     def self.ransackable_attributes(auth_object = nil)
-        ["property_name", "absent", "combadd", "created_at", "id", "landusecode", "outstanding", "owneraddress", "ownercity", "ownername", "owneroccupiedin", "ownerstate", "ownerzip", "pid", "premisezip", "streetname", "streetnumb", "streettype", "updated_at", "vacant", "zoning", "aka"]
+        ["property_name", "absent", "combadd", "created_at", "id", "landusecode", "outstanding", "owneraddress", "ownercity", "ownername", "owneroccupiedin", "ownerstate", "ownerzip", "pid", "premisezip", "streetname", "streetnumb", "streettype", "updated_at", "vacant", "zoning", "aka", "businesses_name"]
     end
+
     def self.ransackable_associations(auth_object = nil)
-        ["comments", "users", "violations"]
+        ["comments", "users", "violations", "businesses"]
     end
 
     def property_name_with_combadd
-        if property_name.present?
-            "#{property_name.titleize} - #{combadd}#{' (vacant unregistered)' if vacancy_status == 'vacant'}#{' (vacant registered)' if vacancy_status == 'registered'}"
-        else
-            "#{combadd}#{' (vacant unregistered)' if vacancy_status == 'vacant'}#{' (vacant registered)' if vacancy_status == 'registered'}"
-        end
+    base_string = if property_name.present?
+                    "#{property_name.titleize} - #{combadd}"
+                    else
+                    combadd
+                    end
+
+    base_string += " (aka: #{aka})" if aka.present?
+    base_string += ' (vacant unregistered)' if vacancy_status == 'vacant'
+    base_string += ' (vacant registered)' if vacancy_status == 'registered'
+    
+    base_string
     end
 
     private

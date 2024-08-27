@@ -199,8 +199,8 @@ class InspectionsController < ApplicationController
       return
     end
 
-  # Creating a new unit associated with the address
-  @unit = Unit.new(unit_params)
+    # Creating a new unit associated with the address
+    @unit = Unit.new(unit_params)
     
     if @unit.save
       redirect_to new_address_inspection_area_path(@inspection.address, @inspection, unit_id: @unit.id), notice: 'Unit was successfully created.'
