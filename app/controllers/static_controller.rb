@@ -45,6 +45,13 @@ class StaticController < ApplicationController
     @q = Address.ransack(params[:q])
     @addresses = @q.result.includes(:businesses).where.not(streetnumb: nil)
     @inspections = Inspection.where(inspector: @user, status: nil).order(created_at: :desc)
+
+    complaint_inspections = @inspections.select { |inspection| inspection.source == "Complaint" }
+    paid_inspections = @inspections.select { |inspection| inspection.paid == true && inspection.source != "Complaint" }
+    other_inspections = @inspections.reject { |inspection| inspection.source == "Complaint" || inspection.paid == true }
+
+    @inspections_dash = complaint_inspections + paid_inspections + other_inspections
+
     @today_inspections = Inspection.where(inspector: @user, status: nil, scheduled_datetime: Date.today.beginning_of_day..Date.today.end_of_day).order(scheduled_datetime: :desc)
     @future_inspections = Inspection
     .where(inspector: @user, status: nil)
@@ -140,6 +147,13 @@ class StaticController < ApplicationController
       @citations = @user.citations.where(citations: { status: [:unpaid, "pending trial"] }).sort_by(&:deadline)
       @addresses = @q.result.where.not(streetnumb: nil)
       @inspections = Inspection.where(inspector: @user, status: nil).order(created_at: :desc)
+
+      complaint_inspections = @inspections.select { |inspection| inspection.source == "Complaint" }
+      paid_inspections = @inspections.select { |inspection| inspection.paid == true && inspection.source != "Complaint" }
+      other_inspections = @inspections.reject { |inspection| inspection.source == "Complaint" || inspection.paid == true }
+  
+      @inspections_dash = complaint_inspections + paid_inspections + other_inspections
+      
       @today_inspections = Inspection.where(inspector: @user, status: nil, scheduled_datetime: Date.today.beginning_of_day..Date.today.end_of_day).order(scheduled_datetime: :desc)
       @future_inspections = Inspection
       .where(inspector: @user, status: nil)

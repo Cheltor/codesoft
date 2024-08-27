@@ -267,6 +267,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_08_13_180301) do
     t.boolean "confirmed", default: false
     t.bigint "business_id"
     t.datetime "start_time"
+    t.boolean "paid", default: false, null: false
     t.index ["address_id"], name: "index_inspections_on_address_id"
     t.index ["business_id"], name: "index_inspections_on_business_id"
     t.index ["contact_id"], name: "index_inspections_on_contact_id"

@@ -6,6 +6,9 @@ class License < ApplicationRecord
   after_create :set_license_number
   has_paper_trail
 
+  after_update :update_inspection_paid_status, if: :saved_change_to_paid?
+
+
   enum license_type: {
     business: 0,
     single_family: 1,
@@ -36,5 +39,9 @@ class License < ApplicationRecord
   def set_license_number
     self.license_number = "#{fiscal_year}-#{license_type.to_s.upcase}-#{id.to_s.rjust(4, '0')}"
     self.save
+  end
+
+  def update_inspection_paid_status
+    inspection.update(paid: self.paid) if inspection && inspection.paid != self.paid
   end
 end
