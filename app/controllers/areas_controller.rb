@@ -51,6 +51,7 @@ class AreasController < ApplicationController
     @address = Address.find(params[:address_id])
     @inspection = @address.inspections.find(params[:inspection_id])
     @area = @inspection.areas.build
+    @rooms = Room.all
   
     if params[:unit_id]
       @unit = Unit.find(params[:unit_id])

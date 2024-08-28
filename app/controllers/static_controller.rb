@@ -42,7 +42,8 @@ class StaticController < ApplicationController
                                  .sort_by(&:deadline_date)
   
     @citations = @user.citations.where(citations: { status: [:unpaid, "pending trial"] }).sort_by(&:deadline)
-    @addresses = @q.result.where.not(streetnumb: nil)
+    @q = Address.ransack(params[:q])
+    @addresses = @q.result.includes(:businesses).where.not(streetnumb: nil)
     @inspections = Inspection.where(inspector: @user, status: nil).order(created_at: :desc)
 
     complaint_inspections = @inspections.select { |inspection| inspection.source == "Complaint" }

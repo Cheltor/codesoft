@@ -44,10 +44,15 @@
       <div class="card">
         <div class="card-body">
           <%= form_with(model: [@inspection, @area], url: address_inspection_areas_path(@address, @inspection), local: true, html: { id: 'new_area_form' }) do |form| %>
+              <div class="field mb-3">
+                <%= form.label :room_id, "Select a room" %>
+                <%= form.collection_select :room_id, @rooms, :id, :name, { include_blank: false }, { class: "form-select" } %>
+              </div>
+
             <div class="mb-3">
-              <label class="form-label">Area Name</label>
-              <%= form.text_field :name, class: "form-control", placeholder: "Bathroom, Hallway, Bedroom, etc." %>
-            </div>
+              <label class="form-label">Enter a different room/area</label>
+              <%= form.text_field :name, class: "form-control", placeholder: "If the room is not listed above" %>
+            </div>            
 
             <!-- select unit, if units exist 
             <% if @address.units.present? %>
@@ -62,10 +67,10 @@
             </div>
             <% end %>-->
             
-            <div class="mb-3">
+            <!-- <div class="mb-3">
               <label class="form-label">Floor</label>
               <%= form.number_field :floor, class: "form-control", placeholder: "Use 0 for basement or exterior" %>
-            </div>
+            </div> -->
 
             <!-- <div id="notes and photos">
               <div class="mb-3">
@@ -117,6 +122,9 @@
               </select>
             </div>-->
 
+          <div class="mb-3">
+            <%= form.submit "Create Area", class: "btn btn-primary" %>
+          </div>
 
           <div class="mb-3">
             <%= form.submit "Move on to another Area", name: 'create_and_new', class: "btn btn-primary" %>

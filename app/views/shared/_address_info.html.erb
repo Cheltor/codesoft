@@ -7,11 +7,6 @@
       <h3 class="mb-0">
         <%= @address.property_name_with_combadd %>
       </h3>
-      <% if @address.aka.present? %>
-        <h5>
-          AKA: <%= @address.aka %>
-        </h5>
-      <% end %>
       <div>
         <% if @address.property_name.present? %>
           <p><strong>Property Name:</strong> <%= @address.property_name.titleize %></p>
