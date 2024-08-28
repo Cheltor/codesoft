@@ -9,6 +9,7 @@ class Unit < ApplicationRecord
   has_many :businesses
   has_many :unit_contacts
   has_many :contacts, through: :unit_contacts
+  has_many :areas
 
   has_paper_trail
 

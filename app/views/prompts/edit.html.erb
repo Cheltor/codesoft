@@ -1,0 +1,23 @@
+<h1>
+    Edit Prompt for <%= @room.name %>
+</h1>
+
+<h3>
+    Before edit:
+</h3>
+
+<p>
+    <%= @prompt.content %>
+</p>
+
+<%= form_with model: [@room, @prompt], local: true do |form| %>
+  <div class="form-group">
+    <%= form.label :content %>
+    <%= form.text_area :content, class: 'form-control' %>
+  </div>
+  <div class="actions">
+    <%= form.submit class: 'btn btn-primary' %>
+  </div>
+<% end %>
+
+<%= link_to 'Back to Room', room_path(@room) %>

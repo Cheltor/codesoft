@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_07_19_162433) do
+ActiveRecord::Schema[7.0].define(version: 2024_08_13_180301) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -102,7 +102,9 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_19_162433) do
     t.datetime "updated_at", null: false
     t.bigint "inspection_id", null: false
     t.integer "floor"
+    t.bigint "unit_id"
     t.index ["inspection_id"], name: "index_areas_on_inspection_id"
+    t.index ["unit_id"], name: "index_areas_on_unit_id"
   end
 
   create_table "business_contacts", force: :cascade do |t|
@@ -313,6 +315,20 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_19_162433) do
     t.index ["area_id"], name: "index_observations_on_area_id"
   end
 
+  create_table "prompts", force: :cascade do |t|
+    t.string "content"
+    t.bigint "room_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["room_id"], name: "index_prompts_on_room_id"
+  end
+
+  create_table "rooms", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "unit_contacts", force: :cascade do |t|
     t.bigint "unit_id", null: false
     t.bigint "contact_id", null: false
@@ -402,6 +418,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_19_162433) do
   add_foreign_key "area_codes", "areas"
   add_foreign_key "area_codes", "codes"
   add_foreign_key "areas", "inspections"
+  add_foreign_key "areas", "units"
   add_foreign_key "business_contacts", "businesses"
   add_foreign_key "business_contacts", "contacts"
   add_foreign_key "businesses", "addresses"
@@ -432,6 +449,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_07_19_162433) do
   add_foreign_key "notifications", "inspections"
   add_foreign_key "notifications", "users"
   add_foreign_key "observations", "areas"
+  add_foreign_key "prompts", "rooms"
   add_foreign_key "unit_contacts", "contacts"
   add_foreign_key "unit_contacts", "units"
   add_foreign_key "units", "addresses"

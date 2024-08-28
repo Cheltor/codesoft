@@ -13,9 +13,8 @@ class License < ApplicationRecord
     business: 0,
     single_family: 1,
     multifamily: 2,
-    micromobility: 3,
-    vacant_property: 4
-  }
+    micromobility: 3
+    }
 
   def self.ransackable_attributes(auth_object = nil)
     %w[sent paid]

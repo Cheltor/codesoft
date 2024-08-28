@@ -52,12 +52,10 @@ class AreasController < ApplicationController
     @inspection = @address.inspections.find(params[:inspection_id])
     @area = @inspection.areas.build
   
-    # Use the area_type from params to perform any setup or conditional logic
-    # For example, setting a transient attribute if you have one:
-    @area.area_type = params[:area_type] if params[:area_type].present?
-  
-    # Or simply storing it in an instance variable to use in the view
-    @area_type = params[:area_type]
+    if params[:unit_id]
+      @unit = Unit.find(params[:unit_id])
+      @area.unit = @unit
+    end
   end
   
   
@@ -72,6 +70,6 @@ class AreasController < ApplicationController
   private
 
   def area_params
-    params.require(:area).permit(:floor, :name, :notes, :inspection_id, code_ids: [], photos: [])
+    params.require(:area).permit(:floor, :name, :notes, :unit_id, :inspection_id, code_ids: [], photos: [])
   end
 end

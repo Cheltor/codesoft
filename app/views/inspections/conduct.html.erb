@@ -77,6 +77,69 @@
             <i class="bi bi-plus-circle"></i>
             New Inspection Area
           <% end %>
+          <!-- show button if multifamily inspection -->
+          <% if @inspection.source == "Multifamily License" %>
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#selectUnit">
+            <i class="bi bi-plus-circle"></i>
+            New Unit Inspection
+          </button>
+          <% end %>
+
+          <!-- Select Unit Modal -->
+          <div class="modal fade" id="selectUnit" tabindex="-1" aria-labelledby="selectUnitLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="selectUnitLabel">Select Unit</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  <div class="form-group">
+                    <h3>Units in Codesoft without Inspection Notes</h3>
+                    <div class="list-group">
+                      <% @uninspected_units.each do |unit| %>
+                        <%= link_to new_address_inspection_area_path(@address, @inspection, unit_id: unit.id), class: "list-group-item list-group-item-action" do %>
+                          <%= unit.number %>
+                        <% end %>
+                      <% end %>
+                      <h3>Inspected Units</h3>
+                      <% if @inspected_units.present? %>
+                      <div class="list-group">
+                        <% @inspected_units.each do |unit| %>
+                          <%= link_to new_address_inspection_area_path(@address, @inspection, unit_id: unit.id), class: "list-group-item list-group-item-action" do %>
+                            <%= unit.number %>
+                          <% end %>
+                        <% end %>
+                      </div>
+                      <% else %>
+                        <p>No inspected units</p>
+                      <% end %>
+                      <h3>New Unit</h3>
+                      <%= form_with(model: @unit, url: create_unit_path, method: :post) do |form| %>
+                        <div class="field">
+                          <%= form.label :number %>
+                          <%= form.text_field :number %>
+                        </div>
+                      
+                        <%= form.hidden_field :inspection_id, value: @inspection.id %>
+                        <%= form.hidden_field :address_id, value: @inspection.address.id %>
+                      
+                        <div class="actions">
+                          <%= form.submit 'Create Unit' %>
+                        </div>
+                      <% end %>
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+
         </div>
       </div>
     </div>
@@ -285,7 +348,7 @@
         </div>
       </div>
     </div>
-
+</div>
 
 <script>
   // Function to initialize Choices.js

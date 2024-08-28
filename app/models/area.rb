@@ -5,6 +5,7 @@ class Area < ApplicationRecord
   has_many :codes, through: :area_codes, class_name: 'Code'
   validates :floor, presence: true, numericality: { only_integer: true }
   validates :name, presence: true
+  belongs_to :unit, optional: true
 
   has_paper_trail
 

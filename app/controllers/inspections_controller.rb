@@ -1,5 +1,5 @@
 class InspectionsController < ApplicationController
-  before_action :set_address, except: [:all_inspections, :my_inspections, :my_unscheduled_inspections, :all_complaints, :my_complaints, :assign_inspector, :update_inspector, :create_complaint, :new_complaint, :create_permit_inspection, :new_permit_inspection, :create_license_inspection, :new_license_inspection, :unassigned_inspections, :assign_inspection, :inspection_calendar, :reassign_inspection, :mark_as_paid, :mark_as_not_paid]
+  before_action :set_address, except: [:all_inspections, :my_inspections, :my_unscheduled_inspections, :all_complaints, :my_complaints, :assign_inspector, :update_inspector, :create_complaint, :new_complaint, :create_permit_inspection, :new_permit_inspection, :create_license_inspection, :new_license_inspection, :unassigned_inspections, :assign_inspection, :inspection_calendar, :reassign_inspection, :create_unit]
   before_action :set_inspection, only: [:show, :edit, :update, :destroy]
   layout 'choices', only: [:conduct, :new, :new_complaint, :new_permit_inspection, :new_license_inspection]
 
@@ -158,7 +158,7 @@ class InspectionsController < ApplicationController
     # pre filled forms 
     @inspection.source = params[:source] if params[:source].present?
     @inspection.description = params[:description] if params[:description].present?
-    @inspeciton.contact_id = params[:contact_id] if params[:contact_id].present?
+    @inspection.contact_id = params[:contact_id] if params[:contact_id].present?
     @unit = Unit.find(params[:unit_id]) if params[:unit_id].present?
 
     if params[:business_id]
@@ -172,9 +172,41 @@ class InspectionsController < ApplicationController
     @inspection = Inspection.find(params[:id])
     @codes = Code.all
     @attachments = @inspection.attachments.all
+  
+    if @inspection.areas.any?
+      @inspected_units = @inspection.areas.map { |area| area.unit }.uniq.sort_by { |unit| unit.number }
+    else
+      @inspected_units = []
+    end
+  
+    if @address&.units&.any?
+      @uninspected_units = (@address.units - @inspected_units).sort_by { |unit| unit.number }
+    else
+      @uninspected_units = []
+    end
+  end
 
-    # Create code if they don't exist
+  def create_unit
+    # Ensure params[:inspection_id] is not nil
+    if params[:inspection_id].nil?
+      redirect_back(fallback_location: inspections_path, notice: 'Inspection ID is missing.')
+      return
+    end
 
+    @inspection = Inspection.find_by(id: params[:inspection_id])
+    if @inspection.nil?
+      redirect_back(fallback_location: inspections_path, notice: 'Inspection not found.')
+      return
+    end
+
+  # Creating a new unit associated with the address
+  @unit = Unit.new(unit_params)
+    
+    if @unit.save
+      redirect_to new_address_inspection_area_path(@inspection.address, @inspection, unit_id: @unit.id), notice: 'Unit was successfully created.'
+    else
+      redirect_back(fallback_location: inspections_path, notice: 'Unit was not successfully created.')
+    end
   end
 
   def new_license_inspection
@@ -521,6 +553,10 @@ class InspectionsController < ApplicationController
 
   def inspection_params
     params.require(:inspection).permit(:paid, :start_time, :address_id, :source, :business_id, :status, :result, :description, :thoughts, :originator, :unit_id, :assignee_id, :inspector_id, :scheduled_datetime, :name, :email, :phone, :notes_area_1, :notes_area_2, :notes_area_3, :contact_id,:new_contact_name, :new_contact_email, :new_contact_phone, :new_chapter, :new_section, :new_name, :new_description, :confirmed, code_ids: [], intphotos: [], extphotos: [], photos: [], attachments: []).reject { |key, value| value.blank? }
+  end
+
+  def unit_params
+    params.permit(:number, :address_id)
   end
 
 end

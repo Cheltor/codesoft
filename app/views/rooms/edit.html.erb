@@ -1,0 +1,15 @@
+<h1>
+    Edit Room Name
+</h1>
+
+<%= form_with model: @room, local: true do |form| %>
+  <div class="form-group">
+    <%= form.label :name %>
+    <%= form.text_field :name, class: 'form-control' %>
+  </div>
+  <div class="actions">
+    <%= form.submit class: 'btn btn-primary' %>
+  </div>
+<% end %>
+
+<%= link_to 'Back to Room', room_path(@room) %>
