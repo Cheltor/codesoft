@@ -10,7 +10,7 @@ Rails.application.routes.draw do
       patch :hide
     end
   end
-  devise_for :users
+  devise_for :users, controllers: { sessions: 'sessions' }
   resources :addresses do
     resources :violations, shallow: true do
       resources :citations, shallow: true do
