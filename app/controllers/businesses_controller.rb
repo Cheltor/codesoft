@@ -40,6 +40,11 @@ class BusinessesController < ApplicationController
     end
   end
 
+  def new_unit_business
+    @unit = Unit.find(params[:unit_id])
+    @business = Business.new
+  end
+
   def create
     @address = Address.find(params[:address_id])
     @business = @address.businesses.build(business_params)

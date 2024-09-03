@@ -154,6 +154,16 @@
         <div class="text-center">
           <%= link_to "Add Business", new_address_business_path(@address), class: "btn btn-outline-secondary btn-sm mt-2", data: { turbo: false } %>
         </div>
+        <br>
+        <h5 class="h6 card-title">Unit Business(es)</h5>
+          <% if @unit.businesses.present? %>
+            <% @unit.businesses.each do |b| %>
+              <%= link_to b.name, business_path(b), class: "btn btn-outline-info btn-sm mt-2" %>
+            <% end %>
+          <% end %>
+        <div class="text-center">
+          <%= link_to "Add Business", new_unit_business_address_unit_path(@address, @unit), class: "btn btn-outline-secondary btn-sm mt-2", data: { turbo: false } %>
+        </div>
       </div>
       <!-- violations -->
       <hr class="my-0">

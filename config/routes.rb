@@ -32,6 +32,7 @@ Rails.application.routes.draw do
     resources :concerns, only: [:create, :edit, :update]
     resources :units, only: [:new, :create, :edit, :update, :destroy, :index, :show] do
       member do
+        get 'new_unit_business', to: 'businesses#new_unit_business'
         get 'all_unit_comments'
         get 'all_unit_violations'
         get 'all_unit_citations'
