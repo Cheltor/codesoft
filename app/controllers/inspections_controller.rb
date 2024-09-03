@@ -435,7 +435,7 @@ class InspectionsController < ApplicationController
   def destroy
     @inspection = Inspection.find(params[:id])
     @inspection.destroy
-    redirect_to inspections_path
+    redirect_to all_inspections_path
   end
 
   def assign_inspection

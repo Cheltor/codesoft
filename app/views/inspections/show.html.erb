@@ -76,6 +76,8 @@
         <%= generate_pre_inspection_email_link %>
         <br>
         <% end %>
+        <!-- delete inspection button -->
+          <%= button_to "Delete inspection as a mistake", address_inspection_path(@address, @inspection), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-outline-danger" %>        
         <% if @inspection.scheduled_datetime.present? %>
           <br>
           <h3>Scheduled for:</h3>
