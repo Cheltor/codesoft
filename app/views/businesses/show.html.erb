@@ -42,6 +42,20 @@
                   <% end %>
                 <% end %>
     </p>
+
+    <p>
+      <strong><label>Address:</label></strong>
+                <%= link_to @business.address.property_name_with_combadd, address_path(@business.address) %>
+    </p>
+
+    <!-- if the business has a unit, display the unit -->
+    <% if @business.unit.present? %>
+      <p>
+        <strong><label>Unit:</label></strong>
+        <%= link_to @business.unit.number, address_unit_path(@business.address, @business.unit) %>
+      </p>
+    <% end %>
+    
     <%= link_to "Edit", edit_address_business_path(@business.address, @business), class: "btn btn-outline-secondary", data: { turbo: false } %>
 
     <br>
