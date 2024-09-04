@@ -32,10 +32,27 @@ class BusinessesController < ApplicationController
 
   def create_business
     @business = Business.new(business_params)
+    address = Address.find(params[:business][:address_id])
+
+    # Check if a new unit number is provided
+    if @business.new_unit_number.present?
+      # Create a new unit associated with the address
+      unit = address.units.create(number: @business.new_unit_number)
+
+      if unit.persisted?
+        @business.unit = unit  # Associate the new unit with the business
+      else
+        Rails.logger.error "Failed to create unit: #{unit.errors.full_messages.join(', ')}"
+        flash[:error] = 'Failed to create the new unit. Please try again.'
+        render :new_business and return
+      end
+    end
+
     if @business.save
       flash[:success] = 'Business was successfully created.'
-      redirect_to businesses_path # You may want to adjust the redirection path
+      redirect_to businesses_path # Adjust the redirection path if needed
     else
+      Rails.logger.error "Failed to save business: #{@business.errors.full_messages.join(', ')}"
       render :new_business
     end
   end
@@ -83,6 +100,6 @@ class BusinessesController < ApplicationController
   private
 
   def business_params
-    params.require(:business).permit(:name, :phone, :email, :website, :address_id, :unit_id, :contact_ids, :trading_as)
+    params.require(:business).permit(:name, :phone, :email, :website, :address_id, :unit_id, :contact_ids, :trading_as, :new_unit_number)
   end
 end

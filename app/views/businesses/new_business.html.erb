@@ -8,6 +8,8 @@
   <div class="form-group" id="units-group" style="display: none;">
     <label>Units</label>
     <%= f.collection_select(:unit_id, [], :id, :number, { prompt: 'Select a unit' }, class: 'form-control selectpicker', id: 'business_unit_id') %>
+    <label>Or Enter New Unit Number</label>
+    <%= f.text_field :new_unit_number, class: 'form-control', id: 'new_unit_number', placeholder: 'Enter new unit number' %>
   </div>
 
 
@@ -59,6 +61,12 @@
         hideUnitsDropdown();
       }
     });
+
+    // Event listener to toggle manual unit number entry
+    document.querySelector('#business_unit_id').addEventListener('change', function (event) {
+      const selectedUnit = event.target.value;
+      toggleNewUnitField(selectedUnit);
+    });
   });
 
   function initializeChoices() {
@@ -83,7 +91,7 @@
       .then(data => {
         const unitsSelect = document.querySelector('#business_unit_id');
         unitsSelect.innerHTML = ''; // Clear existing options
-  
+
         if (data.units && data.units.length > 0) {
           data.units.forEach(unit => {
             const option = document.createElement('option');
@@ -91,17 +99,16 @@
             option.text = unit.number; // Use `number` to display the unit number
             unitsSelect.appendChild(option);
           });
-  
+
           showUnitsDropdown();
+          toggleNewUnitField(unitsSelect.value); // Hide new unit field if units are available
         } else {
-          hideUnitsDropdown();
+          showUnitsDropdown();
+          toggleNewUnitField(null); // Show new unit field if no units are available
         }
       })
       .catch(error => console.error('Error fetching units:', error));
   }
-  
-  
-  
 
   function showUnitsDropdown() {
     document.querySelector('#units-group').style.display = 'block';
@@ -111,5 +118,16 @@
     document.querySelector('#units-group').style.display = 'none';
     document.querySelector('#business_unit_id').innerHTML = '';
   }
+
+  // Function to show or hide the new unit number field
+  function toggleNewUnitField(selectedUnit) {
+    const newUnitField = document.querySelector('#new_unit_number');
+    if (selectedUnit) {
+      newUnitField.style.display = 'none'; // Hide the new unit field if an existing unit is selected
+    } else {
+      newUnitField.style.display = 'block'; // Show the new unit field if no unit is selected or no units are available
+    }
+  }
+
 </script>
 
