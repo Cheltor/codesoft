@@ -5,6 +5,12 @@
     <%= f.collection_select(:address_id, Address.all, :id, :combadd, { prompt: 'Select an address' }, class: 'form-control selectpicker', data: { style: 'btn-primary' }) %>
   </div>
 
+  <div class="form-group" id="units-group" style="display: none;">
+    <label>Units</label>
+    <%= f.collection_select(:unit_id, [], :id, :number, { prompt: 'Select a unit' }, class: 'form-control selectpicker', id: 'business_unit_id') %>
+  </div>
+
+
   <div class="form-group">
     <%= f.label :name %>
     <%= f.text_field :name, class: "form-control" %>
@@ -39,9 +45,23 @@
 <% end %>
 
 <script>
-  // Function to initialize Choices.js
+  document.addEventListener("turbo:load", function () {
+    initializeChoices();
+
+    // Address change event
+    document.querySelector('#business_address_id').addEventListener('change', function (event) {
+      const addressId = event.target.value;
+
+      // Fetch units for the selected address
+      if (addressId) {
+        fetchUnitsForAddress(addressId);
+      } else {
+        hideUnitsDropdown();
+      }
+    });
+  });
+
   function initializeChoices() {
-    // Initialize Choices.js for contact select
     new Choices('#business_contact_ids', {
       removeItemButton: true,
       searchEnabled: true,
@@ -49,7 +69,6 @@
       placeholderValue: 'Select a contact',
     });
 
-    // Initialize Choices.js for address select
     new Choices('#business_address_id', {
       removeItemButton: true,
       searchEnabled: true,
@@ -58,6 +77,39 @@
     });
   }
 
-  // Initialize Choices.js on page load
-  document.addEventListener("turbo:load", initializeChoices);
+  function fetchUnitsForAddress(addressId) {
+    fetch(`/addresses/${addressId}/units`)
+      .then(response => response.json())
+      .then(data => {
+        const unitsSelect = document.querySelector('#business_unit_id');
+        unitsSelect.innerHTML = ''; // Clear existing options
+  
+        if (data.units && data.units.length > 0) {
+          data.units.forEach(unit => {
+            const option = document.createElement('option');
+            option.value = unit.id;
+            option.text = unit.number; // Use `number` to display the unit number
+            unitsSelect.appendChild(option);
+          });
+  
+          showUnitsDropdown();
+        } else {
+          hideUnitsDropdown();
+        }
+      })
+      .catch(error => console.error('Error fetching units:', error));
+  }
+  
+  
+  
+
+  function showUnitsDropdown() {
+    document.querySelector('#units-group').style.display = 'block';
+  }
+
+  function hideUnitsDropdown() {
+    document.querySelector('#units-group').style.display = 'none';
+    document.querySelector('#business_unit_id').innerHTML = '';
+  }
 </script>
+

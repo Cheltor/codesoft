@@ -19,6 +19,7 @@ Rails.application.routes.draw do
       member do
         get :extend_deadline
         patch :update_deadline
+        get :units
       end
       patch :resolve, on: :member
       patch :update, on: :member

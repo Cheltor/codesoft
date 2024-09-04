@@ -2,8 +2,10 @@ class UnitsController < ApplicationController
   layout 'choices', only: [:manage_contacts]
 
   def index
-    @address = Address.find(params[:address_id])
-    @units = @address.units
+    address = Address.find(params[:address_id])
+    units = address.units
+
+    render json: { units: units.as_json(only: [:id, :number]) }
   end
 
   def show

@@ -248,6 +248,15 @@ class AddressesController < ApplicationController
     @items = @addresses + @units
   end
 
+  def units
+    @address = Address.find(params[:id])
+    units = address.units # Assuming the association is set up as has_many :units
+    Rails.logger.info "Units for Address #{address.id}: #{units.inspect}"
+
+    render json: { units: units.as_json(only: [:id, :name]) }
+  end
+
+
   def vacant
     @addresses = Address.where(vacancy_status: ['vacant', 'registered'])
     @units = Unit.where(vacancy_status: ['vacant', 'registered'])
