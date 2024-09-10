@@ -158,6 +158,10 @@ Rails.application.routes.draw do
       resources :addresses do
         member do
           get 'photos'
+          get 'violations'
+          get 'inspections'
+          get 'complaints'
+          get 'comments'
         end
       end
       resources :businesses
