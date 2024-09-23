@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_08_13_180301) do
+ActiveRecord::Schema[7.0].define(version: 2024_09_23_195037) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -313,6 +313,21 @@ ActiveRecord::Schema[7.0].define(version: 2024_08_13_180301) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["area_id"], name: "index_observations_on_area_id"
+  end
+
+  create_table "permits", force: :cascade do |t|
+    t.integer "address_id"
+    t.integer "inspection_id"
+    t.boolean "sent"
+    t.boolean "revoked"
+    t.string "fiscal_year"
+    t.date "expiration_date"
+    t.string "permitnumber"
+    t.date "date_issued"
+    t.text "conditions"
+    t.boolean "paid"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "prompts", force: :cascade do |t|

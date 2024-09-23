@@ -424,6 +424,8 @@ class InspectionsController < ApplicationController
         redirect_to create_single_family_license_address_inspection_path(@address, @inspection)
       elsif @inspection.source == "Multifamily License" && @inspection.status == "Satisfactory"
         redirect_to create_multifamily_license_address_inspection_path(@address, @inspection)
+      elsif @inspection.source == "Building/Dumpster/POD permit" && @inspection.status == "Satisfactory"
+        redirect_to create_permit_address_inspection_path(@address, @inspection)
       else
         redirect_to address_inspection_path(@address, @inspection), notice: 'Inspection was successfully updated.'
       end
@@ -453,6 +455,29 @@ class InspectionsController < ApplicationController
       render :assign_inspection, notice: 'Inspector was not successfully assigned.'
     end
   end  
+
+  def create_permit
+    @inspection = Inspection.find(params[:id])
+    @address = Address.find(@inspection.address_id)
+
+    # Check if a permit already exists for this inspection
+    if @inspection.permit
+      # Redirect to the permit page or display an appropriate message
+      redirect_to address_inspection_path(@inspection.address_id, @inspection), notice: 'Permit already exists for this inspection.'
+      return
+    end
+
+    # Create a new permit object
+    @permit = Permit.new(inspection: @inspection, address: @address)
+
+    if @permit.save
+      redirect_to permit_path(@permit)
+    else
+      # Handle the case when permit creation fails
+      # Redirect to the inspection page or display an error message
+      redirect_to address_inspection_path(@inspection.address_id, @inspection), notice: 'Permit was not successfully created.'
+    end
+  end
 
   def create_single_family_license
     @inspection = Inspection.find(params[:id])

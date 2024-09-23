@@ -17,6 +17,7 @@ class Inspection < ApplicationRecord
   has_many :inspection_comments, dependent: :destroy
   has_many :notifications, dependent: :destroy
   has_one :license, dependent: :destroy
+  has_one :permit, dependent: :destroy
   has_paper_trail
 
   after_update :update_license_paid_status, if: :saved_change_to_paid?

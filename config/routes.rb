@@ -55,6 +55,7 @@ Rails.application.routes.draw do
         get 'create_business_license'
         get 'create_single_family_license'
         get 'create_multifamily_license'
+        get 'create_permit'
       end
       resources :areas do
         resources :observations, only: [:create, :edit, :update]
@@ -98,6 +99,11 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :permits do
+    member do
+    end
+  end
+
   get 'all_inspections' => 'inspections#all_inspections'
   get 'my_inspections' => 'inspections#my_inspections'
   get 'my_unscheduled_inspections' => 'inspections#my_unscheduled_inspections'
@@ -123,6 +129,7 @@ Rails.application.routes.draw do
   get 'inspection_calendar' => 'inspections#inspection_calendar'
   get 'new_business_violation/:business_id' => 'violations#new_business_violation', as: 'new_business_violation'
   get 'all_licenses' => 'licenses#index'
+  get 'all_permits' => 'permits#index'
   get 'map' => 'static#map'
   get 'export_violations' => 'violations#export_csv'
   get 'export_property_csv' => 'violations#export_property_csv'

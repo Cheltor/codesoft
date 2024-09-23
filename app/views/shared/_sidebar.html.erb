@@ -87,6 +87,14 @@
         <% end %>
       </li>
 
+      <%# PERMITS %>
+      <li class="sidebar-item">
+        <%= link_to(permits_path, class: "sidebar-link") do %>
+          <i class="align-middle" data-feather="file-text"></i>
+          <span class="align-middle">Permits</span>
+        <% end %>
+      </li>
+
       <%# INSPECTIONS %>
       <% if current_user.admin? || current_user.ons? || current_user.oas? %>
       <li class="sidebar-header">
