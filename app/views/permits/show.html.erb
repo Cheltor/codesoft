@@ -1,8 +1,11 @@
 <h1> Permit </h1>
 
 <p>
-  <strong>Address ID:</strong>
-  <%= @permit.address_id %>
+  <strong>Address:</strong>
+  <%= @permit.address.property_name_with_combadd %>
+  <%= link_to address_path(@permit.address) do %>
+    <i class="align-middle" data-feather="external-link"></i>
+  <% end %>
 </p>
 
 <p>
