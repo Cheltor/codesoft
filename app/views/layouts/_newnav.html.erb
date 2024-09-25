@@ -1,77 +1,72 @@
-			<nav class="navbar navbar-expand navbar-light navbar-bg">
-				<a class="sidebar-toggle js-sidebar-toggle">
-          <i class="hamburger align-self-center"></i>
-        </a>
-<%= search_form_for @q, url: root_path, method: :get do |f| %>
-  <div class="input-group">
-    <%= f.search_field :property_name_or_combadd_or_aka_or_ownername_cont, class: "form-control dropdown-toggle", placeholder: "Search By Address...", required: true, minlength: 4, id: "top-search" %>
-    <span class="mdi mdi-magnify search-icon"></span>
-    <%= f.button "Search", class: "input-group-text btn btn-primary", type: "submit" %>
+<nav class="bg-white border-b border-gray-200 px-4 py-2.5">
+  <div class="flex items-center justify-between">
+    <a class="cursor-pointer">
+      <i class="hamburger align-self-center"></i>
+    </a>
+
+    <%= search_form_for @q, url: root_path, method: :get do |f| %>
+      <div class="relative flex items-center w-full max-w-xs">
+        <%= f.search_field :property_name_or_combadd_or_aka_or_ownername_cont, 
+          class: "w-full rounded-md border border-gray-300 pl-4 pr-10 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500", 
+          placeholder: "Search By Address...", required: true, minlength: 4, id: "top-search" %>
+        <span class="absolute right-3 inset-y-0 flex items-center text-gray-500">
+          <i class="mdi mdi-magnify"></i>
+        </span>
+        <%= f.button "Search", class: "ml-2 px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700", type: "submit" %>
+      </div>
+    <% end %>
+
+    <div class="flex items-center space-x-4">
+      <ul class="flex items-center space-x-6">
+        <!-- Notifications Dropdown -->
+        <li class="relative">
+          <a href="#" class="text-gray-500 hover:text-gray-700" id="alertsDropdown" data-bs-toggle="dropdown">
+            <div class="relative">
+              <i class="align-middle" data-feather="bell"></i>
+              <% if @notifications.present? %>
+                <span class="absolute top-0 right-0 inline-block w-2 h-2 bg-red-600 rounded-full"></span>
+              <% end %>
+            </div>
+          </a>
+          <div class="absolute right-0 mt-2 w-72 bg-white shadow-lg rounded-lg z-10 dropdown-menu py-0" aria-labelledby="alertsDropdown">
+            <div class="px-4 py-2 border-b text-gray-700">
+              <%= pluralize(@notifications.count, "New Notification") %>
+            </div>
+            <div class="list-group overflow-y-auto max-h-60">
+              <% if @notifications.present? %>
+                <% @notifications.each do |notification| %>
+                  <%= link_to mark_as_read_notification_path(notification, redirect_url: address_inspection_path(notification.inspection.address, notification.inspection.id)), data: { turbo_method: :patch }, remote: true, class: 'block px-4 py-3 hover:bg-gray-100' do %>
+                    <div class="text-dark">
+                      <%= notification.title %>
+                    </div>
+                    <div class="text-gray-600 text-sm">
+                      <%= notification.body %><% if notification.inspection.description.present? %> - <%= notification.inspection.description.truncate(50) %><% end %>
+                    </div>
+                    <div class="text-gray-500 text-xs text-right">
+                      <%= time_ago_in_words(notification.created_at) %>
+                    </div>
+                  <% end %>
+                <% end %>
+                <%= link_to mark_all_as_read_notifications_path, data: { turbo_method: :patch }, remote: true, class: 'block px-4 py-3 text-sm text-blue-600 hover:bg-gray-100' do %>
+                  Mark All as Read
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+        </li>
+
+        <!-- User Dropdown -->
+        <li class="relative">
+          <a href="#" class="text-gray-500 hover:text-gray-700" id="userDropdown" data-bs-toggle="dropdown">
+            <span class="hidden sm:inline-block text-gray-900"><%= current_user.email %></span>
+          </a>
+          <div class="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg z-10 dropdown-menu py-0" aria-labelledby="userDropdown">
+            <%= link_to "Change Password", edit_user_registration_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
+            <div class="border-t"></div>
+            <%= link_to "Logout", destroy_user_session_path, data: { turbo_method: :delete }, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
+          </div>
+        </li>
+      </ul>
+    </div>
   </div>
-<% end %>
-
-								<div class="navbar-collapse collapse">
-									<ul class="navbar-nav navbar-align">
-										<li class="nav-item dropdown">
-											<a class="nav-icon dropdown-toggle" href="#" id="alertsDropdown" data-bs-toggle="dropdown">
-												<div class="position-relative">
-													<i class="align-middle" data-feather="bell"></i>
-													<% if @notifications.present? %>
-													<span class="indicator"><%= @notifications.count %></span>
-													<% end %>
-												</div>
-											</a>
-											<div class="dropdown-menu dropdown-menu-lg dropdown-menu-end py-0" aria-labelledby="alertsDropdown">
-												<div class="dropdown-menu-header">
-													<%= pluralize(@notifications.count, "New Notification") %>
-												</div>
-												<div class="list-group">
-													<% if @notifications.present? %>
-														<% @notifications.each do |notification| %>
-															<%= link_to mark_as_read_notification_path(notification, redirect_url: address_inspection_path(notification.inspection.address, notification.inspection.id)), data: { turbo_method: :patch }, remote: true, class: 'list-group-item notification-link' do %>
-																<div class="row g-0 align-items-center">
-																	<div class="col-12">
-																		<div class="text-dark">
-																			<%= notification.title %>
-																		</div>
-																		<div class="text-muted small mt-1">
-																			<%= notification.body %><% if notification.inspection.description.present? %> - <%= notification.inspection.description.truncate(50) %><% end %>
-																		</div>
-																		<div class="text-muted small mt-1 text-end">
-																			<%= time_ago_in_words(notification.created_at) %>
-																		</div>
-																	</div>
-																</div>
-															<% end %>
-														<% end %>
-														<%= link_to mark_all_as_read_notifications_path, data: { turbo_method: :patch }, remote: true, class: 'list-group-item notification-link mark-all-as-read' do %>
-															<div class="row g-0 align-items-center">
-																<div class="col-12">
-																	<div class="text-dark">
-																		Mark All as Read
-																	</div>
-																</div>
-															</div>
-														<% end %>
-													<% end %>
-												</div>
-											</div>
-										</li>
-										<li class="nav-item dropdown">
-											<a class="nav-icon dropdown-toggle d-inline-block d-sm-none" href="#" data-bs-toggle="dropdown">
-				                <i class="align-middle" data-feather="settings"></i>
-				              </a>
-
-											<a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-bs-toggle="dropdown">
-				                <span class="text-dark"><%= current_user.email %></span>
-				                </span>
-				              </a>
-											<div class="dropdown-menu dropdown-menu-end">
-												<%= link_to "Change Password", edit_user_registration_path, class: "dropdown-item" %>
-												<div class="dropdown-divider"></div>
-												<%= link_to "Logout", destroy_user_session_path, data: { turbo_method: :delete }, class: "dropdown-item" %>
-											</div>
-										</li>
-									</ul>
-								</div>
-			</nav>
+</nav>

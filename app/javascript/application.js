@@ -1,7 +1,7 @@
 // Entry point for the build script in your package.json
 import "@hotwired/turbo-rails"
 import "./controllers"
-import * as bootstrap from "bootstrap"
+// import * as bootstrap from "bootstrap"
 
 // AdminKit (required)
 import "./modules/sidebar";
@@ -9,13 +9,13 @@ import "./modules/theme";
 import "./modules/feather";
 
 // Charts
-import "./modules/chartjs";
+//import "./modules/chartjs";
 
 // Forms
-import "./modules/flatpickr";
+//import "./modules/flatpickr";
 
 // Maps
-import "./modules/vector-maps";
+//import "./modules/vector-maps";
 
 
 // Initialize ChoicesJS

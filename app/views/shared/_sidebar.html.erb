@@ -1,218 +1,187 @@
-<nav id="sidebar" class="sidebar js-sidebar">
-  <div class="sidebar-content js-simplebar">
-    <a class="sidebar-brand" href="/">
+<nav id="sidebar" class="w-64 h-screen bg-gray-800 text-white">
+  <div class="sidebar-content h-full overflow-y-auto">
+    <a class="flex items-center px-4 py-4 text-white text-lg font-semibold" href="/">
       <span class="align-middle">CodeSoft</span>
     </a>
 
-    <ul class="sidebar-nav">
-
+    <ul class="space-y-2">
+      
       <li class="sidebar-item">
-        <%= link_to(root_path, class: "sidebar-link") do %>
-          <i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Dashboard</span>
+        <%= link_to root_path, class: "flex items-center px-4 py-2 hover:bg-gray-700 rounded" do %>
+          <i class="align-middle" data-feather="sliders"></i> 
+          <span class="align-middle ml-3">Dashboard</span>
         <% end %>
       </li>
 
-      <%# MAP %>
       <% if current_user.admin? || current_user.ons? || current_user.oas? %>
-      <li class="sidebar-item">
-        <%= link_to(map_path, class: "sidebar-link") do %>
-          <i class="align-middle" data-feather="map"></i>
-          <span class="align-middle">Map</span>
-        <% end %>
-      </li>
+        <li class="sidebar-item">
+          <%= link_to map_path, class: "flex items-center px-4 py-2 hover:bg-gray-700 rounded" do %>
+            <i class="align-middle" data-feather="map"></i> 
+            <span class="align-middle ml-3">Map</span>
+          <% end %>
+        </li>
       <% end %>
 
       <% if current_user.ons? %>
         <li class="sidebar-item">
-          <%= link_to(inspection_calendar_path, class: "sidebar-link") do %>
-            <i class="align-middle" data-feather="calendar"></i>
-            <span class="align-middle">Inspections this week</span>
+          <%= link_to inspection_calendar_path, class: "flex items-center px-4 py-2 hover:bg-gray-700 rounded" do %>
+            <i class="align-middle" data-feather="calendar"></i> 
+            <span class="align-middle ml-3">Inspections this week</span>
           <% end %>
         </li>
       <% end %>
 
-      <%# CONTACTS %>
       <% if current_user.admin? || current_user.ons? || current_user.oas? %>
-
-      <li class="sidebar-item">
-        <%= link_to(contacts_path, class: "sidebar-link") do %>
-          <i class="align-middle" data-feather="users"></i>
-          <span class="align-middle">Contacts</span>
-        <% end %>
-      </li>
+        <li class="sidebar-item">
+          <%= link_to contacts_path, class: "flex items-center px-4 py-2 hover:bg-gray-700 rounded" do %>
+            <i class="align-middle" data-feather="users"></i> 
+            <span class="align-middle ml-3">Contacts</span>
+          <% end %>
+        </li>
       <% end %>
 
       <li class="sidebar-item">
-        <%= link_to(all_violations_path, class: "sidebar-link") do %>
-          <i class="align-middle" data-feather="alert-triangle"></i>
-          <span class="align-middle">Violations</span>
-        <% end %>
-      </li>
-
-      
-      <li class="sidebar-item">
-        <%= link_to(all_citations_path, class: "sidebar-link") do %>
-          <i class="align-middle" data-feather="file"></i>
-          <span class="align-middle">Citations</span>
+        <%= link_to all_violations_path, class: "flex items-center px-4 py-2 hover:bg-gray-700 rounded" do %>
+          <i class="align-middle" data-feather="alert-triangle"></i> 
+          <span class="align-middle ml-3">Violations</span>
         <% end %>
       </li>
 
       <li class="sidebar-item">
-        <%= link_to(all_complaints_path, class: "sidebar-link") do %>
-          <i class="align-middle" data-feather="alert-circle"></i>
-          <span class="align-middle">Complaints</span>
+        <%= link_to all_citations_path, class: "flex items-center px-4 py-2 hover:bg-gray-700 rounded" do %>
+          <i class="align-middle" data-feather="file"></i> 
+          <span class="align-middle ml-3">Citations</span>
         <% end %>
       </li>
 
       <li class="sidebar-item">
-        <%= link_to(all_inspections_path, class: "sidebar-link") do %>
-          <i class="align-middle" data-feather="clipboard"></i>
-          <span class="align-middle">Inspections</span>
+        <%= link_to all_complaints_path, class: "flex items-center px-4 py-2 hover:bg-gray-700 rounded" do %>
+          <i class="align-middle" data-feather="alert-circle"></i> 
+          <span class="align-middle ml-3">Complaints</span>
         <% end %>
       </li>
 
-      <%# BUSINESSES %>
       <li class="sidebar-item">
-        <%= link_to(businesses_path, class: "sidebar-link") do %>
-          <i class="align-middle" data-feather="briefcase"></i>
-          <span class="align-middle">Businesses</span>
+        <%= link_to all_inspections_path, class: "flex items-center px-4 py-2 hover:bg-gray-700 rounded" do %>
+          <i class="align-middle" data-feather="clipboard"></i> 
+          <span class="align-middle ml-3">Inspections</span>
         <% end %>
       </li>
 
-      <%# LICENSES %>
       <li class="sidebar-item">
-        <%= link_to(licenses_path, class: "sidebar-link") do %>
-          <i class="align-middle" data-feather="file-text"></i>
-          <span class="align-middle">Licenses</span>
+        <%= link_to businesses_path, class: "flex items-center px-4 py-2 hover:bg-gray-700 rounded" do %>
+          <i class="align-middle" data-feather="briefcase"></i> 
+          <span class="align-middle ml-3">Businesses</span>
         <% end %>
       </li>
 
-      <%# PERMITS %>
       <li class="sidebar-item">
-        <%= link_to(permits_path, class: "sidebar-link") do %>
-          <i class="align-middle" data-feather="file-text"></i>
-          <span class="align-middle">Permits</span>
+        <%= link_to licenses_path, class: "flex items-center px-4 py-2 hover:bg-gray-700 rounded" do %>
+          <i class="align-middle" data-feather="file-text"></i> 
+          <span class="align-middle ml-3">Licenses</span>
         <% end %>
       </li>
 
-      <%# INSPECTIONS %>
+      <li class="sidebar-item">
+        <%= link_to permits_path, class: "flex items-center px-4 py-2 hover:bg-gray-700 rounded" do %>
+          <i class="align-middle" data-feather="file-text"></i> 
+          <span class="align-middle ml-3">Permits</span>
+        <% end %>
+      </li>
+
       <% if current_user.admin? || current_user.ons? || current_user.oas? %>
-      <li class="sidebar-header">
-        Inspections
-      </li>
+        <li class="sidebar-header px-4 py-2 text-xs uppercase text-gray-400">
+          Inspections
+        </li>
 
-      <li class="sidebar-item">
-        <%= link_to(new_complaint_path, class: "sidebar-link", data: { turbo: false }) do %>
-          <i class="align-middle" data-feather="plus-circle"></i>
-          <span class="align-middle">New Complaint</span>
-        <% end %>
-      </li>
-
-      <% if current_user.admin? %>
-      <li class="sidebar-item">
-        <%= link_to(unassigned_inspections_path, class: "sidebar-link", data: { turbo: false }) do %>
-          <i class="align-middle" data-feather="clipboard"></i>
-          <span class="align-middle">Unassigned Inspections</span>
-        <% end %>
-      </li>
-      <% end %>
-
-      <li class="sidebar-item">
-        <%= link_to(new_permit_inspection_path, class: "sidebar-link", data: { turbo: false }) do %>
-          <i class="align-middle" data-feather="plus-circle"></i>
-          <span class="align-middle">New Permit</span>
-        <% end %>
-      </li>
-
-      <li class="sidebar-item">
-        <%= link_to(new_license_inspection_path, class: "sidebar-link", data: { turbo: false }) do %>
-          <i class="align-middle" data-feather="plus-circle"></i>
-          <span class="align-middle">New License</span>
-        <% end %>
-      </li>
-
-
-
-<!--      <% if current_user.ons? %>
         <li class="sidebar-item">
-          <%= link_to(my_inspections_path, class: "sidebar-link") do %>
-            <i class="align-middle" data-feather="clipboard"></i>
-            <span class="align-middle">My Inspections</span>
+          <%= link_to new_complaint_path, class: "flex items-center px-4 py-2 hover:bg-gray-700 rounded", data: { turbo: false } do %>
+            <i class="align-middle" data-feather="plus-circle"></i> 
+            <span class="align-middle ml-3">New Complaint</span>
           <% end %>
         </li>
-      <% end %> -->
 
+        <% if current_user.admin? %>
+          <li class="sidebar-item">
+            <%= link_to unassigned_inspections_path, class: "flex items-center px-4 py-2 hover:bg-gray-700 rounded", data: { turbo: false } do %>
+              <i class="align-middle" data-feather="clipboard"></i> 
+              <span class="align-middle ml-3">Unassigned Inspections</span>
+            <% end %>
+          </li>
+        <% end %>
 
-
-<!--      <% if current_user.ons? %>
         <li class="sidebar-item">
-          <%= link_to(my_complaints_path, class: "sidebar-link") do %>
-            <i class="align-middle" data-feather="clipboard"></i>
-            <span class="align-middle">My Complaints</span>
+          <%= link_to new_permit_inspection_path, class: "flex items-center px-4 py-2 hover:bg-gray-700 rounded", data: { turbo: false } do %>
+            <i class="align-middle" data-feather="plus-circle"></i> 
+            <span class="align-middle ml-3">New Permit</span>
           <% end %>
         </li>
-      <% end %> -->
 
-
-
+        <li class="sidebar-item">
+          <%= link_to new_license_inspection_path, class: "flex items-center px-4 py-2 hover:bg-gray-700 rounded", data: { turbo: false } do %>
+            <i class="align-middle" data-feather="plus-circle"></i> 
+            <span class="align-middle ml-3">New License</span>
+          <% end %>
+        </li>
       <% end %>
-      <%# PAGES %>
-      <li class="sidebar-header">
+
+      <li class="sidebar-header px-4 py-2 text-xs uppercase text-gray-400">
         Pages
       </li>
 
       <li class="sidebar-item">
-        <%= link_to(vacant_addresses_path, class: "sidebar-link") do %>
-          <i class="align-middle" data-feather="home"></i>
-          <span class="align-middle">Vacant Addresses</span>
+        <%= link_to vacant_addresses_path, class: "flex items-center px-4 py-2 hover:bg-gray-700 rounded" do %>
+          <i class="align-middle" data-feather="home"></i> 
+          <span class="align-middle ml-3">Vacant Addresses</span>
         <% end %>
       </li>
 
       <li class="sidebar-item">
-        <%= link_to(potentially_vacant_addresses_path, class: "sidebar-link") do %>
-          <i class="align-middle" data-feather="home"></i>
-          <span class="align-middle">Potentially Vacant</span>
+        <%= link_to potentially_vacant_addresses_path, class: "flex items-center px-4 py-2 hover:bg-gray-700 rounded" do %>
+          <i class="align-middle" data-feather="home"></i> 
+          <span class="align-middle ml-3">Potentially Vacant</span>
         <% end %>
       </li>
 
       <li class="sidebar-item">
-        <%= link_to(codes_path, class: "sidebar-link") do %>
-          <i class="align-middle" data-feather="book"></i>
-          <span class="align-middle">Codes</span>
+        <%= link_to codes_path, class: "flex items-center px-4 py-2 hover:bg-gray-700 rounded" do %>
+          <i class="align-middle" data-feather="book"></i> 
+          <span class="align-middle ml-3">Codes</span>
         <% end %>
       </li>
 
       <li class="sidebar-item">
-        <%= link_to(helpful_path, class: "sidebar-link") do %>
-          <i class="align-middle" data-feather="help-circle"></i>
-          <span class="align-middle">Helpful Links</span>
+        <%= link_to helpful_path, class: "flex items-center px-4 py-2 hover:bg-gray-700 rounded" do %>
+          <i class="align-middle" data-feather="help-circle"></i> 
+          <span class="align-middle ml-3">Helpful Links</span>
         <% end %>
       </li>
 
       <li class="sidebar-item">
-        <%= link_to(sir_path, class: "sidebar-link") do %>
-          <i class="align-middle" data-feather="clipboard"></i>
-          <span class="align-middle">SIR</span>
+        <%= link_to sir_path, class: "flex items-center px-4 py-2 hover:bg-gray-700 rounded" do %>
+          <i class="align-middle" data-feather="clipboard"></i> 
+          <span class="align-middle ml-3">SIR</span>
         <% end %>
       </li>
 
       <% if current_user.admin? %>
-      <li class="sidebar-item">
-        <%= link_to(users_path, class: "sidebar-link") do %>
-          <i class="align-middle" data-feather="users"></i>
-          <span class="align-middle">Users</span>
-        <% end %>
-      </li>
+        <li class="sidebar-item">
+          <%= link_to users_path, class: "flex items-center px-4 py-2 hover:bg-gray-700 rounded" do %>
+            <i class="align-middle" data-feather="users"></i> 
+            <span class="align-middle ml-3">Users</span>
+          <% end %>
+        </li>
       <% end %>
 
       <% if current_user.admin? || current_user.ons? || current_user.oas? %>
-      <li class="sidebar-item">
-        <%= link_to(new_address_path, class: "sidebar-link") do %>
-          <i class="align-middle" data-feather="plus-circle"></i>
-          <span class="align-middle">New Address</span>
-        <% end %>
-      </li>
+        <li class="sidebar-item">
+          <%= link_to new_address_path, class: "flex items-center px-4 py-2 hover:bg-gray-700 rounded" do %>
+            <i class="align-middle" data-feather="plus-circle"></i> 
+            <span class="align-middle ml-3">New Address</span>
+          <% end %>
+        </li>
       <% end %>
+      
     </ul>
   </div>
 </nav>
