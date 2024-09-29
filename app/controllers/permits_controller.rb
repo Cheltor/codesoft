@@ -1,5 +1,6 @@
 class PermitsController < ApplicationController
   before_action :set_permit, only: [:show]
+  before_action :authenticate_user!
 
   def index
     @permits = Permit.all

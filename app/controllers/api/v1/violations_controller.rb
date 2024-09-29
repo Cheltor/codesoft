@@ -1,7 +1,7 @@
 
 class Api::V1::ViolationsController < ActionController::Base
   def index
-    @violations = Violation.all
+    @violations = Violation.order(created_at: :desc)
     render json: @violations.map { |violation| violation.attributes.merge(address: violation.address) }
   end
 

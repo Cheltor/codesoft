@@ -1,6 +1,6 @@
 class BusinessesController < ApplicationController
   layout 'choices', only: [:new, :edit, :new_business]
-
+  before_action :authenticate_user!
 
   def index
     @business_q = Business.ransack(params[:q])
