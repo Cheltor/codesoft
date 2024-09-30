@@ -1,0 +1,50 @@
+<%= form_with(model: @permit, local: true) do |form| %>
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <%= link_to "Home", root_path %>
+      </li>
+      <li class="breadcrumb-item">
+        <%= link_to @address.property_name_with_combadd, address_path(@address) %>
+      </li>
+      <li class="breadcrumb-item">
+        <%= link_to 'Permits', permits_path(@permit) %>
+      </li>
+      <li class="breadcrumb-item active" aria-current="page">
+        <%= link_to "Permit ##{@permit.permitnumber}", permit_path(@permit) %>
+      </li>
+    </ol>
+  </nav>
+
+  <div class="container mt-4">
+    <h1 class="mb-4">Permit <%= @permit.permitnumber %></h1>
+
+    <div class="card mb-3">
+      <div class="card-body">
+        <h5 class="card-title">Permit Details</h5>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="form-group">
+              <%= form.label :fiscal_year %>
+              <%= form.text_field :fiscal_year, class: 'form-control', value: @permit.fiscal_year, readonly: true %>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <%= form.label :date_issued %>
+              <%= form.text_field :date_issued, class: 'form-control', value: @permit.date_issued, readonly: true %>
+            </div>
+            <div class="form-group">
+              <%= form.label :conditions %>
+              <%= form.text_area :conditions, class: 'form-control', value: @permit.conditions %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="actions">
+    <%= form.submit "Save Permit", class: "btn btn-primary" %>
+  </div>
+<% end %>

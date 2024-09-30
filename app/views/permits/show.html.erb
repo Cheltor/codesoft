@@ -1,14 +1,83 @@
-<h1> Permit </h1>
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item">
+      <%= link_to "Home", root_path %>
+    </li>
+    <li class="breadcrumb-item">
+      <%= link_to @address.property_name_with_combadd, address_path(@address) %>
+    </li>
+    <li class="breadcrumb-item">
+      <%= link_to 'Permits', permits_path(@permit) %>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">
+      <%= link_to "Permit ##{@permit.permitnumber}", permit_path(@permit) %>
+    </li>
+  </ol>
+</nav>
 
-<p>
-  <strong>Address:</strong>
-  <%= @permit.address.property_name_with_combadd %>
-  <%= link_to address_path(@permit.address) do %>
-    <i class="align-middle" data-feather="external-link"></i>
-  <% end %>
-</p>
+<div class="container mt-4">
+  <h1 class="mb-4">Permit <%= @permit.permitnumber %></h1>
+  <%= link_to 'Edit Permit', edit_permit_path(@permit), class: 'btn btn-primary' %>
 
-<p>
-  <strong>Inspection ID:</strong>
-  <%= @permit.inspection_id %>
-</p>
+  <div class="card mb-3">
+    <div class="card-body">
+      <h5 class="card-title">Permit Details</h5>
+      <div class="row">
+        <div class="col-md-6">
+          <p class="card-text">
+            <strong>Address:</strong>
+            <%= link_to @permit.address.property_name_with_combadd, address_path(@permit.address) %>
+          </p>
+          <p class="card-text">
+            <strong>Inspection ID:</strong>
+            <%= link_to @permit.inspection_id, address_inspection_path(@permit.address, @permit.inspection_id) %>
+          </p>
+          <p class="card-text">
+            <strong>Sent:</strong>
+            <%= @permit.sent %>
+          </p>
+          <p class="card-text">
+            <strong>Revoked:</strong>
+            <%= @permit.revoked %>
+          </p>
+          <p class="card-text">
+            <strong>Fiscal Year:</strong>
+            <%= @permit.fiscal_year %>
+          </p>
+          <p class="card-text">
+            <strong>Expiration Date:</strong>
+            <%= @permit.expiration_date.strftime("%m/%d/%Y") %>
+          </p>
+        </div>
+        <div class="col-md-6">
+          <p class="card-text">
+            <strong>Date Issued:</strong>
+            <%= @permit.date_issued %>
+          </p>
+          <p class="card-text">
+            <strong>Conditions:</strong>
+            <%= @permit.conditions %>
+          </p>
+          <p class="card-text">
+            <strong>Paid:</strong>
+            <%= @permit.paid %>
+          </p>
+          <% if @permit.inspection.contact.present? %> 
+          <p class="card-text">
+            <strong>Contact:</strong>
+            <%= link_to @permit.inspection.contact.name, contact_path(@permit.inspection.contact) %>
+          </p>
+          <p class="card-text">
+            <strong>Phone:</strong>
+            <%= link_to @permit.inspection.contact.phone, "tel:#{@permit.inspection.contact.phone}" %>
+          </p>
+          <p class="card-text">
+            <strong>Email:</strong>
+            <%= mail_to @permit.inspection.contact.email %>
+          </p>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

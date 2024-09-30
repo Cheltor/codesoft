@@ -1,38 +1,20 @@
 <h1>Permits</h1>
 
-<table>
-  <thead>
+<table class="table table-striped">
+  <thead class="thead-dark">
     <tr>
+      <th>Permit ID</th>
       <th>Address ID</th>
       <th>Inspection ID</th>
-      <th>Sent</th>
-      <th>Revoked</th>
-      <th>Fiscal Year</th>
-      <th>Expiration Date</th>
-      <th>Permit Number</th>
-      <th>Date Issued</th>
-      <th>Conditions</th>
-      <th>Paid</th>
-      <th>Actions</th>
     </tr>
   </thead>
 
   <tbody>
     <% @permits.each do |permit| %>
       <tr>
-        <td><%= permit.address_id %></td>
-        <td><%= permit.inspection_id %></td>
-        <td><%= permit.sent %></td>
-        <td><%= permit.revoked %></td>
-        <td><%= permit.fiscal_year %></td>
-        <td><%= permit.expiration_date %></td>
-        <td><%= permit.permitnumber %></td>
-        <td><%= permit.date_issued %></td>
-        <td><%= permit.conditions %></td>
-        <td><%= permit.paid %></td>
-        <td>
-          <%= link_to 'Show', permit %>
-        </td>
+        <td><%= link_to permit.permitnumber, permit %></td>
+        <td><%= link_to permit.address.property_name_with_combadd, address_path(permit.address_id) %></td>
+        <td><%= link_to permit.inspection_id, address_inspection_path(permit.address, permit.inspection_id) %></td>
       </tr>
     <% end %>
   </tbody>
