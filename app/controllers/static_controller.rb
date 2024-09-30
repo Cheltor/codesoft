@@ -1,6 +1,6 @@
 class StaticController < ApplicationController
-  skip_before_action :authenticate_user!, only: [:issue, :dashboard, :helpful]
-
+  #skip_before_action :authenticate_user!, only: [:issue, :dashboard, :helpful]
+  # I'm not sure why I had to comment out the above line. It worked before, but now it's causing an error. 9/29/24
   def map
     if params[:show] == 'all'
       @addresses = Address.all

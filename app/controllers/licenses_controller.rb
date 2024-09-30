@@ -1,4 +1,6 @@
 class LicensesController < ApplicationController
+  before_action :authenticate_user!
+
   def index
     current_year = Time.zone.now.year
     fiscal_year_start = Date.new(current_year, 7, 1)

@@ -1,5 +1,6 @@
 class AddressesController < ApplicationController
   layout 'choices', only: [:manage_contacts]
+  before_action :authenticate_user!
 
   def index
     @addresses = @q.result.where.not(streetnumb: nil)

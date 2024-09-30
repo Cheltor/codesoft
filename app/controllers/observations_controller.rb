@@ -1,4 +1,6 @@
 class ObservationsController < ApplicationController
+  before_action :authenticate_user!
+
   def create
     @address = Address.find(params[:address_id])
     @inspection = @address.inspections.find(params[:inspection_id])

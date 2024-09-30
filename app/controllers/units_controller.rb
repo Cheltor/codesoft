@@ -1,5 +1,6 @@
 class UnitsController < ApplicationController
   layout 'choices', only: [:manage_contacts]
+  before_action :authenticate_user!
 
   def index
     address = Address.find(params[:address_id])

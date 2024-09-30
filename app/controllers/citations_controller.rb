@@ -1,4 +1,6 @@
 class CitationsController < ApplicationController
+  before_action :authenticate_user!
+
   def new
     @violation = Violation.find(params[:violation_id])
     @citation = @violation.citations.new

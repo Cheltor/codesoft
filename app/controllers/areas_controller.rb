@@ -1,5 +1,6 @@
 class AreasController < ApplicationController
   layout 'choices', only: [:new, :edit]
+  before_action :authenticate_user!
 
   #All of these redirects need to be updated to the new routes
   def create

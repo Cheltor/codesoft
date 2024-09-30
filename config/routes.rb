@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  mount_devise_token_auth_for 'User', at: 'auth', as: 'auth_api'
   resources :codes
   resources :rooms do
     resources :prompts
@@ -179,5 +180,5 @@ Rails.application.routes.draw do
       resources :contacts
     end
   end
-  mount ServiceWorker::Engine => "/service-worker.js"
+  # get '/service-worker.js' => 'service_worker#index', defaults: { format: 'js' }
 end

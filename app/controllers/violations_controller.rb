@@ -3,6 +3,7 @@ class ViolationsController < ApplicationController
   before_action :set_violation, only: [:resolve, :extender, :update, :edit]
   layout 'choices', only: [:new, :edit, :new_business_violation]
   before_action :require_ons_or_admin, except: [:sir, :violist]
+  before_action :authenticate_user!
 
   def new
     @violation = @address.violations.new

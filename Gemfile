@@ -56,6 +56,8 @@ gem 'ransack'
 
 # Auth
 gem 'devise'
+gem 'devise_token_auth'
+gem 'omniauth'
 
 # Image storage
 gem "azure-storage-blob", require: false
@@ -67,7 +69,7 @@ gem "rack", ">= 2.2.6.3"
 gem 'sablon'
 
 # PWA
-gem 'serviceworker-rails'
+# gem 'serviceworker-rails'
 
 # CORS
 gem 'rack-cors'

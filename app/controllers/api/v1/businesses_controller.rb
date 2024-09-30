@@ -1,4 +1,3 @@
-
 class Api::V1::BusinessesController < ActionController::Base
   def index
     @businesses = Business.all

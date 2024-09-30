@@ -1,4 +1,6 @@
 class PromptsController < ApplicationController
+    before_action :authenticate_user!
+
     def new
         @room = Room.find(params[:room_id])
         @prompt = @room.prompts.build

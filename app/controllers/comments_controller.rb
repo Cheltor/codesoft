@@ -1,4 +1,6 @@
 class CommentsController < ApplicationController
+  before_action :authenticate_user!
+  
   def create
     # Determine the parent object for the comment
     parent = Address.find_by(id: params[:address_id]) || Unit.find_by(id: params[:unit_id])
