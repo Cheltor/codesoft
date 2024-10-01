@@ -80,6 +80,14 @@ class StaticController < ApplicationController
       puts "Adding inspection address #{address.id} to priority_addresses"
       @priority_addresses << address
     end
+
+    start_of_week = Date.today.beginning_of_week(:monday)
+    end_of_week = Date.today.end_of_week(:friday)
+    @weekly_inspections = @inspections.select { |inspection| inspection.updated_at.between?(start_of_week, end_of_week) }.sort_by(&:updated_at).reverse
+    @last_week_inspections = @inspections.select { |inspection| inspection.updated_at.between?(1.week.ago.beginning_of_week(:monday), 1.week.ago.end_of_week(:friday)) }.sort_by(&:updated_at).reverse
+
+    @weekly_violations = @violations.select { |violation| violation.created_at.between?(start_of_week, end_of_week) }.sort_by(&:created_at).reverse
+    @last_week_violations = @violations.select { |violation| violation.created_at.between?(1.week.ago.beginning_of_week(:monday), 1.week.ago.end_of_week(:friday)) }.sort_by(&:created_at).reverse
   
     @priority_addresses = @priority_addresses.uniq.select { |address| !address.updated_at.today? }.sort_by(&:streetnumb)
     
@@ -153,7 +161,15 @@ class StaticController < ApplicationController
       other_inspections = @inspections.reject { |inspection| inspection.source == "Complaint" || inspection.paid == true }
   
       @inspections_dash = complaint_inspections + paid_inspections + other_inspections
-      
+
+      start_of_week = Date.today.beginning_of_week(:monday)
+      end_of_week = Date.today.end_of_week(:friday)
+      @weekly_inspections = @inspections.select { |inspection| inspection.updated_at.between?(start_of_week, end_of_week) }.sort_by(&:updated_at).reverse
+      @last_week_inspections = @inspections.select { |inspection| inspection.updated_at.between?(1.week.ago.beginning_of_week(:monday), 1.week.ago.end_of_week(:friday)) }.sort_by(&:updated_at).reverse
+  
+      @weekly_violations = @violations.select { |violation| violation.created_at.between?(start_of_week, end_of_week) }.sort_by(&:created_at).reverse
+      @last_week_violations = @violations.select { |violation| violation.created_at.between?(1.week.ago.beginning_of_week(:monday), 1.week.ago.end_of_week(:friday)) }.sort_by(&:created_at).reverse
+    
       @today_inspections = Inspection.where(inspector: @user, status: nil, scheduled_datetime: Date.today.beginning_of_day..Date.today.end_of_day).order(scheduled_datetime: :desc)
       @future_inspections = Inspection
       .where(inspector: @user, status: nil)
@@ -258,6 +274,15 @@ class StaticController < ApplicationController
         puts "Adding inspection address #{address.id} to priority_addresses"
         @priority_addresses << address
       end
+
+      start_of_week = Date.today.beginning_of_week(:monday)
+      end_of_week = Date.today.end_of_week(:friday)
+      @weekly_inspections = @inspections.select { |inspection| inspection.updated_at.between?(start_of_week, end_of_week) }.sort_by(&:updated_at).reverse
+      @last_week_inspections = @inspections.select { |inspection| inspection.updated_at.between?(1.week.ago.beginning_of_week(:monday), 1.week.ago.end_of_week(:friday)) }.sort_by(&:updated_at).reverse
+  
+      @weekly_violations = @violations.select { |violation| violation.created_at.between?(start_of_week, end_of_week) }.sort_by(&:created_at).reverse
+      @last_week_violations = @violations.select { |violation| violation.created_at.between?(1.week.ago.beginning_of_week(:monday), 1.week.ago.end_of_week(:friday)) }.sort_by(&:created_at).reverse
+    
     
       @priority_addresses = @priority_addresses.uniq.select { |address| !address.updated_at.today? }.sort_by(&:streetnumb)  
 
