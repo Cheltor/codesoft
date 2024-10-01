@@ -3,7 +3,7 @@ class PermitsController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @permits = Permit.all
+    @permits = Permit.order(created_at: :desc).paginate(page: params[:page], per_page: 10)
   end
 
   def show
@@ -53,6 +53,8 @@ class PermitsController < ApplicationController
     @permit.destroy
     redirect_to permits_path
   end
+  
+  
 
   private
   

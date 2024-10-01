@@ -1,21 +1,32 @@
-<h1>Permits</h1>
+<h1 class="my-4">Permits</h1>
 
-<table class="table table-striped">
-  <thead class="thead-dark">
-    <tr>
-      <th>Permit ID</th>
-      <th>Address ID</th>
-      <th>Inspection ID</th>
-    </tr>
-  </thead>
+<div class="card">
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead class="thead-dark">
+          <tr>
+            <th>Permit ID</th>
+            <th>Address ID</th>
+            <th>Paid?</th>
+            <th>Sent?</th>
+          </tr>
+        </thead>
 
-  <tbody>
-    <% @permits.each do |permit| %>
-      <tr>
-        <td><%= link_to permit.permitnumber, permit %></td>
-        <td><%= link_to permit.address.property_name_with_combadd, address_path(permit.address_id) %></td>
-        <td><%= link_to permit.inspection_id, address_inspection_path(permit.address, permit.inspection_id) %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+        <tbody>
+          <% @permits.each do |permit| %>
+            <tr>
+              <td><%= link_to permit.permitnumber, permit, class: 'btn btn-link' %></td>
+              <td><%= link_to permit.address.property_name_with_combadd, address_path(permit.address_id), class: 'btn btn-link' %></td>
+              <td><%= permit.paid ? 'Yes' : 'No' %></td>
+              <td><%= permit.sent ? 'Yes' : 'No' %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+      <div class="text-center">
+        <%= will_paginate @businesses, class: "pagination justify-content-center" %>
+      </div>
+    </div>
+  </div>
+</div>

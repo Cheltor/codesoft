@@ -102,6 +102,9 @@ Rails.application.routes.draw do
 
   resources :permits do
     member do
+      put 'sent' => 'permits#sent'
+      put 'revoked' => 'permits#revoked'
+      put 'paid' => 'permits#paid'
     end
   end
 

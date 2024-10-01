@@ -19,7 +19,7 @@
   <h1 class="mb-4">Permit <%= @permit.permitnumber %></h1>
   <%= link_to 'Edit Permit', edit_permit_path(@permit), class: 'btn btn-primary' %>
 
-  <div class="card mb-3">
+  <div class="card mb-3 mt-3">
     <div class="card-body">
       <h5 class="card-title">Permit Details</h5>
       <div class="row">
@@ -34,11 +34,15 @@
           </p>
           <p class="card-text">
             <strong>Sent:</strong>
-            <%= @permit.sent %>
-          </p>
+              <%= form_with url: sent_permit_path(@permit), method: :put, local: true do %>
+                <%= submit_tag @permit.sent ? 'Sent' : 'Not Sent', class: 'btn btn-secondary' %>
+              <% end %>
+            </p>
           <p class="card-text">
             <strong>Revoked:</strong>
-            <%= @permit.revoked %>
+            <%= form_with url: revoked_permit_path(@permit), method: :put, local: true do %>
+              <%= submit_tag @permit.revoked ? 'Revoked' : 'Not Revoked', class: 'btn btn-secondary' %>
+            <% end %>
           </p>
           <p class="card-text">
             <strong>Fiscal Year:</strong>
@@ -60,7 +64,9 @@
           </p>
           <p class="card-text">
             <strong>Paid:</strong>
-            <%= @permit.paid %>
+            <%= form_with url: paid_permit_path(@permit), method: :put, local: true do %>
+              <%= submit_tag @permit.paid ? 'Paid' : 'Not Paid', class: 'btn btn-secondary' %>
+            <% end %>
           </p>
           <% if @permit.inspection.contact.present? %> 
           <p class="card-text">
