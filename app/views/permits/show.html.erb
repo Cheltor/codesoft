@@ -32,56 +32,56 @@
           <p class="card-text">
             <strong>Inspection ID:</strong>
             <%= link_to @permit.inspection_id, address_inspection_path(@permit.address, @permit.inspection_id) %>
-  </p>
-  <p class="card-text">
-      <strong>Sent:</strong>
-        <%= form_with url: sent_permit_path(@permit), method: :put, local: true do %>
-            <%= submit_tag @permit.sent ? 'Sent' : 'Not Sent', class: 'btn btn-secondary' %>
-        <% end %>
-      </p>
-  <p class="card-text">
-      <strong>Revoked:</strong>
-      <%= form_with url: revoked_permit_path(@permit), method: :put, local: true do %>
-        <%= submit_tag @permit.revoked ? 'Revoked' : 'Not Revoked', class: 'btn btn-secondary' %>
-      <% end %>
-  </p>
-  <p class="card-text">
-      <strong>Fiscal Year:</strong>
-      <%= @permit.fiscal_year %>
-  </p>
-    <strong>Expiration Date:</strong>
-      <% if @permit.expiration_date.present? %>
-        <%= @permit.expiration_date.strftime("%m/%d/%Y") %>
-      <% end %>
-      </p>
-</div>
-  <p class="card-text">
-    <strong>Date Issued:</strong>
-    <%= @permit.date_issued %>
-    </p>
-    <p class="card-text">
-    <strong>Conditions:</strong>
-    <%= @permit.conditions %>
-    </p>
-    <p class="card-text">
-    <strong>Paid:</strong>
-    <%= form_with url: paid_permit_path(@permit), method: :put, local: true do %>
-        <%= submit_tag @permit.paid ? 'Paid' : 'Not Paid', class: 'btn btn-secondary' %>
-      <% end %>
-    </p>
-    <% if @permit.inspection.contact.present? %> 
-  <p class="card-text">
-    <strong>Contact:</strong>
-    <%= link_to @permit.inspection.contact.name, contact_path(@permit.inspection.contact) %>
-    </p>
-    <p class="card-text">
-    <strong>Phone:</strong>
-    <%= link_to @permit.inspection.contact.phone, "tel:#{@permit.inspection.contact.phone}" %>
           </p>
           <p class="card-text">
-            <strong>Email:</strong>
-            <%= mail_to @permit.inspection.contact.email %>
+            <strong>Sent:</strong>
+            <%= form_with url: sent_permit_path(@permit), method: :put, local: true do %>
+              <%= submit_tag @permit.sent ? 'Sent' : 'Not Sent', class: 'btn btn-secondary' %>
+            <% end %>
           </p>
+          <p class="card-text">
+            <strong>Revoked:</strong>
+            <%= form_with url: revoked_permit_path(@permit), method: :put, local: true do %>
+              <%= submit_tag @permit.revoked ? 'Revoked' : 'Not Revoked', class: 'btn btn-secondary' %>
+            <% end %>
+          </p>
+          <p class="card-text">
+            <strong>Fiscal Year:</strong>
+            <%= @permit.fiscal_year %>
+          </p>
+          <p class="card-text">
+            <strong>Expiration Date:</strong>
+            <% if @permit.expiration_date.present? %>
+              <%= @permit.expiration_date.strftime("%m/%d/%Y") %>
+            <% end %>
+          </p>
+          <p class="card-text">
+            <strong>Date Issued:</strong>
+            <%= @permit.date_issued %>
+          </p>
+          <p class="card-text">
+            <strong>Conditions:</strong>
+            <%= @permit.conditions %>
+          </p>
+          <p class="card-text">
+            <strong>Paid:</strong>
+            <%= form_with url: paid_permit_path(@permit), method: :put, local: true do %>
+              <%= submit_tag @permit.paid ? 'Paid' : 'Not Paid', class: 'btn btn-secondary' %>
+            <% end %>
+          </p>
+          <% if @permit.inspection.contact.present? %> 
+            <p class="card-text">
+              <strong>Contact:</strong>
+              <%= link_to @permit.inspection.contact.name, contact_path(@permit.inspection.contact) %>
+            </p>
+            <p class="card-text">
+              <strong>Phone:</strong>
+              <%= link_to @permit.inspection.contact.phone, "tel:#{@permit.inspection.contact.phone}" %>
+            </p>
+            <p class="card-text">
+              <strong>Email:</strong>
+              <%= mail_to @permit.inspection.contact.email %>
+            </p>
           <% end %>
         </div>
       </div>
