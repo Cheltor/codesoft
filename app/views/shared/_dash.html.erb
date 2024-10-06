@@ -35,6 +35,55 @@
       </div>
     </div>
 
+    <!-- Weekly progress card -->
+    <div class="card flex-fill w-100">
+      <div class="card-header">
+        <h5 class="card-title mb-0">Weekly Progress</h5>
+      </div>
+      <div class="card-body py-3">
+        <div class="row">
+          <div class="col">
+            <h2 class="mb-1"><%= "This week: " + @weekly_inspections.count.to_s + " Inspections" %></h2>
+            <div class="d-flex align-items-center">
+              <div class="text-success">
+                <i class="mdi mdi-arrow-up-bold"></i>
+              </div>
+              <div class="<%= @last_week_inspections.count < @weekly_inspections.count ? 'text-success' : @last_week_inspections.count == @weekly_inspections.count ? '' : 'text-danger' %> ms-2">
+                <%= "Last week: " + (@last_week_inspections.count).to_s %>
+              </div>
+            </div>
+          </div>
+    
+          <div class="col">
+            <h2 class="mb-1"><%= "This week: " + @weekly_violations.count.to_s + " Violation Notices/Doorhangers" %></h2>
+            <div class="d-flex align-items-center">
+              <div class="text-danger">
+                <i class="mdi mdi-arrow-down-bold"></i>
+              </div>
+              <div class="<%= @last_week_violations.count < @weekly_violations.count ? 'text-success' : @last_week_violations.count == @weekly_violations.count ? '' : 'text-danger' %> ms-2">
+                <%= "Last week: " + (@last_week_violations.count).to_s %>
+              </div>
+            </div>
+          </div>
+    
+          <!-- New Comments Section -->
+          <div class="col">
+            <h2 class="mb-1"><%= "This week: " + @weekly_comments.count.to_s + " Comments" %></h2>
+            <div class="d-flex align-items-center">
+              <div class="text-primary">
+                <i class="mdi mdi-comment"></i>
+              </div>
+              <div class="<%= @last_week_comments.count < @weekly_comments.count ? 'text-success' : @last_week_comments.count == @weekly_comments.count ? '' : 'text-danger' %> ms-2">
+                <%= "Last week: " + (@last_week_comments.count).to_s %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+
+
 <div class="d-flex justify-content-center">
   <ul class="nav nav-pills nav-justified mb-3" id="pills-tab" role="tablist">
     <li class="nav-item" role="presentation">
@@ -42,9 +91,6 @@
     </li>
     <li class="nav-item" role="presentation">
       <button class="nav-link" id="pills-violations-tab" data-bs-toggle="pill" data-bs-target="#pills-violations" type="button" role="tab" aria-controls="pills-violations" aria-selected="false" style="font-size: larger;">Violations (<%= @violations.count %>)</button>
-    </li>
-    <li class="nav-item" role="presentation">
-      <button class="nav-link" id="pills-timeline-tab" data-bs-toggle="pill" data-bs-target="#pills-timeline" type="button" role="tab" aria-controls="pills-timeline" aria-selected="false" style="font-size: larger;">Timeline</button>
     </li>
   </ul>
 </div>
@@ -115,17 +161,6 @@
         </div>
       </div>
     </div>
-  </div>
-  <div class="tab-pane fade" id="pills-timeline" role="tabpanel" aria-labelledby="pills-timeline-tab">
-    <!-- timeline card -->
-    <div class="card d-none d-lg-block">
-      <%# <div class="card-header">
-        <h3 class='card-title'>My Timeline</h3>
-      </div> %>
-      <div class="card-body">
-        <%= render partial: 'shared/dash_timeline' %>      
-      </div>
-    </div>  
   </div>
 </div>
 
@@ -203,42 +238,6 @@
       </div>
     </div>
     <% end %>
-    <div class="card">
-      <div class="card-body">
-        <div class="row">
-        <h3 style="text-align:center">My Priority Addresses</h3>
-        <h5 style="text-align:center">Addresses with current violations, unpaid citations, pending trial citations, or pending inspections</h5>
-          <% if @priority_addresses.empty? %>
-            <p class="pt-5">No priority addresses.</p>
-          <% else %>
-          <div class="table-responsive">
-            <table class="table">
-              <thead>
-                <tr>
-                  <th style="text-align:center">Address</th>
-                  <th style="text-align:center">Check off for today</th>
-                </tr>
-              </thead>
-              <tbody>
-              <% @priority_addresses.each do |a| %>
-                <tr>
-                  <td style="text-align:center">
-                    <%= link_to a.property_name_with_combadd, address_path(a) %>
-                  </td>
-                  <td style="text-align: center">
-                    <%= button_to mark_reviewed_path(a.id), method: :patch, class: "btn btn-primary", data: { turbolinks: false } do %>
-                      <i class="bi bi-check-lg"></i>
-                    <% end %>
-                  </td>
-                </tr>
-              <% end %>
-              </tbody>
-            </table>
-          </div>
-          <% end %>  
-        </div>    
-      </div>
-    </div>
   </div>
 </div>-->
 <% end %>

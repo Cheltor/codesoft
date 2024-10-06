@@ -2,10 +2,11 @@ class PermitsController < ApplicationController
   before_action :set_permit, only: [:show]
 
   def index
-    @permits = Permit.all
+    @permits = Permit.order(created_at: :desc).paginate(page: params[:page], per_page: 10)
   end
 
   def show
+    @address = @permit.address
   end
 
   private

@@ -40,6 +40,11 @@ class Inspection < ApplicationRecord
   after_create :create_notification_if_complaint
   after_update :create_notification_if_reassigned
 
+  # define a completed inspection
+  def completed?
+    status.present?
+  end
+
   private
 
   def create_notification_if_complaint

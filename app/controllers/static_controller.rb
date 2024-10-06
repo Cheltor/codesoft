@@ -1,6 +1,6 @@
 class StaticController < ApplicationController
-  skip_before_action :authenticate_user!, only: [:issue, :dashboard, :helpful]
-
+  #skip_before_action :authenticate_user!, only: [:issue, :dashboard, :helpful]
+  # I'm not sure why I had to comment out the above line. It worked before, but now it's causing an error. 9/29/24
   def map
     if params[:show] == 'all'
       @addresses = Address.all
@@ -60,61 +60,32 @@ class StaticController < ApplicationController
     @past_inspections = Inspection.where(inspector: @user, status: nil).where('scheduled_datetime < ?', Date.today.beginning_of_day).order(scheduled_datetime: :desc)
     @complaints = Inspection.where(inspector: @user, status: nil, source: "Complaint").order(created_at: :desc)
     @unscheduled_inspections = Inspection.where(inspector: @user, status: nil, scheduled_datetime: nil).where.not(source: "Complaint").order(created_at: :desc)
-    @priority_addresses = []
-  
-    # Print information about addresses being added to priority_addresses
-    @violations.each do |violation|
-      address = violation.address
-      puts "Adding violation address #{address.id} to priority_addresses"
-      @priority_addresses << address
-    end
-  
-    @citations.each do |citation|
-      address = citation.violation.address
-      puts "Adding citation address #{address.id} to priority_addresses"
-      @priority_addresses << address
-    end
-  
-    @inspections.each do |inspection|
-      address = inspection.address
-      puts "Adding inspection address #{address.id} to priority_addresses"
-      @priority_addresses << address
-    end
-  
-    @priority_addresses = @priority_addresses.uniq.select { |address| !address.updated_at.today? }.sort_by(&:streetnumb)
-    
-    # Timeline
-    user = current_user  # Assuming you have a method to fetch the current user
 
-    # This used to fetch user related records, but now collects all
-    user_violations = Violation.all
-    user_comments = Comment.all  
-    user_inspections = Inspection.all
-    user_citations = Citation.all
-    user_violation_comments = ViolationComment.all
-    user_citation_comments = CitationComment.all
-    user_inspection_comments = InspectionComment.all
-    # ... fetch other records as needed ...
+# Use Time.zone.now to handle both the date and time with the correct timezone
+start_of_week = Time.zone.now.beginning_of_week(:monday).beginning_of_day
+end_of_week = Time.zone.now.end_of_week(:sunday).end_of_day
 
-    # Combine and sort records for the timeline
-    @timeline_items = (
-      user_violations.to_a + 
-      user_comments.to_a + 
-      user_inspections.to_a +
-      user_citations.to_a +
-      user_violation_comments.to_a +
-      user_citation_comments.to_a +
-      user_inspection_comments.to_a
-      # ... include other records here ...
-    ).sort_by(&:created_at).reverse
+# Fetch inspections that the user has completed this week
+@weekly_inspections = Inspection.where(inspector_id: @user.id)
+                      .where.not(status: nil)
+                      .where('updated_at >= ? AND updated_at <= ?', start_of_week, end_of_week)
+                      .order(updated_at: :desc)
+# Calculate the correct start and end of LAST week (not just 7 days ago)
+start_of_last_week = (Time.zone.now - 1.week).beginning_of_week(:monday).beginning_of_day - 1.week
+end_of_last_week = (Time.zone.now - 1.week).end_of_week(:sunday).end_of_day - 1.week
 
-    # Pagination (optional)
-    page = params[:page] || 1
-    per_page = 10  # Adjust as needed
-    @timeline_items = WillPaginate::Collection.create(page, per_page, @timeline_items.size) do |pager|
-      start_index = pager.offset
-      pager.replace(@timeline_items[start_index, per_page])
-    end
+# Fetch inspections from last week
+@last_week_inspections = Inspection.where(inspector_id: @user.id)
+                      .where.not(status: nil)
+                      .where('updated_at >= ? AND updated_at <= ?', start_of_last_week, end_of_last_week)
+                      .order(updated_at: :desc)
+   # Show all of the comments that the user has created this week.
+    # Show all comments that the user has created 
+    @weekly_comments = dash_comments.select { |comment| comment.created_at > 1.week.ago }.sort_by(&:created_at).reverse
+    @weekly_violations = Violation.select { |violation| violation.user == @user && violation.created_at.between?(start_of_week, end_of_week) }.sort_by(&:created_at).reverse
+    @last_week_violations = Violation.select { |violation| violation.user == @user && violation.created_at.between?(1.week.ago.beginning_of_week(:monday), 1.week.ago.end_of_week(:friday)) }.sort_by(&:created_at).reverse
+    @last_week_comments = dash_comments.select { |comment| comment.user == @user && comment.created_at.between?(1.week.ago.beginning_of_week(:monday), 1.week.ago.end_of_week(:friday)) }.sort_by(&:created_at).reverse
+
   end
   
 
@@ -153,7 +124,42 @@ class StaticController < ApplicationController
       other_inspections = @inspections.reject { |inspection| inspection.source == "Complaint" || inspection.paid == true }
   
       @inspections_dash = complaint_inspections + paid_inspections + other_inspections
-      
+
+          # fetch all comments
+    violation_comments = @user.violations.flat_map(&:violation_comments)
+    citation_comments = @user.violations.flat_map { |violation| violation.citations.flat_map(&:citation_comments) }
+    address_comments = @user.comments
+    inspection_comments = @user.inspections.flat_map(&:inspection_comments)
+    
+    # Combine all comments
+    dash_comments = (violation_comments + citation_comments + address_comments + inspection_comments).sort_by(&:created_at).reverse
+
+
+# Use Time.zone.now to handle both the date and time with the correct timezone
+start_of_week = Time.zone.now.beginning_of_week(:monday).beginning_of_day
+end_of_week = Time.zone.now.end_of_week(:sunday).end_of_day
+
+# Fetch inspections that the user has completed this week
+@weekly_inspections = Inspection.where(inspector_id: @user.id)
+                      .where.not(status: nil)
+                      .where('updated_at >= ? AND updated_at <= ?', start_of_week, end_of_week)
+                      .order(updated_at: :desc)
+# Calculate the correct start and end of LAST week (not just 7 days ago)
+start_of_last_week = (Time.zone.now - 1.week).beginning_of_week(:monday).beginning_of_day - 1.week
+end_of_last_week = (Time.zone.now - 1.week).end_of_week(:sunday).end_of_day - 1.week
+
+# Fetch inspections from last week
+@last_week_inspections = Inspection.where(inspector_id: @user.id)
+                      .where.not(status: nil)
+                      .where('updated_at >= ? AND updated_at <= ?', start_of_last_week, end_of_last_week)
+                      .order(updated_at: :desc)
+   # Show all of the comments that the user has created this week.
+    # Show all comments that the user has created 
+    @weekly_comments = dash_comments.select { |comment| comment.created_at > 1.week.ago }.sort_by(&:created_at).reverse
+    @weekly_violations = Violation.select { |violation| violation.user == @user && violation.created_at.between?(start_of_week, end_of_week) }.sort_by(&:created_at).reverse
+    @last_week_violations = Violation.select { |violation| violation.user == @user && violation.created_at.between?(1.week.ago.beginning_of_week(:monday), 1.week.ago.end_of_week(:friday)) }.sort_by(&:created_at).reverse
+    @last_week_comments = dash_comments.select { |comment| comment.user == @user && comment.created_at.between?(1.week.ago.beginning_of_week(:monday), 1.week.ago.end_of_week(:friday)) }.sort_by(&:created_at).reverse
+
       @today_inspections = Inspection.where(inspector: @user, status: nil, scheduled_datetime: Date.today.beginning_of_day..Date.today.end_of_day).order(scheduled_datetime: :desc)
       @future_inspections = Inspection
       .where(inspector: @user, status: nil)
@@ -258,6 +264,40 @@ class StaticController < ApplicationController
         puts "Adding inspection address #{address.id} to priority_addresses"
         @priority_addresses << address
       end
+
+
+          # fetch all comments
+    violation_comments = ViolationComment.all
+    citation_comments = CitationComment.all
+    address_comments = Comment.all
+    inspection_comments = InspectionComment.all
+    # Combine all comments
+    dash_comments = (violation_comments + citation_comments + address_comments + inspection_comments).sort_by(&:created_at).reverse
+
+
+# Use Time.zone.now to handle both the date and time with the correct timezone
+start_of_week = Time.zone.now.beginning_of_week(:monday).beginning_of_day
+end_of_week = Time.zone.now.end_of_week(:sunday).end_of_day
+
+# Fetch inspections that the user has completed this week
+@weekly_inspections = Inspection.where.not(status: nil)
+                      .where('updated_at >= ? AND updated_at <= ?', start_of_week, end_of_week)
+                      .order(updated_at: :desc)
+# Calculate the correct start and end of LAST week (not just 7 days ago)
+start_of_last_week = (Time.zone.now - 1.week).beginning_of_week(:monday).beginning_of_day - 1.week
+end_of_last_week = (Time.zone.now - 1.week).end_of_week(:sunday).end_of_day - 1.week
+
+# Fetch inspections from last week
+@last_week_inspections = Inspection.where.not(status: nil)
+                      .where('updated_at >= ? AND updated_at <= ?', start_of_last_week, end_of_last_week)
+                      .order(updated_at: :desc)
+   # Show all of the comments that the user has created this week.
+    # Show all comments that the user has created 
+    @weekly_comments = dash_comments.select { |comment| comment.created_at > 1.week.ago }.sort_by(&:created_at).reverse
+    @weekly_violations = Violation.select { |violation| violation.user == @user && violation.created_at.between?(start_of_week, end_of_week) }.sort_by(&:created_at).reverse
+    @last_week_violations = Violation.select { |violation| violation.user == @user && violation.created_at.between?(1.week.ago.beginning_of_week(:monday), 1.week.ago.end_of_week(:friday)) }.sort_by(&:created_at).reverse
+    @last_week_comments = dash_comments.select { |comment| comment.user == @user && comment.created_at.between?(1.week.ago.beginning_of_week(:monday), 1.week.ago.end_of_week(:friday)) }.sort_by(&:created_at).reverse
+
     
       @priority_addresses = @priority_addresses.uniq.select { |address| !address.updated_at.today? }.sort_by(&:streetnumb)  
 

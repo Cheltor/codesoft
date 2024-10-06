@@ -468,7 +468,7 @@ class InspectionsController < ApplicationController
     end
 
     # Create a new permit object
-    @permit = Permit.new(inspection: @inspection, address: @address)
+    @permit = Permit.new(inspection: @inspection, address: @address, paid: @inspection.paid)
 
     if @permit.save
       redirect_to permit_path(@permit)
