@@ -18,6 +18,7 @@ class AreasController < ApplicationController
         redirect_to conduct_address_inspection_path(@address, @inspection)
       end
     else
+      @rooms = Room.all
       render :new
     end
   end
@@ -27,6 +28,7 @@ class AreasController < ApplicationController
     @inspection = @address.inspections.find(params[:inspection_id])
     @area = @inspection.areas.find(params[:id])
     @observation = @area.observations.build
+    @prompts = @area.room.present? ? @area.room.prompts : []
   end
 
   def edit
@@ -71,6 +73,6 @@ class AreasController < ApplicationController
   private
 
   def area_params
-    params.require(:area).permit(:floor, :name, :notes, :unit_id, :inspection_id, code_ids: [], photos: [])
+    params.require(:area).permit(:room_id, :floor, :name, :notes, :unit_id, :inspection_id, code_ids: [], photos: [])
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_09_23_195037) do
+ActiveRecord::Schema[7.0].define(version: 2024_10_07_113630) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -103,6 +103,7 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_23_195037) do
     t.bigint "inspection_id", null: false
     t.integer "floor"
     t.bigint "unit_id"
+    t.integer "room_id"
     t.index ["inspection_id"], name: "index_areas_on_inspection_id"
     t.index ["unit_id"], name: "index_areas_on_unit_id"
   end
@@ -373,8 +374,12 @@ ActiveRecord::Schema[7.0].define(version: 2024_09_23_195037) do
     t.string "name"
     t.string "phone"
     t.integer "role", default: 0
+    t.string "provider", default: "email", null: false
+    t.string "uid", default: "", null: false
+    t.json "tokens"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true
   end
 
   create_table "versions", force: :cascade do |t|
